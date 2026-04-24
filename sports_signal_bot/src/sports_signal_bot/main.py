@@ -142,7 +142,175 @@ def provider_healthcheck():
             status = "[green]OK[/green]" if is_healthy else "[red]FAIL[/red]"
             console.print(f"Provider '{provider}': {status}")
 
-# if __name__ == "__main__":
+#
+@app.command()
+def build_ratings(sport: str):
+    """Process events and build rating timelines."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.ratings.manifests import write_rating_manifest
+    from sports_signal_bot.ratings.contracts import RatingBuildManifest
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+    import uuid
+
+    config = load_rating_config(sport)
+    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
+    engine = engine_cls(config)
+    processor = RatingTimelineProcessor(engine, config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events = []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        df_e = df_e.where(pd.notnull(df_e), None)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']),
+                sport=SportType(r['sport']),
+                league=str(r['league']),
+                season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']),
+                away_team=str(r['away_team']),
+                status=str(r['status']),
+                venue=str(r.get('venue')) if r.get('venue') else None,
+                source=str(r['source']),
+                source_event_id=str(r['source_event_id'])
+            ))
+
+    results = []
+    if results_path.exists():
+        df_r = pd.read_csv(results_path)
+        df_r = df_r.where(pd.notnull(df_r), None)
+        for _, r in df_r.iterrows():
+             results.append(EventResultRecord(
+                 event_id=str(r['event_id']),
+                 sport=SportType(r['sport']),
+                 status=str(r['status']),
+                 final_home_score=float(r['final_home_score']) if pd.notna(r['final_home_score']) else None,
+                 final_away_score=float(r['final_away_score']) if pd.notna(r['final_away_score']) else None
+             ))
+
+    start = datetime.utcnow()
+    snapshots, updates = processor.process_timeline(events, results)
+    end = datetime.utcnow()
+
+    manifest = RatingBuildManifest(
+        run_id=uuid.uuid4().hex[:8],
+        sport=SportType(sport),
+        engine_name="elo",
+        start_time_utc=start,
+        end_time_utc=end,
+        events_processed=len(events),
+        teams_updated=len(processor._state_store),
+        config_used=config
+    )
+
+    out_dir = get_data_dir() / "processed" / "manifests"
+    write_rating_manifest(manifest, out_dir)
+
+    console.print(f"[bold green]Built ratings for {sport}[/bold green]")
+    console.print(f"Events processed: {len(events)}")
+    console.print(f"Snapshots generated: {len(snapshots)}")
+    console.print(f"Updates applied: {len(updates)}")
+    console.print(f"Teams tracked: {len(processor._state_store)}")
+    console.print(f"Manifest written to: {out_dir}")
+
+@app.command()
+def preview_ratings(sport: str):
+    """Preview final rating states for a sport."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+
+    config = load_rating_config(sport)
+    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
+    processor = RatingTimelineProcessor(engine_cls(config), config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events, results = [], []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="mock", source_event_id="mock"
+            ))
+    if results_path.exists():
+        df_r = pd.read_csv(results_path)
+        for _, r in df_r.iterrows():
+            if pd.notna(r['final_home_score']):
+                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+
+    processor.process_timeline(events, results)
+
+    states = []
+    for k, v in processor._state_store.items():
+        states.append({"team": v.team_id, "rating": round(v.current_rating, 2), "matches": v.matches_played})
+
+    df = pd.DataFrame(states).sort_values('rating', ascending=False)
+    console.print(f"[bold blue]Top Ratings Preview ({sport})[/bold blue]")
+    console.print(df.head(10).to_markdown())
+
+@app.command()
+def preview_rating_features(sport: str):
+    """Preview features generated from rating snapshots."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.ratings.features import RatingFeatureBuilder
+    from sports_signal_bot.features.contracts import FeatureBuildContext
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+
+    config = load_rating_config(sport)
+    processor = RatingTimelineProcessor(RATING_ENGINE_REGISTRY.get_engine_class("elo")(config), config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events, results = [], []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="m", source_event_id="m"
+            ))
+    if results_path.exists():
+         df_r = pd.read_csv(results_path)
+         for _, r in df_r.iterrows():
+            if pd.notna(r['final_home_score']):
+                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+
+    snapshots, _ = processor.process_timeline(events, results)
+
+    builder = RatingFeatureBuilder()
+    events_df = pd.DataFrame([e.model_dump() for e in events])
+    ctx = FeatureBuildContext(sport=sport, run_id="preview")
+
+    feat_df = builder.build(ctx, {"events": events_df, "rating_snapshots": snapshots})
+    console.print(f"[bold cyan]Rating Features Preview ({sport})[/bold cyan]")
+    console.print(feat_df.to_markdown())
+
+
+if __name__ == "__main__":
     app()
 
 from sports_signal_bot.markets.registry import MARKET_REGISTRY
@@ -435,6 +603,174 @@ def preview_feature_matrix(sport: str):
 
     console.print(matrix.head())
 
+
+
+
+@app.command()
+def build_ratings(sport: str):
+    """Process events and build rating timelines."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.ratings.manifests import write_rating_manifest
+    from sports_signal_bot.ratings.contracts import RatingBuildManifest
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+    import uuid
+
+    config = load_rating_config(sport)
+    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
+    engine = engine_cls(config)
+    processor = RatingTimelineProcessor(engine, config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events = []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        df_e = df_e.where(pd.notnull(df_e), None)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']),
+                sport=SportType(r['sport']),
+                league=str(r['league']),
+                season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']),
+                away_team=str(r['away_team']),
+                status=str(r['status']),
+                venue=str(r.get('venue')) if r.get('venue') else None,
+                source=str(r['source']),
+                source_event_id=str(r['source_event_id'])
+            ))
+
+    results = []
+    if results_path.exists():
+        df_r = pd.read_csv(results_path)
+        df_r = df_r.where(pd.notnull(df_r), None)
+        for _, r in df_r.iterrows():
+             results.append(EventResultRecord(
+                 event_id=str(r['event_id']),
+                 sport=SportType(r['sport']),
+                 status=str(r['status']),
+                 final_home_score=float(r['final_home_score']) if pd.notna(r['final_home_score']) else None,
+                 final_away_score=float(r['final_away_score']) if pd.notna(r['final_away_score']) else None
+             ))
+
+    start = datetime.utcnow()
+    snapshots, updates = processor.process_timeline(events, results)
+    end = datetime.utcnow()
+
+    manifest = RatingBuildManifest(
+        run_id=uuid.uuid4().hex[:8],
+        sport=SportType(sport),
+        engine_name="elo",
+        start_time_utc=start,
+        end_time_utc=end,
+        events_processed=len(events),
+        teams_updated=len(processor._state_store),
+        config_used=config
+    )
+
+    out_dir = get_data_dir() / "processed" / "manifests"
+    write_rating_manifest(manifest, out_dir)
+
+    console.print(f"[bold green]Built ratings for {sport}[/bold green]")
+    console.print(f"Events processed: {len(events)}")
+    console.print(f"Snapshots generated: {len(snapshots)}")
+    console.print(f"Updates applied: {len(updates)}")
+    console.print(f"Teams tracked: {len(processor._state_store)}")
+    console.print(f"Manifest written to: {out_dir}")
+
+@app.command()
+def preview_ratings(sport: str):
+    """Preview final rating states for a sport."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+
+    config = load_rating_config(sport)
+    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
+    processor = RatingTimelineProcessor(engine_cls(config), config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events, results = [], []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="mock", source_event_id="mock"
+            ))
+    if results_path.exists():
+        df_r = pd.read_csv(results_path)
+        for _, r in df_r.iterrows():
+            if pd.notna(r['final_home_score']):
+                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+
+    processor.process_timeline(events, results)
+
+    states = []
+    for k, v in processor._state_store.items():
+        states.append({"team": v.team_id, "rating": round(v.current_rating, 2), "matches": v.matches_played})
+
+    df = pd.DataFrame(states).sort_values('rating', ascending=False)
+    console.print(f"[bold blue]Top Ratings Preview ({sport})[/bold blue]")
+    console.print(df.head(10).to_markdown())
+
+@app.command()
+def preview_rating_features(sport: str):
+    """Preview features generated from rating snapshots."""
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.ratings.features import RatingFeatureBuilder
+    from sports_signal_bot.features.contracts import FeatureBuildContext
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.results.contracts import EventResultRecord
+    import pandas as pd
+    from datetime import datetime
+
+    config = load_rating_config(sport)
+    processor = RatingTimelineProcessor(RATING_ENGINE_REGISTRY.get_engine_class("elo")(config), config)
+
+    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
+    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+
+    events, results = [], []
+    if events_path.exists():
+        df_e = pd.read_csv(events_path)
+        for _, r in df_e.iterrows():
+            events.append(CanonicalEventRecord(
+                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
+                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
+                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="m", source_event_id="m"
+            ))
+    if results_path.exists():
+         df_r = pd.read_csv(results_path)
+         for _, r in df_r.iterrows():
+            if pd.notna(r['final_home_score']):
+                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+
+    snapshots, _ = processor.process_timeline(events, results)
+
+    builder = RatingFeatureBuilder()
+    events_df = pd.DataFrame([e.model_dump() for e in events])
+    ctx = FeatureBuildContext(sport=sport, run_id="preview")
+
+    feat_df = builder.build(ctx, {"events": events_df, "rating_snapshots": snapshots})
+    console.print(f"[bold cyan]Rating Features Preview ({sport})[/bold cyan]")
+    console.print(feat_df.to_markdown())
 
 
 if __name__ == "__main__":

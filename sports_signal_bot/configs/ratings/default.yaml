@@ -1,0 +1,9 @@
+base_rating: 1500.0
+k_factor: 20.0
+home_advantage: 0.0
+margin_method: "no_margin"
+margin_cap: null
+season_carryover: 1.0
+draw_probability_method: "none"
+scope_mode: "sport_league"
+neutral_venue_policy: "ignore_home_advantage"

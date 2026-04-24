@@ -1,0 +1,5 @@
+event_id,sport,league,season,event_datetime_utc,home_team,away_team,status,venue,source,source_event_id
+ev_bb_1,basketball,NBA,2023-2024,2023-10-24T23:30:00Z,Denver Nuggets,Los Angeles Lakers,completed,,mock,mock_bb_1
+ev_bb_2,basketball,NBA,2023-2024,2023-10-25T02:00:00Z,Golden State Warriors,Phoenix Suns,completed,,mock,mock_bb_2
+ev_bb_3,basketball,NBA,2023-2024,2023-10-26T23:30:00Z,Los Angeles Lakers,Phoenix Suns,completed,,mock,mock_bb_3
+ev_bb_4,basketball,NBA,2023-2024,2023-10-27T02:00:00Z,Sacramento Kings,Golden State Warriors,completed,,mock,mock_bb_4

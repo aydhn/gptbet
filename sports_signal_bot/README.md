@@ -110,3 +110,16 @@ This phase implemented the feature engineering backbone to convert raw data into
 - `python -m sports_signal_bot.main list-feature-builders --sport football`
 - `python -m sports_signal_bot.main build-features --sport football`
 - `python -m sports_signal_bot.main preview-feature-matrix --sport basketball`
+
+## Phase 5: Rating Engine
+This phase introduced the temporal rating infrastructure for teams.
+
+**Purpose**: Establish a robust, leakage-free strength estimation layer.
+**Architecture**:
+- Implements Elo Rating algorithms adapted for Football (draw-aware) and Basketball (margin-aware).
+- Enforces strict Pre-Event Snapshot discipline for ML feature integrity.
+- Extensible to future Bayesian updates.
+**Usage**:
+- `python -m sports_signal_bot.main build-ratings --sport football`
+- `python -m sports_signal_bot.main preview-ratings --sport football`
+- `python -m sports_signal_bot.main preview-rating-features --sport football`
