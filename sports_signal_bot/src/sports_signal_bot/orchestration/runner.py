@@ -5,7 +5,7 @@ import numpy as np
 from typing import Dict, Any
 
 from sports_signal_bot.data.mock_providers import MockScheduleProvider, MockOddsProvider
-from sports_signal_bot.features.mock_builder import MockFeatureBuilder
+from sports_signal_bot.features.registry import FeatureRegistry
 from sports_signal_bot.models.dummy_predictor import DummyPredictor
 from sports_signal_bot.notifications.telegram_stub import TelegramNotifierStub
 from sports_signal_bot.utils.evaluation import EvaluationHelper
@@ -17,7 +17,7 @@ class SmokeRunner:
     def __init__(self):
         self.schedule_provider = MockScheduleProvider()
         self.odds_provider = MockOddsProvider()
-        self.feature_builder = MockFeatureBuilder()
+        self.feature_registry = FeatureRegistry()
         self.model = DummyPredictor()
         self.notifier = TelegramNotifierStub()
         self.evaluator = EvaluationHelper()
@@ -36,7 +36,9 @@ class SmokeRunner:
 
         # 3. Build features
         event_dicts = [{"event_id": e.event_id, "home_team": e.home_team, "away_team": e.away_team} for e in events]
-        features = self.feature_builder.build_features(event_dicts)
+        features = pd.DataFrame(event_dicts)
+        features["mock_f1"] = 1.0
+        features["mock_f2"] = 0.5
         logger.info(f"Built feature matrix of shape {features.shape}.")
 
         # 4. Mock Training

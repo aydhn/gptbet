@@ -96,3 +96,17 @@ This phase introduced the core outcome resolution and benchmark system.
 - `python -m sports_signal_bot.main generate-labels --sport football`
 - `python -m sports_signal_bot.main run-benchmark-preview --sport football --market football_1x2`
 - `python -m sports_signal_bot.main audit-leakage --sport football`
+
+## Phase 4: Feature Engineering
+This phase implemented the feature engineering backbone to convert raw data into learning-ready signals.
+
+**Purpose**: To build a leakage-safe, extensible, and reproducible feature factory.
+**Architecture**:
+- Uses a `FeatureRegistry` to manage plugin-style `FeatureBuilder`s.
+- `FeatureFactory` and `FeatureSetAssembler` orchestrate building and safely joining columns.
+- Generates `FeatureManifestRecord` to track data lineage, ensuring model reproducibility.
+**Guardrails**: Includes utilities for event-time safe rolling calculations and strictly pre-match odds snapshot selection.
+**Usage**:
+- `python -m sports_signal_bot.main list-feature-builders --sport football`
+- `python -m sports_signal_bot.main build-features --sport football`
+- `python -m sports_signal_bot.main preview-feature-matrix --sport basketball`

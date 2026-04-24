@@ -1,0 +1,10 @@
+# Football Specific Feature Configuration
+include_feature_families:
+  - identity_context
+  - recent_form
+  - schedule_density
+  - team_strength
+  - score_environment
+  - sport_specific
+  - market_derived
+  - missingness

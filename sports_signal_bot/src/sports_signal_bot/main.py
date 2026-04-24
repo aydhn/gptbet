@@ -142,7 +142,7 @@ def provider_healthcheck():
             status = "[green]OK[/green]" if is_healthy else "[red]FAIL[/red]"
             console.print(f"Provider '{provider}': {status}")
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     app()
 
 from sports_signal_bot.markets.registry import MARKET_REGISTRY
@@ -316,3 +316,126 @@ def audit_leakage(sport: str = typer.Option(...)):
                 console.print(f"[bold red]LEAKAGE DETECTED[/bold red]: Event {event_id} - {audit.message}")
             else:
                  console.print(f"[green]PASS[/green]: Event {event_id} - Odds at {snap_ts} (Start: {event_start})")
+
+@app.command()
+def build_features(sport: str, market: str = typer.Option(None, help="Market type (e.g. 1x2, ou)")):
+    """Build the feature matrix for a specific sport."""
+    from sports_signal_bot.features import FeatureRegistry, FeatureFactory, FeatureBuildContext
+    from sports_signal_bot.features.builders import (
+        ContextFeatureBuilder, RollingFormFeatureBuilder, RestFeatureBuilder,
+        MarketOddsFeatureBuilder, MissingnessFeatureBuilder
+    )
+    import pandas as pd
+    import uuid
+    import json
+
+    # Initialize registry
+    registry = FeatureRegistry()
+    registry.register(ContextFeatureBuilder())
+    registry.register(RollingFormFeatureBuilder())
+    registry.register(RestFeatureBuilder())
+    registry.register(MarketOddsFeatureBuilder())
+    registry.register(MissingnessFeatureBuilder())
+
+    if sport == "football":
+        from sports_signal_bot.features.builders import (
+            FootballTeamStrengthBuilder, FootballGoalEnvironmentBuilder, FootballBTTSProxyBuilder
+        )
+        registry.register(FootballTeamStrengthBuilder())
+        registry.register(FootballGoalEnvironmentBuilder())
+        registry.register(FootballBTTSProxyBuilder())
+    elif sport == "basketball":
+        from sports_signal_bot.features.builders import (
+            BasketballTeamStrengthBuilder, BasketballTempoBuilder, BasketballSpreadEnvironmentBuilder
+        )
+        registry.register(BasketballTeamStrengthBuilder())
+        registry.register(BasketballTempoBuilder())
+        registry.register(BasketballSpreadEnvironmentBuilder())
+
+    factory = FeatureFactory(registry)
+
+    run_id = f"build_{sport}_{uuid.uuid4().hex[:8]}"
+    context = FeatureBuildContext(
+        sport=sport,
+        market_type=market,
+        run_id=run_id
+    )
+
+    # Mock data
+    events_df = pd.DataFrame({
+        "event_id": ["e1", "e2", "e3"],
+        "home_team": ["Team A", "Team C", "Team E"],
+        "away_team": ["Team B", "Team D", "Team F"],
+        "event_datetime_utc": ["2023-01-01T10:00:00Z", "2023-01-02T12:00:00Z", "2023-01-03T14:00:00Z"]
+    })
+
+    odds_df = pd.DataFrame({
+        "event_id": ["e1", "e2", "e3"],
+        "snapshot_time_utc": ["2023-01-01T08:00:00Z", "2023-01-02T10:00:00Z", "2023-01-03T12:00:00Z"]
+    })
+
+    data = {"events": events_df, "odds": odds_df}
+
+    console.print(f"[bold green]Building features for {sport}...[/bold green]")
+    matrix = factory.build_feature_matrix(context, data)
+
+    console.print(f"[bold cyan]Rows:[/bold cyan] {len(matrix)}")
+    console.print(f"[bold cyan]Columns:[/bold cyan] {len(matrix.columns)}")
+    console.print(f"[bold cyan]Output Path:[/bold cyan] data/processed/manifests/features_{run_id}.manifest.json")
+
+@app.command()
+def list_feature_builders(sport: str = typer.Option(None, help="Filter by sport")):
+    """List registered feature builders."""
+    from sports_signal_bot.features import FeatureRegistry
+    from sports_signal_bot.features.builders import (
+        ContextFeatureBuilder, RollingFormFeatureBuilder, RestFeatureBuilder,
+        MarketOddsFeatureBuilder, MissingnessFeatureBuilder
+    )
+
+    registry = FeatureRegistry()
+    registry.register(ContextFeatureBuilder())
+    registry.register(RollingFormFeatureBuilder())
+    registry.register(RestFeatureBuilder())
+    registry.register(MarketOddsFeatureBuilder())
+    registry.register(MissingnessFeatureBuilder())
+
+    try:
+        from sports_signal_bot.features.builders import FootballTeamStrengthBuilder
+        registry.register(FootballTeamStrengthBuilder())
+    except ImportError: pass
+
+    try:
+        from sports_signal_bot.features.builders import BasketballTeamStrengthBuilder
+        registry.register(BasketballTeamStrengthBuilder())
+    except ImportError: pass
+
+    builders = registry.list_builders(sport=sport)
+
+    console.print(f"[bold cyan]Found {len(builders)} builders:[/bold cyan]")
+    for b in builders:
+        console.print(f"  - [green]{b.name}[/green] (Family: {b.family}, Sports: {', '.join(b.supported_sports)})")
+
+@app.command()
+def preview_feature_matrix(sport: str):
+    """Preview a feature matrix generated for a specific sport."""
+    import pandas as pd
+    from sports_signal_bot.features import FeatureRegistry, FeatureFactory, FeatureBuildContext
+    from sports_signal_bot.features.builders import ContextFeatureBuilder
+
+    registry = FeatureRegistry()
+    registry.register(ContextFeatureBuilder())
+
+    factory = FeatureFactory(registry)
+    context = FeatureBuildContext(sport=sport, run_id="preview")
+
+    events_df = pd.DataFrame({"event_id": ["test1"], "event_datetime_utc": ["2023-01-01T10:00:00Z"]})
+    data = {"events": events_df}
+
+    matrix = factory.build_feature_matrix(context, data)
+
+    console.print(matrix.head())
+
+
+
+if __name__ == "__main__":
+    app()
