@@ -1,0 +1,16 @@
+# Football specific training config
+sport: "football"
+
+# Example defaults for a football model
+market_type: "1x2"
+label_name: "football_1x2"
+model_name: "logistic_regression"
+
+split_strategy: "walk_forward"
+split_kwargs:
+  initial_train_size: 1000
+  valid_size: 200
+  step_size: 200
+
+dataset_kwargs:
+  exclude_columns: ["some_football_specific_leakage_col"]

@@ -1,0 +1,21 @@
+# Default generic training config
+sport: "unknown"
+market_type: "unknown"
+label_name: "unknown"
+model_name: "logistic_regression"
+seed: 42
+
+split_strategy: "holdout"
+split_kwargs:
+  train_fraction: 0.8
+  test_fraction: 0.0
+
+dataset_kwargs:
+  allow_missing_labels: false
+  drop_null_features: true
+  exclude_columns: []
+
+trainer_kwargs:
+  scale_numeric: true
+  class_weight: "balanced"
+  model_kwargs: {}

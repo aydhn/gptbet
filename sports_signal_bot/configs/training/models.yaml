@@ -1,0 +1,23 @@
+# Models configuration
+models:
+  logistic_regression:
+    scale_numeric: true
+    class_weight: "balanced"
+    model_kwargs:
+      max_iter: 1000
+
+  gradient_boosting:
+    scale_numeric: false
+    model_kwargs:
+      max_iter: 100
+
+  random_forest:
+    scale_numeric: false
+    class_weight: "balanced"
+    model_kwargs:
+      n_estimators: 100
+
+  dummy:
+    scale_numeric: false
+    model_kwargs:
+      strategy: "prior"
