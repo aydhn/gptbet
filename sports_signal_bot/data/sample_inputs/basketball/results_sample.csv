@@ -1,0 +1,5 @@
+event_id,sport,status,final_home_score,final_away_score,result_timestamp_utc,result_source
+E_BB_001,basketball,finished,110,105,2024-03-01T03:00:00Z,sample_source
+E_BB_002,basketball,finished,95,120,2024-03-02T03:30:00Z,sample_source
+E_BB_003,basketball,cancelled,,,,sample_source
+E_BB_004,basketball,pending,,,,sample_source

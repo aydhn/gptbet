@@ -82,3 +82,17 @@ This phase introduced the core data backbone.
 **Storage Layout**: Data lands in `data/raw/` first, gets normalized and validated to `data/processed/`, and run metadata goes to `data/processed/manifests/`.
 **Alias Resolution**: Uses a YAML map (e.g. `team_aliases.sample.yaml`) to normalize differing provider team names into our canonical naming schema.
 **Validation Summary**: You can view validation issues (e.g., duplicated events, missing fields, weird odds) in the generated manifest files or via the CLI command `validate-samples`.
+
+## Phase 3: Markets, Labels, and Benchmark Engine
+This phase introduced the core outcome resolution and benchmark system.
+
+**Purpose**: To rigorously define what the model predicts, how to resolve outcomes (settlement), and how to generate deterministic canonical labels. It also establishes naive and bookmaker-implied baselines.
+**Market Universe**: Supports definitions for 1X2, Over/Under, BTTS for football, and Moneyline, Spreads, Totals for basketball.
+**Label Generation**: Deterministically generates labels (e.g., `football_ou_2_5`) from event results and market definitions.
+**Benchmarks**: Provides a factory to evaluate models against Random, Uniform, Majority, and Bookmaker-Implied baselines.
+**Leakage Guardrails**: Includes audit methods to detect post-event odds snapshots preventing data leakage during training and benchmark generation.
+**Usage**:
+- `python -m sports_signal_bot.main list-markets --sport football`
+- `python -m sports_signal_bot.main generate-labels --sport football`
+- `python -m sports_signal_bot.main run-benchmark-preview --sport football --market football_1x2`
+- `python -m sports_signal_bot.main audit-leakage --sport football`
