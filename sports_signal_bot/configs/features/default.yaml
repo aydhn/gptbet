@@ -1,0 +1,4 @@
+# Default Feature Configuration
+lookback_windows: [3, 5, 10]
+event_time_cutoff_policy: "strict_pre_match"
+null_policy: "keep_nulls"
