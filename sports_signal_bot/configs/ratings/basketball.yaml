@@ -1,0 +1,9 @@
+base_rating: 1500.0
+k_factor: 15.0
+home_advantage: 40.0
+margin_method: "basketball_default"
+margin_cap: 30.0
+season_carryover: 0.5
+draw_probability_method: "none"
+scope_mode: "sport_league"
+neutral_venue_policy: "ignore_home_advantage"
