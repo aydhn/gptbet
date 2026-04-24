@@ -135,3 +135,18 @@ Implemented a structural, normal-approximation based probabilistic engine for ba
 - `python -m sports_signal_bot.main preview-basketball-market --market total_220_5`
 - `python -m sports_signal_bot.main preview-basketball-diagnostics`
 See `docs/basketball_probabilistic_core.md` for details on sign conventions and the normal approximation model.
+
+## Phase 9: Probability Calibration
+This phase introduced a robust probability calibration layer to ensure model outputs are reliable and trustworthy before being passed to downstream signal generation.
+
+**Purpose**: To transition from raw predictions to calibrated probabilities using rigorous, out-of-sample techniques.
+**Architecture**:
+- Separate calibration layer (`CalibrationRunner`) that operates strictly on `ValidationPredictionRecord`s to prevent data leakage.
+- Supports both Binary (Sigmoid, Isotonic) and Multiclass (One-Vs-Rest Wrapper) calibration.
+- Generates `ReliabilityBinRecord`s and computes ECE (Expected Calibration Error) to quantify calibration quality.
+- Produces a comprehensive `CalibrationRunManifest` comparing raw vs. calibrated metrics.
+**Usage**:
+- `python -m sports_signal_bot.main list-calibrators`
+- `python -m sports_signal_bot.main run-calibration --sport football --market ou_2_5 --method binary_sigmoid`
+- `python -m sports_signal_bot.main preview-reliability --sport football --market ou_2_5`
+See `docs/calibration_architecture.md` for details.

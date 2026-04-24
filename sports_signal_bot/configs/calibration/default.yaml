@@ -1,0 +1,4 @@
+n_bins: 10
+clip_eps: 1e-15
+overfit_ece_threshold: 0.01
+fallback_to_identity: true
