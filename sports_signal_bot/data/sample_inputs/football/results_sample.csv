@@ -1,0 +1,5 @@
+event_id,sport,status,final_home_score,final_away_score,result_timestamp_utc,result_source
+E_FB_001,football,finished,2,1,2024-03-01T17:00:00Z,sample_source
+E_FB_002,football,finished,0,0,2024-03-02T18:00:00Z,sample_source
+E_FB_003,football,cancelled,,,,sample_source
+E_FB_004,football,pending,,,,sample_source

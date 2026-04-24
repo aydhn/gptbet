@@ -1,5 +1,5 @@
-source_event_id,market_type,bookmaker,snapshot_ts_utc,selection,decimal_odds,implied_probability,handicap_line,total_line
-evt_b1,moneyline,pinnacle,2023-10-24T20:00:00Z,home,1.85,0.540,,
-evt_b1,moneyline,pinnacle,2023-10-24T20:00:00Z,away,1.95,0.512,,
-evt_b1,spread,pinnacle,2023-10-24T20:00:00Z,home,1.90,0.526,-1.5,
-evt_b1,spread,pinnacle,2023-10-24T20:00:00Z,away,1.90,0.526,1.5,
+event_id,market_type,bookmaker,snapshot_ts_utc,selection,decimal_odds,handicap_line,total_line
+E_BB_001,moneyline,pinnacle,2024-03-01T00:00:00Z,home,1.90,,
+E_BB_001,moneyline,pinnacle,2024-03-01T00:00:00Z,away,1.90,,
+E_BB_001,spread,pinnacle,2024-03-01T00:00:00Z,home,1.90,-2.5,
+E_BB_001,spread,pinnacle,2024-03-01T00:00:00Z,away,1.90,2.5,
