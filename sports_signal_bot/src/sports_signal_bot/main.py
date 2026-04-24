@@ -687,5 +687,128 @@ def preview_reliability(sport: str, market: str):
     console.print("Bin 1: [0.1 - 0.2] Count: 150, Mean Pred: 0.15, Emp Freq: 0.16, Gap: -0.01")
 
 
+
+
+
+@app.command()
+def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
+    """Run an ensemble strategy over mocked sources."""
+    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+    from sports_signal_bot.ensemble.input_builder import group_predictions_by_event_market
+    from sports_signal_bot.ensemble.runner import EnsembleRunner
+    import json
+
+    console.print(f"[bold cyan]Running Ensemble for {sport} - {market} using {ensembler}[/bold cyan]")
+
+    # Generate mock inputs based on sport/market
+    preds = []
+
+    if sport == "football" and market == "1x2":
+        classes = ["1", "X", "2"]
+        preds = [
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="poisson_model", class_labels=classes, probabilities={"1": 0.45, "X": 0.3, "2": 0.25}, predicted_class="1"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="elo_benchmark", class_labels=classes, probabilities={"1": 0.5, "X": 0.25, "2": 0.25}, predicted_class="1"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_raw", source_name="logistic_regression", class_labels=classes, probabilities={"1": 0.4, "X": 0.4, "2": 0.2}, predicted_class="1", is_calibrated=False),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="logistic_regression", class_labels=classes, probabilities={"1": 0.38, "X": 0.42, "2": 0.2}, predicted_class="X", is_calibrated=True),
+        ]
+    elif sport == "football" and market == "ou_2_5":
+        classes = ["over", "under"]
+        preds = [
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="poisson_model", class_labels=classes, probabilities={"over": 0.6, "under": 0.4}, predicted_class="over"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="bookmaker_implied", class_labels=classes, probabilities={"over": 0.55, "under": 0.45}, predicted_class="over"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="xgboost", class_labels=classes, probabilities={"over": 0.45, "under": 0.55}, predicted_class="under", is_calibrated=True),
+        ]
+    elif sport == "basketball" and market == "moneyline":
+        classes = ["home", "away"]
+        preds = [
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="rating_benchmark", class_labels=classes, probabilities={"home": 0.7, "away": 0.3}, predicted_class="home"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="structural_model", class_labels=classes, probabilities={"home": 0.75, "away": 0.25}, predicted_class="home"),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="logistic_regression", class_labels=classes, probabilities={"home": 0.65, "away": 0.35}, predicted_class="home", is_calibrated=True),
+        ]
+    else:
+        classes = ["over", "under"]
+        preds = [
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="random_forest", class_labels=classes, probabilities={"over": 0.52, "under": 0.48}, predicted_class="over", is_calibrated=True),
+            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="structural_total", class_labels=classes, probabilities={"over": 0.49, "under": 0.51}, predicted_class="under"),
+        ]
+
+    input_records = group_predictions_by_event_market(preds)
+
+    config = {
+        "strategy": ensembler,
+        "preference_mode": "prefer_calibrated",
+        "strategy_config": {
+            "weights": {
+                "poisson_model": 1.5,
+                "logistic_regression": 1.2,
+                "elo_benchmark": 0.8
+            },
+            "reliability_table": {
+                "poisson_model": {"validation_log_loss": 0.65},
+                "logistic_regression": {"validation_log_loss": 0.55},
+                "elo_benchmark": {"validation_log_loss": 0.75}
+            },
+            "source_priority": ["structural_model", "logistic_regression", "rating_benchmark"],
+            "rules": {
+                "football_1x2": "weighted_average",
+                "basketball_moneyline": "best_source_fallback"
+            },
+            "default_strategy": "simple_average"
+        }
+    }
+
+    runner = EnsembleRunner(config)
+    result = runner.run(input_records)
+
+    if result["status"] == "success":
+        console.print("[green]Ensemble run successful![/green]")
+        console.print(f"Run ID: {result['run_id']}")
+
+        for out in result["outputs"]:
+            console.print(f"\n[bold yellow]Event ID: {out.event_id}[/bold yellow]")
+            console.print(f"Eligible Sources: {out.diagnostics.num_sources_eligible}, Used: {out.diagnostics.num_sources_used}")
+
+            console.print("[cyan]Selected Sources:[/cyan]")
+            for src in out.component_sources:
+                 console.print(f"  - {src.source_name} (weight: {src.weight:.3f}, calibrated: {src.is_calibrated})")
+
+            console.print("[cyan]Final Output:[/cyan]")
+            console.print(f"  Predicted Class: {out.final_predicted_class}")
+            probs_str = ", ".join([f"{k}: {v:.3f}" for k, v in out.final_probabilities.items()])
+            console.print(f"  Probabilities: {probs_str}")
+
+            console.print("[cyan]Diagnostics Summary:[/cyan]")
+            console.print(f"  Entropy: {out.diagnostics.entropy:.3f}")
+            console.print(f"  Top Class Disagreement: {out.diagnostics.max_disagreement:.2%}")
+            console.print(f"  Source Variance: {out.diagnostics.source_variance:.5f}")
+            if out.diagnostics.warnings:
+                console.print(f"  [red]Warnings:[/red] {out.diagnostics.warnings}")
+    else:
+        console.print(f"[bold red]Ensemble run failed:[/bold red] {result}")
+
+@app.command()
+def preview_ensemble_sources(sport: str, market: str):
+    """Preview available prediction sources for an event/market."""
+    console.print(f"[bold cyan]Previewing Sources for {sport} - {market}[/bold cyan]")
+    if sport == "football":
+        console.print("- probabilistic: poisson_model")
+        console.print("- benchmark: elo_benchmark, bookmaker_implied")
+        console.print("- ml_raw: logistic_regression, xgboost")
+        console.print("- ml_calibrated: logistic_regression, xgboost")
+    elif sport == "basketball":
+        console.print("- probabilistic: structural_model")
+        console.print("- benchmark: rating_benchmark, bookmaker_implied")
+        console.print("- ml_raw: random_forest, logistic_regression")
+        console.print("- ml_calibrated: random_forest, logistic_regression")
+
+@app.command()
+def list_ensemblers():
+    """List available ensemble strategies."""
+    from sports_signal_bot.ensemble.registry import EnsembleRegistry
+    console.print("[bold cyan]Available Ensemble Strategies:[/bold cyan]")
+    for strategy in EnsembleRegistry.list_available():
+        console.print(f"  - {strategy}")
+
+
 if __name__ == '__main__':
     app()

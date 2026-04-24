@@ -1,0 +1,15 @@
+prefer_calibrated_mode: prefer_calibrated
+default_ensembler: simple_average
+sport_market_policies:
+  football_1x2: rule_based_hybrid
+  basketball_moneyline: rule_based_hybrid
+source_priority:
+  - ml_calibrated
+  - probabilistic
+  - benchmark
+weights:
+  logistic_regression: 1.5
+  poisson_model: 1.2
+  elo_benchmark: 0.8
+reliability_weight_formula: inverse_log_loss
+disagreement_metrics_enabled: true

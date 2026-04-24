@@ -150,3 +150,19 @@ This phase introduced a robust probability calibration layer to ensure model out
 - `python -m sports_signal_bot.main run-calibration --sport football --market ou_2_5 --method binary_sigmoid`
 - `python -m sports_signal_bot.main preview-reliability --sport football --market ou_2_5`
 See `docs/calibration_architecture.md` for details.
+
+## Phase 10: Ensemble Architecture
+This phase added a robust meta-prediction layer to combine heterogeneous sources (benchmarks, probabilistic models, ML models) into a unified probability forecast.
+
+**Purpose**: To move from single-model output to a combined, reliable signal. It handles class-order alignment, calibration preference, and missing source fallbacks.
+**Architecture**:
+- Establishes a common `StandardizedPredictionRecord`.
+- Ensembler strategies: `simple_average`, `weighted_average`, `reliability_weighted`, `best_source_fallback`, `rule_based_hybrid`.
+- Configurable policies to prefer calibrated predictions over raw ones.
+- Generates rich diagnostic metadata (entropy, top class disagreement, variance).
+**Usage**:
+- `python -m sports_signal_bot.main preview-ensemble-sources --sport football --market 1x2`
+- `python -m sports_signal_bot.main list-ensemblers`
+- `python -m sports_signal_bot.main run-ensemble football 1x2`
+- `python -m sports_signal_bot.main run-ensemble football ou_2_5 --ensembler weighted_average`
+See `docs/ensemble_architecture.md` for details.
