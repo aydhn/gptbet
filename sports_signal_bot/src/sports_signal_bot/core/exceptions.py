@@ -13,3 +13,7 @@ class DataError(BaseBotError):
 class PipelineError(BaseBotError):
     """Raised when there is an issue in the execution pipeline."""
     pass
+
+class LeakageDetectedError(BaseBotError):
+    """Raised when data leakage is detected during training or validation."""
+    pass

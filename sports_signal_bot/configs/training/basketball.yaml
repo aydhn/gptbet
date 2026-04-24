@@ -1,0 +1,14 @@
+# Basketball specific training config
+sport: "basketball"
+
+market_type: "moneyline"
+label_name: "basketball_moneyline"
+model_name: "gradient_boosting"
+
+split_strategy: "expanding"
+split_kwargs:
+  initial_train_size: 500
+  valid_size: 100
+
+dataset_kwargs:
+  exclude_columns: []

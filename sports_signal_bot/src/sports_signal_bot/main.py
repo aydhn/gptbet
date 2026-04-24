@@ -501,8 +501,120 @@ def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
 
     if diagnostics.clipping_warnings:
         console.print("[yellow]Clipping Warnings:[/yellow]")
-if __name__ == '__main__':
-    app()
+@app.command()
+def build_training_dataset(sport: str, market: str):
+    """Build a training dataset for the given sport and market type."""
+    from sports_signal_bot.training.dataset import TrainingDatasetBuilder
+    from sports_signal_bot.training.contracts import DatasetBuildConfig
+    import pandas as pd
+    from sports_signal_bot.core.paths import get_data_dir
+
+    # In a real run, you'd load features and labels from the data tier
+    # For now, let's mock it just to show it works
+    console.print(f"[bold cyan]Building dataset for {sport} - {market}[/bold cyan]")
+
+    # Mock data
+    features_df = pd.DataFrame({
+        'event_id': ['e1', 'e2', 'e3'],
+        'event_datetime_utc': pd.to_datetime(['2024-01-01', '2024-01-02', '2024-01-03'], utc=True),
+        'feat1': [1.0, 2.0, 3.0],
+        'feat2': [0.5, 0.5, 0.5]
+    })
+    labels_df = pd.DataFrame({
+        'event_id': ['e1', 'e2', 'e3'],
+        'market_type': [market, market, market],
+        'label_name': [f'{sport}_{market}', f'{sport}_{market}', f'{sport}_{market}'],
+        'class_index': [0, 1, 0],
+        'validity_status': ['valid', 'valid', 'valid']
+    })
+
+    config = DatasetBuildConfig(sport=sport, market_type=market, label_name=f'{sport}_{market}')
+    builder = TrainingDatasetBuilder(config)
+
+    try:
+        df, dataset = builder.build(features_df, labels_df)
+        console.print("[green]Dataset built successfully![/green]")
+        console.print(f"Total Rows: {dataset.summary.total_rows}")
+        console.print(f"Feature Count: {dataset.summary.feature_count}")
+        console.print(f"Target Column: {dataset.target_column}")
+    except Exception as e:
+        console.print(f"[bold red]Failed to build dataset:[/bold red] {e}")
+
+
+@app.command()
+def run_train(sport: str, market: str, model: str = "logistic_regression"):
+    """Run the training pipeline."""
+    from sports_signal_bot.training.runner import TrainingRunManager
+    import pandas as pd
+
+    console.print(f"[bold cyan]Running training for {sport} - {market} using {model}[/bold cyan]")
+
+    # Mock data
+    features_df = pd.DataFrame({
+        'event_id': ['e1', 'e2', 'e3', 'e4', 'e5'],
+        'event_datetime_utc': pd.to_datetime(['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05'], utc=True),
+        'feat1': [1.0, 2.0, 3.0, 4.0, 5.0],
+        'feat2': [0.5, 0.5, 0.5, 0.5, 0.5]
+    })
+    labels_df = pd.DataFrame({
+        'event_id': ['e1', 'e2', 'e3', 'e4', 'e5'],
+        'market_type': [market]*5,
+        'label_name': [f'{sport}_{market}']*5,
+        'class_index': [0, 1, 0, 1, 1],
+        'validity_status': ['valid']*5
+    })
+
+    config = {
+        'sport': sport,
+        'market_type': market,
+        'label_name': f'{sport}_{market}',
+        'model_name': model,
+        'split_strategy': 'holdout',
+        'split_kwargs': {'train_fraction': 0.6, 'test_fraction': 0.0}
+    }
+
+    manager = TrainingRunManager(config)
+    result = manager.run(features_df, labels_df)
+
+    if result.get("status") == "success":
+        console.print("[green]Training completed successfully![/green]")
+        console.print(f"Run ID: {result['run_id']}")
+        console.print(f"Output Dir: {result['output_dir']}")
+        manifest = result['manifest']
+        console.print(f"Metrics: {manifest.metrics_summary}")
+    else:
+        console.print(f"[bold red]Training failed:[/bold red] {result}")
+
+
+@app.command()
+def preview_splits(sport: str, market: str):
+    """Preview how data would be split for training."""
+    from sports_signal_bot.training.splits import HoldoutTimeSplit
+    import pandas as pd
+
+    console.print(f"[bold cyan]Previewing splits for {sport} - {market}[/bold cyan]")
+
+    # Mock data
+    df = pd.DataFrame({
+        'event_id': [f'e{i}' for i in range(1, 11)],
+        'event_datetime_utc': pd.date_range(start='2024-01-01', periods=10, freq='D')
+    })
+
+    splitter = HoldoutTimeSplit(train_fraction=0.7)
+    for fold_id, train_idx, valid_idx, _ in splitter.split(df):
+        console.print(f"Fold: {fold_id}")
+        console.print(f"  Train: {len(train_idx)} rows (from {df.iloc[train_idx]['event_datetime_utc'].min().date()} to {df.iloc[train_idx]['event_datetime_utc'].max().date()})")
+        console.print(f"  Valid: {len(valid_idx)} rows (from {df.iloc[valid_idx]['event_datetime_utc'].min().date()} to {df.iloc[valid_idx]['event_datetime_utc'].max().date()})")
+
+
+@app.command()
+def list_trainers():
+    """List available model trainers."""
+    from sports_signal_bot.training.registry import TRAINER_REGISTRY
+    console.print("[bold cyan]Available Trainers:[/bold cyan]")
+    for trainer in TRAINER_REGISTRY.list_trainers():
+        console.print(f"  - {trainer}")
+
 
 if __name__ == '__main__':
     app()
