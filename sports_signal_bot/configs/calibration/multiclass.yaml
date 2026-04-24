@@ -1,0 +1,5 @@
+method: multiclass_wrapper
+calibrator_config:
+  clip_eps: 1e-15
+  base_method: binary_sigmoid
+  base_config: {}

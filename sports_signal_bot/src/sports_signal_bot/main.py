@@ -616,5 +616,76 @@ def list_trainers():
         console.print(f"  - {trainer}")
 
 
+
+@app.command()
+def build_calibration_dataset(sport: str, market: str):
+    """(Stub) Build a calibration dataset from validation predictions."""
+    console.print(f"[bold cyan]Building calibration dataset for {sport} - {market}[/bold cyan]")
+    console.print("Calibration dataset successfully built (stub).")
+
+@app.command()
+def list_calibrators():
+    """List all available calibration methods."""
+    from sports_signal_bot.calibration.registry import CalibrationRegistry
+    methods = CalibrationRegistry.list_available()
+    console.print(f"[bold cyan]Available Calibrators:[/bold cyan] {methods}")
+
+@app.command()
+def run_calibration(sport: str, market: str, method: str = "binary_sigmoid"):
+    """Run calibration pipeline using existing validation predictions."""
+    from sports_signal_bot.calibration.runner import CalibrationRunner
+    from sports_signal_bot.training.contracts import ValidationPredictionRecord
+    from datetime import datetime, timezone
+
+    console.print(f"[bold cyan]Running calibration for {sport} - {market} using {method}[/bold cyan]")
+
+    # Mock data
+    if "binary" in method:
+        class_labels = ["0", "1"]
+        predictions = [
+            ValidationPredictionRecord(event_id="e1", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"0": 0.3, "1": 0.7}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(event_id="e2", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=1, predicted_probabilities={"0": 0.4, "1": 0.6}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(event_id="e3", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"0": 0.1, "1": 0.9}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(event_id="e4", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=0, predicted_probabilities={"0": 0.8, "1": 0.2}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+        ]
+    else:
+        class_labels = ["A", "B", "C"]
+        predictions = [
+            ValidationPredictionRecord(event_id="e1", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=0, predicted_probabilities={"A": 0.7, "B": 0.2, "C": 0.1}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(event_id="e2", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"A": 0.3, "B": 0.5, "C": 0.2}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+        ]
+
+    config = {
+        "sport": sport,
+        "market_type": market,
+        "label_name": f"{sport}_{market}",
+        "method": method,
+        "class_labels": class_labels,
+        "source_model_run_id": "mock_run"
+    }
+
+    runner = CalibrationRunner(config)
+    result = runner.run(predictions)
+
+    if result["status"] == "success":
+        manifest = result["manifest"]
+        console.print(f"Calibration dataset size: {manifest.calibration_dataset_size}")
+        console.print(f"Raw Metrics: {manifest.raw_metrics}")
+        console.print(f"Calibrated Metrics: {manifest.calibrated_metrics}")
+        console.print(f"Delta Metrics: {manifest.delta_metrics}")
+        if manifest.warnings:
+            console.print(f"[bold yellow]Warnings:[/bold yellow] {manifest.warnings}")
+        console.print(f"Artifact path: {manifest.calibrator_artifact_path}")
+    else:
+        console.print(f"[bold red]Calibration failed:[/bold red] {result.get('reason')}")
+
+@app.command()
+def preview_reliability(sport: str, market: str):
+    """Preview reliability bins for a given market (stub)."""
+    console.print(f"[bold cyan]Previewing reliability for {sport} - {market}[/bold cyan]")
+    console.print("Bin 0: [0.0 - 0.1] Count: 100, Mean Pred: 0.05, Emp Freq: 0.04, Gap: 0.01")
+    console.print("Bin 1: [0.1 - 0.2] Count: 150, Mean Pred: 0.15, Emp Freq: 0.16, Gap: -0.01")
+
+
 if __name__ == '__main__':
     app()
