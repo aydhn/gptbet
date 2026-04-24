@@ -1,7 +1,7 @@
 from typing import List
 from abc import ABC, abstractmethod
 from datetime import datetime
-from .contracts import EventRecord, OddsRecord, TeamStatsRecord
+from .contracts.legacy import EventRecord, OddsRecord, TeamStatsRecord
 
 class BaseScheduleProvider(ABC):
     @abstractmethod

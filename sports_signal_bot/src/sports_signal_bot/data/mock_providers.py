@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import List
-from .contracts import EventRecord, OddsRecord, TeamStatsRecord
+from .contracts.legacy import EventRecord, OddsRecord, TeamStatsRecord
 from .interfaces import BaseScheduleProvider, BaseOddsProvider, BaseStatsProvider
 
 class MockScheduleProvider(BaseScheduleProvider):
