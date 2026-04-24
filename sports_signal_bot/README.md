@@ -123,3 +123,6 @@ This phase introduced the temporal rating infrastructure for teams.
 - `python -m sports_signal_bot.main build-ratings --sport football`
 - `python -m sports_signal_bot.main preview-ratings --sport football`
 - `python -m sports_signal_bot.main preview-rating-features --sport football`
+
+## Phase 6: Football Probabilistic Core
+Implemented a structural Poisson-based goal distribution model. Instead of directly predicting 1X2 outcomes, the system now models expected goals ($\lambda$) and generates an independent Poisson score matrix. From this matrix, consistent probabilities for 1X2, Over/Under, BTTS, and correct scores are deterministically extracted. This serves as the structural baseline for future Dixon-Coles integration, calibration, and ensembling. See `docs/football_probabilistic_core.md` for details.

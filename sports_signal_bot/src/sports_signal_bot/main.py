@@ -310,468 +310,90 @@ def preview_rating_features(sport: str):
     console.print(feat_df.to_markdown())
 
 
-if __name__ == "__main__":
-    app()
-
-from sports_signal_bot.markets.registry import MARKET_REGISTRY
-from sports_signal_bot.labels.generator import LabelGenerator
-from sports_signal_bot.results.contracts import EventResultRecord
-from sports_signal_bot.audit.leakage import detect_post_event_snapshot_leakage
-from sports_signal_bot.benchmark.factory import BENCHMARK_FACTORY
-from sports_signal_bot.data.contracts.canonical import CanonicalOddsRecord
-from sports_signal_bot.core.constants import SportType
-from datetime import datetime
-import pandas as pd
-from pydantic import ValidationError
 
 @app.command()
-def generate_labels(sport: str = typer.Option(..., help="Sport to generate labels for")):
-    """Generate labels from sample result data."""
-    try:
-        sport_enum = SportType(sport)
-    except ValueError:
-        console.print(f"[red]Invalid sport: {sport}[/red]")
-        return
-
-    markets = MARKET_REGISTRY.list_supported_markets(sport_enum)
-    line_sets = {m.market_type: MARKET_REGISTRY.get_default_lines(m.market_type) for m in markets}
-
-    generator = LabelGenerator(markets, line_sets)
-
-    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
-    if not results_path.exists():
-        console.print(f"[red]Results sample not found: {results_path}[/red]")
-        return
-
-    df = pd.read_csv(results_path)
-    # Replace nan with None
-    df = df.where(pd.notnull(df), None)
-
-    console.print(f"[bold green]Generating Labels for {sport}[/bold green]")
-    for _, row in df.iterrows():
-        try:
-            # handle timestamp
-            ts_val = row.get('result_timestamp_utc')
-            ts = None
-            if ts_val is not None:
-                ts = datetime.fromisoformat(ts_val.replace("Z", "+00:00"))
-
-            rec = EventResultRecord(
-                event_id=row['event_id'],
-                sport=sport_enum,
-                status=row['status'],
-                final_home_score=row.get('final_home_score'),
-                final_away_score=row.get('final_away_score'),
-                result_timestamp_utc=ts,
-                result_source=row['result_source']
-            )
-            labels = generator.generate(rec)
-            console.print(f"\n[cyan]Event: {rec.event_id} ({rec.status})[/cyan]")
-            for label in labels:
-                color = "green" if label.validity_status.value == "valid" else "yellow"
-                console.print(f"  [{color}]{label.label_name}: {label.target_text} ({label.validity_status.value})[/{color}]")
-        except ValidationError as e:
-            console.print(f"[red]Validation error on row {row['event_id']}: {e}[/red]")
-
-@app.command()
-def list_markets(sport: str = typer.Option(..., help="Sport to list markets for")):
-    """List canonical markets registered for the sport."""
-    try:
-        sport_enum = SportType(sport)
-    except ValueError:
-        console.print(f"[red]Invalid sport: {sport}[/red]")
-        return
-
-    markets = MARKET_REGISTRY.list_supported_markets(sport_enum)
-    console.print(f"[bold blue]Registered Markets for {sport}:[/bold blue]")
-    for m in markets:
-        lines = MARKET_REGISTRY.get_default_lines(m.market_type)
-        line_str = f", Lines: {lines}" if lines else ""
-        console.print(f"  - {m.market_type} (Rule: {m.settlement_rule_name}{line_str})")
-
-@app.command()
-def run_benchmark_preview(sport: str = typer.Option(...), market: str = typer.Option(...)):
-    """Preview benchmark outputs using sample odds."""
-    try:
-        sport_enum = SportType(sport)
-    except ValueError:
-        console.print(f"[red]Invalid sport: {sport}[/red]")
-        return
-
-    market_def = MARKET_REGISTRY.get_market_definition(sport_enum, market)
-    if not market_def:
-        console.print(f"[red]Market {market} not found for {sport}[/red]")
-        return
-
-    odds_path = get_data_dir() / "sample_inputs" / sport / "odds_sample.csv"
-    if not odds_path.exists():
-        console.print(f"[red]Odds sample not found: {odds_path}[/red]")
-        return
-
-    df = pd.read_csv(odds_path)
-    df = df.where(pd.notnull(df), None)
-
-    # We will use the bookmaker_implied benchmark
-    benchmark = BENCHMARK_FACTORY.get_benchmark("bookmaker_implied")
-
-    console.print(f"[bold green]Running Benchmark Preview for {market}[/bold green]")
-    # Group by event
-    for event_id, group in df.groupby('event_id'):
-        snapshots = []
-        for _, row in group.iterrows():
-            # For preview, we match simplified market types mapping if needed
-            # In real system, proper mapping layer handles this
-            m_type_raw = str(row['market_type']).upper().replace("1X2", "FOOTBALL_1X2")
-            if "FOOTBALL" not in m_type_raw and sport_enum == SportType.FOOTBALL:
-                m_type_raw = f"FOOTBALL_{m_type_raw}"
-            if "BASKETBALL" not in m_type_raw and sport_enum == SportType.BASKETBALL:
-                 m_type_raw = f"BASKETBALL_{m_type_raw}"
-
-            # Match strictly with expected market
-            if m_type_raw.lower() != market.lower():
-                continue
-
-            snapshots.append(CanonicalOddsRecord(
-                event_id=row['event_id'],
-                market_type=m_type_raw, # Assuming enum match for now
-                bookmaker=row['bookmaker'],
-                snapshot_ts_utc=datetime.fromisoformat(row['snapshot_ts_utc'].replace("Z", "+00:00")),
-                selection=row['selection'],
-                decimal_odds=row['decimal_odds'],
-                implied_probability=1.0/row['decimal_odds'] if row['decimal_odds'] > 0 else 0,
-                handicap_line=row.get('handicap_line'),
-                total_line=row.get('total_line')
-            ))
-
-        if snapshots:
-             pred = benchmark.generate_prediction(event_id, market_def, {"odds_snapshot": snapshots})
-             console.print(f"Event: {event_id} -> {pred.predicted_class} {pred.predicted_probabilities}")
-        else:
-             console.print(f"Event: {event_id} -> No matching odds found")
-
-@app.command()
-def audit_leakage(sport: str = typer.Option(...)):
-    """Run leakage audit on sample results and odds."""
-    console.print(f"[bold blue]Auditing Leakage for {sport}[/bold blue]")
-    # Simplified simulation using our sample files
-    odds_path = get_data_dir() / "sample_inputs" / sport / "odds_sample.csv"
-    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
-
-    if not odds_path.exists() or not results_path.exists():
-         console.print("[yellow]Sample files missing.[/yellow]")
-         return
-
-    odds_df = pd.read_csv(odds_path)
-    res_df = pd.read_csv(results_path)
-
-    # Let's say event start time is derived from result file or mock
-    # For simulation, assume event start time is 2 hours before result_timestamp
-    from datetime import timedelta
-
-    for _, res_row in res_df.iterrows():
-        if pd.isna(res_row['result_timestamp_utc']): continue
-
-        event_id = res_row['event_id']
-        res_ts = datetime.fromisoformat(res_row['result_timestamp_utc'].replace("Z", "+00:00"))
-        event_start = res_ts - timedelta(hours=2)
-
-        event_odds = odds_df[odds_df['event_id'] == event_id]
-        for _, odd_row in event_odds.iterrows():
-            snap_ts = datetime.fromisoformat(odd_row['snapshot_ts_utc'].replace("Z", "+00:00"))
-
-            audit = detect_post_event_snapshot_leakage(event_start, snap_ts, event_id, odd_row['market_type'])
-            if audit.audit_status == "fail":
-                console.print(f"[bold red]LEAKAGE DETECTED[/bold red]: Event {event_id} - {audit.message}")
-            else:
-                 console.print(f"[green]PASS[/green]: Event {event_id} - Odds at {snap_ts} (Start: {event_start})")
-
-@app.command()
-def build_features(sport: str, market: str = typer.Option(None, help="Market type (e.g. 1x2, ou)")):
-    """Build the feature matrix for a specific sport."""
-    from sports_signal_bot.features import FeatureRegistry, FeatureFactory, FeatureBuildContext
-    from sports_signal_bot.features.builders import (
-        ContextFeatureBuilder, RollingFormFeatureBuilder, RestFeatureBuilder,
-        MarketOddsFeatureBuilder, MissingnessFeatureBuilder
-    )
-    import pandas as pd
-    import uuid
-    import json
-
-    # Initialize registry
-    registry = FeatureRegistry()
-    registry.register(ContextFeatureBuilder())
-    registry.register(RollingFormFeatureBuilder())
-    registry.register(RestFeatureBuilder())
-    registry.register(MarketOddsFeatureBuilder())
-    registry.register(MissingnessFeatureBuilder())
-
-    if sport == "football":
-        from sports_signal_bot.features.builders import (
-            FootballTeamStrengthBuilder, FootballGoalEnvironmentBuilder, FootballBTTSProxyBuilder
-        )
-        registry.register(FootballTeamStrengthBuilder())
-        registry.register(FootballGoalEnvironmentBuilder())
-        registry.register(FootballBTTSProxyBuilder())
-    elif sport == "basketball":
-        from sports_signal_bot.features.builders import (
-            BasketballTeamStrengthBuilder, BasketballTempoBuilder, BasketballSpreadEnvironmentBuilder
-        )
-        registry.register(BasketballTeamStrengthBuilder())
-        registry.register(BasketballTempoBuilder())
-        registry.register(BasketballSpreadEnvironmentBuilder())
-
-    factory = FeatureFactory(registry)
-
-    run_id = f"build_{sport}_{uuid.uuid4().hex[:8]}"
-    context = FeatureBuildContext(
-        sport=sport,
-        market_type=market,
-        run_id=run_id
-    )
-
-    # Mock data
-    events_df = pd.DataFrame({
-        "event_id": ["e1", "e2", "e3"],
-        "home_team": ["Team A", "Team C", "Team E"],
-        "away_team": ["Team B", "Team D", "Team F"],
-        "event_datetime_utc": ["2023-01-01T10:00:00Z", "2023-01-02T12:00:00Z", "2023-01-03T14:00:00Z"]
-    })
-
-    odds_df = pd.DataFrame({
-        "event_id": ["e1", "e2", "e3"],
-        "snapshot_time_utc": ["2023-01-01T08:00:00Z", "2023-01-02T10:00:00Z", "2023-01-03T12:00:00Z"]
-    })
-
-    data = {"events": events_df, "odds": odds_df}
-
-    console.print(f"[bold green]Building features for {sport}...[/bold green]")
-    matrix = factory.build_feature_matrix(context, data)
-
-    console.print(f"[bold cyan]Rows:[/bold cyan] {len(matrix)}")
-    console.print(f"[bold cyan]Columns:[/bold cyan] {len(matrix.columns)}")
-    console.print(f"[bold cyan]Output Path:[/bold cyan] data/processed/manifests/features_{run_id}.manifest.json")
-
-@app.command()
-def list_feature_builders(sport: str = typer.Option(None, help="Filter by sport")):
-    """List registered feature builders."""
-    from sports_signal_bot.features import FeatureRegistry
-    from sports_signal_bot.features.builders import (
-        ContextFeatureBuilder, RollingFormFeatureBuilder, RestFeatureBuilder,
-        MarketOddsFeatureBuilder, MissingnessFeatureBuilder
-    )
-
-    registry = FeatureRegistry()
-    registry.register(ContextFeatureBuilder())
-    registry.register(RollingFormFeatureBuilder())
-    registry.register(RestFeatureBuilder())
-    registry.register(MarketOddsFeatureBuilder())
-    registry.register(MissingnessFeatureBuilder())
-
-    try:
-        from sports_signal_bot.features.builders import FootballTeamStrengthBuilder
-        registry.register(FootballTeamStrengthBuilder())
-    except ImportError: pass
-
-    try:
-        from sports_signal_bot.features.builders import BasketballTeamStrengthBuilder
-        registry.register(BasketballTeamStrengthBuilder())
-    except ImportError: pass
-
-    builders = registry.list_builders(sport=sport)
-
-    console.print(f"[bold cyan]Found {len(builders)} builders:[/bold cyan]")
-    for b in builders:
-        console.print(f"  - [green]{b.name}[/green] (Family: {b.family}, Sports: {', '.join(b.supported_sports)})")
-
-@app.command()
-def preview_feature_matrix(sport: str):
-    """Preview a feature matrix generated for a specific sport."""
-    import pandas as pd
-    from sports_signal_bot.features import FeatureRegistry, FeatureFactory, FeatureBuildContext
-    from sports_signal_bot.features.builders import ContextFeatureBuilder
-
-    registry = FeatureRegistry()
-    registry.register(ContextFeatureBuilder())
-
-    factory = FeatureFactory(registry)
-    context = FeatureBuildContext(sport=sport, run_id="preview")
-
-    events_df = pd.DataFrame({"event_id": ["test1"], "event_datetime_utc": ["2023-01-01T10:00:00Z"]})
-    data = {"events": events_df}
-
-    matrix = factory.build_feature_matrix(context, data)
-
-    console.print(matrix.head())
-
-
-
-
-@app.command()
-def build_ratings(sport: str):
-    """Process events and build rating timelines."""
-    from sports_signal_bot.ratings.config import load_rating_config
-    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
-    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.ratings.manifests import write_rating_manifest
-    from sports_signal_bot.ratings.contracts import RatingBuildManifest
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
-    from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
-    from datetime import datetime
+def preview_football_poisson(event_id: str = "mock-event-1"):
+    """Preview Poisson lambda generation for football."""
+    from sports_signal_bot.probabilistic.football import LambdaBuildContext, GoalLambdaBuilder
     import uuid
 
-    config = load_rating_config(sport)
-    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
-    engine = engine_cls(config)
-    processor = RatingTimelineProcessor(engine, config)
+    ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
+    builder = GoalLambdaBuilder()
 
-    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
-    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+    # Mock some features that would normally come from the feature factory
+    features = {
+        "league_total_goal_baseline": 2.8,
+        "home_rating_proxy": 1600.0,
+        "away_rating_proxy": 1400.0,
+        "home_advantage": 0.25
+    }
 
-    events = []
-    if events_path.exists():
-        df_e = pd.read_csv(events_path)
-        df_e = df_e.where(pd.notnull(df_e), None)
-        for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']),
-                sport=SportType(r['sport']),
-                league=str(r['league']),
-                season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']),
-                away_team=str(r['away_team']),
-                status=str(r['status']),
-                venue=str(r.get('venue')) if r.get('venue') else None,
-                source=str(r['source']),
-                source_event_id=str(r['source_event_id'])
-            ))
+    estimate = builder.build(ctx, features)
 
-    results = []
-    if results_path.exists():
-        df_r = pd.read_csv(results_path)
-        df_r = df_r.where(pd.notnull(df_r), None)
-        for _, r in df_r.iterrows():
-             results.append(EventResultRecord(
-                 event_id=str(r['event_id']),
-                 sport=SportType(r['sport']),
-                 status=str(r['status']),
-                 final_home_score=float(r['final_home_score']) if pd.notna(r['final_home_score']) else None,
-                 final_away_score=float(r['final_away_score']) if pd.notna(r['final_away_score']) else None
-             ))
-
-    start = datetime.utcnow()
-    snapshots, updates = processor.process_timeline(events, results)
-    end = datetime.utcnow()
-
-    manifest = RatingBuildManifest(
-        run_id=uuid.uuid4().hex[:8],
-        sport=SportType(sport),
-        engine_name="elo",
-        start_time_utc=start,
-        end_time_utc=end,
-        events_processed=len(events),
-        teams_updated=len(processor._state_store),
-        config_used=config
-    )
-
-    out_dir = get_data_dir() / "processed" / "manifests"
-    write_rating_manifest(manifest, out_dir)
-
-    console.print(f"[bold green]Built ratings for {sport}[/bold green]")
-    console.print(f"Events processed: {len(events)}")
-    console.print(f"Snapshots generated: {len(snapshots)}")
-    console.print(f"Updates applied: {len(updates)}")
-    console.print(f"Teams tracked: {len(processor._state_store)}")
-    console.print(f"Manifest written to: {out_dir}")
+    console.print(f"[bold cyan]Poisson Lambda Preview for {event_id}[/bold cyan]")
+    console.print(f"Home Lambda: {estimate.home_lambda:.3f}")
+    console.print(f"Away Lambda: {estimate.away_lambda:.3f}")
+    console.print(f"Expected Total: {estimate.expected_total_goals:.3f}")
+    console.print(f"Expected Diff: {estimate.expected_goal_diff:.3f}")
+    if estimate.warnings:
+        console.print("[yellow]Warnings:[/yellow]")
+        for w in estimate.warnings:
+            console.print(f"  - {w}")
 
 @app.command()
-def preview_ratings(sport: str):
-    """Preview final rating states for a sport."""
-    from sports_signal_bot.ratings.config import load_rating_config
-    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
-    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
-    from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
-    from datetime import datetime
+def preview_football_markets(event_id: str = "mock-event-1", market: str = "1x2"):
+    """Preview specific football markets derived from the Poisson matrix."""
+    from sports_signal_bot.probabilistic.football import LambdaBuildContext, FOOTBALL_MODEL_REGISTRY
+    import uuid
 
-    config = load_rating_config(sport)
-    engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
-    processor = RatingTimelineProcessor(engine_cls(config), config)
+    ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
+    model = FOOTBALL_MODEL_REGISTRY.get_model("football_poisson_baseline")
 
-    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
-    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+    features = {
+        "league_total_goal_baseline": 2.6,
+        "rating_diff": 50.0, # Slight home favorite
+        "home_advantage": 0.2
+    }
 
-    events, results = [], []
-    if events_path.exists():
-        df_e = pd.read_csv(events_path)
-        for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="mock", source_event_id="mock"
-            ))
-    if results_path.exists():
-        df_r = pd.read_csv(results_path)
-        for _, r in df_r.iterrows():
-            if pd.notna(r['final_home_score']):
-                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+    records = model.predict(ctx, features)
 
-    processor.process_timeline(events, results)
+    # Find the requested market
+    record = next((r for r in records if r.market_type == market), None)
 
-    states = []
-    for k, v in processor._state_store.items():
-        states.append({"team": v.team_id, "rating": round(v.current_rating, 2), "matches": v.matches_played})
+    if not record:
+        console.print(f"[bold red]Market '{market}' not found in predictions.[/bold red]")
+        console.print(f"Available markets: {[r.market_type for r in records]}")
+        return
 
-    df = pd.DataFrame(states).sort_values('rating', ascending=False)
-    console.print(f"[bold blue]Top Ratings Preview ({sport})[/bold blue]")
-    console.print(df.head(10).to_markdown())
+    console.print(f"[bold cyan]Market Preview: {market} for {event_id}[/bold cyan]")
+    console.print(f"Expected Total Goals: {record.supporting_metrics['expected_total_goals']:.2f}")
+    for k, v in record.predicted_probabilities.items():
+        console.print(f"{k}: {v:.4f} ({v*100:.1f}%)")
 
 @app.command()
-def preview_rating_features(sport: str):
-    """Preview features generated from rating snapshots."""
-    from sports_signal_bot.ratings.config import load_rating_config
-    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
-    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.ratings.features import RatingFeatureBuilder
-    from sports_signal_bot.features.contracts import FeatureBuildContext
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
-    from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
-    from datetime import datetime
+def preview_correct_scores(event_id: str = "mock-event-1", top_k: int = 5):
+    """Preview the top K correct scores from the Poisson matrix."""
+    from sports_signal_bot.probabilistic.football import LambdaBuildContext, GoalLambdaBuilder, PoissonScoreMatrix, CorrectScoreExtractor
+    import uuid
 
-    config = load_rating_config(sport)
-    processor = RatingTimelineProcessor(RATING_ENGINE_REGISTRY.get_engine_class("elo")(config), config)
+    ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
 
-    events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
-    results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
+    features = {
+        "league_total_goal_baseline": 2.5,
+        "home_rating_proxy": 1500.0,
+        "away_rating_proxy": 1500.0,
+        "home_advantage": 0.2
+    }
 
-    events, results = [], []
-    if events_path.exists():
-        df_e = pd.read_csv(events_path)
-        for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="m", source_event_id="m"
-            ))
-    if results_path.exists():
-         df_r = pd.read_csv(results_path)
-         for _, r in df_r.iterrows():
-            if pd.notna(r['final_home_score']):
-                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+    estimate = GoalLambdaBuilder().build(ctx, features)
+    matrix = PoissonScoreMatrix(estimate, ctx.config)
 
-    snapshots, _ = processor.process_timeline(events, results)
+    top_scores = CorrectScoreExtractor.get_top_k(matrix, top_k)
 
-    builder = RatingFeatureBuilder()
-    events_df = pd.DataFrame([e.model_dump() for e in events])
-    ctx = FeatureBuildContext(sport=sport, run_id="preview")
-
-    feat_df = builder.build(ctx, {"events": events_df, "rating_snapshots": snapshots})
-    console.print(f"[bold cyan]Rating Features Preview ({sport})[/bold cyan]")
-    console.print(feat_df.to_markdown())
-
+    console.print(f"[bold cyan]Top {top_k} Correct Scores for {event_id}[/bold cyan]")
+    console.print(f"Lambdas: Home {estimate.home_lambda:.2f} | Away {estimate.away_lambda:.2f}")
+    for rank, cs in enumerate(top_scores, 1):
+        console.print(f"{rank}. {cs.home_goals} - {cs.away_goals}: {cs.probability:.4f} ({cs.probability*100:.1f}%)")
 
 if __name__ == "__main__":
     app()
