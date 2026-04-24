@@ -1,0 +1,13 @@
+base_total_points: 220.0
+home_advantage_points: 3.0
+total_std: 14.5
+margin_std: 12.0
+pace_weight: 1.0
+rating_weight: 1.0
+offense_weight: 1.0
+defense_weight: 1.0
+probability_clip_eps: 0.000001
+std_floor: 2.0
+default_preview_lines:
+  totals: [180.5, 190.5, 200.5, 210.5, 220.5, 230.5]
+  spreads: [-10.5, -7.5, -5.5, -3.5, -1.5, 1.5, 3.5, 5.5, 7.5, 10.5]
