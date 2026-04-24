@@ -1,0 +1,4 @@
+source_event_id,sport,league,season,event_datetime_utc,home_team,away_team,status,venue
+evt_f1,football,premier_league,2023,2023-10-24T15:00:00Z,Arsenal,Chelsea,UPCOMING,Emirates Stadium
+evt_f2,football,premier_league,2023,2023-10-24T17:30:00Z,Man Utd,Man City,UPCOMING,Old Trafford
+evt_f3,football,premier_league,2023,2023-10-25T20:00:00Z,Liverpool,Everton,UPCOMING,Anfield

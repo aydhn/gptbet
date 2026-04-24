@@ -1,0 +1,6 @@
+name: "mock_provider"
+description: "Generates mock data for testing and development"
+football:
+  enabled: true
+basketball:
+  enabled: true

@@ -1,0 +1,5 @@
+team_id,team_name,sport,league,season,rating,recent_form,rest_days,rolling_goals_scored
+Arsenal,Arsenal,football,premier_league,2023,1850,0.8,5,2.1
+Chelsea,Chelsea,football,premier_league,2023,1780,0.6,6,1.4
+Man_Utd,Man Utd,football,premier_league,2023,1750,0.5,4,1.2
+Man_City,Man City,football,premier_league,2023,1900,0.9,4,2.5

@@ -1,0 +1,12 @@
+# Team Aliases Sample Configuration
+# Used for resolving different team names to their canonical name.
+football:
+  premier_league:
+    "Manchester United": ["Man Utd", "Man United", "Manchester Utd", "MUN"]
+    "Manchester City": ["Man City", "Manchester City FC", "MCI"]
+    "Arsenal": ["Arsenal FC", "ARS"]
+    "Chelsea": ["Chelsea FC", "CHE"]
+basketball:
+  nba:
+    "Los Angeles Lakers": ["Lakers", "LA Lakers", "LAL"]
+    "Golden State Warriors": ["Warriors", "GSW", "Golden State"]

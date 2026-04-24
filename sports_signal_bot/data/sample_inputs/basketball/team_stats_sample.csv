@@ -1,0 +1,5 @@
+team_id,team_name,sport,league,season,rating,recent_form,rest_days,rolling_points_scored
+Lakers,Los Angeles Lakers,basketball,nba,2023,1600,0.7,2,115.5
+Warriors,Golden State Warriors,basketball,nba,2023,1620,0.6,3,118.2
+Celtics,Boston Celtics,basketball,nba,2023,1650,0.8,2,120.1
+Heat,Miami Heat,basketball,nba,2023,1580,0.5,2,110.4

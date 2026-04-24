@@ -1,0 +1,10 @@
+name: "file_provider"
+description: "Local CSV/JSON provider for testing and development"
+football:
+  fixtures_path: "sample_inputs/football/fixtures_sample.csv"
+  odds_path: "sample_inputs/football/odds_sample.csv"
+  stats_path: "sample_inputs/football/team_stats_sample.csv"
+basketball:
+  fixtures_path: "sample_inputs/basketball/fixtures_sample.csv"
+  odds_path: "sample_inputs/basketball/odds_sample.csv"
+  stats_path: "sample_inputs/basketball/team_stats_sample.csv"

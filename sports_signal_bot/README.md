@@ -68,3 +68,17 @@ pytest tests/
 - Build extensive feature engineering pipelines for football and basketball.
 - Introduce scikit-learn / tree-based models and proper train/eval loops.
 - Develop backtesting and benchmark engines to measure success using metrics beyond basic accuracy (e.g., log loss, calibration).
+
+## Phase 2: Data Backbone
+This phase introduced the core data backbone.
+
+**Purpose**: To create a provider-agnostic, testable, expandable data ingestion layer to handle football and basketball data.
+**Data Providers**: Supports file-based local ingestion (`FileProvider`) and deterministic mock generation (`MockProvider`). The architecture supports easy additions of free/open API adapters.
+**Why no scraping?**: Web scraping is fragile. We strictly use structured data (APIs, CSVs, JSONs).
+**Usage**:
+- `python -m sports_signal_bot.main ingest-samples --sport football`
+- `python -m sports_signal_bot.main validate-samples --sport football`
+
+**Storage Layout**: Data lands in `data/raw/` first, gets normalized and validated to `data/processed/`, and run metadata goes to `data/processed/manifests/`.
+**Alias Resolution**: Uses a YAML map (e.g. `team_aliases.sample.yaml`) to normalize differing provider team names into our canonical naming schema.
+**Validation Summary**: You can view validation issues (e.g., duplicated events, missing fields, weird odds) in the generated manifest files or via the CLI command `validate-samples`.
