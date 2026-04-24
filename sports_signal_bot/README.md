@@ -126,3 +126,12 @@ This phase introduced the temporal rating infrastructure for teams.
 
 ## Phase 6: Football Probabilistic Core
 Implemented a structural Poisson-based goal distribution model. Instead of directly predicting 1X2 outcomes, the system now models expected goals ($\lambda$) and generates an independent Poisson score matrix. From this matrix, consistent probabilities for 1X2, Over/Under, BTTS, and correct scores are deterministically extracted. This serves as the structural baseline for future Dixon-Coles integration, calibration, and ensembling. See `docs/football_probabilistic_core.md` for details.
+
+## Phase 7: Basketball Probabilistic Core
+Implemented a structural, normal-approximation based probabilistic engine for basketball markets. Instead of simulating possessions or relying on Poisson grids, it models expected points via pace and efficiency metrics, applying Gaussian variance to determine probabilities for Moneyline, Totals, and Spreads.
+**Usage**:
+- `python -m sports_signal_bot.main preview-basketball-model`
+- `python -m sports_signal_bot.main preview-basketball-market --market moneyline`
+- `python -m sports_signal_bot.main preview-basketball-market --market total_220_5`
+- `python -m sports_signal_bot.main preview-basketball-diagnostics`
+See `docs/basketball_probabilistic_core.md` for details on sign conventions and the normal approximation model.

@@ -395,5 +395,114 @@ def preview_correct_scores(event_id: str = "mock-event-1", top_k: int = 5):
     for rank, cs in enumerate(top_scores, 1):
         console.print(f"{rank}. {cs.home_goals} - {cs.away_goals}: {cs.probability:.4f} ({cs.probability*100:.1f}%)")
 
-if __name__ == "__main__":
+
+@app.command()
+def preview_basketball_model(event_id: str = "mock-basketball-1"):
+    """Preview basic expected points generation for basketball."""
+    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.expected_points import ExpectedPointsBuilder
+
+    config = load_basketball_config()
+    builder = ExpectedPointsBuilder()
+
+    features = {
+        "base_total_points": 218.0,
+        "home_advantage_points": 3.5,
+        "pace_adjustment": 5.0,
+        "home_off_vs_away_def": 2.0,
+        "away_off_vs_home_def": -1.0,
+        "rating_diff": 4.0
+    }
+
+    estimate = builder.build(event_id, features, config)
+
+    console.print(f"[bold cyan]Basketball Model Preview for {event_id}[/bold cyan]")
+    console.print(f"Expected Home Points: {estimate.expected_home_points:.2f}")
+    console.print(f"Expected Away Points: {estimate.expected_away_points:.2f}")
+    console.print(f"Expected Total: {estimate.expected_total_points:.2f}")
+    console.print(f"Expected Margin (Home): {estimate.expected_margin_home:.2f}")
+    if estimate.warnings:
+        console.print("[yellow]Warnings:[/yellow]")
+        for w in estimate.warnings:
+            console.print(f"  - {w}")
+
+@app.command()
+def preview_basketball_market(event_id: str = "mock-basketball-1", market: str = "moneyline"):
+    """Preview specific basketball markets derived from the model."""
+    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.registry import BASKETBALL_MODEL_REGISTRY
+
+    config = load_basketball_config()
+    model = BASKETBALL_MODEL_REGISTRY.get_model("basketball_normal_baseline", config)
+
+    features = {
+        "base_total_points": 220.5,
+        "home_advantage_points": 3.0,
+        "rating_diff": 6.0 # Home favored
+    }
+
+    records = model.predict(event_id, features)
+
+    # Find the requested market
+    record = next((r for r in records if r.market_type == market), None)
+
+    if not record:
+        console.print(f"[bold red]Market '{market}' not found in predictions.[/bold red]")
+        console.print(f"Available markets: {[r.market_type for r in records]}")
+        return
+
+    console.print(f"[bold cyan]Market Preview: {market} for {event_id}[/bold cyan]")
+    metrics = record.supporting_metrics
+    console.print(f"Expected Total: {metrics['expected_total_points']:.2f} | Margin: {metrics['expected_margin_home']:.2f}")
+    for k, v in record.predicted_probabilities.items():
+        console.print(f"{k}: {v:.4f} ({v*100:.1f}%)")
+
+@app.command()
+def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
+    """Preview diagnostics for a basketball model run."""
+    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.expected_points import ExpectedPointsBuilder
+    from sports_signal_bot.probabilistic.basketball.distribution import BasketballDistributionCore
+    from sports_signal_bot.probabilistic.basketball.diagnostics import DiagnosticsBuilder
+
+    config = load_basketball_config()
+    builder = ExpectedPointsBuilder()
+    dist_core = BasketballDistributionCore(config)
+
+    features = {
+        "base_total_points": 210.0,
+        "total_std_modifier": 1.5 # artificially high variance
+    }
+
+    estimate = builder.build(event_id, features, config)
+    total_std, margin_std, dist_warnings = dist_core.get_variance_assumptions(features)
+
+    diagnostics = DiagnosticsBuilder.build(
+        event_id=event_id,
+        expected_total=estimate.expected_total_points,
+        expected_margin=estimate.expected_margin_home,
+        total_std=total_std,
+        margin_std=margin_std,
+        builder_warnings=estimate.warnings,
+        dist_warnings=dist_warnings,
+        features=features
+    )
+
+    console.print(f"[bold cyan]Diagnostics Preview for {event_id}[/bold cyan]")
+    console.print(f"Implied Total: {diagnostics.implied_total:.2f}")
+    console.print(f"Implied Margin: {diagnostics.implied_margin:.2f}")
+    console.print(f"Total Variance: {diagnostics.total_variance:.2f} (STD: {total_std:.2f})")
+    console.print(f"Margin Variance: {diagnostics.margin_variance:.2f} (STD: {margin_std:.2f})")
+
+    if diagnostics.uncertainty_flags:
+        console.print("[red]Uncertainty Flags:[/red]")
+        for f in diagnostics.uncertainty_flags:
+            console.print(f"  - {f}")
+
+    if diagnostics.clipping_warnings:
+        console.print("[yellow]Clipping Warnings:[/yellow]")
+if __name__ == '__main__':
+    app()
+
+if __name__ == '__main__':
     app()
