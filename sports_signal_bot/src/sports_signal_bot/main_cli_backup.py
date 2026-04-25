@@ -35,7 +35,6 @@ def run_evaluation(
     sport: str, market: str, class_labels: str = "home_win,draw,away_win"
 ):
     """Run the centralized evaluation pipeline for a given sport and market."""
-    from pathlib import Path
 
     import yaml
 
@@ -728,7 +727,6 @@ def build_training_dataset(sport: str, market: str):
     """Build a training dataset for the given sport and market type."""
     import pandas as pd
 
-    from sports_signal_bot.core.paths import get_data_dir
     from sports_signal_bot.training.contracts import DatasetBuildConfig
     from sports_signal_bot.training.dataset import TrainingDatasetBuilder
 
@@ -1027,7 +1025,6 @@ def preview_reliability(sport: str, market: str):
 @app.command()
 def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
     """Run an ensemble strategy over mocked sources."""
-    import json
 
     from sports_signal_bot.ensemble.contracts import \
         StandardizedPredictionRecord
@@ -1282,14 +1279,12 @@ def build_meta_dataset(sport: str, market: str):
     """
     Builds the meta-training dataset from out-of-fold validation predictions.
     """
-    import json
 
     import yaml
 
     from sports_signal_bot.core.paths import get_configs_dir
     from sports_signal_bot.ensemble.contracts import \
         StandardizedPredictionRecord
-    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
     from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
 
     console.print(f"[{sport}] Building meta-dataset for {market}...")
@@ -1331,7 +1326,7 @@ def build_meta_dataset(sport: str, market: str):
         preds, target_labels, class_labels, sport, market
     )
 
-    console.print(f"[bold green]Dataset built.[/bold green]")
+    console.print("[bold green]Dataset built.[/bold green]")
     console.print(f"Records: {len(dataset.records)}")
     console.print(f"Features: {len(dataset.feature_names)}")
     console.print(dataset.feature_names)
@@ -1347,7 +1342,6 @@ def run_stacker(sport: str, market: str, model: str = "meta_logistic"):
     from sports_signal_bot.core.paths import get_configs_dir
     from sports_signal_bot.ensemble.contracts import \
         StandardizedPredictionRecord
-    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
     from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
     from sports_signal_bot.stacker.runner import StackerRunner
 
@@ -1672,14 +1666,10 @@ if __name__ == "__main__":
     app()
 import os
 import uuid
-from typing import List
 
 import typer
-import yaml
 
 # Dummy imports to simulate classifiers registration
-import sports_signal_bot.regimes.event
-import sports_signal_bot.regimes.period
 from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
                                        RegimeRegistry, RegimeRunner,
                                        RegimeThresholdsConfig,

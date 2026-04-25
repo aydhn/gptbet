@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Optional
 
 from sports_signal_bot.features.base import BaseFeatureBuilder
 

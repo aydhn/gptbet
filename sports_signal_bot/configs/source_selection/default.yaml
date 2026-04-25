@@ -1,0 +1,7 @@
+# Default source selection config
+trust_weights:
+  performance: 0.3
+  recency: 0.2
+  coverage: 0.2
+  regime_fit: 0.2
+  data_quality: 0.1

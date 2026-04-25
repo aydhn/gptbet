@@ -3,9 +3,6 @@ from datetime import datetime
 from typing import List, Optional
 
 from sports_signal_bot.core.constants import SportType
-from sports_signal_bot.data.contracts.canonical import (
-    CanonicalAvailabilityRecord, CanonicalEventRecord, CanonicalOddsRecord,
-    CanonicalTeamStatsRecord)
 
 
 class BaseProvider(ABC):

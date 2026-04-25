@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
-from sports_signal_bot.core.constants import LeagueType, MarketType, SportType
+from sports_signal_bot.core.constants import MarketType, SportType
 
 
 class CanonicalEventRecord(BaseModel):

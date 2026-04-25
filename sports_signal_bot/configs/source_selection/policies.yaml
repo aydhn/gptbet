@@ -1,0 +1,23 @@
+# Policies Config
+policies:
+  - policy_name: "BasicAvailabilityPolicy"
+    is_enabled: true
+    parameters: {}
+  - policy_name: "QualityThresholdPolicy"
+    is_enabled: true
+    parameters:
+      min_trust_score: 0.3
+      min_recent_coverage: 0.5
+      max_model_age_days: 30
+  - policy_name: "RegimeAwarePolicy"
+    is_enabled: true
+    parameters:
+      low_sample_regime_damping: true
+  - policy_name: "PreferredCalibratedPolicy"
+    is_enabled: true
+    parameters: {}
+  - policy_name: "FallbackSafetyPolicy"
+    is_enabled: true
+    parameters:
+      minimum_eligible_sources: 1
+      fallback_source_priority: []

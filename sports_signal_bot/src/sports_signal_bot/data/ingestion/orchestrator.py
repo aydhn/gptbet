@@ -1,11 +1,9 @@
 import logging
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional, Type
 
-from pydantic import BaseModel
 
-from sports_signal_bot.core.constants import MarketType, SportType
+from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.data.contracts.canonical import (
     CanonicalEventRecord, CanonicalOddsRecord, CanonicalTeamStatsRecord)
 from sports_signal_bot.data.contracts.manifests import (IngestManifestRecord,

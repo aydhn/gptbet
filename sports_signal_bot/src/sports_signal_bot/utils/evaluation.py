@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Dict
 
 import numpy as np
 from sklearn.metrics import accuracy_score, brier_score_loss, log_loss

@@ -1,13 +1,10 @@
 import os
 import uuid
-from typing import List
 
 import typer
 import yaml
 
 # Dummy imports to simulate classifiers registration
-import sports_signal_bot.regimes.event
-import sports_signal_bot.regimes.period
 from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
                                        RegimeRegistry, RegimeRunner,
                                        RegimeThresholdsConfig,
@@ -170,3 +167,154 @@ def preview_period_regimes(
 
 if __name__ == "__main__":
     app()
+
+# --- SOURCE SELECTION COMMANDS ---
+
+from sports_signal_bot.source_selection.contracts import SourcePolicyDefinition
+from sports_signal_bot.source_selection.catalog import SourceCatalog, SourceCatalogEntry
+from sports_signal_bot.source_selection.metadata import SourceMetadataLoader
+from sports_signal_bot.source_selection.scoring import SourceTrustScorer
+from sports_signal_bot.source_selection.chain import SourcePolicyChain
+from sports_signal_bot.source_selection.runner import SourceSelectionRunner
+from pathlib import Path
+from rich.console import Console
+
+def _build_source_runner(sport: str) -> SourceSelectionRunner:
+    # 1. Load config
+    try:
+        with open(f"configs/source_selection/{sport}.yaml") as f:
+            sport_config = yaml.safe_load(f)
+    except FileNotFoundError:
+        sport_config = {}
+
+    try:
+        with open("configs/source_selection/trust_weights.yaml") as f:
+            weights = yaml.safe_load(f)
+    except FileNotFoundError:
+        weights = None
+
+    try:
+        with open("configs/source_selection/policies.yaml") as f:
+            policies_data = yaml.safe_load(f)
+            policy_defs = [SourcePolicyDefinition(**p) for p in policies_data.get("policies", [])]
+    except FileNotFoundError:
+        policy_defs = [
+            SourcePolicyDefinition(policy_name="BasicAvailabilityPolicy"),
+            SourcePolicyDefinition(policy_name="FallbackSafetyPolicy")
+        ]
+
+    # Override fallback from sport config if present
+    for p in policy_defs:
+        if p.policy_name == "FallbackSafetyPolicy" and "fallback_source_priority" in sport_config:
+            p.parameters["fallback_source_priority"] = sport_config["fallback_source_priority"]
+
+    # 2. Build mock catalog for demonstration
+    entries = [
+        SourceCatalogEntry(source_name="football_poisson_core", source_family="poisson", supported_sports=["football"], supported_markets=["1x2", "ou_2_5"]),
+        SourceCatalogEntry(source_name="elo_rating_source", source_family="rating", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline"]),
+        SourceCatalogEntry(source_name="calibrated_logistic", source_family="ml", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline", "ou_2_5"], requires_calibration=True),
+        SourceCatalogEntry(source_name="raw_logistic", source_family="ml", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline", "ou_2_5"]),
+        SourceCatalogEntry(source_name="basketball_structural_core", source_family="structural", supported_sports=["basketball"], supported_markets=["moneyline"]),
+        SourceCatalogEntry(source_name="bookmaker_implied", source_family="market", supported_sports=["football"], supported_markets=["ou_2_5"])
+    ]
+    catalog = SourceCatalog(entries)
+
+    # 3. Assemble runner
+    return SourceSelectionRunner(
+        catalog=catalog,
+        metadata_loader=SourceMetadataLoader(),
+        scorer=SourceTrustScorer(weights=weights),
+        policy_chain=SourcePolicyChain(policy_definitions=policy_defs),
+        manifest_dir=Path("results/manifests/selection"),
+        report_dir=Path("results/reports/selection")
+    )
+
+@app.command()
+def select_sources(
+    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
+    event_id: str = typer.Option("mock_event_123", help="Event ID")
+):
+    """Run full source selection and generate manifest."""
+    console = Console()
+    console.print(f"[bold blue]Running source selection for {sport} - {market}...[/bold blue]")
+
+    runner = _build_source_runner(sport)
+    manifest = runner.run_selection(event_id=event_id, sport=sport, market_type=market)
+
+    console.print("[green]Selection complete![/green]")
+    console.print(f"Candidates evaluated: {manifest.summary.total_candidates}")
+    console.print(f"Eligible sources: {manifest.summary.eligible_count}")
+    console.print(f"Selected: {', '.join(manifest.selected_sources)}")
+    console.print(f"Fallback used: {manifest.summary.fallback_used}")
+    console.print(f"Manifest written to results/manifests/selection/{manifest.run_id}")
+
+@app.command()
+def preview_source_trust(
+    sport: str = typer.Option(..., help="Sport type"),
+    market: str = typer.Option(..., help="Market type"),
+    event_id: str = typer.Option("mock_event_123", help="Event ID")
+):
+    """Preview trust scores for candidate sources."""
+    console = Console()
+    runner = _build_source_runner(sport)
+    manifest = runner.run_selection(event_id=event_id, sport=sport, market_type=market)
+
+    console.print(f"\n[bold]Trust Scores Preview ({sport} - {market})[/bold]")
+    for d in manifest.decisions:
+        if d.eligibility_record.trust_score:
+            console.print(f"- {d.source_name}: {d.eligibility_record.trust_score.total_trust_score:.3f}")
+
+@app.command()
+def preview_source_exclusions(
+    sport: str = typer.Option(..., help="Sport type"),
+    market: str = typer.Option(..., help="Market type"),
+    event_id: str = typer.Option("mock_event_123", help="Event ID")
+):
+    """Preview exclusion reasons for an event."""
+    console = Console()
+    runner = _build_source_runner(sport)
+    manifest = runner.run_selection(event_id=event_id, sport=sport, market_type=market)
+
+    console.print(f"\n[bold]Exclusions Preview ({sport} - {market})[/bold]")
+    if manifest.summary.excluded_count == 0:
+        console.print("No sources were excluded.")
+    else:
+        for d in manifest.decisions:
+            if not d.is_selected:
+                reasons = ", ".join([ex.reason_code for ex in d.eligibility_record.exclusion_reasons])
+                console.print(f"- {d.source_name} excluded: {reasons}")
+
+@app.command()
+def preview_source_eligibility(
+    sport: str = typer.Option(..., help="Sport type"),
+    market: str = typer.Option(..., help="Market type"),
+    event_id: str = typer.Option("mock_event_123", help="Event ID")
+):
+    """Preview final eligibility status of sources."""
+    console = Console()
+    runner = _build_source_runner(sport)
+    manifest = runner.run_selection(event_id=event_id, sport=sport, market_type=market)
+
+    console.print(f"\n[bold]Eligibility Preview ({sport} - {market})[/bold]")
+    for d in manifest.decisions:
+        status = "[green]ELIGIBLE[/green]" if d.is_selected else "[red]EXCLUDED[/red]"
+        console.print(f"{status} - {d.source_name}")
+
+@app.command()
+def list_source_policies():
+    """List currently configured eligibility policies."""
+    console = Console()
+    try:
+        with open("configs/source_selection/policies.yaml") as f:
+            policies_data = yaml.safe_load(f)
+
+        console.print("\n[bold]Configured Source Policies:[/bold]")
+        for p in policies_data.get("policies", []):
+            status = "[green]Enabled[/green]" if p.get("is_enabled", True) else "[red]Disabled[/red]"
+            console.print(f"- {p['policy_name']} ({status})")
+            if p.get("parameters"):
+                for k, v in p["parameters"].items():
+                    console.print(f"    {k}: {v}")
+    except FileNotFoundError:
+        console.print("[red]Policy configuration file not found.[/red]")

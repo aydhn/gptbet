@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from sports_signal_bot.labels.contracts import BenchmarkPredictionRecord
 from sports_signal_bot.markets.definitions import MarketDefinition

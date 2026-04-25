@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List
 
 from sports_signal_bot.data.contracts.canonical import CanonicalOddsRecord
 from sports_signal_bot.labels.contracts import LeakageAuditRecord
-from sports_signal_bot.results.contracts import EventResultRecord
 
 
 def detect_post_event_snapshot_leakage(

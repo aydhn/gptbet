@@ -87,3 +87,12 @@ Time-Slice Cumulative Leaderboard:
 - [x] Insufficient data guardrails are present.
 - [x] CLI commands added and functional.
 - [x] Unit tests cover all key logic and pass locally.
+
+## Phase 15 Implementation Summary
+Successfully implemented the Source Selection Engine according to requirements:
+- **Contracts & Models**: Defined source eligibility records, trust score components, exclusion reasons, and summary stats.
+- **Trust Scoring**: Implemented `SourceTrustScorer` integrating historical performance, model/calibration recency, market coverage, and regime fit, yielding a normalized score.
+- **Policies**: Created `BasicAvailabilityPolicy`, `QualityThresholdPolicy`, `RegimeAwarePolicy`, `PreferredCalibratedPolicy`, and `FallbackSafetyPolicy` executed via `SourcePolicyChain`.
+- **Reporting**: Generated `SourceSelectionManifest`, alongside CSV and JSON artifacts for tracking eligibility and trust scores.
+- **Ensemble Integration**: Updated `input_builder.py` and `dataset.py` to optionally filter on eligible sources before aggregating predictions.
+- **CLI & Configs**: Added Typer commands (`select-sources`, `preview-source-trust`, etc.) and mapped them to configurable rules in `configs/source_selection/`.

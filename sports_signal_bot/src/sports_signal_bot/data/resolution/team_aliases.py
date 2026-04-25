@@ -3,7 +3,6 @@ from pathlib import Path
 
 import yaml
 
-from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.data.normalization.names import normalize_team_name
 
 logger = logging.getLogger(__name__)

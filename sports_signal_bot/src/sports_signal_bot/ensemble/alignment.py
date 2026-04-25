@@ -1,6 +1,5 @@
 from typing import Dict, List, Optional
 
-import numpy as np
 
 
 def validate_market_compatibility(
@@ -28,7 +27,6 @@ def align_predictions_to_reference_classes(
     predictions: List["StandardizedPredictionRecord"], reference_classes: List[str]
 ) -> List["StandardizedPredictionRecord"]:
     """Aligns multiple prediction records to a reference class list."""
-    from .contracts import StandardizedPredictionRecord
 
     aligned_preds = []
 

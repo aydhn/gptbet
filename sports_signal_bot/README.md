@@ -205,3 +205,16 @@ python -m sports_signal_bot.main list-regime-families
 ```
 
 Regime analysis produces coverages and evaluation metrics scoped to context, essential for subsequent optimization and dynamic weighting.
+
+## Phase 15: Source Selection Engine
+
+The Source Selection Engine acts as a gatekeeper before the ensemble/stacker layers. Instead of blindly blending all available predictive sources, this phase implements an intelligent, event-based eligibility evaluation.
+
+Key features:
+- **Trust Scoring:** Evaluates sources based on historical performance, recency (staleness), coverage, regime fit, and data quality.
+- **Eligibility Policies:** Configurable rules (`BasicAvailability`, `QualityThreshold`, `RegimeAware`, `PreferredCalibrated`, `FallbackSafety`) determine if a source should be included for a specific event.
+- **Regime-Aware:** Adapts trust based on how well a source performs in the specific regimes active for an event, with dampening for low sample sizes.
+- **Standardized Exclusions:** Every exclusion is logged with a taxonomy of reasons (e.g., `stale_model`, `low_trust_score`) for transparency.
+- **Reporting & Manifests:** Generates CSV and JSON artifacts detailing the selection decisions, trust scores, and exclusion reasons.
+
+Use `python -m sports_signal_bot.main list-source-policies` and `select-sources` commands to interact with this layer.

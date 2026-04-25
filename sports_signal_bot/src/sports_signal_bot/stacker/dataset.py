@@ -5,8 +5,8 @@ import numpy as np
 
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
 
-from .contracts import (MetaFeatureManifest, MetaFeatureRecord,
-                        MetaTrainingDataset, SourceCoverageRecord)
+from .contracts import (MetaFeatureRecord,
+                        MetaTrainingDataset)
 
 
 class MetaDatasetBuilder:
@@ -29,6 +29,7 @@ class MetaDatasetBuilder:
         class_labels: List[str],
         sport: str,
         market_type: str,
+        eligible_sources: Optional[List[str]] = None,
     ) -> MetaTrainingDataset:
 
         # 1. Group predictions by event
@@ -40,6 +41,9 @@ class MetaDatasetBuilder:
                 continue
             if self.enabled_sources and p.source_name not in self.enabled_sources:
                 continue
+            if eligible_sources is not None and p.source_name not in eligible_sources:
+                continue
+
             event_preds[p.event_id].append(p)
 
         # 2. Build records

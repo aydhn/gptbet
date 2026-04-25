@@ -1,0 +1,4 @@
+# Basketball specific source selection config
+fallback_source_priority:
+  - "basketball_structural_core"
+  - "elo_rating_source"
