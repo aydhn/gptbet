@@ -166,3 +166,16 @@ This phase added a robust meta-prediction layer to combine heterogeneous sources
 - `python -m sports_signal_bot.main run-ensemble football 1x2`
 - `python -m sports_signal_bot.main run-ensemble football ou_2_5 --ensembler weighted_average`
 See `docs/ensemble_architecture.md` for details.
+
+## Stacker Layer (Phase 11)
+The **Stacker Layer** elevates the ensemble architecture by moving from heuristic rule-based combination to a learning-based stacker model. It gathers out-of-fold (OOF) predictions from various base models, standardizes them, and trains meta-models (like Logistic Regression or Gradient Boosting) to learn how to best combine signals.
+
+Crucially, **OOF integrity is non-negotiable**—the stacker avoids temporal data leakage by only learning from predictions that were out-of-sample for the base models.
+
+CLI Commands:
+- `python -m sports_signal_bot.main build-meta-dataset --sport football --market 1x2`
+- `python -m sports_signal_bot.main run-stacker --sport football --market 1x2 --model meta_logistic`
+- `python -m sports_signal_bot.main preview-source-coverage --sport football --market 1x2`
+- `python -m sports_signal_bot.main list-stackers`
+
+For more details on the architecture, fallback strategies, and feature design, see `docs/stacker_architecture.md`.
