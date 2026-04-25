@@ -1,8 +1,11 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
 from sports_signal_bot.features.utils.snapshots import select_feature_snapshot
+
 
 class MarketOddsFeatureBuilder(BaseFeatureBuilder):
     """Extracts features from odds snapshots (implied prob, overround, etc)."""
@@ -21,16 +24,20 @@ class MarketOddsFeatureBuilder(BaseFeatureBuilder):
 
     @property
     def required_inputs(self) -> List[str]:
-        return ["events", "odds"] # odds is optional but usually required for this
+        return ["events", "odds"]  # odds is optional but usually required for this
 
     @property
     def output_columns(self) -> List[str]:
         return [
-            "favorite_implied_prob", "underdog_implied_prob",
-            "market_overround", "is_home_favorite"
+            "favorite_implied_prob",
+            "underdog_implied_prob",
+            "market_overround",
+            "is_home_favorite",
         ]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"]
 
         if "odds" not in data or data["odds"].empty:
@@ -43,7 +50,9 @@ class MarketOddsFeatureBuilder(BaseFeatureBuilder):
         odds_df = data["odds"]
 
         # Select the safest snapshot using the utility
-        safe_odds = select_feature_snapshot(events_df, odds_df, context.event_time_cutoff_policy)
+        safe_odds = select_feature_snapshot(
+            events_df, odds_df, context.event_time_cutoff_policy
+        )
 
         # Merge and calculate
         df = pd.merge(events_df[["event_id"]], safe_odds, on="event_id", how="left")

@@ -1,22 +1,33 @@
-import uuid
 import logging
+import uuid
 from datetime import datetime, timezone
-from typing import Optional, List, Type
+from typing import List, Optional, Type
+
 from pydantic import BaseModel
 
-from sports_signal_bot.core.constants import SportType, MarketType
-from sports_signal_bot.data.providers.base import BaseFixtureProvider, BaseOddsProvider, BaseStatsProvider
-from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord, CanonicalOddsRecord, CanonicalTeamStatsRecord
-from sports_signal_bot.data.contracts.manifests import IngestManifestRecord, ValidationIssueRecord
-from sports_signal_bot.data.validators.schema_validator import RequiredFieldsValidator, UniqueEventValidator
-from sports_signal_bot.data.validators.odds_validator import OddsSanityValidator
-from sports_signal_bot.data.normalization.names import normalize_league_name
+from sports_signal_bot.core.constants import MarketType, SportType
+from sports_signal_bot.data.contracts.canonical import (
+    CanonicalEventRecord, CanonicalOddsRecord, CanonicalTeamStatsRecord)
+from sports_signal_bot.data.contracts.manifests import (IngestManifestRecord,
+                                                        ValidationIssueRecord)
+from sports_signal_bot.data.normalization.datetimes import \
+    parse_datetime_to_utc
 from sports_signal_bot.data.normalization.markets import normalize_market_name
-from sports_signal_bot.data.normalization.datetimes import parse_datetime_to_utc
-from sports_signal_bot.data.storage.paths import get_raw_storage_path, get_processed_storage_path, get_manifest_storage_path
+from sports_signal_bot.data.normalization.names import normalize_league_name
+from sports_signal_bot.data.providers.base import (BaseFixtureProvider,
+                                                   BaseOddsProvider,
+                                                   BaseStatsProvider)
+from sports_signal_bot.data.storage.paths import (get_manifest_storage_path,
+                                                  get_processed_storage_path,
+                                                  get_raw_storage_path)
 from sports_signal_bot.data.storage.writer import DataWriter
+from sports_signal_bot.data.validators.odds_validator import \
+    OddsSanityValidator
+from sports_signal_bot.data.validators.schema_validator import (
+    RequiredFieldsValidator, UniqueEventValidator)
 
 logger = logging.getLogger(__name__)
+
 
 class IngestionOrchestrator:
     def __init__(self, team_resolver=None):
@@ -30,9 +41,13 @@ class IngestionOrchestrator:
             return self.team_resolver.resolve_team_name(name, sport, league)
         return name
 
-    def ingest_fixtures(self, provider: BaseFixtureProvider, sport: SportType) -> IngestManifestRecord:
+    def ingest_fixtures(
+        self, provider: BaseFixtureProvider, sport: SportType
+    ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
-        logger.info(f"Starting fixture ingestion {ingest_id} for {sport.value} via {provider.provider_name}")
+        logger.info(
+            f"Starting fixture ingestion {ingest_id} for {sport.value} via {provider.provider_name}"
+        )
 
         # 1. Fetch Raw
         raw_data = provider.fetch_fixtures(sport)
@@ -44,37 +59,45 @@ class IngestionOrchestrator:
         normalization_issues = []
         for idx, row in enumerate(raw_data):
             try:
-                league = normalize_league_name(row.get('league', 'unknown'))
-                home_team = self._resolve_team(row.get('home_team', ''), sport.value, league)
-                away_team = self._resolve_team(row.get('away_team', ''), sport.value, league)
-                dt = parse_datetime_to_utc(row.get('event_datetime_utc', ''))
+                league = normalize_league_name(row.get("league", "unknown"))
+                home_team = self._resolve_team(
+                    row.get("home_team", ""), sport.value, league
+                )
+                away_team = self._resolve_team(
+                    row.get("away_team", ""), sport.value, league
+                )
+                dt = parse_datetime_to_utc(row.get("event_datetime_utc", ""))
 
-                normalized_data.append({
-                    "event_id": f"{sport.value}_{row.get('source_event_id')}",
-                    "sport": sport.value,
-                    "league": league,
-                    "season": str(row.get('season', '')),
-                    "event_datetime_utc": dt.isoformat(),
-                    "home_team": home_team,
-                    "away_team": away_team,
-                    "status": row.get('status', 'UNKNOWN'),
-                    "venue": row.get('venue'),
-                    "source": provider.provider_name,
-                    "source_event_id": str(row.get('source_event_id', ''))
-                })
+                normalized_data.append(
+                    {
+                        "event_id": f"{sport.value}_{row.get('source_event_id')}",
+                        "sport": sport.value,
+                        "league": league,
+                        "season": str(row.get("season", "")),
+                        "event_datetime_utc": dt.isoformat(),
+                        "home_team": home_team,
+                        "away_team": away_team,
+                        "status": row.get("status", "UNKNOWN"),
+                        "venue": row.get("venue"),
+                        "source": provider.provider_name,
+                        "source_event_id": str(row.get("source_event_id", "")),
+                    }
+                )
             except Exception as e:
                 normalization_issues.append(
-                     ValidationIssueRecord(
+                    ValidationIssueRecord(
                         level="error",
                         field="various",
                         issue_type="normalization_error",
                         message=str(e),
-                        record_id=str(row.get('source_event_id', idx))
+                        record_id=str(row.get("source_event_id", idx)),
                     )
                 )
 
         # 3. Validate
-        req_val = RequiredFieldsValidator(["event_id", "sport", "home_team", "away_team", "event_datetime_utc"])
+        req_val = RequiredFieldsValidator(
+            ["event_id", "sport", "home_team", "away_team", "event_datetime_utc"]
+        )
         uniq_val = UniqueEventValidator(id_field="event_id")
 
         v_data, req_issues = req_val.validate(normalized_data)
@@ -89,13 +112,13 @@ class IngestionOrchestrator:
                 rec = CanonicalEventRecord(**item)
                 final_canonical.append(rec.model_dump())
             except Exception as e:
-                 all_issues.append(
-                     ValidationIssueRecord(
+                all_issues.append(
+                    ValidationIssueRecord(
                         level="error",
                         field="schema",
                         issue_type="schema_coercion_error",
                         message=str(e),
-                        record_id=item.get("event_id", "unknown")
+                        record_id=item.get("event_id", "unknown"),
                     )
                 )
 
@@ -117,14 +140,18 @@ class IngestionOrchestrator:
             invalid_count=len(raw_data) - len(final_canonical),
             duplicate_count=len(uniq_issues),
             warning_count=0,
-            issues=all_issues
+            issues=all_issues,
         )
         DataWriter.write_manifest(manifest, get_manifest_storage_path())
         return manifest
 
-    def ingest_odds(self, provider: BaseOddsProvider, sport: SportType) -> IngestManifestRecord:
+    def ingest_odds(
+        self, provider: BaseOddsProvider, sport: SportType
+    ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
-        logger.info(f"Starting odds ingestion {ingest_id} for {sport.value} via {provider.provider_name}")
+        logger.info(
+            f"Starting odds ingestion {ingest_id} for {sport.value} via {provider.provider_name}"
+        )
 
         raw_data = provider.fetch_odds(sport)
         raw_path = get_raw_storage_path(provider.provider_name, sport, "odds")
@@ -134,39 +161,47 @@ class IngestionOrchestrator:
         normalization_issues = []
         for idx, row in enumerate(raw_data):
             try:
-                dt = parse_datetime_to_utc(row.get('snapshot_ts_utc', ''))
-                m_type = normalize_market_name(row.get('market_type', ''))
+                dt = parse_datetime_to_utc(row.get("snapshot_ts_utc", ""))
+                m_type = normalize_market_name(row.get("market_type", ""))
 
                 # Basic handicap line parse
-                hline = row.get('handicap_line')
+                hline = row.get("handicap_line")
                 hline_val = float(hline) if hline and str(hline).strip() else None
-                tline = row.get('total_line')
+                tline = row.get("total_line")
                 tline_val = float(tline) if tline and str(tline).strip() else None
 
-                normalized_data.append({
-                    "event_id": f"{sport.value}_{row.get('source_event_id')}",
-                    "market_type": m_type.value,
-                    "bookmaker": str(row.get('bookmaker', provider.provider_name)),
-                    "snapshot_ts_utc": dt.isoformat(),
-                    "selection": str(row.get('selection', '')),
-                    "decimal_odds": float(row.get('decimal_odds', 0.0)),
-                    "implied_probability": float(row.get('implied_probability', 0.0)) if row.get('implied_probability') else 0.0,
-                    "handicap_line": hline_val,
-                    "total_line": tline_val,
-                    "raw_payload_metadata": {}
-                })
+                normalized_data.append(
+                    {
+                        "event_id": f"{sport.value}_{row.get('source_event_id')}",
+                        "market_type": m_type.value,
+                        "bookmaker": str(row.get("bookmaker", provider.provider_name)),
+                        "snapshot_ts_utc": dt.isoformat(),
+                        "selection": str(row.get("selection", "")),
+                        "decimal_odds": float(row.get("decimal_odds", 0.0)),
+                        "implied_probability": (
+                            float(row.get("implied_probability", 0.0))
+                            if row.get("implied_probability")
+                            else 0.0
+                        ),
+                        "handicap_line": hline_val,
+                        "total_line": tline_val,
+                        "raw_payload_metadata": {},
+                    }
+                )
             except Exception as e:
                 normalization_issues.append(
-                     ValidationIssueRecord(
+                    ValidationIssueRecord(
                         level="error",
                         field="various",
                         issue_type="normalization_error",
                         message=str(e),
-                        record_id=str(row.get('source_event_id', idx))
+                        record_id=str(row.get("source_event_id", idx)),
                     )
                 )
 
-        req_val = RequiredFieldsValidator(["event_id", "market_type", "bookmaker", "selection"])
+        req_val = RequiredFieldsValidator(
+            ["event_id", "market_type", "bookmaker", "selection"]
+        )
         odds_val = OddsSanityValidator()
 
         v_data, req_issues = req_val.validate(normalized_data)
@@ -180,13 +215,13 @@ class IngestionOrchestrator:
                 rec = CanonicalOddsRecord(**item)
                 final_canonical.append(rec.model_dump())
             except Exception as e:
-                 all_issues.append(
-                     ValidationIssueRecord(
+                all_issues.append(
+                    ValidationIssueRecord(
                         level="error",
                         field="schema",
                         issue_type="schema_coercion_error",
                         message=str(e),
-                        record_id=item.get("event_id", "unknown")
+                        record_id=item.get("event_id", "unknown"),
                     )
                 )
 
@@ -206,14 +241,18 @@ class IngestionOrchestrator:
             invalid_count=len(raw_data) - len(final_canonical),
             duplicate_count=0,
             warning_count=0,
-            issues=all_issues
+            issues=all_issues,
         )
         DataWriter.write_manifest(manifest, get_manifest_storage_path())
         return manifest
 
-    def ingest_stats(self, provider: BaseStatsProvider, sport: SportType) -> IngestManifestRecord:
+    def ingest_stats(
+        self, provider: BaseStatsProvider, sport: SportType
+    ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
-        logger.info(f"Starting stats ingestion {ingest_id} for {sport.value} via {provider.provider_name}")
+        logger.info(
+            f"Starting stats ingestion {ingest_id} for {sport.value} via {provider.provider_name}"
+        )
 
         raw_data = provider.fetch_team_stats(sport)
         raw_path = get_raw_storage_path(provider.provider_name, sport, "stats")
@@ -223,28 +262,42 @@ class IngestionOrchestrator:
         normalization_issues = []
         for idx, row in enumerate(raw_data):
             try:
-                league = normalize_league_name(row.get('league', 'unknown'))
-                team_name = self._resolve_team(row.get('team_name', row.get('team_id', '')), sport.value, league)
+                league = normalize_league_name(row.get("league", "unknown"))
+                team_name = self._resolve_team(
+                    row.get("team_name", row.get("team_id", "")), sport.value, league
+                )
 
-                normalized_data.append({
-                    "team_id": str(row.get('team_id', '')),
-                    "team_name": team_name,
-                    "sport": sport.value,
-                    "league": league,
-                    "season": str(row.get('season', '')),
-                    "rating": float(row.get('rating', 0.0)) if row.get('rating') else None,
-                    "recent_form": float(row.get('recent_form', 0.0)) if row.get('recent_form') else None,
-                    "rest_days": int(row.get('rest_days', 0)) if row.get('rest_days') else None,
-                    "rolling_metrics": {}
-                })
+                normalized_data.append(
+                    {
+                        "team_id": str(row.get("team_id", "")),
+                        "team_name": team_name,
+                        "sport": sport.value,
+                        "league": league,
+                        "season": str(row.get("season", "")),
+                        "rating": (
+                            float(row.get("rating", 0.0)) if row.get("rating") else None
+                        ),
+                        "recent_form": (
+                            float(row.get("recent_form", 0.0))
+                            if row.get("recent_form")
+                            else None
+                        ),
+                        "rest_days": (
+                            int(row.get("rest_days", 0))
+                            if row.get("rest_days")
+                            else None
+                        ),
+                        "rolling_metrics": {},
+                    }
+                )
             except Exception as e:
                 normalization_issues.append(
-                     ValidationIssueRecord(
+                    ValidationIssueRecord(
                         level="error",
                         field="various",
                         issue_type="normalization_error",
                         message=str(e),
-                        record_id=str(row.get('team_id', idx))
+                        record_id=str(row.get("team_id", idx)),
                     )
                 )
 
@@ -259,13 +312,13 @@ class IngestionOrchestrator:
                 rec = CanonicalTeamStatsRecord(**item)
                 final_canonical.append(rec.model_dump())
             except Exception as e:
-                 all_issues.append(
-                     ValidationIssueRecord(
+                all_issues.append(
+                    ValidationIssueRecord(
                         level="error",
                         field="schema",
                         issue_type="schema_coercion_error",
                         message=str(e),
-                        record_id=item.get("team_id", "unknown")
+                        record_id=item.get("team_id", "unknown"),
                     )
                 )
 
@@ -285,7 +338,7 @@ class IngestionOrchestrator:
             invalid_count=len(raw_data) - len(final_canonical),
             duplicate_count=0,
             warning_count=0,
-            issues=all_issues
+            issues=all_issues,
         )
         DataWriter.write_manifest(manifest, get_manifest_storage_path())
         return manifest

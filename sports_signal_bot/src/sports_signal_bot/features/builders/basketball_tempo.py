@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class BasketballTempoBuilder(BaseFeatureBuilder):
     """Calculates basketball-specific pace and tempo proxies."""
@@ -24,11 +27,11 @@ class BasketballTempoBuilder(BaseFeatureBuilder):
 
     @property
     def output_columns(self) -> List[str]:
-        return [
-            "home_pace_proxy", "away_pace_proxy", "matchup_pace_projection"
-        ]
+        return ["home_pace_proxy", "away_pace_proxy", "matchup_pace_projection"]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"]
         df = pd.DataFrame({"event_id": events_df["event_id"]})
 

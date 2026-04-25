@@ -1,11 +1,13 @@
-import numpy as np
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
+
 import joblib
+import numpy as np
 
 from sports_signal_bot.calibration.base import BaseCalibrator
-from sports_signal_bot.calibration.registry import CalibrationRegistry
 from sports_signal_bot.calibration.factory import CalibrationFactory
+from sports_signal_bot.calibration.registry import CalibrationRegistry
 from sports_signal_bot.calibration.utils import clip_probabilities
+
 
 @CalibrationRegistry.register("multiclass_wrapper")
 class MulticlassWrapperCalibrator(BaseCalibrator):
@@ -23,13 +25,15 @@ class MulticlassWrapperCalibrator(BaseCalibrator):
         self.calibrators: List[BaseCalibrator] = []
         self.n_classes = 0
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'MulticlassWrapperCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "MulticlassWrapperCalibrator":
         self.n_classes = X.shape[1]
         self.calibrators = []
 
         for i in range(self.n_classes):
             # Create a base calibrator for this class
-            calibrator = CalibrationFactory.create(self.base_calibrator_method, self.base_calibrator_config)
+            calibrator = CalibrationFactory.create(
+                self.base_calibrator_method, self.base_calibrator_config
+            )
 
             # Prepare binary data for One-Vs-Rest
             # X_bin: [P(not class i), P(class i)]

@@ -1,11 +1,6 @@
-from .contracts import (
-    RatingConfig,
-    TeamRatingState,
-    RatingSnapshotRecord,
-    RatingUpdateRecord,
-    RatingFeatureRecord,
-    RatingBuildManifest
-)
+from .contracts import (RatingBuildManifest, RatingConfig, RatingFeatureRecord,
+                        RatingSnapshotRecord, RatingUpdateRecord,
+                        TeamRatingState)
 
 __all__ = [
     "RatingConfig",
@@ -13,5 +8,5 @@ __all__ = [
     "RatingSnapshotRecord",
     "RatingUpdateRecord",
     "RatingFeatureRecord",
-    "RatingBuildManifest"
+    "RatingBuildManifest",
 ]

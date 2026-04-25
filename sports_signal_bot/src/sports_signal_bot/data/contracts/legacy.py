@@ -1,6 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional, Dict, Any, List
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
+
 
 class EventRecord(BaseModel):
     event_id: str
@@ -13,6 +15,7 @@ class EventRecord(BaseModel):
     home_score: Optional[int] = None
     away_score: Optional[int] = None
 
+
 class OddsRecord(BaseModel):
     event_id: str
     provider: str
@@ -20,10 +23,12 @@ class OddsRecord(BaseModel):
     market: str
     selections: Dict[str, float]
 
+
 class TeamStatsRecord(BaseModel):
     team_id: str
     date: datetime
     stats: Dict[str, float]
+
 
 class PredictionRecord(BaseModel):
     event_id: str
@@ -31,12 +36,14 @@ class PredictionRecord(BaseModel):
     predicted_probabilities: Dict[str, float]
     timestamp: datetime
 
+
 class SignalRecord(BaseModel):
     event_id: str
     signal_type: str
     confidence: float
     recommended_action: str
     timestamp: datetime
+
 
 class BacktestResultRecord(BaseModel):
     run_id: str

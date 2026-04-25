@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
-from ..contracts import EnsembleInputRecord, EnsembleOutputRecord, StandardizedPredictionRecord
+from typing import Any, Dict, List, Optional
+
+from ..contracts import (EnsembleInputRecord, EnsembleOutputRecord,
+                         StandardizedPredictionRecord)
+
 
 class BaseEnsembler(ABC):
 
@@ -13,7 +16,9 @@ class BaseEnsembler(ABC):
         """Combines multiple predictions for a single event/market into a final output."""
         pass
 
-    def combine_batch(self, input_records: List[EnsembleInputRecord]) -> List[EnsembleOutputRecord]:
+    def combine_batch(
+        self, input_records: List[EnsembleInputRecord]
+    ) -> List[EnsembleOutputRecord]:
         """Combines predictions for a batch of events."""
         return [self.combine(rec) for rec in input_records]
 
@@ -23,7 +28,4 @@ class BaseEnsembler(ABC):
 
     def describe(self) -> Dict[str, Any]:
         """Returns description of the ensembler strategy."""
-        return {
-            "name": self.name,
-            "config": self.config
-        }
+        return {"name": self.name, "config": self.config}

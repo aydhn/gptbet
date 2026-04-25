@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List, Optional
-from .metrics import compute_all_metrics
+
+import pandas as pd
+
 from .contracts import SegmentEvaluationRecord
+from .metrics import compute_all_metrics
+
 
 def evaluate_by_segment(
     df: pd.DataFrame,
@@ -11,7 +14,7 @@ def evaluate_by_segment(
     pred_class_col: str = "predicted_class",
     proba_cols: Optional[List[str]] = None,
     labels: Optional[List[str]] = None,
-    min_rows: int = 10
+    min_rows: int = 10,
 ) -> List[SegmentEvaluationRecord]:
     """Evaluates a source grouped by a specific segment column."""
 
@@ -27,7 +30,7 @@ def evaluate_by_segment(
         true_label_col=true_label_col,
         pred_class_col=pred_class_col,
         proba_cols=proba_cols,
-        labels=labels
+        labels=labels,
     )
 
     for segment_val, group in df.groupby(segment_col):
@@ -40,7 +43,7 @@ def evaluate_by_segment(
             true_label_col=true_label_col,
             pred_class_col=pred_class_col,
             proba_cols=proba_cols,
-            labels=labels
+            labels=labels,
         )
 
         # Calculate lift vs baseline (diff)
@@ -50,12 +53,14 @@ def evaluate_by_segment(
                 continue
             lift[k] = v - baseline_metrics[k]
 
-        records.append(SegmentEvaluationRecord(
-            segment_type=segment_col,
-            segment_value=str(segment_val),
-            row_count=len(group),
-            metrics=metrics,
-            lift_vs_baseline=lift if lift else None
-        ))
+        records.append(
+            SegmentEvaluationRecord(
+                segment_type=segment_col,
+                segment_value=str(segment_val),
+                row_count=len(group),
+                metrics=metrics,
+                lift_vs_baseline=lift if lift else None,
+            )
+        )
 
     return records

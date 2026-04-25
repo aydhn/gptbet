@@ -1,7 +1,11 @@
-import pandas as pd
 from typing import List
 
-def calculate_rolling_aggregates(events_df: pd.DataFrame, windows: List[int]) -> pd.DataFrame:
+import pandas as pd
+
+
+def calculate_rolling_aggregates(
+    events_df: pd.DataFrame, windows: List[int]
+) -> pd.DataFrame:
     """
     Utility to calculate event-time safe rolling aggregates.
     Ensures that for any event, only data occurring *strictly before* the event time is used.

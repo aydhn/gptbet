@@ -1,25 +1,30 @@
-import pytest
-import pandas as pd
-from pathlib import Path
 import tempfile
-from sports_signal_bot.evaluation.runner import EvaluationRunner
+from pathlib import Path
+
+import pandas as pd
+import pytest
+
 from sports_signal_bot.evaluation.registry import EvaluationRegistry
+from sports_signal_bot.evaluation.runner import EvaluationRunner
+
 
 def test_evaluation_runner():
     # Setup mock data
-    df = pd.DataFrame({
-        "event_id": ["e1", "e2", "e1", "e2"],
-        "sport": ["football", "football", "football", "football"],
-        "market_type": ["1x2", "1x2", "1x2", "1x2"],
-        "source_name": ["A", "A", "B", "B"],
-        "source_family": ["ml", "ml", "benchmark", "benchmark"],
-        "true_label": ["home_win", "away_win", "home_win", "away_win"],
-        "predicted_class": ["home_win", "away_win", "away_win", "home_win"],
-        "prob_home_win": [0.6, 0.4, 0.4, 0.6],
-        "prob_draw": [0.2, 0.2, 0.2, 0.2],
-        "prob_away_win": [0.2, 0.4, 0.4, 0.2],
-        "prediction_status": ["valid", "valid", "valid", "valid"]
-    })
+    df = pd.DataFrame(
+        {
+            "event_id": ["e1", "e2", "e1", "e2"],
+            "sport": ["football", "football", "football", "football"],
+            "market_type": ["1x2", "1x2", "1x2", "1x2"],
+            "source_name": ["A", "A", "B", "B"],
+            "source_family": ["ml", "ml", "benchmark", "benchmark"],
+            "true_label": ["home_win", "away_win", "home_win", "away_win"],
+            "predicted_class": ["home_win", "away_win", "away_win", "home_win"],
+            "prob_home_win": [0.6, 0.4, 0.4, 0.6],
+            "prob_draw": [0.2, 0.2, 0.2, 0.2],
+            "prob_away_win": [0.2, 0.4, 0.4, 0.2],
+            "prediction_status": ["valid", "valid", "valid", "valid"],
+        }
+    )
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
@@ -34,7 +39,7 @@ def test_evaluation_runner():
             "same_sample_only": True,
             "primary_metric": "log_loss",
             "secondary_metrics": ["brier"],
-            "include_pairwise_comparisons": True
+            "include_pairwise_comparisons": True,
         }
 
         runner = EvaluationRunner(registry, tmp_path / "runs", config)

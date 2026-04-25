@@ -1,12 +1,18 @@
-import pytest
 import pandas as pd
-from sports_signal_bot.training.splits import HoldoutTimeSplit, ExpandingWindowSplit, RollingWindowSplit
+import pytest
+
+from sports_signal_bot.training.splits import (ExpandingWindowSplit,
+                                               HoldoutTimeSplit,
+                                               RollingWindowSplit)
+
 
 def test_holdout_time_split():
-    df = pd.DataFrame({
-        'event_id': list(range(10)),
-        'event_datetime_utc': pd.date_range('2024-01-01', periods=10)
-    })
+    df = pd.DataFrame(
+        {
+            "event_id": list(range(10)),
+            "event_datetime_utc": pd.date_range("2024-01-01", periods=10),
+        }
+    )
 
     splitter = HoldoutTimeSplit(train_fraction=0.6, test_fraction=0.2)
     splits = list(splitter.split(df))
@@ -22,11 +28,14 @@ def test_holdout_time_split():
     assert train_idx.max() < valid_idx.min()
     assert valid_idx.max() < test_idx.min()
 
+
 def test_expanding_window_split():
-    df = pd.DataFrame({
-        'event_id': list(range(10)),
-        'event_datetime_utc': pd.date_range('2024-01-01', periods=10)
-    })
+    df = pd.DataFrame(
+        {
+            "event_id": list(range(10)),
+            "event_datetime_utc": pd.date_range("2024-01-01", periods=10),
+        }
+    )
 
     splitter = ExpandingWindowSplit(initial_train_size=4, valid_size=2, step_size=2)
     splits = list(splitter.split(df))
@@ -45,11 +54,14 @@ def test_expanding_window_split():
     assert len(splits[2][1]) == 8
     assert len(splits[2][2]) == 2
 
+
 def test_rolling_window_split():
-    df = pd.DataFrame({
-        'event_id': list(range(10)),
-        'event_datetime_utc': pd.date_range('2024-01-01', periods=10)
-    })
+    df = pd.DataFrame(
+        {
+            "event_id": list(range(10)),
+            "event_datetime_utc": pd.date_range("2024-01-01", periods=10),
+        }
+    )
 
     splitter = RollingWindowSplit(train_size=4, valid_size=2, step_size=2)
     splits = list(splitter.split(df))

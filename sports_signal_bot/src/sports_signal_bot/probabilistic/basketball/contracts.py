@@ -1,7 +1,10 @@
-from pydantic import BaseModel, Field
-from typing import Dict, Any, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 from sports_signal_bot.core.constants import SportType
+
 
 class BasketballDistributionConfig(BaseModel):
     base_total_points: float = 220.0
@@ -14,10 +17,13 @@ class BasketballDistributionConfig(BaseModel):
     defense_weight: float = 1.0
     probability_clip_eps: float = 1e-6
     std_floor: float = 2.0
-    default_preview_lines: Dict[str, List[float]] = Field(default_factory=lambda: {
-        "totals": [200.5, 210.5, 220.5, 230.5],
-        "spreads": [-10.5, -7.5, -5.5, -3.5, -1.5, 1.5, 3.5, 5.5, 7.5, 10.5]
-    })
+    default_preview_lines: Dict[str, List[float]] = Field(
+        default_factory=lambda: {
+            "totals": [200.5, 210.5, 220.5, 230.5],
+            "spreads": [-10.5, -7.5, -5.5, -3.5, -1.5, 1.5, 3.5, 5.5, 7.5, 10.5],
+        }
+    )
+
 
 class BasketballScoreEstimate(BaseModel):
     event_id: str
@@ -29,6 +35,7 @@ class BasketballScoreEstimate(BaseModel):
     feature_sources: List[str] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
 
+
 class BasketballProbabilityRecord(BaseModel):
     event_id: str
     market_type: str
@@ -38,6 +45,7 @@ class BasketballProbabilityRecord(BaseModel):
     supporting_metrics: Dict[str, float] = Field(default_factory=dict)
     status: str = "success"
     warnings: List[str] = Field(default_factory=list)
+
 
 class BasketballModelDiagnostics(BaseModel):
     event_id: str

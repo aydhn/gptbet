@@ -1,6 +1,9 @@
+from typing import Any, Dict
+
 from sklearn.ensemble import RandomForestClassifier
+
 from sports_signal_bot.training.trainers.base import SklearnClassifierTrainer
-from typing import Dict, Any
+
 
 class RandomForestTrainer(SklearnClassifierTrainer):
     @property
@@ -9,7 +12,7 @@ class RandomForestTrainer(SklearnClassifierTrainer):
 
     def __init__(self, config: Dict[str, Any]):
         # Trees usually don't need scaling
-        config.setdefault('scale_numeric', False)
+        config.setdefault("scale_numeric", False)
         super().__init__(config)
 
         kwargs = self.config.get("model_kwargs", {})

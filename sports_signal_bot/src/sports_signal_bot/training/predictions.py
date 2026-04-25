@@ -1,8 +1,11 @@
-import pandas as pd
-import numpy as np
-from typing import List, Dict, Any
 from datetime import datetime, timezone
+from typing import Any, Dict, List
+
+import numpy as np
+import pandas as pd
+
 from sports_signal_bot.training.contracts import ValidationPredictionRecord
+
 
 def format_validation_predictions(
     df: pd.DataFrame,
@@ -15,7 +18,7 @@ def format_validation_predictions(
     target_column: str,
     model_name: str,
     fold_id: str,
-    split_metadata: Dict[str, Any]
+    split_metadata: Dict[str, Any],
 ) -> List[ValidationPredictionRecord]:
     """
     Format predictions on the validation set into strongly typed ValidationPredictionRecords,
@@ -44,17 +47,19 @@ def format_validation_predictions(
         prob_dict = {str(c): float(p) for c, p in zip(classes, probs)}
 
         record = ValidationPredictionRecord(
-            event_id=str(row['event_id']),
+            event_id=str(row["event_id"]),
             sport=sport,
             market_type=market_type,
             label_name=label_name,
-            true_class_index=int(true_class_index) if true_class_index is not None else None,
+            true_class_index=(
+                int(true_class_index) if true_class_index is not None else None
+            ),
             predicted_class=pred_class_idx,
             predicted_probabilities=prob_dict,
             model_name=model_name,
             fold_id=fold_id,
             split_metadata=split_metadata,
-            timestamp_utc=datetime.now(timezone.utc).isoformat()
+            timestamp_utc=datetime.now(timezone.utc).isoformat(),
         )
         records.append(record)
 

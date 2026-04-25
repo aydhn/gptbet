@@ -1,7 +1,11 @@
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 from .contracts import StandardizedPredictionRecord
 
-def apply_calibrated_preference_policy(predictions: List[StandardizedPredictionRecord], mode: str = "prefer_calibrated") -> List[StandardizedPredictionRecord]:
+
+def apply_calibrated_preference_policy(
+    predictions: List[StandardizedPredictionRecord], mode: str = "prefer_calibrated"
+) -> List[StandardizedPredictionRecord]:
     """
     Applies selection policy when multiple versions of the same source exist.
     Modes: 'prefer_calibrated', 'calibrated_only', 'raw_only', 'all'

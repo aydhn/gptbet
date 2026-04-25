@@ -1,8 +1,11 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 from sports_signal_bot.core.constants import SportType
-from sports_signal_bot.markets.enums import TargetType, LabelValidityStatus
+from sports_signal_bot.markets.enums import LabelValidityStatus, TargetType
+
 
 class LabelDefinition(BaseModel):
     label_name: str
@@ -13,6 +16,7 @@ class LabelDefinition(BaseModel):
     threshold_line: Optional[float] = None
     sport: SportType
     enabled: bool = True
+
 
 class LabelRecord(BaseModel):
     event_id: str
@@ -27,6 +31,7 @@ class LabelRecord(BaseModel):
     validity_status: LabelValidityStatus = LabelValidityStatus.PENDING
     invalid_reason: Optional[str] = None
 
+
 class BenchmarkPredictionRecord(BaseModel):
     event_id: str
     market_type: str
@@ -35,9 +40,10 @@ class BenchmarkPredictionRecord(BaseModel):
     predicted_probabilities: Optional[Dict[str, float]] = None
     metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
+
 class LeakageAuditRecord(BaseModel):
     event_id: str
     label_name: str
-    audit_status: str # "pass", "warn", "fail"
+    audit_status: str  # "pass", "warn", "fail"
     issue_type: str
     message: str

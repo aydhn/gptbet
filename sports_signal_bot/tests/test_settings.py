@@ -1,4 +1,5 @@
-from sports_signal_bot.config.settings import get_settings, Settings
+from sports_signal_bot.config.settings import Settings, get_settings
+
 
 def test_settings_load():
     settings = get_settings()

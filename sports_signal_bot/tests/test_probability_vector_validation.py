@@ -1,6 +1,8 @@
-import pytest
 import numpy as np
+import pytest
+
 from sports_signal_bot.calibration.utils import validate_probability_vectors
+
 
 def test_validate_probability_vectors():
     X_valid = np.array([[0.5, 0.5], [0.2, 0.8]])

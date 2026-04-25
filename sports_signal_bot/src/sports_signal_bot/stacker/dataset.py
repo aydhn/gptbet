@@ -1,8 +1,13 @@
-import numpy as np
-from typing import List, Dict, Any, Optional
 from collections import defaultdict
-from .contracts import MetaFeatureRecord, MetaTrainingDataset, SourceCoverageRecord, MetaFeatureManifest
+from typing import Any, Dict, List, Optional
+
+import numpy as np
+
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+
+from .contracts import (MetaFeatureManifest, MetaFeatureRecord,
+                        MetaTrainingDataset, SourceCoverageRecord)
+
 
 class MetaDatasetBuilder:
     def __init__(self, config: Dict[str, Any]):
@@ -10,16 +15,20 @@ class MetaDatasetBuilder:
         self.enabled_sources = config.get("enabled_sources", [])
         self.use_only_calibrated = config.get("use_only_calibrated_sources", True)
         self.include_source_metadata = config.get("include_source_metadata", True)
-        self.include_disagreement_features = config.get("include_disagreement_features", True)
-        self.missing_source_strategy = config.get("missing_source_strategy", "mean_impute")
+        self.include_disagreement_features = config.get(
+            "include_disagreement_features", True
+        )
+        self.missing_source_strategy = config.get(
+            "missing_source_strategy", "mean_impute"
+        )
 
     def build_meta_dataset(
         self,
         predictions: List[StandardizedPredictionRecord],
-        target_labels: Dict[str, str], # event_id -> label_name
+        target_labels: Dict[str, str],  # event_id -> label_name
         class_labels: List[str],
         sport: str,
-        market_type: str
+        market_type: str,
     ) -> MetaTrainingDataset:
 
         # 1. Group predictions by event
@@ -50,7 +59,9 @@ class MetaDatasetBuilder:
             if target_name in class_labels:
                 target_idx = class_labels.index(target_name)
 
-            record = self._build_single_record(event_id, sport, market_type, preds, class_labels)
+            record = self._build_single_record(
+                event_id, sport, market_type, preds, class_labels
+            )
             record.target_class_name = target_name
             record.target_class_index = target_idx
 
@@ -66,7 +77,7 @@ class MetaDatasetBuilder:
             class_labels=class_labels,
             sport=sport,
             market_type=market_type,
-            feature_names=sorted(list(feature_names_set))
+            feature_names=sorted(list(feature_names_set)),
         )
 
     def _build_single_record(
@@ -75,7 +86,7 @@ class MetaDatasetBuilder:
         sport: str,
         market_type: str,
         preds: List[StandardizedPredictionRecord],
-        class_labels: List[str]
+        class_labels: List[str],
     ) -> MetaFeatureRecord:
 
         prob_features = {}
@@ -102,15 +113,19 @@ class MetaDatasetBuilder:
         if self.include_disagreement_features and len(preds) > 1:
             for cls in class_labels:
                 cls_probs = [p.probabilities.get(cls, 0.0) for p in preds]
-                agreement_features[f"std_prob_{cls}"] = np.std(cls_probs) if cls_probs else 0.0
+                agreement_features[f"std_prob_{cls}"] = (
+                    np.std(cls_probs) if cls_probs else 0.0
+                )
 
         missing_sources = []
         if self.enabled_sources:
-            missing_sources = [s for s in self.enabled_sources if s not in avail_sources]
+            missing_sources = [
+                s for s in self.enabled_sources if s not in avail_sources
+            ]
 
         context_features = {
             "source_count": len(preds),
-            "missing_source_count": len(missing_sources)
+            "missing_source_count": len(missing_sources),
         }
 
         return MetaFeatureRecord(
@@ -122,5 +137,5 @@ class MetaDatasetBuilder:
             agreement_features=agreement_features,
             context_features=context_features,
             available_sources=avail_sources,
-            missing_sources=missing_sources
+            missing_sources=missing_sources,
         )

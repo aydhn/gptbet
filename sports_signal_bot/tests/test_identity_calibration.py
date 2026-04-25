@@ -1,6 +1,8 @@
-import pytest
 import numpy as np
+import pytest
+
 from sports_signal_bot.calibration.factory import CalibrationFactory
+
 
 def test_binary_identity_calibrator():
     calibrator = CalibrationFactory.create("binary_identity")
@@ -12,6 +14,7 @@ def test_binary_identity_calibrator():
 
     np.testing.assert_allclose(X, X_cal)
     assert calibrator.is_fitted
+
 
 def test_multiclass_identity_calibrator():
     calibrator = CalibrationFactory.create("multiclass_identity")

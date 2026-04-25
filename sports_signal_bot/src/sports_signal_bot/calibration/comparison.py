@@ -1,11 +1,14 @@
 from typing import Dict, Optional
-from sports_signal_bot.calibration.contracts import CalibrationSummary, CalibrationComparisonRecord
+
+from sports_signal_bot.calibration.contracts import (
+    CalibrationComparisonRecord, CalibrationSummary)
+
 
 def create_comparison_record(
     run_id: str,
     raw_summary: CalibrationSummary,
     calibrated_summary: CalibrationSummary,
-    overfit_ece_threshold: float = 0.05
+    overfit_ece_threshold: float = 0.05,
 ) -> CalibrationComparisonRecord:
     """
     Compares raw and calibrated metrics and creates a summary record.
@@ -19,8 +22,11 @@ def create_comparison_record(
 
     # Overfit warning: if calibrated ECE is super low, maybe overfitting the validation set
     possible_overfit = False
-    if calibrated_summary.ece < overfit_ece_threshold and (raw_summary.ece - calibrated_summary.ece) > 0.05:
-         possible_overfit = True
+    if (
+        calibrated_summary.ece < overfit_ece_threshold
+        and (raw_summary.ece - calibrated_summary.ece) > 0.05
+    ):
+        possible_overfit = True
 
     return CalibrationComparisonRecord(
         run_id=run_id,
@@ -34,5 +40,5 @@ def create_comparison_record(
         calibrated_ece=calibrated_summary.ece,
         delta_ece=delta_ece,
         calibration_improvement=improvement,
-        possible_overfit_warning=possible_overfit
+        possible_overfit_warning=possible_overfit,
     )

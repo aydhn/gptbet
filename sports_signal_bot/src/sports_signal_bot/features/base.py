@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Type
+
 import pandas as pd
-from typing import List, Dict, Any, Type
+
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class BaseFeatureBuilder(ABC):
     """Abstract base class for all feature builders."""
@@ -37,7 +40,9 @@ class BaseFeatureBuilder(ABC):
         pass
 
     @abstractmethod
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         """
         Builds the features given the context and input datasets.
         Returns a DataFrame containing 'event_id' and the generated feature columns.

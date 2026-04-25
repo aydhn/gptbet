@@ -1,6 +1,8 @@
-from typing import Dict, Any, List, Optional
-import pandas as pd
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import pandas as pd
+
 
 class EvaluationRegistry:
     """Registry to manage discovered and registered evaluation sources (models, benchmarks)."""
@@ -8,12 +10,18 @@ class EvaluationRegistry:
     def __init__(self):
         self.sources: Dict[str, Dict[str, Any]] = {}
 
-    def register_source(self, name: str, family: str, artifact_path: Path, metadata: Optional[Dict[str, Any]] = None):
+    def register_source(
+        self,
+        name: str,
+        family: str,
+        artifact_path: Path,
+        metadata: Optional[Dict[str, Any]] = None,
+    ):
         """Registers a prediction source to be evaluated."""
         self.sources[name] = {
             "family": family,
             "path": artifact_path,
-            "metadata": metadata or {}
+            "metadata": metadata or {},
         }
 
     def get_registered_sources(self) -> List[str]:

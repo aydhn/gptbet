@@ -1,17 +1,13 @@
-import pytest
 import numpy as np
+import pytest
+
 from sports_signal_bot.calibration.reliability import generate_reliability_bins
+
 
 def test_generate_reliability_bins_binary():
     y_true = np.array([0, 0, 1, 1, 1])
     # Positive class probs
-    y_prob = np.array([
-        [0.9, 0.1],
-        [0.85, 0.15],
-        [0.2, 0.8],
-        [0.15, 0.85],
-        [0.1, 0.9]
-    ])
+    y_prob = np.array([[0.9, 0.1], [0.85, 0.15], [0.2, 0.8], [0.15, 0.85], [0.1, 0.9]])
 
     bins = generate_reliability_bins(y_true, y_prob, n_bins=5, positive_class_index=1)
     assert len(bins) == 5

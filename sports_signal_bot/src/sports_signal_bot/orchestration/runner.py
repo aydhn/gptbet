@@ -1,17 +1,20 @@
 import logging
 from datetime import datetime
-import pandas as pd
-import numpy as np
-from typing import Dict, Any
+from typing import Any, Dict
 
-from sports_signal_bot.data.mock_providers import MockScheduleProvider, MockOddsProvider
+import numpy as np
+import pandas as pd
+
+from sports_signal_bot.core.logger import get_logger
+from sports_signal_bot.data.mock_providers import (MockOddsProvider,
+                                                   MockScheduleProvider)
 from sports_signal_bot.features.registry import FeatureRegistry
 from sports_signal_bot.models.dummy_predictor import DummyPredictor
 from sports_signal_bot.notifications.telegram_stub import TelegramNotifierStub
 from sports_signal_bot.utils.evaluation import EvaluationHelper
-from sports_signal_bot.core.logger import get_logger
 
 logger = get_logger("SmokeRunner")
+
 
 class SmokeRunner:
     def __init__(self):
@@ -35,14 +38,19 @@ class SmokeRunner:
         logger.info(f"Fetched odds for {len(odds)} events.")
 
         # 3. Build features
-        event_dicts = [{"event_id": e.event_id, "home_team": e.home_team, "away_team": e.away_team} for e in events]
+        event_dicts = [
+            {"event_id": e.event_id, "home_team": e.home_team, "away_team": e.away_team}
+            for e in events
+        ]
         features = pd.DataFrame(event_dicts)
         features["mock_f1"] = 1.0
         features["mock_f2"] = 0.5
         logger.info(f"Built feature matrix of shape {features.shape}.")
 
         # 4. Mock Training
-        X_train = pd.DataFrame({"mock_f1": [1.0, 0.5, 0.8, 0.2], "mock_f2": [0.2, 0.8, 0.5, 0.9]})
+        X_train = pd.DataFrame(
+            {"mock_f1": [1.0, 0.5, 0.8, 0.2], "mock_f2": [0.2, 0.8, 0.5, 0.9]}
+        )
         y_train = pd.Series([0, 1, 0, 1])
         logger.info("Training dummy model...")
         self.model.fit(X_train, y_train)
@@ -63,4 +71,8 @@ class SmokeRunner:
         self.notifier.send_message(summary)
 
         logger.info("Smoke Pipeline completed successfully.")
-        return {"status": "success", "metrics": metrics, "predictions": predictions.tolist()}
+        return {
+            "status": "success",
+            "metrics": metrics,
+            "predictions": predictions.tolist(),
+        }

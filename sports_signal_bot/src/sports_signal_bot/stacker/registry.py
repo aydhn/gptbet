@@ -1,5 +1,7 @@
-from typing import Dict, Type, Any
+from typing import Any, Dict, Type
+
 from .trainers.base import BaseStacker
+
 
 class StackerRegistry:
     _registry: Dict[str, Type[BaseStacker]] = {}
@@ -9,6 +11,7 @@ class StackerRegistry:
         def wrapper(stacker_cls: Type[BaseStacker]):
             cls._registry[name] = stacker_cls
             return stacker_cls
+
         return wrapper
 
     @classmethod
@@ -21,10 +24,11 @@ class StackerRegistry:
     def list_stackers(cls) -> list[str]:
         return list(cls._registry.keys())
 
-# Register built-in stackers
-from .trainers.logistic import MetaLogisticStacker
+
 from .trainers.gradient_boosting import MetaGradientBoostingStacker
 from .trainers.identity import MetaIdentityStacker
+# Register built-in stackers
+from .trainers.logistic import MetaLogisticStacker
 
 StackerRegistry.register("meta_logistic")(MetaLogisticStacker)
 StackerRegistry.register("meta_gradient_boosting")(MetaGradientBoostingStacker)

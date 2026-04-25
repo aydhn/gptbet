@@ -1,7 +1,11 @@
 from typing import Dict, List
+
 import numpy as np
 
-def probability_dispersion(probs_list: List[Dict[str, float]], class_labels: List[str]) -> float:
+
+def probability_dispersion(
+    probs_list: List[Dict[str, float]], class_labels: List[str]
+) -> float:
     """Calculates the average variance of probabilities across sources for each class."""
     if not probs_list or not class_labels:
         return 0.0
@@ -13,7 +17,10 @@ def probability_dispersion(probs_list: List[Dict[str, float]], class_labels: Lis
 
     return float(np.mean(variances))
 
-def top_class_disagreement(probs_list: List[Dict[str, float]], class_labels: List[str]) -> float:
+
+def top_class_disagreement(
+    probs_list: List[Dict[str, float]], class_labels: List[str]
+) -> float:
     """Calculates the fraction of sources that disagree on the top class."""
     if not probs_list or len(probs_list) <= 1:
         return 0.0
@@ -31,6 +38,7 @@ def top_class_disagreement(probs_list: List[Dict[str, float]], class_labels: Lis
     disagreements = sum(1 for c in top_classes if c != most_common)
     return float(disagreements / len(top_classes))
 
+
 def calculate_entropy(probs: Dict[str, float]) -> float:
     """Calculates the entropy of a probability distribution."""
     if not probs:
@@ -42,7 +50,11 @@ def calculate_entropy(probs: Dict[str, float]) -> float:
             entropy -= p * np.log2(p)
     return entropy
 
-def source_count_summary(predictions: List['StandardizedPredictionRecord']) -> Dict[str, int]:
+
+def source_count_summary(
+    predictions: List["StandardizedPredictionRecord"],
+) -> Dict[str, int]:
     from collections import Counter
+
     counts = Counter([p.source_family for p in predictions])
     return dict(counts)

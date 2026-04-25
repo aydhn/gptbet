@@ -1,34 +1,27 @@
-from .contracts import (
-    CalibrationDataset,
-    CalibrationSummary,
-    CalibrationRunManifest,
-    ReliabilityBinRecord,
-    CalibratedPredictionRecord,
-    CalibrationComparisonRecord
-)
-from .dataset import build_calibration_dataset_from_validation_predictions, extract_calibration_features_and_targets
-from .utils import (
-    ensure_class_order,
-    validate_probability_vectors,
-    flatten_binary_probabilities,
-    expand_multiclass_probabilities,
-    clip_probabilities
-)
-from .metrics import calculate_log_loss, calculate_brier_score, calculate_ece_mce
-from .reliability import generate_reliability_bins
-from .comparison import create_comparison_record
 from .base import BaseCalibrator
-from .registry import CalibrationRegistry
-from .factory import CalibrationFactory
-from .runner import CalibrationRunner
-
 # IMPORTANT: Import calibrator implementations so they register themselves!
 from .binary.identity import BinaryIdentityCalibrator
-from .binary.sigmoid import BinarySigmoidCalibrator
 from .binary.isotonic import BinaryIsotonicCalibrator
+from .binary.sigmoid import BinarySigmoidCalibrator
+from .comparison import create_comparison_record
+from .contracts import (CalibratedPredictionRecord,
+                        CalibrationComparisonRecord, CalibrationDataset,
+                        CalibrationRunManifest, CalibrationSummary,
+                        ReliabilityBinRecord)
+from .dataset import (build_calibration_dataset_from_validation_predictions,
+                      extract_calibration_features_and_targets)
+from .factory import CalibrationFactory
+from .metrics import (calculate_brier_score, calculate_ece_mce,
+                      calculate_log_loss)
 from .multiclass.identity import MulticlassIdentityCalibrator
-from .multiclass.wrapper import MulticlassWrapperCalibrator
 from .multiclass.temperature_placeholder import TemperatureScalingPlaceholder
+from .multiclass.wrapper import MulticlassWrapperCalibrator
+from .registry import CalibrationRegistry
+from .reliability import generate_reliability_bins
+from .runner import CalibrationRunner
+from .utils import (clip_probabilities, ensure_class_order,
+                    expand_multiclass_probabilities,
+                    flatten_binary_probabilities, validate_probability_vectors)
 
 __all__ = [
     "CalibrationDataset",
@@ -58,5 +51,5 @@ __all__ = [
     "BinaryIsotonicCalibrator",
     "MulticlassIdentityCalibrator",
     "MulticlassWrapperCalibrator",
-    "TemperatureScalingPlaceholder"
+    "TemperatureScalingPlaceholder",
 ]

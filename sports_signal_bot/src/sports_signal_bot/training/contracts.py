@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class DatasetBuildConfig(BaseModel):
     sport: str
@@ -12,10 +14,12 @@ class DatasetBuildConfig(BaseModel):
     drop_null_features: bool = True
     exclude_columns: List[str] = Field(default_factory=list)
 
+
 class UnsupportedRowRecord(BaseModel):
     event_id: str
     reason: str
     metadata: Dict[str, Any] = Field(default_factory=dict)
+
 
 class FeatureTargetAlignmentRecord(BaseModel):
     event_id: str
@@ -31,6 +35,7 @@ class FeatureTargetAlignmentRecord(BaseModel):
     is_valid: bool
     invalid_reason: Optional[str] = None
 
+
 class DatasetSummary(BaseModel):
     sport: str
     market_type: str
@@ -43,6 +48,7 @@ class DatasetSummary(BaseModel):
     date_range: Dict[str, str]
     warnings: List[str] = Field(default_factory=list)
 
+
 class TrainingDataset(BaseModel):
     # This class just holds references or summary data, the actual dataframe is handled by pandas
     # We use this as a strongly typed wrapper
@@ -53,6 +59,7 @@ class TrainingDataset(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
 
 class ValidationPredictionRecord(BaseModel):
     event_id: str
@@ -67,6 +74,7 @@ class ValidationPredictionRecord(BaseModel):
     split_metadata: Dict[str, Any] = Field(default_factory=dict)
     timestamp_utc: str
 
+
 class SplitSummary(BaseModel):
     strategy_name: str
     fold_id: str
@@ -75,6 +83,7 @@ class SplitSummary(BaseModel):
     test_rows: Optional[int] = None
     train_date_range: Dict[str, str]
     valid_date_range: Dict[str, str]
+
 
 class FoldManifest(BaseModel):
     fold_id: str
@@ -86,6 +95,7 @@ class FoldManifest(BaseModel):
     valid_rows: int
     class_distribution: Optional[Dict[str, int]] = None
     metrics: Dict[str, float] = Field(default_factory=dict)
+
 
 class TrainingRunManifest(BaseModel):
     run_id: str

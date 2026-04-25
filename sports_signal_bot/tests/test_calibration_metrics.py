@@ -1,6 +1,10 @@
-import pytest
 import numpy as np
-from sports_signal_bot.calibration.metrics import calculate_log_loss, calculate_brier_score, calculate_ece_mce
+import pytest
+
+from sports_signal_bot.calibration.metrics import (calculate_brier_score,
+                                                   calculate_ece_mce,
+                                                   calculate_log_loss)
+
 
 def test_calculate_log_loss_binary():
     y_true = np.array([0, 1, 1, 0])
@@ -10,12 +14,14 @@ def test_calculate_log_loss_binary():
     assert isinstance(loss, float)
     assert loss > 0
 
+
 def test_calculate_brier_score_binary():
     y_true = np.array([0, 1, 1, 0])
     y_prob = np.array([[0.9, 0.1], [0.2, 0.8], [0.3, 0.7], [0.6, 0.4]])
 
     brier = calculate_brier_score(y_true, y_prob, positive_class_index=1)
     np.testing.assert_allclose(brier, 0.075)
+
 
 def test_calculate_ece_binary():
     y_true = np.array([1, 1, 0, 0])

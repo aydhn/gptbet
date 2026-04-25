@@ -1,5 +1,7 @@
 from typing import Dict, List, Optional, Type
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
+
 
 class FeatureRegistry:
     def __init__(self):
@@ -11,9 +13,15 @@ class FeatureRegistry:
     def list_builders(self, sport: Optional[str] = None) -> List[BaseFeatureBuilder]:
         if sport is None:
             return list(self._builders.values())
-        return [b for b in self._builders.values() if sport in b.supported_sports or 'all' in b.supported_sports]
+        return [
+            b
+            for b in self._builders.values()
+            if sport in b.supported_sports or "all" in b.supported_sports
+        ]
 
-    def select_by_family(self, family: str, sport: Optional[str] = None) -> List[BaseFeatureBuilder]:
+    def select_by_family(
+        self, family: str, sport: Optional[str] = None
+    ) -> List[BaseFeatureBuilder]:
         builders = self.list_builders(sport=sport)
         return [b for b in builders if b.family == family]
 

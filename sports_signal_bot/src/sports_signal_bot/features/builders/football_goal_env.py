@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class FootballGoalEnvironmentBuilder(BaseFeatureBuilder):
     """Calculates football-specific goal scoring environment proxies."""
@@ -25,10 +28,14 @@ class FootballGoalEnvironmentBuilder(BaseFeatureBuilder):
     @property
     def output_columns(self) -> List[str]:
         return [
-            "expected_total_placeholder", "home_team_total_proxy", "away_team_total_proxy"
+            "expected_total_placeholder",
+            "home_team_total_proxy",
+            "away_team_total_proxy",
         ]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"]
         df = pd.DataFrame({"event_id": events_df["event_id"]})
 

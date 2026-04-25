@@ -1,12 +1,16 @@
 import json
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import Dict, List, Any
-from sports_signal_bot.features.contracts import FeatureBuildContext, FeatureManifestRecord
+
 from sports_signal_bot.core.logger import get_logger
+from sports_signal_bot.features.contracts import (FeatureBuildContext,
+                                                  FeatureManifestRecord)
 
 logger = get_logger("FeatureManifestGenerator")
+
 
 def generate_manifest(
     context: FeatureBuildContext,
@@ -14,7 +18,7 @@ def generate_manifest(
     feature_matrix: pd.DataFrame,
     active_builders: List[Any],
     output_path: str,
-    warnings: List[str] = None
+    warnings: List[str] = None,
 ) -> FeatureManifestRecord:
 
     if warnings is None:
@@ -35,7 +39,7 @@ def generate_manifest(
         null_summary=null_summary,
         row_count=len(feature_matrix),
         output_path=output_path,
-        warnings=warnings
+        warnings=warnings,
     )
 
     # Optional: write to disk

@@ -1,6 +1,9 @@
+from typing import Any, Dict
+
 from sklearn.dummy import DummyClassifier
+
 from sports_signal_bot.training.trainers.base import SklearnClassifierTrainer
-from typing import Dict, Any
+
 
 class DummyTrainer(SklearnClassifierTrainer):
     @property
@@ -9,7 +12,7 @@ class DummyTrainer(SklearnClassifierTrainer):
 
     def __init__(self, config: Dict[str, Any]):
         # No scaling needed
-        config.setdefault('scale_numeric', False)
+        config.setdefault("scale_numeric", False)
         super().__init__(config)
 
         kwargs = self.config.get("model_kwargs", {})

@@ -1,15 +1,17 @@
+from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Optional, Any, Tuple
-from sklearn.metrics import log_loss, brier_score_loss, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from pydantic import BaseModel
+from sklearn.metrics import (accuracy_score, brier_score_loss, f1_score,
+                             log_loss, precision_score, recall_score,
+                             roc_auc_score)
 
 from .contracts import ClassLevelMetricRecord
 
+
 def compute_probabilistic_metrics(
-    y_true: np.ndarray,
-    y_pred_proba: np.ndarray,
-    labels: Optional[List[str]] = None
+    y_true: np.ndarray, y_pred_proba: np.ndarray, labels: Optional[List[str]] = None
 ) -> Dict[str, float]:
     """Computes generic probabilistic metrics for binary or multiclass outputs."""
     metrics = {}
@@ -68,19 +70,20 @@ def compute_probabilistic_metrics(
         else:
             # binary
             p = np.clip(y_pred_proba, epsilon, 1 - epsilon)
-            entropy = - (p * np.log(p) + (1 - p) * np.log(1 - p))
+            entropy = -(p * np.log(p) + (1 - p) * np.log(1 - p))
             metrics["average_entropy"] = float(np.mean(entropy))
     except Exception:
         metrics["average_entropy"] = np.nan
 
     return metrics
 
+
 def compute_classification_metrics(
     y_true: np.ndarray,
     y_pred_class: np.ndarray,
     y_pred_proba: Optional[np.ndarray] = None,
     labels: Optional[List[str]] = None,
-    is_multiclass: bool = False
+    is_multiclass: bool = False,
 ) -> Tuple[Dict[str, float], List[ClassLevelMetricRecord]]:
     """Computes binary or multiclass classification metrics."""
     metrics = {}
@@ -93,8 +96,24 @@ def compute_classification_metrics(
 
     if is_multiclass:
         try:
-            metrics["macro_f1"] = float(f1_score(y_true, y_pred_class, average="macro", labels=labels, zero_division=0))
-            metrics["weighted_f1"] = float(f1_score(y_true, y_pred_class, average="weighted", labels=labels, zero_division=0))
+            metrics["macro_f1"] = float(
+                f1_score(
+                    y_true,
+                    y_pred_class,
+                    average="macro",
+                    labels=labels,
+                    zero_division=0,
+                )
+            )
+            metrics["weighted_f1"] = float(
+                f1_score(
+                    y_true,
+                    y_pred_class,
+                    average="weighted",
+                    labels=labels,
+                    zero_division=0,
+                )
+            )
         except Exception:
             metrics["macro_f1"] = np.nan
             metrics["weighted_f1"] = np.nan
@@ -102,34 +121,50 @@ def compute_classification_metrics(
         # Class level metrics
         if labels is not None:
             try:
-                precisions = precision_score(y_true, y_pred_class, average=None, labels=labels, zero_division=0)
-                recalls = recall_score(y_true, y_pred_class, average=None, labels=labels, zero_division=0)
-                f1s = f1_score(y_true, y_pred_class, average=None, labels=labels, zero_division=0)
+                precisions = precision_score(
+                    y_true, y_pred_class, average=None, labels=labels, zero_division=0
+                )
+                recalls = recall_score(
+                    y_true, y_pred_class, average=None, labels=labels, zero_division=0
+                )
+                f1s = f1_score(
+                    y_true, y_pred_class, average=None, labels=labels, zero_division=0
+                )
 
                 # Calculate support manually or from classification_report
                 for i, label in enumerate(labels):
                     support = int(np.sum(y_true == label))
-                    class_metrics.append(ClassLevelMetricRecord(
-                        class_name=str(label),
-                        precision=float(precisions[i]),
-                        recall=float(recalls[i]),
-                        f1_score=float(f1s[i]),
-                        support=support
-                    ))
+                    class_metrics.append(
+                        ClassLevelMetricRecord(
+                            class_name=str(label),
+                            precision=float(precisions[i]),
+                            recall=float(recalls[i]),
+                            f1_score=float(f1s[i]),
+                            support=support,
+                        )
+                    )
             except Exception:
                 pass
 
-    else: # Binary
+    else:  # Binary
         # Assume positive class is True or 1 or labels[1]
         pos_label = 1
         if labels is not None and len(labels) > 1:
             pos_label = labels[1]
 
         try:
-            metrics["precision"] = float(precision_score(y_true, y_pred_class, pos_label=pos_label, zero_division=0))
-            metrics["recall"] = float(recall_score(y_true, y_pred_class, pos_label=pos_label, zero_division=0))
-            metrics["f1"] = float(f1_score(y_true, y_pred_class, pos_label=pos_label, zero_division=0))
-            metrics["macro_f1"] = metrics["f1"] # for fallback
+            metrics["precision"] = float(
+                precision_score(
+                    y_true, y_pred_class, pos_label=pos_label, zero_division=0
+                )
+            )
+            metrics["recall"] = float(
+                recall_score(y_true, y_pred_class, pos_label=pos_label, zero_division=0)
+            )
+            metrics["f1"] = float(
+                f1_score(y_true, y_pred_class, pos_label=pos_label, zero_division=0)
+            )
+            metrics["macro_f1"] = metrics["f1"]  # for fallback
         except Exception:
             metrics["precision"] = np.nan
             metrics["recall"] = np.nan
@@ -142,11 +177,14 @@ def compute_classification_metrics(
                 if y_pred_proba.ndim == 1:
                     metrics["roc_auc"] = float(roc_auc_score(y_true, y_pred_proba))
                 elif y_pred_proba.ndim == 2 and y_pred_proba.shape[1] == 2:
-                    metrics["roc_auc"] = float(roc_auc_score(y_true, y_pred_proba[:, 1]))
+                    metrics["roc_auc"] = float(
+                        roc_auc_score(y_true, y_pred_proba[:, 1])
+                    )
             except Exception:
                 metrics["roc_auc"] = np.nan
 
     return metrics, class_metrics
+
 
 def compute_all_metrics(
     df: pd.DataFrame,
@@ -154,7 +192,7 @@ def compute_all_metrics(
     true_label_col: str = "true_label",
     pred_class_col: str = "predicted_class",
     proba_cols: Optional[List[str]] = None,
-    labels: Optional[List[str]] = None
+    labels: Optional[List[str]] = None,
 ) -> Tuple[Dict[str, float], List[ClassLevelMetricRecord]]:
     """Helper to compute all metrics for a given source dataframe."""
 

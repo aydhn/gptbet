@@ -1,7 +1,10 @@
+from typing import Any, Dict, List
+
 from sklearn.linear_model import LogisticRegression
-from typing import Dict, Any, List
-from .base import BaseStacker
+
 from ..contracts import MetaTrainingDataset
+from .base import BaseStacker
+
 
 class MetaLogisticStacker(BaseStacker):
     def __init__(self, config: Dict[str, Any]):
@@ -19,7 +22,7 @@ class MetaLogisticStacker(BaseStacker):
         df.fillna(0.0, inplace=True)
 
         X = df[self.feature_names]
-        y = df['target']
+        y = df["target"]
 
         # Hyperparameters
         params = self.config.get("meta_model_hyperparams", {})
@@ -29,7 +32,9 @@ class MetaLogisticStacker(BaseStacker):
         # Determine multi_class based on the number of unique target classes
         num_classes = len(self.class_labels)
         if num_classes > 2:
-            self.model = LogisticRegression(C=c_val, max_iter=max_iter) # multinomial is default if multiclass
+            self.model = LogisticRegression(
+                C=c_val, max_iter=max_iter
+            )  # multinomial is default if multiclass
         else:
             self.model = LogisticRegression(C=c_val, max_iter=max_iter)
 
@@ -40,7 +45,7 @@ class MetaLogisticStacker(BaseStacker):
             "status": "success",
             "model": "MetaLogisticStacker",
             "classes": self.class_labels,
-            "feature_count": len(self.feature_names)
+            "feature_count": len(self.feature_names),
         }
 
     def predict_proba(self, dataset: MetaTrainingDataset) -> List[Dict[str, float]]:

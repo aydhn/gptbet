@@ -1,7 +1,9 @@
 import pytest
-from sports_signal_bot.markets.registry import MARKET_REGISTRY
+
 from sports_signal_bot.benchmark.factory import BENCHMARK_FACTORY
 from sports_signal_bot.core.constants import SportType
+from sports_signal_bot.markets.registry import MARKET_REGISTRY
+
 
 def test_market_registry():
     defs = MARKET_REGISTRY.list_supported_markets(SportType.FOOTBALL)
@@ -14,6 +16,7 @@ def test_market_registry():
     lines = MARKET_REGISTRY.get_default_lines("football_over_under")
     assert len(lines) > 0
     assert MARKET_REGISTRY.is_line_market("football_over_under")
+
 
 def test_benchmark_factory():
     bm = BENCHMARK_FACTORY.get_benchmark("random")

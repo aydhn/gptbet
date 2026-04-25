@@ -1,6 +1,8 @@
-from typing import Dict, Any, List
-from .base import BaseStacker
+from typing import Any, Dict, List
+
 from ..contracts import MetaTrainingDataset
+from .base import BaseStacker
+
 
 class MetaIdentityStacker(BaseStacker):
     """
@@ -8,9 +10,10 @@ class MetaIdentityStacker(BaseStacker):
     Simply averages the probabilities of available calibrated sources,
     or just returns the first source if no others exist.
     """
+
     def __init__(self, config: Dict[str, Any]):
         super().__init__(config)
-        self.is_fitted = True # Doesn't require fitting
+        self.is_fitted = True  # Doesn't require fitting
 
     def fit(self, dataset: MetaTrainingDataset) -> Dict[str, Any]:
         self.sport = dataset.sport
@@ -22,7 +25,7 @@ class MetaIdentityStacker(BaseStacker):
             "status": "success",
             "model": "MetaIdentityStacker",
             "classes": self.class_labels,
-            "feature_count": len(self.feature_names)
+            "feature_count": len(self.feature_names),
         }
 
     def predict_proba(self, dataset: MetaTrainingDataset) -> List[Dict[str, float]]:
@@ -38,7 +41,9 @@ class MetaIdentityStacker(BaseStacker):
             for source in record.available_sources:
                 source_count += 1
                 for cls in self.class_labels:
-                    prob_dict[cls] += record.source_probabilities.get(f"{source}_prob_{cls}", 0.0)
+                    prob_dict[cls] += record.source_probabilities.get(
+                        f"{source}_prob_{cls}", 0.0
+                    )
 
             if source_count > 0:
                 for cls in self.class_labels:

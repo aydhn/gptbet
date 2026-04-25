@@ -1,7 +1,11 @@
-from typing import List, Dict
-from .contracts import StandardizedPredictionRecord, EnsembleInputRecord
+from typing import Dict, List
 
-def group_predictions_by_event_market(predictions: List[StandardizedPredictionRecord]) -> List[EnsembleInputRecord]:
+from .contracts import EnsembleInputRecord, StandardizedPredictionRecord
+
+
+def group_predictions_by_event_market(
+    predictions: List[StandardizedPredictionRecord],
+) -> List[EnsembleInputRecord]:
     """Groups a flat list of predictions into EnsembleInputRecords."""
     grouped: Dict[str, List[StandardizedPredictionRecord]] = {}
 
@@ -21,7 +25,7 @@ def group_predictions_by_event_market(predictions: List[StandardizedPredictionRe
                 event_id=first.event_id,
                 sport=first.sport,
                 market_type=first.market_type,
-                predictions=preds
+                predictions=preds,
             )
         )
 

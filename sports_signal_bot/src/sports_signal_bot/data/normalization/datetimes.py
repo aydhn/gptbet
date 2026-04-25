@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
+
 from dateutil import parser
+
 
 def parse_datetime_to_utc(date_str: str) -> datetime:
     """Parses a datetime string and returns a UTC aware datetime."""

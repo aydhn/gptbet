@@ -1,6 +1,9 @@
-from pydantic import BaseModel, Field
 from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
 from sports_signal_bot.core.constants import SportType
+
 
 class MarketDefinition(BaseModel):
     market_type: str

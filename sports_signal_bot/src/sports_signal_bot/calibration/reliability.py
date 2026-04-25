@@ -1,12 +1,15 @@
-import numpy as np
 from typing import List, Optional
+
+import numpy as np
+
 from sports_signal_bot.calibration.contracts import ReliabilityBinRecord
+
 
 def generate_reliability_bins(
     y_true: np.ndarray,
     y_prob: np.ndarray,
     n_bins: int = 10,
-    positive_class_index: int = 1
+    positive_class_index: int = 1,
 ) -> List[ReliabilityBinRecord]:
     """
     Generates bin-level reliability summaries.
@@ -54,14 +57,16 @@ def generate_reliability_bins(
             emp_freq = 0.0
             cal_gap = 0.0
 
-        records.append(ReliabilityBinRecord(
-            bin_index=i,
-            lower_bound=float(bin_lower),
-            upper_bound=float(bin_upper),
-            count=count,
-            mean_predicted_probability=mean_pred_prob,
-            empirical_frequency=emp_freq,
-            calibration_gap=cal_gap
-        ))
+        records.append(
+            ReliabilityBinRecord(
+                bin_index=i,
+                lower_bound=float(bin_lower),
+                upper_bound=float(bin_upper),
+                count=count,
+                mean_predicted_probability=mean_pred_prob,
+                empirical_frequency=emp_freq,
+                calibration_gap=cal_gap,
+            )
+        )
 
     return records

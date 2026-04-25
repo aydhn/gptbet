@@ -1,33 +1,40 @@
-from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
 from sports_signal_bot.stacker.contracts import MetaTrainingDataset
+from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
+
 
 def test_meta_dataset_builder():
     config = {
         "enabled_sources": ["model_A", "model_B"],
         "use_only_calibrated_sources": True,
-        "include_disagreement_features": True
+        "include_disagreement_features": True,
     }
     builder = MetaDatasetBuilder(config)
 
     # Mock data
     preds = [
         StandardizedPredictionRecord(
-            event_id="e1", sport="football", market_type="1x2",
-            source_family="ml", source_name="model_A",
+            event_id="e1",
+            sport="football",
+            market_type="1x2",
+            source_family="ml",
+            source_name="model_A",
             class_labels=["home", "draw", "away"],
             probabilities={"home": 0.5, "draw": 0.3, "away": 0.2},
             predicted_class="home",
-            is_calibrated=True
+            is_calibrated=True,
         ),
         StandardizedPredictionRecord(
-            event_id="e1", sport="football", market_type="1x2",
-            source_family="ml", source_name="model_B",
+            event_id="e1",
+            sport="football",
+            market_type="1x2",
+            source_family="ml",
+            source_name="model_B",
             class_labels=["home", "draw", "away"],
             probabilities={"home": 0.4, "draw": 0.4, "away": 0.2},
             predicted_class="home",
-            is_calibrated=True
-        )
+            is_calibrated=True,
+        ),
     ]
 
     target_labels = {"e1": "home"}

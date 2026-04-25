@@ -1,7 +1,9 @@
 import pytest
-from sports_signal_bot.probabilistic.football import (
-    LambdaBuildContext, GoalLambdaBuilder, GoalEnvironmentConfig
-)
+
+from sports_signal_bot.probabilistic.football import (GoalEnvironmentConfig,
+                                                      GoalLambdaBuilder,
+                                                      LambdaBuildContext)
+
 
 def test_lambda_builder_basic():
     ctx = LambdaBuildContext(event_id="test1", run_id="r1")
@@ -12,7 +14,7 @@ def test_lambda_builder_basic():
         "league_total_goal_baseline": 2.5,
         "home_rating_proxy": 1500.0,
         "away_rating_proxy": 1500.0,
-        "home_advantage": 0.2
+        "home_advantage": 0.2,
     }
 
     estimate = builder.build(ctx, features)
@@ -23,6 +25,7 @@ def test_lambda_builder_basic():
     assert estimate.home_lambda == 1.45
     assert estimate.away_lambda == 1.25
     assert len(estimate.warnings) == 0
+
 
 def test_lambda_builder_clipping():
     # Test min limit
@@ -35,7 +38,7 @@ def test_lambda_builder_clipping():
         "league_total_goal_baseline": 2.5,
         "home_rating_proxy": 500.0,
         "away_rating_proxy": 3000.0,
-        "home_advantage": 0.0
+        "home_advantage": 0.0,
     }
 
     estimate = builder.build(ctx, features)
@@ -43,6 +46,7 @@ def test_lambda_builder_clipping():
     # Should clip to minimum
     assert estimate.home_lambda == 0.5
     assert any("clipped" in w for w in estimate.warnings)
+
 
 def test_lambda_builder_leakage_guard():
     ctx = LambdaBuildContext(event_id="test1", run_id="r1")
@@ -52,7 +56,7 @@ def test_lambda_builder_leakage_guard():
         "league_total_goal_baseline": 2.5,
         "home_rating_proxy": 1500.0,
         "away_rating_proxy": 1500.0,
-        "final_home_score": 2.0  # LEAKAGE!
+        "final_home_score": 2.0,  # LEAKAGE!
     }
 
     estimate = builder.build(ctx, features)

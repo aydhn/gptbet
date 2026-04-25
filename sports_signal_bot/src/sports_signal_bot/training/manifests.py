@@ -1,12 +1,16 @@
 import json
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import Dict, List, Any
-from sports_signal_bot.training.contracts import TrainingRunManifest, FoldManifest
+
 from sports_signal_bot.core.logger import get_logger
+from sports_signal_bot.training.contracts import (FoldManifest,
+                                                  TrainingRunManifest)
 
 logger = get_logger("TrainingManifestGenerator")
+
 
 def generate_manifest(
     run_id: str,
@@ -26,7 +30,7 @@ def generate_manifest(
     seed: int,
     config_snapshot: Dict[str, Any],
     started_at_utc: str,
-    output_path: str
+    output_path: str,
 ) -> TrainingRunManifest:
 
     manifest = TrainingRunManifest(
@@ -47,7 +51,7 @@ def generate_manifest(
         fold_manifests=fold_manifests,
         warnings=warnings,
         seed=seed,
-        config_snapshot=config_snapshot
+        config_snapshot=config_snapshot,
     )
 
     out_file = Path(output_path)

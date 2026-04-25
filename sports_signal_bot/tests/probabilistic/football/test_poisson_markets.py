@@ -1,16 +1,24 @@
-import pytest
 import numpy as np
-from sports_signal_bot.probabilistic.football import (
-    GoalLambdaEstimate, GoalEnvironmentConfig, PoissonScoreMatrix, MarketExtractor
-)
+import pytest
+
+from sports_signal_bot.probabilistic.football import (GoalEnvironmentConfig,
+                                                      GoalLambdaEstimate,
+                                                      MarketExtractor,
+                                                      PoissonScoreMatrix)
+
 
 def setup_matrix(home_lambda: float, away_lambda: float) -> PoissonScoreMatrix:
     estimate = GoalLambdaEstimate(
-        event_id="test", home_lambda=home_lambda, away_lambda=away_lambda,
-        expected_total_goals=home_lambda+away_lambda, expected_goal_diff=home_lambda-away_lambda, model_name="test"
+        event_id="test",
+        home_lambda=home_lambda,
+        away_lambda=away_lambda,
+        expected_total_goals=home_lambda + away_lambda,
+        expected_goal_diff=home_lambda - away_lambda,
+        model_name="test",
     )
     config = GoalEnvironmentConfig(max_goals_cutoff=10)
     return PoissonScoreMatrix(estimate, config)
+
 
 def test_extract_1x2():
     # Strong home favorite
@@ -21,6 +29,7 @@ def test_extract_1x2():
     assert probs["away_win"] < 0.15
     assert np.isclose(sum(probs.values()), 1.0)
 
+
 def test_extract_over_under():
     # Total goals = 3.0, Over 2.5 should be favored
     matrix = setup_matrix(2.0, 1.0)
@@ -29,6 +38,7 @@ def test_extract_over_under():
     assert probs["over"] > 0.5
     assert probs["under"] < 0.5
     assert np.isclose(probs["over"] + probs["under"], 1.0)
+
 
 def test_extract_btts():
     # Both scoring high
@@ -39,6 +49,7 @@ def test_extract_btts():
     # Indep prob that both score > 0 is ~ 0.74
     assert probs["yes"] > 0.7
     assert np.isclose(probs["yes"] + probs["no"], 1.0)
+
 
 def test_extract_expected_metrics():
     matrix = setup_matrix(1.5, 1.0)

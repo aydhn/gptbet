@@ -1,12 +1,16 @@
-from typing import List, Dict, Any, Tuple
-from sports_signal_bot.data.validators.base import BaseValidator
+from typing import Any, Dict, List, Tuple
+
 from sports_signal_bot.data.contracts.manifests import ValidationIssueRecord
+from sports_signal_bot.data.validators.base import BaseValidator
+
 
 class RequiredFieldsValidator(BaseValidator):
     def __init__(self, required_fields: List[str]):
         self.required_fields = required_fields
 
-    def validate(self, records: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
+    def validate(
+        self, records: List[Dict[str, Any]]
+    ) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
         valid_records = []
         issues = []
 
@@ -21,7 +25,11 @@ class RequiredFieldsValidator(BaseValidator):
                             field=field,
                             issue_type="missing_required_field",
                             message=f"Required field '{field}' is missing or empty.",
-                            record_id=str(record.get('source_event_id', record.get('event_id', idx)))
+                            record_id=str(
+                                record.get(
+                                    "source_event_id", record.get("event_id", idx)
+                                )
+                            ),
                         )
                     )
 
@@ -30,11 +38,14 @@ class RequiredFieldsValidator(BaseValidator):
 
         return valid_records, issues
 
+
 class UniqueEventValidator(BaseValidator):
     def __init__(self, id_field: str = "source_event_id"):
         self.id_field = id_field
 
-    def validate(self, records: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
+    def validate(
+        self, records: List[Dict[str, Any]]
+    ) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
         valid_records = []
         issues = []
         seen_ids = set()
@@ -48,12 +59,12 @@ class UniqueEventValidator(BaseValidator):
 
             if record_id in seen_ids:
                 issues.append(
-                     ValidationIssueRecord(
+                    ValidationIssueRecord(
                         level="error",
                         field=self.id_field,
                         issue_type="duplicate_event",
                         message=f"Duplicate event found for id '{record_id}'.",
-                        record_id=str(record_id)
+                        record_id=str(record_id),
                     )
                 )
             else:
@@ -62,8 +73,11 @@ class UniqueEventValidator(BaseValidator):
 
         return valid_records, issues
 
+
 class HomeAwayValidator(BaseValidator):
-    def validate(self, records: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
+    def validate(
+        self, records: List[Dict[str, Any]]
+    ) -> Tuple[List[Dict[str, Any]], List[ValidationIssueRecord]]:
         valid_records = []
         issues = []
 
@@ -73,12 +87,14 @@ class HomeAwayValidator(BaseValidator):
 
             if home and away and home == away:
                 issues.append(
-                     ValidationIssueRecord(
+                    ValidationIssueRecord(
                         level="error",
                         field="teams",
                         issue_type="invalid_matchup",
                         message=f"Home team and away team are identical: {home}.",
-                        record_id=str(record.get('source_event_id', record.get('event_id', idx)))
+                        record_id=str(
+                            record.get("source_event_id", record.get("event_id", idx))
+                        ),
                     )
                 )
             else:
