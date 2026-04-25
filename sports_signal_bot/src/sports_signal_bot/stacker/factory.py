@@ -1,6 +1,8 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from .registry import StackerRegistry
 from .trainers.base import BaseStacker
+
 
 class StackerFactory:
     @staticmethod

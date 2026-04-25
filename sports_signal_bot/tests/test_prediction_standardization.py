@@ -1,6 +1,7 @@
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
 from sports_signal_bot.ensemble.standardize import standardize_prediction
 
+
 def test_standardize_prediction():
     record = standardize_prediction(
         event_id="e1",
@@ -10,7 +11,7 @@ def test_standardize_prediction():
         source_name="logistic_regression",
         class_labels=["1", "X", "2"],
         probabilities={"1": 0.5, "X": 0.3, "2": 0.2},
-        predicted_class="1"
+        predicted_class="1",
     )
 
     assert isinstance(record, StandardizedPredictionRecord)

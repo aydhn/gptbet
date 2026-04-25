@@ -1,8 +1,12 @@
-import pytest
 import pandas as pd
-from sports_signal_bot.features.builders.football_strength import FootballTeamStrengthBuilder
-from sports_signal_bot.features.builders.basketball_tempo import BasketballTempoBuilder
+import pytest
+
+from sports_signal_bot.features.builders.basketball_tempo import \
+    BasketballTempoBuilder
+from sports_signal_bot.features.builders.football_strength import \
+    FootballTeamStrengthBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 def test_football_builder():
     builder = FootballTeamStrengthBuilder()
@@ -12,6 +16,7 @@ def test_football_builder():
 
     assert "home_rating_proxy" in df.columns
     assert df["home_rating_proxy"].iloc[0] == 1500.0
+
 
 def test_basketball_builder():
     builder = BasketballTempoBuilder()

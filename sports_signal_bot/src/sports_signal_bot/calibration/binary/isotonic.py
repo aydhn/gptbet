@@ -1,14 +1,18 @@
-import numpy as np
-from typing import Dict, Any, Optional
-from sklearn.isotonic import IsotonicRegression
+from typing import Any, Dict, Optional
+
 import joblib
+import numpy as np
+from sklearn.isotonic import IsotonicRegression
 
 from sports_signal_bot.calibration.base import BaseCalibrator
 from sports_signal_bot.calibration.registry import CalibrationRegistry
-from sports_signal_bot.calibration.utils import flatten_binary_probabilities, expand_multiclass_probabilities, clip_probabilities
+from sports_signal_bot.calibration.utils import (
+    clip_probabilities, expand_multiclass_probabilities,
+    flatten_binary_probabilities)
 from sports_signal_bot.core.logger import get_logger
 
 logger = get_logger("IsotonicCalibrator")
+
 
 @CalibrationRegistry.register("binary_isotonic")
 class BinaryIsotonicCalibrator(BaseCalibrator):
@@ -24,12 +28,14 @@ class BinaryIsotonicCalibrator(BaseCalibrator):
         self.out_of_bounds = self.config.get("out_of_bounds", "clip")
         self.model = IsotonicRegression(out_of_bounds=self.out_of_bounds)
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BinaryIsotonicCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "BinaryIsotonicCalibrator":
         if len(X.shape) != 2 or X.shape[1] != 2:
             raise ValueError("BinaryIsotonicCalibrator requires X of shape (N, 2)")
 
         if len(X) < self.min_samples:
-            logger.warning(f"Isotonic calibration fitted with {len(X)} samples, less than recommended {self.min_samples}. Prone to overfitting.")
+            logger.warning(
+                f"Isotonic calibration fitted with {len(X)} samples, less than recommended {self.min_samples}. Prone to overfitting."
+            )
 
         p1 = flatten_binary_probabilities(X, positive_class_index=1)
         y_binary = (y == 1).astype(int)
@@ -46,14 +52,16 @@ class BinaryIsotonicCalibrator(BaseCalibrator):
 
         calibrated_p1 = self.model.predict(p1)
         # Expand back to 2D
-        calibrated_probs = expand_multiclass_probabilities(calibrated_p1, positive_class_index=1)
+        calibrated_probs = expand_multiclass_probabilities(
+            calibrated_p1, positive_class_index=1
+        )
         return clip_probabilities(calibrated_probs, eps=self.eps)
 
     def save_artifact(self, path: str) -> None:
         state = {
             "is_fitted": self.is_fitted,
             "config": self.config,
-            "model": self.model
+            "model": self.model,
         }
         joblib.dump(state, path)
 

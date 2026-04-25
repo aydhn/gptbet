@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class MissingnessFeatureBuilder(BaseFeatureBuilder):
     """Generates features describing data quality/missingness."""
@@ -24,11 +27,11 @@ class MissingnessFeatureBuilder(BaseFeatureBuilder):
 
     @property
     def output_columns(self) -> List[str]:
-        return [
-            "missing_stats_count_proxy", "source_confidence_placeholder"
-        ]
+        return ["missing_stats_count_proxy", "source_confidence_placeholder"]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"]
         df = pd.DataFrame({"event_id": events_df["event_id"]})
 

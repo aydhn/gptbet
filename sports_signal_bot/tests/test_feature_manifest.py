@@ -1,9 +1,12 @@
-import pytest
-import pandas as pd
-from sports_signal_bot.features.manifests import generate_manifest
-from sports_signal_bot.features.contracts import FeatureBuildContext
-from sports_signal_bot.features.builders.context import ContextFeatureBuilder
 import os
+
+import pandas as pd
+import pytest
+
+from sports_signal_bot.features.builders.context import ContextFeatureBuilder
+from sports_signal_bot.features.contracts import FeatureBuildContext
+from sports_signal_bot.features.manifests import generate_manifest
+
 
 def test_generate_manifest(tmp_path):
     context = FeatureBuildContext(sport="football", run_id="test_run")
@@ -17,7 +20,7 @@ def test_generate_manifest(tmp_path):
         data={"events": events_df},
         feature_matrix=matrix_df,
         active_builders=[ContextFeatureBuilder()],
-        output_path=out_path
+        output_path=out_path,
     )
 
     assert manifest.run_id == "test_run"

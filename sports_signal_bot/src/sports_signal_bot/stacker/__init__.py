@@ -1,15 +1,10 @@
-from .contracts import (
-    MetaFeatureRecord,
-    MetaTrainingDataset,
-    SourceCoverageRecord,
-    MetaPredictionRecord,
-    OOFIntegrityReport,
-    MetaFeatureManifest
-)
-from .registry import StackerRegistry
-from .factory import StackerFactory
-from .runner import StackerRunner
+from .contracts import (MetaFeatureManifest, MetaFeatureRecord,
+                        MetaPredictionRecord, MetaTrainingDataset,
+                        OOFIntegrityReport, SourceCoverageRecord)
 from .dataset import MetaDatasetBuilder
+from .factory import StackerFactory
+from .registry import StackerRegistry
+from .runner import StackerRunner
 
 __all__ = [
     "MetaFeatureRecord",
@@ -21,5 +16,5 @@ __all__ = [
     "StackerRegistry",
     "StackerFactory",
     "StackerRunner",
-    "MetaDatasetBuilder"
+    "MetaDatasetBuilder",
 ]

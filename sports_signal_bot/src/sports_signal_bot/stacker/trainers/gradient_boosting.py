@@ -1,7 +1,10 @@
+from typing import Any, Dict, List
+
 from sklearn.ensemble import GradientBoostingClassifier
-from typing import Dict, Any, List
-from .base import BaseStacker
+
 from ..contracts import MetaTrainingDataset
+from .base import BaseStacker
+
 
 class MetaGradientBoostingStacker(BaseStacker):
     def __init__(self, config: Dict[str, Any]):
@@ -19,7 +22,7 @@ class MetaGradientBoostingStacker(BaseStacker):
         df.fillna(0.0, inplace=True)
 
         X = df[self.feature_names]
-        y = df['target']
+        y = df["target"]
 
         # Hyperparameters
         params = self.config.get("meta_model_hyperparams", {})
@@ -28,9 +31,7 @@ class MetaGradientBoostingStacker(BaseStacker):
         max_depth = params.get("max_depth", 3)
 
         self.model = GradientBoostingClassifier(
-            n_estimators=n_estimators,
-            learning_rate=learning_rate,
-            max_depth=max_depth
+            n_estimators=n_estimators, learning_rate=learning_rate, max_depth=max_depth
         )
         self.model.fit(X, y)
         self.is_fitted = True
@@ -39,7 +40,7 @@ class MetaGradientBoostingStacker(BaseStacker):
             "status": "success",
             "model": "MetaGradientBoostingStacker",
             "classes": self.class_labels,
-            "feature_count": len(self.feature_names)
+            "feature_count": len(self.feature_names),
         }
 
     def predict_proba(self, dataset: MetaTrainingDataset) -> List[Dict[str, float]]:

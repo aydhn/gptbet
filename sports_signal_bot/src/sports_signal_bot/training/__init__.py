@@ -1,22 +1,18 @@
-from .contracts import (
-    TrainingDataset,
-    DatasetBuildConfig,
-    DatasetSummary,
-    FeatureTargetAlignmentRecord,
-    UnsupportedRowRecord,
-    TrainingRunManifest,
-    ValidationPredictionRecord,
-    SplitSummary,
-    FoldManifest,
-)
+from .contracts import (DatasetBuildConfig, DatasetSummary,
+                        FeatureTargetAlignmentRecord, FoldManifest,
+                        SplitSummary, TrainingDataset, TrainingRunManifest,
+                        UnsupportedRowRecord, ValidationPredictionRecord)
 from .dataset import TrainingDatasetBuilder
-from .leakage import detect_suspicious_feature_columns, audit_feature_target_alignment, enforce_pre_match_only_feature_policy
-from .splits import HoldoutTimeSplit, ExpandingWindowSplit, RollingWindowSplit, WalkForwardSplit
+from .factory import TrainerFactory
+from .leakage import (audit_feature_target_alignment,
+                      detect_suspicious_feature_columns,
+                      enforce_pre_match_only_feature_policy)
+from .metrics import evaluate_classification_metrics
 from .preprocessing import build_preprocessing_pipeline
 from .registry import TRAINER_REGISTRY
-from .factory import TrainerFactory
 from .runner import TrainingRunManager
-from .metrics import evaluate_classification_metrics
+from .splits import (ExpandingWindowSplit, HoldoutTimeSplit,
+                     RollingWindowSplit, WalkForwardSplit)
 
 __all__ = [
     "TrainingDataset",

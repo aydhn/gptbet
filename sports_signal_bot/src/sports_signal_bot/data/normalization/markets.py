@@ -1,5 +1,6 @@
 from sports_signal_bot.core.constants import MarketType
 
+
 def normalize_market_name(name: str) -> MarketType:
     if not name:
         return MarketType.UNKNOWN
@@ -17,12 +18,14 @@ def normalize_market_name(name: str) -> MarketType:
 
     return MarketType.UNKNOWN
 
+
 def safe_decimal_odds(odds_str: str) -> float:
     try:
         odds = float(odds_str)
         return odds
     except (ValueError, TypeError):
         return 0.0
+
 
 def implied_prob_from_decimal_odds(odds: float) -> float:
     if odds <= 1.0:

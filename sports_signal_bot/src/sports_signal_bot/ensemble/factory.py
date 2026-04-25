@@ -1,6 +1,8 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from .registry import EnsembleRegistry
 from .strategies.base import BaseEnsembler
+
 
 class EnsembleFactory:
 

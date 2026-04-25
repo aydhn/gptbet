@@ -1,11 +1,12 @@
-from sports_signal_bot.ensemble.diagnostics import probability_dispersion, top_class_disagreement, calculate_entropy
 import numpy as np
 
+from sports_signal_bot.ensemble.diagnostics import (calculate_entropy,
+                                                    probability_dispersion,
+                                                    top_class_disagreement)
+
+
 def test_diagnostics():
-    probs_list = [
-        {"1": 0.5, "X": 0.3, "2": 0.2},
-        {"1": 0.3, "X": 0.5, "2": 0.2}
-    ]
+    probs_list = [{"1": 0.5, "X": 0.3, "2": 0.2}, {"1": 0.3, "X": 0.5, "2": 0.2}]
     classes = ["1", "X", "2"]
 
     disp = probability_dispersion(probs_list, classes)

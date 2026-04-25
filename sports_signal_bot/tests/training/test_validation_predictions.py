@@ -1,20 +1,16 @@
-import pytest
-import pandas as pd
 import numpy as np
-from sports_signal_bot.training.predictions import format_validation_predictions
+import pandas as pd
+import pytest
+
+from sports_signal_bot.training.predictions import \
+    format_validation_predictions
+
 
 def test_format_validation_predictions():
-    df = pd.DataFrame({
-        'event_id': ['e1', 'e2', 'e3'],
-        'target': [0, 1, 1]
-    })
+    df = pd.DataFrame({"event_id": ["e1", "e2", "e3"], "target": [0, 1, 1]})
 
     valid_indices = np.array([0, 1, 2])
-    y_pred_proba = np.array([
-        [0.8, 0.2],
-        [0.3, 0.7],
-        [0.6, 0.4]
-    ])
+    y_pred_proba = np.array([[0.8, 0.2], [0.3, 0.7], [0.6, 0.4]])
     classes = np.array([0, 1])
 
     records = format_validation_predictions(
@@ -28,7 +24,7 @@ def test_format_validation_predictions():
         target_column="target",
         model_name="test_model",
         fold_id="fold_1",
-        split_metadata={}
+        split_metadata={},
     )
 
     assert len(records) == 3

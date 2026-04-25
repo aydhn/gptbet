@@ -1,0 +1,10 @@
+default:
+  planning_mode: expanding
+  initial_train_window_days: 180
+  calibration_window_days: 30
+  forward_test_window_days: 30
+  retrain_frequency: 1
+  recalibration_frequency: 1
+  reensemble_frequency: 1
+  minimum_rows_guard: 100
+  skip_period_if_insufficient_data: true

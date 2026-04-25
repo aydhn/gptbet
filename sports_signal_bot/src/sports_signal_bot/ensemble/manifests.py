@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
-from datetime import datetime
 import json
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class EnsembleRunManifest(BaseModel):
     run_id: str
@@ -17,5 +19,5 @@ class EnsembleRunManifest(BaseModel):
     output_path: Optional[str] = None
 
     def save(self, filepath: str):
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             f.write(self.json(indent=2))

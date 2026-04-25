@@ -1,0 +1,31 @@
+default:
+  sport: football
+  market_type: 1x2
+  planning_mode: expanding
+  initial_train_window_days: 180
+  calibration_window_days: 30
+  forward_test_window_days: 30
+  retrain_frequency: 1
+  recalibration_frequency: 2
+  reensemble_frequency: 1
+  stacker_refresh_frequency: 4
+  minimum_rows_guard: 50
+  skip_period_if_insufficient_data: true
+  enabled_models:
+    - logistic_regression
+    - random_forest
+  monthly_reporting_enabled: true
+
+ou_2_5_rolling:
+  sport: football
+  market_type: ou_2_5
+  planning_mode: rolling
+  initial_train_window_days: 365
+  calibration_window_days: 30
+  forward_test_window_days: 30
+  retrain_frequency: 1
+  recalibration_frequency: 1
+  reensemble_frequency: 1
+  minimum_rows_guard: 50
+  enabled_models:
+    - logistic_regression

@@ -1,11 +1,14 @@
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
+
 
 class NullPolicy(str, Enum):
     KEEP_NULLS = "keep_nulls"
     FILL_DEFAULTS = "fill_defaults"
     ADD_MISSING_INDICATORS = "add_missing_indicators"
+
 
 class FeatureBuildContext(BaseModel):
     sport: str
@@ -20,6 +23,7 @@ class FeatureBuildContext(BaseModel):
     seed: int = 42
     run_id: str
 
+
 class FeatureMatrixRecord(BaseModel):
     event_id: str
     sport: str
@@ -28,6 +32,7 @@ class FeatureMatrixRecord(BaseModel):
     feature_version: str
     feature_build_run_id: str
     features: Dict[str, Any]
+
 
 class FeatureManifestRecord(BaseModel):
     run_id: str
@@ -42,6 +47,7 @@ class FeatureManifestRecord(BaseModel):
     row_count: int
     output_path: str
     warnings: List[str] = Field(default_factory=list)
+
 
 class FeatureAvailabilitySummary(BaseModel):
     run_id: str

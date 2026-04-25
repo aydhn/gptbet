@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class ContextFeatureBuilder(BaseFeatureBuilder):
     """Extracts basic context features like home/away, dates, etc."""
@@ -25,11 +28,18 @@ class ContextFeatureBuilder(BaseFeatureBuilder):
     @property
     def output_columns(self) -> List[str]:
         return [
-            "sport", "league", "season", "event_month",
-            "event_weekday", "kickoff_hour", "home_indicator"
+            "sport",
+            "league",
+            "season",
+            "event_month",
+            "event_weekday",
+            "kickoff_hour",
+            "home_indicator",
         ]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"].copy()
 
         # Ensure event_id exists

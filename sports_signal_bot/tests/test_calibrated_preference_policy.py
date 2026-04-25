@@ -1,23 +1,43 @@
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-from sports_signal_bot.ensemble.policies import apply_calibrated_preference_policy
+from sports_signal_bot.ensemble.policies import \
+    apply_calibrated_preference_policy
+
 
 def test_apply_calibrated_preference_policy():
     preds = [
         StandardizedPredictionRecord(
-            event_id="e1", sport="f", market_type="m", source_family="f1", source_name="s1",
-            class_labels=["A", "B"], probabilities={"A": 0.5, "B": 0.5}, predicted_class="A",
-            is_calibrated=False
+            event_id="e1",
+            sport="f",
+            market_type="m",
+            source_family="f1",
+            source_name="s1",
+            class_labels=["A", "B"],
+            probabilities={"A": 0.5, "B": 0.5},
+            predicted_class="A",
+            is_calibrated=False,
         ),
         StandardizedPredictionRecord(
-            event_id="e1", sport="f", market_type="m", source_family="f1", source_name="s1",
-            class_labels=["A", "B"], probabilities={"A": 0.6, "B": 0.4}, predicted_class="A",
-            is_calibrated=True
+            event_id="e1",
+            sport="f",
+            market_type="m",
+            source_family="f1",
+            source_name="s1",
+            class_labels=["A", "B"],
+            probabilities={"A": 0.6, "B": 0.4},
+            predicted_class="A",
+            is_calibrated=True,
         ),
         StandardizedPredictionRecord(
-            event_id="e1", sport="f", market_type="m", source_family="f2", source_name="s2",
-            class_labels=["A", "B"], probabilities={"A": 0.3, "B": 0.7}, predicted_class="B",
-            is_calibrated=False
-        )
+            event_id="e1",
+            sport="f",
+            market_type="m",
+            source_family="f2",
+            source_name="s2",
+            class_labels=["A", "B"],
+            probabilities={"A": 0.3, "B": 0.7},
+            predicted_class="B",
+            is_calibrated=False,
+        ),
     ]
 
     # prefer calibrated: s1 should be calibrated, s2 should be raw
@@ -38,4 +58,4 @@ def test_apply_calibrated_preference_policy():
     res_raw = apply_calibrated_preference_policy(preds, "raw_only")
     assert len(res_raw) == 2
     for p in res_raw:
-         assert p.is_calibrated is False
+        assert p.is_calibrated is False

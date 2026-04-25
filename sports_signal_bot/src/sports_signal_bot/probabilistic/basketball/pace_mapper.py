@@ -1,10 +1,13 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 class PaceMapper:
     """Maps pace and tempo variables into expected point adjustments."""
 
     @staticmethod
-    def calculate_pace_adjustment(features: Dict[str, Any], base_possessions: float = 100.0) -> float:
+    def calculate_pace_adjustment(
+        features: Dict[str, Any], base_possessions: float = 100.0
+    ) -> float:
         """
         Calculates a simple pace adjustment proxy.
         If 'home_pace' and 'away_pace' are provided, blends them.

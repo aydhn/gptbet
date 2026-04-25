@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 from typing import List
+
 from .contracts.legacy import EventRecord, OddsRecord, TeamStatsRecord
-from .interfaces import BaseScheduleProvider, BaseOddsProvider, BaseStatsProvider
+from .interfaces import (BaseOddsProvider, BaseScheduleProvider,
+                         BaseStatsProvider)
+
 
 class MockScheduleProvider(BaseScheduleProvider):
     def get_events(self, start_date: datetime, end_date: datetime) -> List[EventRecord]:
@@ -13,9 +16,10 @@ class MockScheduleProvider(BaseScheduleProvider):
                 home_team="Arsenal",
                 away_team="Chelsea",
                 kickoff=datetime.now() + timedelta(days=1),
-                status="UPCOMING"
+                status="UPCOMING",
             )
         ]
+
 
 class MockOddsProvider(BaseOddsProvider):
     def get_odds(self, event_ids: List[str]) -> List[OddsRecord]:
@@ -25,9 +29,11 @@ class MockOddsProvider(BaseOddsProvider):
                 provider="mock_bookie",
                 timestamp=datetime.now(),
                 market="1X2",
-                selections={"1": 2.1, "X": 3.4, "2": 3.5}
-            ) for eid in event_ids
+                selections={"1": 2.1, "X": 3.4, "2": 3.5},
+            )
+            for eid in event_ids
         ]
+
 
 class MockStatsProvider(BaseStatsProvider):
     def get_team_stats(self, team_id: str) -> List[TeamStatsRecord]:
@@ -35,6 +41,6 @@ class MockStatsProvider(BaseStatsProvider):
             TeamStatsRecord(
                 team_id=team_id,
                 date=datetime.now(),
-                stats={"form": 0.8, "rating": 1500.0}
+                stats={"form": 0.8, "rating": 1500.0},
             )
         ]

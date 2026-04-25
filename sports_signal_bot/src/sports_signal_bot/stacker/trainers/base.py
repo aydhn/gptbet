@@ -1,9 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 import numpy as np
 import pandas as pd
-from ..contracts import MetaTrainingDataset, MetaPredictionRecord, MetaPredictionDiagnostics
+
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+
+from ..contracts import (MetaPredictionDiagnostics, MetaPredictionRecord,
+                         MetaTrainingDataset)
+
 
 class BaseStacker(ABC):
     def __init__(self, config: Dict[str, Any]):
@@ -25,7 +30,9 @@ class BaseStacker(ABC):
         """Predict probabilities"""
         pass
 
-    def _prepare_df(self, dataset: MetaTrainingDataset, for_training: bool = False) -> pd.DataFrame:
+    def _prepare_df(
+        self, dataset: MetaTrainingDataset, for_training: bool = False
+    ) -> pd.DataFrame:
         rows = []
         for r in dataset.records:
             row = {}
@@ -35,7 +42,7 @@ class BaseStacker(ABC):
             row.update(r.metadata_features)
             row.update(r.context_features)
             if for_training:
-                row['target'] = r.target_class_index
+                row["target"] = r.target_class_index
             rows.append(row)
 
         df = pd.DataFrame(rows)
@@ -43,7 +50,7 @@ class BaseStacker(ABC):
         if self.is_fitted and not for_training:
             for f in self.feature_names:
                 if f not in df.columns:
-                    df[f] = 0.0 # simple impute or NaN depending on model
+                    df[f] = 0.0  # simple impute or NaN depending on model
             df = df[self.feature_names]
             # mean imputation
             df.fillna(df.mean(), inplace=True)
@@ -64,7 +71,11 @@ class BaseStacker(ABC):
 
             # Diagnostics
             sorted_probs = sorted(probas.values(), reverse=True)
-            margin = sorted_probs[0] - sorted_probs[1] if len(sorted_probs) > 1 else sorted_probs[0]
+            margin = (
+                sorted_probs[0] - sorted_probs[1]
+                if len(sorted_probs) > 1
+                else sorted_probs[0]
+            )
             confidence = sorted_probs[0]
 
             diagnostics = MetaPredictionDiagnostics(
@@ -72,7 +83,7 @@ class BaseStacker(ABC):
                 missing_sources=len(record.missing_sources),
                 fallback_used=False,
                 meta_confidence=confidence,
-                top_class_margin=margin
+                top_class_margin=margin,
             )
 
             pred_record = MetaPredictionRecord(
@@ -82,7 +93,7 @@ class BaseStacker(ABC):
                 stacker_name=self.__class__.__name__,
                 final_probabilities=probas,
                 predicted_class=predicted_class,
-                diagnostics=diagnostics
+                diagnostics=diagnostics,
             )
             records.append(pred_record)
 

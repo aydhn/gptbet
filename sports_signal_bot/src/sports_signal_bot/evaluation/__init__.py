@@ -1,14 +1,8 @@
-from .contracts import (
-    EvaluationDataset,
-    EvaluationRunManifest,
-    EvaluationSummaryRecord,
-    LeaderboardRow,
-    SegmentEvaluationRecord,
-    ConfidenceBucketRecord,
-    ClassLevelMetricRecord,
-    PairwiseComparisonRecord,
-    EvaluationComparisonRecord
-)
+from .contracts import (ClassLevelMetricRecord, ConfidenceBucketRecord,
+                        EvaluationComparisonRecord, EvaluationDataset,
+                        EvaluationRunManifest, EvaluationSummaryRecord,
+                        LeaderboardRow, PairwiseComparisonRecord,
+                        SegmentEvaluationRecord)
 
 __all__ = [
     "EvaluationDataset",
@@ -19,5 +13,5 @@ __all__ = [
     "ConfidenceBucketRecord",
     "ClassLevelMetricRecord",
     "PairwiseComparisonRecord",
-    "EvaluationComparisonRecord"
+    "EvaluationComparisonRecord",
 ]

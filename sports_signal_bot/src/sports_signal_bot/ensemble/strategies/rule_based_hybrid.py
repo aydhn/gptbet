@@ -1,8 +1,10 @@
-from typing import Dict, Any, List
-from .base import BaseEnsembler
-from .weighted_average import WeightedAverageEnsembler
-from .best_source_fallback import BestSourceFallbackEnsembler
+from typing import Any, Dict, List
+
 from ..contracts import EnsembleInputRecord, EnsembleOutputRecord
+from .base import BaseEnsembler
+from .best_source_fallback import BestSourceFallbackEnsembler
+from .weighted_average import WeightedAverageEnsembler
+
 
 class RuleBasedHybridEnsembler(BaseEnsembler):
 
@@ -24,7 +26,9 @@ class RuleBasedHybridEnsembler(BaseEnsembler):
         if strategy_name == "weighted_average":
             sub_ensembler = WeightedAverageEnsembler("weighted_average", self.config)
         elif strategy_name == "best_source_fallback":
-            sub_ensembler = BestSourceFallbackEnsembler("best_source_fallback", self.config)
+            sub_ensembler = BestSourceFallbackEnsembler(
+                "best_source_fallback", self.config
+            )
         else:
             sub_ensembler = SimpleAverageEnsembler("simple_average", self.config)
 

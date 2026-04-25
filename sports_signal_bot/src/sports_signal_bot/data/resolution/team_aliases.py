@@ -1,10 +1,13 @@
-import yaml
+import logging
 from pathlib import Path
+
+import yaml
+
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.data.normalization.names import normalize_team_name
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 class TeamResolver:
     def __init__(self, aliases_path: Path):
@@ -14,10 +17,12 @@ class TeamResolver:
 
     def _load_aliases(self):
         if not self.aliases_path.exists():
-            logger.warning(f"Aliases file not found at {self.aliases_path}. Resolution will fallback to normalization.")
+            logger.warning(
+                f"Aliases file not found at {self.aliases_path}. Resolution will fallback to normalization."
+            )
             return
 
-        with open(self.aliases_path, 'r') as f:
+        with open(self.aliases_path, "r") as f:
             raw_aliases = yaml.safe_load(f)
 
         if not raw_aliases:
@@ -44,5 +49,7 @@ class TeamResolver:
                 return self._aliases[sport][league][lower_input]
 
         # Fallback
-        logger.debug(f"Unresolved alias for '{name}' in {sport}/{league}. Using normalized fallback.")
+        logger.debug(
+            f"Unresolved alias for '{name}' in {sport}/{league}. Using normalized fallback."
+        )
         return normalized_input

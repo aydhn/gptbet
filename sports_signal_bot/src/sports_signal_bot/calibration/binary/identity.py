@@ -1,8 +1,11 @@
-import numpy as np
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import joblib
+import numpy as np
+
 from sports_signal_bot.calibration.base import BaseCalibrator
 from sports_signal_bot.calibration.registry import CalibrationRegistry
+
 
 @CalibrationRegistry.register("binary_identity")
 class BinaryIdentityCalibrator(BaseCalibrator):
@@ -11,7 +14,7 @@ class BinaryIdentityCalibrator(BaseCalibrator):
     Useful as a fallback or for comparison.
     """
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BinaryIdentityCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "BinaryIdentityCalibrator":
         self.is_fitted = True
         return self
 

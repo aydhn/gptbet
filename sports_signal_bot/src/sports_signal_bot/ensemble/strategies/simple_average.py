@@ -1,8 +1,12 @@
-from typing import Dict, Any, List
-from .base import BaseEnsembler
-from ..contracts import EnsembleInputRecord, EnsembleOutputRecord, SourceContributionRecord, EnsembleDiagnosticsRecord
+from typing import Any, Dict, List
+
 from ..alignment import align_predictions_to_reference_classes
-from ..diagnostics import calculate_entropy, probability_dispersion, top_class_disagreement, source_count_summary
+from ..contracts import (EnsembleDiagnosticsRecord, EnsembleInputRecord,
+                         EnsembleOutputRecord, SourceContributionRecord)
+from ..diagnostics import (calculate_entropy, probability_dispersion,
+                           source_count_summary, top_class_disagreement)
+from .base import BaseEnsembler
+
 
 class SimpleAverageEnsembler(BaseEnsembler):
 
@@ -17,10 +21,14 @@ class SimpleAverageEnsembler(BaseEnsembler):
         reference_classes = input_record.predictions[0].class_labels
 
         # 2. Align predictions
-        aligned_preds = align_predictions_to_reference_classes(input_record.predictions, reference_classes)
+        aligned_preds = align_predictions_to_reference_classes(
+            input_record.predictions, reference_classes
+        )
 
         if not aligned_preds:
-            return self._create_empty_output(input_record, warnings=["No compatible sources found after alignment."])
+            return self._create_empty_output(
+                input_record, warnings=["No compatible sources found after alignment."]
+            )
 
         # 3. Calculate average
         n_sources = len(aligned_preds)
@@ -40,8 +48,9 @@ class SimpleAverageEnsembler(BaseEnsembler):
                 source_name=p.source_name,
                 source_family=p.source_family,
                 weight=weight,
-                is_calibrated=p.is_calibrated
-            ) for p in aligned_preds
+                is_calibrated=p.is_calibrated,
+            )
+            for p in aligned_preds
         ]
 
         # 6. Build diagnostics
@@ -52,7 +61,7 @@ class SimpleAverageEnsembler(BaseEnsembler):
             top_class_confidence=final_probs[final_predicted_class],
             entropy=calculate_entropy(final_probs),
             max_disagreement=top_class_disagreement(probs_list, reference_classes),
-            source_variance=probability_dispersion(probs_list, reference_classes)
+            source_variance=probability_dispersion(probs_list, reference_classes),
         )
 
         return EnsembleOutputRecord(
@@ -63,14 +72,16 @@ class SimpleAverageEnsembler(BaseEnsembler):
             final_probabilities=final_probs,
             final_predicted_class=final_predicted_class,
             component_sources=components,
-            diagnostics=diagnostics
+            diagnostics=diagnostics,
         )
 
-    def _create_empty_output(self, input_record: EnsembleInputRecord, warnings: List[str] = None) -> EnsembleOutputRecord:
+    def _create_empty_output(
+        self, input_record: EnsembleInputRecord, warnings: List[str] = None
+    ) -> EnsembleOutputRecord:
         diag = EnsembleDiagnosticsRecord(
             num_sources_eligible=len(input_record.predictions),
             num_sources_used=0,
-            warnings=warnings or ["No valid input predictions."]
+            warnings=warnings or ["No valid input predictions."],
         )
         return EnsembleOutputRecord(
             event_id=input_record.event_id,
@@ -81,5 +92,5 @@ class SimpleAverageEnsembler(BaseEnsembler):
             final_predicted_class="UNKNOWN",
             component_sources=[],
             diagnostics=diag,
-            status="failed"
+            status="failed",
         )

@@ -1,5 +1,7 @@
 from typing import Dict, Type
+
 from sports_signal_bot.training.trainers.base import BaseTrainer
+
 
 class TrainerRegistry:
     def __init__(self):
@@ -16,13 +18,17 @@ class TrainerRegistry:
     def list_trainers(self) -> list:
         return list(self._trainers.keys())
 
+
 TRAINER_REGISTRY = TrainerRegistry()
 
-# Register defaults
-from sports_signal_bot.training.trainers.logistic_regression import LogisticRegressionTrainer
-from sports_signal_bot.training.trainers.gradient_boosting import GradientBoostingTrainer
-from sports_signal_bot.training.trainers.random_forest import RandomForestTrainer
 from sports_signal_bot.training.trainers.dummy import DummyTrainer
+from sports_signal_bot.training.trainers.gradient_boosting import \
+    GradientBoostingTrainer
+# Register defaults
+from sports_signal_bot.training.trainers.logistic_regression import \
+    LogisticRegressionTrainer
+from sports_signal_bot.training.trainers.random_forest import \
+    RandomForestTrainer
 
 TRAINER_REGISTRY.register("logistic_regression", LogisticRegressionTrainer)
 TRAINER_REGISTRY.register("gradient_boosting", GradientBoostingTrainer)

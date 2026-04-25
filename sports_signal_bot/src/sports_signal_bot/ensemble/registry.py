@@ -1,10 +1,12 @@
 from typing import Dict, Type
+
 from .strategies.base import BaseEnsembler
+from .strategies.best_source_fallback import BestSourceFallbackEnsembler
+from .strategies.reliability_weighted import ReliabilityWeightedEnsembler
+from .strategies.rule_based_hybrid import RuleBasedHybridEnsembler
 from .strategies.simple_average import SimpleAverageEnsembler
 from .strategies.weighted_average import WeightedAverageEnsembler
-from .strategies.reliability_weighted import ReliabilityWeightedEnsembler
-from .strategies.best_source_fallback import BestSourceFallbackEnsembler
-from .strategies.rule_based_hybrid import RuleBasedHybridEnsembler
+
 
 class EnsembleRegistry:
 
@@ -13,7 +15,7 @@ class EnsembleRegistry:
         "weighted_average": WeightedAverageEnsembler,
         "reliability_weighted": ReliabilityWeightedEnsembler,
         "best_source_fallback": BestSourceFallbackEnsembler,
-        "rule_based_hybrid": RuleBasedHybridEnsembler
+        "rule_based_hybrid": RuleBasedHybridEnsembler,
     }
 
     @classmethod
@@ -23,7 +25,9 @@ class EnsembleRegistry:
     @classmethod
     def get(cls, name: str) -> Type[BaseEnsembler]:
         if name not in cls._registry:
-            raise ValueError(f"Ensemble strategy '{name}' not found. Available: {list(cls._registry.keys())}")
+            raise ValueError(
+                f"Ensemble strategy '{name}' not found. Available: {list(cls._registry.keys())}"
+            )
         return cls._registry[name]
 
     @classmethod

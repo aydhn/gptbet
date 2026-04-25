@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class StandardizedPredictionRecord(BaseModel):
     event_id: str
@@ -19,6 +21,7 @@ class StandardizedPredictionRecord(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
     warnings: List[str] = Field(default_factory=list)
 
+
 class SourceContributionRecord(BaseModel):
     source_name: str
     source_family: str
@@ -26,6 +29,7 @@ class SourceContributionRecord(BaseModel):
     is_calibrated: bool
     status: str = "included"
     fallback_order: Optional[int] = None
+
 
 class EnsembleDiagnosticsRecord(BaseModel):
     num_sources_eligible: int
@@ -39,6 +43,7 @@ class EnsembleDiagnosticsRecord(BaseModel):
     calibration_preference_mode: str = "prefer_calibrated"
     warnings: List[str] = Field(default_factory=list)
 
+
 class EnsembleOutputRecord(BaseModel):
     event_id: str
     sport: str
@@ -50,6 +55,7 @@ class EnsembleOutputRecord(BaseModel):
     diagnostics: EnsembleDiagnosticsRecord
     status: str = "success"
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
 
 class EnsembleInputRecord(BaseModel):
     event_id: str

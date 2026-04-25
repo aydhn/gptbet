@@ -1,7 +1,10 @@
-from pydantic import BaseModel, Field
-from typing import Dict, Any, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 from sports_signal_bot.core.constants import SportType
+
 
 class GoalEnvironmentConfig(BaseModel):
     default_league_goal_baseline: float = 2.5
@@ -15,6 +18,7 @@ class GoalEnvironmentConfig(BaseModel):
     # For smoothing / blending if needed later
     strength_blend_weight: float = 0.5
 
+
 class LambdaBuildContext(BaseModel):
     event_id: str
     sport: SportType = SportType.FOOTBALL
@@ -22,6 +26,7 @@ class LambdaBuildContext(BaseModel):
     run_id: str
     timestamp_utc: datetime = Field(default_factory=datetime.utcnow)
     config: GoalEnvironmentConfig = Field(default_factory=GoalEnvironmentConfig)
+
 
 class GoalLambdaEstimate(BaseModel):
     event_id: str
@@ -33,10 +38,12 @@ class GoalLambdaEstimate(BaseModel):
     feature_sources: List[str] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
 
+
 class CorrectScoreProbability(BaseModel):
     home_goals: int
     away_goals: int
     probability: float
+
 
 class ScoreMatrixRecord(BaseModel):
     event_id: str
@@ -48,6 +55,7 @@ class ScoreMatrixRecord(BaseModel):
     # We won't store the full matrix here, it's a domain object property
     # But we could store a serialized form if needed.
     warnings: List[str] = Field(default_factory=list)
+
 
 class FootballProbabilityRecord(BaseModel):
     event_id: str

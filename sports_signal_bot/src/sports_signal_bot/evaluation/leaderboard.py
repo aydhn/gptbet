@@ -1,13 +1,16 @@
-from typing import List, Dict, Any, Optional
-from .contracts import EvaluationSummaryRecord, LeaderboardRow
+from typing import Any, Dict, List, Optional
+
 import pandas as pd
+
+from .contracts import EvaluationSummaryRecord, LeaderboardRow
+
 
 def build_leaderboard(
     summaries: List[EvaluationSummaryRecord],
     primary_metric: str = "log_loss",
     secondary_metric: str = "brier",
     tertiary_metric: str = "accuracy",
-    min_rows: int = 1
+    min_rows: int = 1,
 ) -> List[LeaderboardRow]:
     """Constructs a sorted leaderboard from evaluation summaries."""
 
@@ -20,7 +23,7 @@ def build_leaderboard(
         "brier": True,
         "accuracy": False,
         "macro_f1": False,
-        "average_entropy": True
+        "average_entropy": True,
     }
 
     def get_sort_key(summary: EvaluationSummaryRecord):
@@ -30,7 +33,11 @@ def build_leaderboard(
         def get_val(metric_name):
             val = getattr(summary, metric_name, None)
             if val is None or pd.isna(val):
-                return float('inf') if lower_is_better.get(metric_name, False) else float('-inf')
+                return (
+                    float("inf")
+                    if lower_is_better.get(metric_name, False)
+                    else float("-inf")
+                )
 
             # Negate if higher is better so we can sort ascending globally
             if not lower_is_better.get(metric_name, False):
@@ -53,20 +60,22 @@ def build_leaderboard(
         if summary.coverage_rate < 1.0:
             warnings.append(f"Incomplete coverage: {summary.coverage_rate:.1%}")
 
-        leaderboard.append(LeaderboardRow(
-            rank=rank,
-            source_name=summary.source_name,
-            source_family=summary.source_family,
-            sport=summary.sport,
-            market_type=summary.market_type,
-            row_count=summary.row_count,
-            coverage_rate=summary.coverage_rate,
-            log_loss=summary.log_loss,
-            brier=summary.brier,
-            accuracy=summary.accuracy,
-            macro_f1=summary.macro_f1,
-            ece=None, # Calibration specific, not in core evaluation yet
-            warnings=warnings
-        ))
+        leaderboard.append(
+            LeaderboardRow(
+                rank=rank,
+                source_name=summary.source_name,
+                source_family=summary.source_family,
+                sport=summary.sport,
+                market_type=summary.market_type,
+                row_count=summary.row_count,
+                coverage_rate=summary.coverage_rate,
+                log_loss=summary.log_loss,
+                brier=summary.brier,
+                accuracy=summary.accuracy,
+                macro_f1=summary.macro_f1,
+                ece=None,  # Calibration specific, not in core evaluation yet
+                warnings=warnings,
+            )
+        )
 
     return leaderboard

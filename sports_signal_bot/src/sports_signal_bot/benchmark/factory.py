@@ -1,10 +1,12 @@
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 from .base import BaseBenchmark
-from .random_benchmark import RandomBenchmark
-from .uniform_benchmark import UniformProbBenchmark
-from .majority_benchmark import MajorityClassBenchmark
 from .bookmaker_implied import BookmakerImpliedBenchmark
+from .majority_benchmark import MajorityClassBenchmark
+from .random_benchmark import RandomBenchmark
 from .rating_placeholder import SimpleRatingBenchmark
+from .uniform_benchmark import UniformProbBenchmark
+
 
 class BenchmarkFactory:
     def __init__(self):
@@ -13,13 +15,14 @@ class BenchmarkFactory:
             "uniform": UniformProbBenchmark(),
             "majority": MajorityClassBenchmark(),
             "bookmaker_implied": BookmakerImpliedBenchmark(),
-            "rating": SimpleRatingBenchmark()
+            "rating": SimpleRatingBenchmark(),
         }
 
     def get_benchmark(self, name: str) -> Optional[BaseBenchmark]:
         return self._benchmarks.get(name)
 
     def register(self, name: str, benchmark: BaseBenchmark):
-         self._benchmarks[name] = benchmark
+        self._benchmarks[name] = benchmark
+
 
 BENCHMARK_FACTORY = BenchmarkFactory()

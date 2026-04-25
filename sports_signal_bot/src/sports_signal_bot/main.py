@@ -1,22 +1,26 @@
-import typer
-from rich.console import Console
 from pathlib import Path
+
+import typer
 import yaml
+from rich.console import Console
 
-from sports_signal_bot.orchestration.runner import SmokeRunner
 from sports_signal_bot.config.settings import get_settings
-from sports_signal_bot.core.paths import get_data_dir, get_configs_dir
-from sports_signal_bot.core.random import set_global_seed
 from sports_signal_bot.core.constants import SportType
-
-from sports_signal_bot.data.providers.file_provider import FileFixtureProvider, FileOddsProvider, FileStatsProvider
-from sports_signal_bot.data.providers.mock_provider import AdvancedMockFixtureProvider, AdvancedMockOddsProvider, AdvancedMockStatsProvider
+from sports_signal_bot.core.paths import get_configs_dir, get_data_dir
+from sports_signal_bot.core.random import set_global_seed
 from sports_signal_bot.data.ingestion.orchestrator import IngestionOrchestrator
+from sports_signal_bot.data.providers.file_provider import (
+    FileFixtureProvider, FileOddsProvider, FileStatsProvider)
+from sports_signal_bot.data.providers.mock_provider import (
+    AdvancedMockFixtureProvider, AdvancedMockOddsProvider,
+    AdvancedMockStatsProvider)
 from sports_signal_bot.data.resolution.team_aliases import TeamResolver
 from sports_signal_bot.data.storage.paths import get_manifest_storage_path
+from sports_signal_bot.orchestration.runner import SmokeRunner
 
 app = typer.Typer(help="Sports Signal Bot CLI")
 console = Console()
+
 
 @app.command()
 def smoke_run():
@@ -27,12 +31,16 @@ def smoke_run():
 
 
 @app.command()
-def run_evaluation(sport: str, market: str, class_labels: str = "home_win,draw,away_win"):
+def run_evaluation(
+    sport: str, market: str, class_labels: str = "home_win,draw,away_win"
+):
     """Run the centralized evaluation pipeline for a given sport and market."""
+    from pathlib import Path
+
+    import yaml
+
     from sports_signal_bot.evaluation.registry import EvaluationRegistry
     from sports_signal_bot.evaluation.runner import EvaluationRunner
-    from pathlib import Path
-    import yaml
 
     console.print(f"Starting evaluation for {sport} - {market}...")
 
@@ -59,13 +67,18 @@ def run_evaluation(sport: str, market: str, class_labels: str = "home_win,draw,a
     # Mocking registry registration for CLI run since we don't have real artifacts yet
     # In a real run, this would scan the artifacts directory
 
-    runner = EvaluationRunner(registry=registry, output_dir=Path("data/evaluation_runs"), config=config)
+    runner = EvaluationRunner(
+        registry=registry, output_dir=Path("data/evaluation_runs"), config=config
+    )
     try:
-        manifest = runner.run(sport=sport, market_type=market, class_labels=class_labels.split(","))
+        manifest = runner.run(
+            sport=sport, market_type=market, class_labels=class_labels.split(",")
+        )
         console.print(f"[green]Evaluation complete. Run ID: {manifest.run_id}[/green]")
         console.print(f"Artifacts saved to: {manifest.leaderboard_path}")
     except ValueError as e:
         console.print(f"[yellow]Evaluation skipped: {e}[/yellow]")
+
 
 @app.command()
 def preview_leaderboard(sport: str, market: str):
@@ -73,11 +86,13 @@ def preview_leaderboard(sport: str, market: str):
     console.print(f"Previewing leaderboard for {sport} - {market}...")
     console.print("[yellow]Feature under construction.[/yellow]")
 
+
 @app.command()
 def preview_pairwise(sport: str, market: str):
     """Preview pairwise comparisons for a sport/market."""
     console.print(f"Previewing pairwise comparisons for {sport} - {market}...")
     console.print("[yellow]Feature under construction.[/yellow]")
+
 
 @app.command()
 def preview_confidence_buckets(sport: str, market: str):
@@ -85,13 +100,17 @@ def preview_confidence_buckets(sport: str, market: str):
     console.print(f"Previewing confidence buckets for {sport} - {market}...")
     console.print("[yellow]Feature under construction.[/yellow]")
 
+
 @app.command()
 def list_evaluation_metrics():
     """List all supported evaluation metrics."""
     console.print("Supported Metrics:")
-    console.print("- Probabilistic: log_loss, brier, average_confidence, average_entropy")
+    console.print(
+        "- Probabilistic: log_loss, brier, average_confidence, average_entropy"
+    )
     console.print("- Classification (Binary): accuracy, precision, recall, f1, roc_auc")
     console.print("- Classification (Multiclass): accuracy, macro_f1, weighted_f1")
+
 
 @app.command()
 def show_config():
@@ -100,27 +119,35 @@ def show_config():
     console.print("Current Configuration:")
     console.print(settings.model_dump_json(indent=2))
 
+
 @app.command()
 def paths():
     """Display project paths."""
     console.print(f"Data Directory: {get_data_dir()}")
     console.print(f"Configs Directory: {get_configs_dir()}")
 
+
 def _load_provider_config(provider_name: str) -> dict:
     config_path = get_configs_dir() / "providers" / f"{provider_name}.yaml"
     if not config_path.exists():
         console.print(f"[red]Provider config not found: {config_path}[/red]")
         return {}
-    with open(config_path, 'r') as f:
+    with open(config_path, "r") as f:
         return yaml.safe_load(f)
 
+
 @app.command()
-def ingest_samples(sport: str = typer.Option(..., help="Sport to ingest (football/basketball)"), provider: str = typer.Option("file_provider", help="Provider to use")):
+def ingest_samples(
+    sport: str = typer.Option(..., help="Sport to ingest (football/basketball)"),
+    provider: str = typer.Option("file_provider", help="Provider to use"),
+):
     """Ingest sample data using the specified provider."""
     try:
         sport_enum = SportType(sport)
     except ValueError:
-        console.print(f"[red]Invalid sport: {sport}. Must be 'football' or 'basketball'.[/red]")
+        console.print(
+            f"[red]Invalid sport: {sport}. Must be 'football' or 'basketball'.[/red]"
+        )
         return
 
     config = _load_provider_config(provider)
@@ -140,29 +167,40 @@ def ingest_samples(sport: str = typer.Option(..., help="Sport to ingest (footbal
         odds_prov = AdvancedMockOddsProvider(config)
         stats_prov = AdvancedMockStatsProvider(config)
 
-    console.print(f"[bold green]Starting ingestion for {sport_enum.value} via {provider}[/bold green]")
+    console.print(
+        f"[bold green]Starting ingestion for {sport_enum.value} via {provider}[/bold green]"
+    )
 
     fixture_manifest = orchestrator.ingest_fixtures(fixture_prov, sport_enum)
-    console.print(f"Fixtures: {fixture_manifest.valid_count} valid, {fixture_manifest.invalid_count} invalid, {fixture_manifest.duplicate_count} dupes")
+    console.print(
+        f"Fixtures: {fixture_manifest.valid_count} valid, {fixture_manifest.invalid_count} invalid, {fixture_manifest.duplicate_count} dupes"
+    )
 
     odds_manifest = orchestrator.ingest_odds(odds_prov, sport_enum)
-    console.print(f"Odds: {odds_manifest.valid_count} valid, {odds_manifest.invalid_count} invalid, {odds_manifest.duplicate_count} dupes")
+    console.print(
+        f"Odds: {odds_manifest.valid_count} valid, {odds_manifest.invalid_count} invalid, {odds_manifest.duplicate_count} dupes"
+    )
 
     stats_manifest = orchestrator.ingest_stats(stats_prov, sport_enum)
-    console.print(f"Stats: {stats_manifest.valid_count} valid, {stats_manifest.invalid_count} invalid, {stats_manifest.duplicate_count} dupes")
+    console.print(
+        f"Stats: {stats_manifest.valid_count} valid, {stats_manifest.invalid_count} invalid, {stats_manifest.duplicate_count} dupes"
+    )
 
     console.print("[bold green]Ingestion complete![/bold green]")
 
+
 @app.command()
-def validate_samples(sport: str = typer.Option(..., help="Sport to validate (football/basketball)")):
+def validate_samples(
+    sport: str = typer.Option(..., help="Sport to validate (football/basketball)")
+):
     """Run validation check and show detailed issues from sample ingestion."""
     # Re-run ingestion but print issues
     ingest_samples(sport=sport, provider="file_provider")
 
     manifest_dir = get_manifest_storage_path()
     if not manifest_dir.exists():
-         console.print("[yellow]No manifests found. Did you run ingestion?[/yellow]")
-         return
+        console.print("[yellow]No manifests found. Did you run ingestion?[/yellow]")
+        return
 
     manifests = list(manifest_dir.glob("*_manifest.json"))
     if not manifests:
@@ -170,17 +208,25 @@ def validate_samples(sport: str = typer.Option(..., help="Sport to validate (foo
         return
 
     # Show issues from the most recent
-    latest_manifest = sorted(manifests, key=lambda x: x.stat().st_mtime, reverse=True)[0]
+    latest_manifest = sorted(manifests, key=lambda x: x.stat().st_mtime, reverse=True)[
+        0
+    ]
     import json
-    with open(latest_manifest, 'r') as f:
+
+    with open(latest_manifest, "r") as f:
         data = json.load(f)
 
-    if data.get('issues'):
-        console.print(f"[bold red]Validation Issues in latest run ({data['dataset_type']}):[/bold red]")
-        for issue in data['issues']:
-            console.print(f"  - [{issue.get('level', 'error')}] {issue.get('issue_type')}: {issue.get('message')} (record: {issue.get('record_id')})")
+    if data.get("issues"):
+        console.print(
+            f"[bold red]Validation Issues in latest run ({data['dataset_type']}):[/bold red]"
+        )
+        for issue in data["issues"]:
+            console.print(
+                f"  - [{issue.get('level', 'error')}] {issue.get('issue_type')}: {issue.get('message')} (record: {issue.get('record_id')})"
+            )
     else:
         console.print("[bold green]No validation issues in latest run![/bold green]")
+
 
 @app.command()
 def list_data_artifacts():
@@ -194,6 +240,7 @@ def list_data_artifacts():
             for p in cat_dir.rglob("*.*"):
                 if p.is_file():
                     console.print(f"  - {p.relative_to(data_dir)}")
+
 
 @app.command()
 def provider_healthcheck():
@@ -210,20 +257,23 @@ def provider_healthcheck():
             status = "[green]OK[/green]" if is_healthy else "[red]FAIL[/red]"
             console.print(f"Provider '{provider}': {status}")
 
+
 #
 @app.command()
 def build_ratings(sport: str):
     """Process events and build rating timelines."""
+    import uuid
+    from datetime import datetime
+
+    import pandas as pd
+
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
     from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.contracts import RatingBuildManifest
+    from sports_signal_bot.ratings.manifests import write_rating_manifest
     from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
     from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.ratings.manifests import write_rating_manifest
-    from sports_signal_bot.ratings.contracts import RatingBuildManifest
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
     from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
-    from datetime import datetime
-    import uuid
 
     config = load_rating_config(sport)
     engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
@@ -238,32 +288,46 @@ def build_ratings(sport: str):
         df_e = pd.read_csv(events_path)
         df_e = df_e.where(pd.notnull(df_e), None)
         for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']),
-                sport=SportType(r['sport']),
-                league=str(r['league']),
-                season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']),
-                away_team=str(r['away_team']),
-                status=str(r['status']),
-                venue=str(r.get('venue')) if r.get('venue') else None,
-                source=str(r['source']),
-                source_event_id=str(r['source_event_id'])
-            ))
+            events.append(
+                CanonicalEventRecord(
+                    event_id=str(r["event_id"]),
+                    sport=SportType(r["sport"]),
+                    league=str(r["league"]),
+                    season=str(r["season"]),
+                    event_datetime_utc=datetime.fromisoformat(
+                        r["event_datetime_utc"].replace("Z", "+00:00")
+                    ),
+                    home_team=str(r["home_team"]),
+                    away_team=str(r["away_team"]),
+                    status=str(r["status"]),
+                    venue=str(r.get("venue")) if r.get("venue") else None,
+                    source=str(r["source"]),
+                    source_event_id=str(r["source_event_id"]),
+                )
+            )
 
     results = []
     if results_path.exists():
         df_r = pd.read_csv(results_path)
         df_r = df_r.where(pd.notnull(df_r), None)
         for _, r in df_r.iterrows():
-             results.append(EventResultRecord(
-                 event_id=str(r['event_id']),
-                 sport=SportType(r['sport']),
-                 status=str(r['status']),
-                 final_home_score=float(r['final_home_score']) if pd.notna(r['final_home_score']) else None,
-                 final_away_score=float(r['final_away_score']) if pd.notna(r['final_away_score']) else None
-             ))
+            results.append(
+                EventResultRecord(
+                    event_id=str(r["event_id"]),
+                    sport=SportType(r["sport"]),
+                    status=str(r["status"]),
+                    final_home_score=(
+                        float(r["final_home_score"])
+                        if pd.notna(r["final_home_score"])
+                        else None
+                    ),
+                    final_away_score=(
+                        float(r["final_away_score"])
+                        if pd.notna(r["final_away_score"])
+                        else None
+                    ),
+                )
+            )
 
     start = datetime.utcnow()
     snapshots, updates = processor.process_timeline(events, results)
@@ -277,7 +341,7 @@ def build_ratings(sport: str):
         end_time_utc=end,
         events_processed=len(events),
         teams_updated=len(processor._state_store),
-        config_used=config
+        config_used=config,
     )
 
     out_dir = get_data_dir() / "processed" / "manifests"
@@ -290,16 +354,19 @@ def build_ratings(sport: str):
     console.print(f"Teams tracked: {len(processor._state_store)}")
     console.print(f"Manifest written to: {out_dir}")
 
+
 @app.command()
 def preview_ratings(sport: str):
     """Preview final rating states for a sport."""
+    from datetime import datetime
+
+    import pandas as pd
+
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
     from sports_signal_bot.ratings.config import load_rating_config
     from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
     from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
     from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
-    from datetime import datetime
 
     config = load_rating_config(sport)
     engine_cls = RATING_ENGINE_REGISTRY.get_engine_class("elo")
@@ -312,42 +379,72 @@ def preview_ratings(sport: str):
     if events_path.exists():
         df_e = pd.read_csv(events_path)
         for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="mock", source_event_id="mock"
-            ))
+            events.append(
+                CanonicalEventRecord(
+                    event_id=str(r["event_id"]),
+                    sport=SportType(r["sport"]),
+                    league=str(r["league"]),
+                    season=str(r["season"]),
+                    event_datetime_utc=datetime.fromisoformat(
+                        r["event_datetime_utc"].replace("Z", "+00:00")
+                    ),
+                    home_team=str(r["home_team"]),
+                    away_team=str(r["away_team"]),
+                    status=str(r["status"]),
+                    source="mock",
+                    source_event_id="mock",
+                )
+            )
     if results_path.exists():
         df_r = pd.read_csv(results_path)
         for _, r in df_r.iterrows():
-            if pd.notna(r['final_home_score']):
-                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+            if pd.notna(r["final_home_score"]):
+                results.append(
+                    EventResultRecord(
+                        event_id=str(r["event_id"]),
+                        sport=SportType(r["sport"]),
+                        status=str(r["status"]),
+                        final_home_score=float(r["final_home_score"]),
+                        final_away_score=float(r["final_away_score"]),
+                    )
+                )
 
     processor.process_timeline(events, results)
 
     states = []
     for k, v in processor._state_store.items():
-        states.append({"team": v.team_id, "rating": round(v.current_rating, 2), "matches": v.matches_played})
+        states.append(
+            {
+                "team": v.team_id,
+                "rating": round(v.current_rating, 2),
+                "matches": v.matches_played,
+            }
+        )
 
-    df = pd.DataFrame(states).sort_values('rating', ascending=False)
+    df = pd.DataFrame(states).sort_values("rating", ascending=False)
     console.print(f"[bold blue]Top Ratings Preview ({sport})[/bold blue]")
     console.print(df.head(10).to_markdown())
+
 
 @app.command()
 def preview_rating_features(sport: str):
     """Preview features generated from rating snapshots."""
-    from sports_signal_bot.ratings.config import load_rating_config
-    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
-    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
-    from sports_signal_bot.ratings.features import RatingFeatureBuilder
-    from sports_signal_bot.features.contracts import FeatureBuildContext
-    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
-    from sports_signal_bot.results.contracts import EventResultRecord
-    import pandas as pd
     from datetime import datetime
 
+    import pandas as pd
+
+    from sports_signal_bot.data.contracts.canonical import CanonicalEventRecord
+    from sports_signal_bot.features.contracts import FeatureBuildContext
+    from sports_signal_bot.ratings.config import load_rating_config
+    from sports_signal_bot.ratings.features import RatingFeatureBuilder
+    from sports_signal_bot.ratings.registry import RATING_ENGINE_REGISTRY
+    from sports_signal_bot.ratings.timeline import RatingTimelineProcessor
+    from sports_signal_bot.results.contracts import EventResultRecord
+
     config = load_rating_config(sport)
-    processor = RatingTimelineProcessor(RATING_ENGINE_REGISTRY.get_engine_class("elo")(config), config)
+    processor = RatingTimelineProcessor(
+        RATING_ENGINE_REGISTRY.get_engine_class("elo")(config), config
+    )
 
     events_path = get_data_dir() / "sample_inputs" / sport / "events_sample.csv"
     results_path = get_data_dir() / "sample_inputs" / sport / "results_sample.csv"
@@ -356,16 +453,35 @@ def preview_rating_features(sport: str):
     if events_path.exists():
         df_e = pd.read_csv(events_path)
         for _, r in df_e.iterrows():
-            events.append(CanonicalEventRecord(
-                event_id=str(r['event_id']), sport=SportType(r['sport']), league=str(r['league']), season=str(r['season']),
-                event_datetime_utc=datetime.fromisoformat(r['event_datetime_utc'].replace('Z', '+00:00')),
-                home_team=str(r['home_team']), away_team=str(r['away_team']), status=str(r['status']), source="m", source_event_id="m"
-            ))
+            events.append(
+                CanonicalEventRecord(
+                    event_id=str(r["event_id"]),
+                    sport=SportType(r["sport"]),
+                    league=str(r["league"]),
+                    season=str(r["season"]),
+                    event_datetime_utc=datetime.fromisoformat(
+                        r["event_datetime_utc"].replace("Z", "+00:00")
+                    ),
+                    home_team=str(r["home_team"]),
+                    away_team=str(r["away_team"]),
+                    status=str(r["status"]),
+                    source="m",
+                    source_event_id="m",
+                )
+            )
     if results_path.exists():
-         df_r = pd.read_csv(results_path)
-         for _, r in df_r.iterrows():
-            if pd.notna(r['final_home_score']):
-                 results.append(EventResultRecord(event_id=str(r['event_id']), sport=SportType(r['sport']), status=str(r['status']), final_home_score=float(r['final_home_score']), final_away_score=float(r['final_away_score'])))
+        df_r = pd.read_csv(results_path)
+        for _, r in df_r.iterrows():
+            if pd.notna(r["final_home_score"]):
+                results.append(
+                    EventResultRecord(
+                        event_id=str(r["event_id"]),
+                        sport=SportType(r["sport"]),
+                        status=str(r["status"]),
+                        final_home_score=float(r["final_home_score"]),
+                        final_away_score=float(r["final_away_score"]),
+                    )
+                )
 
     snapshots, _ = processor.process_timeline(events, results)
 
@@ -378,12 +494,13 @@ def preview_rating_features(sport: str):
     console.print(feat_df.to_markdown())
 
 
-
 @app.command()
 def preview_football_poisson(event_id: str = "mock-event-1"):
     """Preview Poisson lambda generation for football."""
-    from sports_signal_bot.probabilistic.football import LambdaBuildContext, GoalLambdaBuilder
     import uuid
+
+    from sports_signal_bot.probabilistic.football import (GoalLambdaBuilder,
+                                                          LambdaBuildContext)
 
     ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
     builder = GoalLambdaBuilder()
@@ -393,7 +510,7 @@ def preview_football_poisson(event_id: str = "mock-event-1"):
         "league_total_goal_baseline": 2.8,
         "home_rating_proxy": 1600.0,
         "away_rating_proxy": 1400.0,
-        "home_advantage": 0.25
+        "home_advantage": 0.25,
     }
 
     estimate = builder.build(ctx, features)
@@ -408,19 +525,22 @@ def preview_football_poisson(event_id: str = "mock-event-1"):
         for w in estimate.warnings:
             console.print(f"  - {w}")
 
+
 @app.command()
 def preview_football_markets(event_id: str = "mock-event-1", market: str = "1x2"):
     """Preview specific football markets derived from the Poisson matrix."""
-    from sports_signal_bot.probabilistic.football import LambdaBuildContext, FOOTBALL_MODEL_REGISTRY
     import uuid
+
+    from sports_signal_bot.probabilistic.football import (
+        FOOTBALL_MODEL_REGISTRY, LambdaBuildContext)
 
     ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
     model = FOOTBALL_MODEL_REGISTRY.get_model("football_poisson_baseline")
 
     features = {
         "league_total_goal_baseline": 2.6,
-        "rating_diff": 50.0, # Slight home favorite
-        "home_advantage": 0.2
+        "rating_diff": 50.0,  # Slight home favorite
+        "home_advantage": 0.2,
     }
 
     records = model.predict(ctx, features)
@@ -429,20 +549,28 @@ def preview_football_markets(event_id: str = "mock-event-1", market: str = "1x2"
     record = next((r for r in records if r.market_type == market), None)
 
     if not record:
-        console.print(f"[bold red]Market '{market}' not found in predictions.[/bold red]")
+        console.print(
+            f"[bold red]Market '{market}' not found in predictions.[/bold red]"
+        )
         console.print(f"Available markets: {[r.market_type for r in records]}")
         return
 
     console.print(f"[bold cyan]Market Preview: {market} for {event_id}[/bold cyan]")
-    console.print(f"Expected Total Goals: {record.supporting_metrics['expected_total_goals']:.2f}")
+    console.print(
+        f"Expected Total Goals: {record.supporting_metrics['expected_total_goals']:.2f}"
+    )
     for k, v in record.predicted_probabilities.items():
         console.print(f"{k}: {v:.4f} ({v*100:.1f}%)")
+
 
 @app.command()
 def preview_correct_scores(event_id: str = "mock-event-1", top_k: int = 5):
     """Preview the top K correct scores from the Poisson matrix."""
-    from sports_signal_bot.probabilistic.football import LambdaBuildContext, GoalLambdaBuilder, PoissonScoreMatrix, CorrectScoreExtractor
     import uuid
+
+    from sports_signal_bot.probabilistic.football import (
+        CorrectScoreExtractor, GoalLambdaBuilder, LambdaBuildContext,
+        PoissonScoreMatrix)
 
     ctx = LambdaBuildContext(event_id=event_id, run_id=uuid.uuid4().hex[:8])
 
@@ -450,7 +578,7 @@ def preview_correct_scores(event_id: str = "mock-event-1", top_k: int = 5):
         "league_total_goal_baseline": 2.5,
         "home_rating_proxy": 1500.0,
         "away_rating_proxy": 1500.0,
-        "home_advantage": 0.2
+        "home_advantage": 0.2,
     }
 
     estimate = GoalLambdaBuilder().build(ctx, features)
@@ -459,16 +587,22 @@ def preview_correct_scores(event_id: str = "mock-event-1", top_k: int = 5):
     top_scores = CorrectScoreExtractor.get_top_k(matrix, top_k)
 
     console.print(f"[bold cyan]Top {top_k} Correct Scores for {event_id}[/bold cyan]")
-    console.print(f"Lambdas: Home {estimate.home_lambda:.2f} | Away {estimate.away_lambda:.2f}")
+    console.print(
+        f"Lambdas: Home {estimate.home_lambda:.2f} | Away {estimate.away_lambda:.2f}"
+    )
     for rank, cs in enumerate(top_scores, 1):
-        console.print(f"{rank}. {cs.home_goals} - {cs.away_goals}: {cs.probability:.4f} ({cs.probability*100:.1f}%)")
+        console.print(
+            f"{rank}. {cs.home_goals} - {cs.away_goals}: {cs.probability:.4f} ({cs.probability*100:.1f}%)"
+        )
 
 
 @app.command()
 def preview_basketball_model(event_id: str = "mock-basketball-1"):
     """Preview basic expected points generation for basketball."""
-    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
-    from sports_signal_bot.probabilistic.basketball.expected_points import ExpectedPointsBuilder
+    from sports_signal_bot.probabilistic.basketball.config import \
+        load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.expected_points import \
+        ExpectedPointsBuilder
 
     config = load_basketball_config()
     builder = ExpectedPointsBuilder()
@@ -479,7 +613,7 @@ def preview_basketball_model(event_id: str = "mock-basketball-1"):
         "pace_adjustment": 5.0,
         "home_off_vs_away_def": 2.0,
         "away_off_vs_home_def": -1.0,
-        "rating_diff": 4.0
+        "rating_diff": 4.0,
     }
 
     estimate = builder.build(event_id, features, config)
@@ -494,11 +628,16 @@ def preview_basketball_model(event_id: str = "mock-basketball-1"):
         for w in estimate.warnings:
             console.print(f"  - {w}")
 
+
 @app.command()
-def preview_basketball_market(event_id: str = "mock-basketball-1", market: str = "moneyline"):
+def preview_basketball_market(
+    event_id: str = "mock-basketball-1", market: str = "moneyline"
+):
     """Preview specific basketball markets derived from the model."""
-    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
-    from sports_signal_bot.probabilistic.basketball.registry import BASKETBALL_MODEL_REGISTRY
+    from sports_signal_bot.probabilistic.basketball.config import \
+        load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.registry import \
+        BASKETBALL_MODEL_REGISTRY
 
     config = load_basketball_config()
     model = BASKETBALL_MODEL_REGISTRY.get_model("basketball_normal_baseline", config)
@@ -506,7 +645,7 @@ def preview_basketball_market(event_id: str = "mock-basketball-1", market: str =
     features = {
         "base_total_points": 220.5,
         "home_advantage_points": 3.0,
-        "rating_diff": 6.0 # Home favored
+        "rating_diff": 6.0,  # Home favored
     }
 
     records = model.predict(event_id, features)
@@ -515,23 +654,32 @@ def preview_basketball_market(event_id: str = "mock-basketball-1", market: str =
     record = next((r for r in records if r.market_type == market), None)
 
     if not record:
-        console.print(f"[bold red]Market '{market}' not found in predictions.[/bold red]")
+        console.print(
+            f"[bold red]Market '{market}' not found in predictions.[/bold red]"
+        )
         console.print(f"Available markets: {[r.market_type for r in records]}")
         return
 
     console.print(f"[bold cyan]Market Preview: {market} for {event_id}[/bold cyan]")
     metrics = record.supporting_metrics
-    console.print(f"Expected Total: {metrics['expected_total_points']:.2f} | Margin: {metrics['expected_margin_home']:.2f}")
+    console.print(
+        f"Expected Total: {metrics['expected_total_points']:.2f} | Margin: {metrics['expected_margin_home']:.2f}"
+    )
     for k, v in record.predicted_probabilities.items():
         console.print(f"{k}: {v:.4f} ({v*100:.1f}%)")
+
 
 @app.command()
 def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
     """Preview diagnostics for a basketball model run."""
-    from sports_signal_bot.probabilistic.basketball.config import load_basketball_config
-    from sports_signal_bot.probabilistic.basketball.expected_points import ExpectedPointsBuilder
-    from sports_signal_bot.probabilistic.basketball.distribution import BasketballDistributionCore
-    from sports_signal_bot.probabilistic.basketball.diagnostics import DiagnosticsBuilder
+    from sports_signal_bot.probabilistic.basketball.config import \
+        load_basketball_config
+    from sports_signal_bot.probabilistic.basketball.diagnostics import \
+        DiagnosticsBuilder
+    from sports_signal_bot.probabilistic.basketball.distribution import \
+        BasketballDistributionCore
+    from sports_signal_bot.probabilistic.basketball.expected_points import \
+        ExpectedPointsBuilder
 
     config = load_basketball_config()
     builder = ExpectedPointsBuilder()
@@ -539,7 +687,7 @@ def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
 
     features = {
         "base_total_points": 210.0,
-        "total_std_modifier": 1.5 # artificially high variance
+        "total_std_modifier": 1.5,  # artificially high variance
     }
 
     estimate = builder.build(event_id, features, config)
@@ -553,14 +701,18 @@ def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
         margin_std=margin_std,
         builder_warnings=estimate.warnings,
         dist_warnings=dist_warnings,
-        features=features
+        features=features,
     )
 
     console.print(f"[bold cyan]Diagnostics Preview for {event_id}[/bold cyan]")
     console.print(f"Implied Total: {diagnostics.implied_total:.2f}")
     console.print(f"Implied Margin: {diagnostics.implied_margin:.2f}")
-    console.print(f"Total Variance: {diagnostics.total_variance:.2f} (STD: {total_std:.2f})")
-    console.print(f"Margin Variance: {diagnostics.margin_variance:.2f} (STD: {margin_std:.2f})")
+    console.print(
+        f"Total Variance: {diagnostics.total_variance:.2f} (STD: {total_std:.2f})"
+    )
+    console.print(
+        f"Margin Variance: {diagnostics.margin_variance:.2f} (STD: {margin_std:.2f})"
+    )
 
     if diagnostics.uncertainty_flags:
         console.print("[red]Uncertainty Flags:[/red]")
@@ -569,34 +721,49 @@ def preview_basketball_diagnostics(event_id: str = "mock-basketball-1"):
 
     if diagnostics.clipping_warnings:
         console.print("[yellow]Clipping Warnings:[/yellow]")
+
+
 @app.command()
 def build_training_dataset(sport: str, market: str):
     """Build a training dataset for the given sport and market type."""
-    from sports_signal_bot.training.dataset import TrainingDatasetBuilder
-    from sports_signal_bot.training.contracts import DatasetBuildConfig
     import pandas as pd
+
     from sports_signal_bot.core.paths import get_data_dir
+    from sports_signal_bot.training.contracts import DatasetBuildConfig
+    from sports_signal_bot.training.dataset import TrainingDatasetBuilder
 
     # In a real run, you'd load features and labels from the data tier
     # For now, let's mock it just to show it works
     console.print(f"[bold cyan]Building dataset for {sport} - {market}[/bold cyan]")
 
     # Mock data
-    features_df = pd.DataFrame({
-        'event_id': ['e1', 'e2', 'e3'],
-        'event_datetime_utc': pd.to_datetime(['2024-01-01', '2024-01-02', '2024-01-03'], utc=True),
-        'feat1': [1.0, 2.0, 3.0],
-        'feat2': [0.5, 0.5, 0.5]
-    })
-    labels_df = pd.DataFrame({
-        'event_id': ['e1', 'e2', 'e3'],
-        'market_type': [market, market, market],
-        'label_name': [f'{sport}_{market}', f'{sport}_{market}', f'{sport}_{market}'],
-        'class_index': [0, 1, 0],
-        'validity_status': ['valid', 'valid', 'valid']
-    })
+    features_df = pd.DataFrame(
+        {
+            "event_id": ["e1", "e2", "e3"],
+            "event_datetime_utc": pd.to_datetime(
+                ["2024-01-01", "2024-01-02", "2024-01-03"], utc=True
+            ),
+            "feat1": [1.0, 2.0, 3.0],
+            "feat2": [0.5, 0.5, 0.5],
+        }
+    )
+    labels_df = pd.DataFrame(
+        {
+            "event_id": ["e1", "e2", "e3"],
+            "market_type": [market, market, market],
+            "label_name": [
+                f"{sport}_{market}",
+                f"{sport}_{market}",
+                f"{sport}_{market}",
+            ],
+            "class_index": [0, 1, 0],
+            "validity_status": ["valid", "valid", "valid"],
+        }
+    )
 
-    config = DatasetBuildConfig(sport=sport, market_type=market, label_name=f'{sport}_{market}')
+    config = DatasetBuildConfig(
+        sport=sport, market_type=market, label_name=f"{sport}_{market}"
+    )
     builder = TrainingDatasetBuilder(config)
 
     try:
@@ -612,33 +779,43 @@ def build_training_dataset(sport: str, market: str):
 @app.command()
 def run_train(sport: str, market: str, model: str = "logistic_regression"):
     """Run the training pipeline."""
-    from sports_signal_bot.training.runner import TrainingRunManager
     import pandas as pd
 
-    console.print(f"[bold cyan]Running training for {sport} - {market} using {model}[/bold cyan]")
+    from sports_signal_bot.training.runner import TrainingRunManager
+
+    console.print(
+        f"[bold cyan]Running training for {sport} - {market} using {model}[/bold cyan]"
+    )
 
     # Mock data
-    features_df = pd.DataFrame({
-        'event_id': ['e1', 'e2', 'e3', 'e4', 'e5'],
-        'event_datetime_utc': pd.to_datetime(['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05'], utc=True),
-        'feat1': [1.0, 2.0, 3.0, 4.0, 5.0],
-        'feat2': [0.5, 0.5, 0.5, 0.5, 0.5]
-    })
-    labels_df = pd.DataFrame({
-        'event_id': ['e1', 'e2', 'e3', 'e4', 'e5'],
-        'market_type': [market]*5,
-        'label_name': [f'{sport}_{market}']*5,
-        'class_index': [0, 1, 0, 1, 1],
-        'validity_status': ['valid']*5
-    })
+    features_df = pd.DataFrame(
+        {
+            "event_id": ["e1", "e2", "e3", "e4", "e5"],
+            "event_datetime_utc": pd.to_datetime(
+                ["2024-01-01", "2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05"],
+                utc=True,
+            ),
+            "feat1": [1.0, 2.0, 3.0, 4.0, 5.0],
+            "feat2": [0.5, 0.5, 0.5, 0.5, 0.5],
+        }
+    )
+    labels_df = pd.DataFrame(
+        {
+            "event_id": ["e1", "e2", "e3", "e4", "e5"],
+            "market_type": [market] * 5,
+            "label_name": [f"{sport}_{market}"] * 5,
+            "class_index": [0, 1, 0, 1, 1],
+            "validity_status": ["valid"] * 5,
+        }
+    )
 
     config = {
-        'sport': sport,
-        'market_type': market,
-        'label_name': f'{sport}_{market}',
-        'model_name': model,
-        'split_strategy': 'holdout',
-        'split_kwargs': {'train_fraction': 0.6, 'test_fraction': 0.0}
+        "sport": sport,
+        "market_type": market,
+        "label_name": f"{sport}_{market}",
+        "model_name": model,
+        "split_strategy": "holdout",
+        "split_kwargs": {"train_fraction": 0.6, "test_fraction": 0.0},
     }
 
     manager = TrainingRunManager(config)
@@ -648,7 +825,7 @@ def run_train(sport: str, market: str, model: str = "logistic_regression"):
         console.print("[green]Training completed successfully![/green]")
         console.print(f"Run ID: {result['run_id']}")
         console.print(f"Output Dir: {result['output_dir']}")
-        manifest = result['manifest']
+        manifest = result["manifest"]
         console.print(f"Metrics: {manifest.metrics_summary}")
     else:
         console.print(f"[bold red]Training failed:[/bold red] {result}")
@@ -657,70 +834,153 @@ def run_train(sport: str, market: str, model: str = "logistic_regression"):
 @app.command()
 def preview_splits(sport: str, market: str):
     """Preview how data would be split for training."""
-    from sports_signal_bot.training.splits import HoldoutTimeSplit
     import pandas as pd
+
+    from sports_signal_bot.training.splits import HoldoutTimeSplit
 
     console.print(f"[bold cyan]Previewing splits for {sport} - {market}[/bold cyan]")
 
     # Mock data
-    df = pd.DataFrame({
-        'event_id': [f'e{i}' for i in range(1, 11)],
-        'event_datetime_utc': pd.date_range(start='2024-01-01', periods=10, freq='D')
-    })
+    df = pd.DataFrame(
+        {
+            "event_id": [f"e{i}" for i in range(1, 11)],
+            "event_datetime_utc": pd.date_range(
+                start="2024-01-01", periods=10, freq="D"
+            ),
+        }
+    )
 
     splitter = HoldoutTimeSplit(train_fraction=0.7)
     for fold_id, train_idx, valid_idx, _ in splitter.split(df):
         console.print(f"Fold: {fold_id}")
-        console.print(f"  Train: {len(train_idx)} rows (from {df.iloc[train_idx]['event_datetime_utc'].min().date()} to {df.iloc[train_idx]['event_datetime_utc'].max().date()})")
-        console.print(f"  Valid: {len(valid_idx)} rows (from {df.iloc[valid_idx]['event_datetime_utc'].min().date()} to {df.iloc[valid_idx]['event_datetime_utc'].max().date()})")
+        console.print(
+            f"  Train: {len(train_idx)} rows (from {df.iloc[train_idx]['event_datetime_utc'].min().date()} to {df.iloc[train_idx]['event_datetime_utc'].max().date()})"
+        )
+        console.print(
+            f"  Valid: {len(valid_idx)} rows (from {df.iloc[valid_idx]['event_datetime_utc'].min().date()} to {df.iloc[valid_idx]['event_datetime_utc'].max().date()})"
+        )
 
 
 @app.command()
 def list_trainers():
     """List available model trainers."""
     from sports_signal_bot.training.registry import TRAINER_REGISTRY
+
     console.print("[bold cyan]Available Trainers:[/bold cyan]")
     for trainer in TRAINER_REGISTRY.list_trainers():
         console.print(f"  - {trainer}")
 
 
-
 @app.command()
 def build_calibration_dataset(sport: str, market: str):
     """(Stub) Build a calibration dataset from validation predictions."""
-    console.print(f"[bold cyan]Building calibration dataset for {sport} - {market}[/bold cyan]")
+    console.print(
+        f"[bold cyan]Building calibration dataset for {sport} - {market}[/bold cyan]"
+    )
     console.print("Calibration dataset successfully built (stub).")
+
 
 @app.command()
 def list_calibrators():
     """List all available calibration methods."""
     from sports_signal_bot.calibration.registry import CalibrationRegistry
+
     methods = CalibrationRegistry.list_available()
     console.print(f"[bold cyan]Available Calibrators:[/bold cyan] {methods}")
+
 
 @app.command()
 def run_calibration(sport: str, market: str, method: str = "binary_sigmoid"):
     """Run calibration pipeline using existing validation predictions."""
-    from sports_signal_bot.calibration.runner import CalibrationRunner
-    from sports_signal_bot.training.contracts import ValidationPredictionRecord
     from datetime import datetime, timezone
 
-    console.print(f"[bold cyan]Running calibration for {sport} - {market} using {method}[/bold cyan]")
+    from sports_signal_bot.calibration.runner import CalibrationRunner
+    from sports_signal_bot.training.contracts import ValidationPredictionRecord
+
+    console.print(
+        f"[bold cyan]Running calibration for {sport} - {market} using {method}[/bold cyan]"
+    )
 
     # Mock data
     if "binary" in method:
         class_labels = ["0", "1"]
         predictions = [
-            ValidationPredictionRecord(event_id="e1", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"0": 0.3, "1": 0.7}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
-            ValidationPredictionRecord(event_id="e2", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=1, predicted_probabilities={"0": 0.4, "1": 0.6}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
-            ValidationPredictionRecord(event_id="e3", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"0": 0.1, "1": 0.9}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
-            ValidationPredictionRecord(event_id="e4", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=0, predicted_probabilities={"0": 0.8, "1": 0.2}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=1,
+                predicted_class=1,
+                predicted_probabilities={"0": 0.3, "1": 0.7},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
+            ValidationPredictionRecord(
+                event_id="e2",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=0,
+                predicted_class=1,
+                predicted_probabilities={"0": 0.4, "1": 0.6},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
+            ValidationPredictionRecord(
+                event_id="e3",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=1,
+                predicted_class=1,
+                predicted_probabilities={"0": 0.1, "1": 0.9},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
+            ValidationPredictionRecord(
+                event_id="e4",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=0,
+                predicted_class=0,
+                predicted_probabilities={"0": 0.8, "1": 0.2},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
         ]
     else:
         class_labels = ["A", "B", "C"]
         predictions = [
-            ValidationPredictionRecord(event_id="e1", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=0, predicted_class=0, predicted_probabilities={"A": 0.7, "B": 0.2, "C": 0.1}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
-            ValidationPredictionRecord(event_id="e2", sport=sport, market_type=market, label_name=f"{sport}_{market}", true_class_index=1, predicted_class=1, predicted_probabilities={"A": 0.3, "B": 0.5, "C": 0.2}, model_name="mock_model", fold_id="fold1", timestamp_utc=datetime.now(timezone.utc).isoformat()),
+            ValidationPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=0,
+                predicted_class=0,
+                predicted_probabilities={"A": 0.7, "B": 0.2, "C": 0.1},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
+            ValidationPredictionRecord(
+                event_id="e2",
+                sport=sport,
+                market_type=market,
+                label_name=f"{sport}_{market}",
+                true_class_index=1,
+                predicted_class=1,
+                predicted_probabilities={"A": 0.3, "B": 0.5, "C": 0.2},
+                model_name="mock_model",
+                fold_id="fold1",
+                timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            ),
         ]
 
     config = {
@@ -729,7 +989,7 @@ def run_calibration(sport: str, market: str, method: str = "binary_sigmoid"):
         "label_name": f"{sport}_{market}",
         "method": method,
         "class_labels": class_labels,
-        "source_model_run_id": "mock_run"
+        "source_model_run_id": "mock_run",
     }
 
     runner = CalibrationRunner(config)
@@ -745,28 +1005,39 @@ def run_calibration(sport: str, market: str, method: str = "binary_sigmoid"):
             console.print(f"[bold yellow]Warnings:[/bold yellow] {manifest.warnings}")
         console.print(f"Artifact path: {manifest.calibrator_artifact_path}")
     else:
-        console.print(f"[bold red]Calibration failed:[/bold red] {result.get('reason')}")
+        console.print(
+            f"[bold red]Calibration failed:[/bold red] {result.get('reason')}"
+        )
+
 
 @app.command()
 def preview_reliability(sport: str, market: str):
     """Preview reliability bins for a given market (stub)."""
-    console.print(f"[bold cyan]Previewing reliability for {sport} - {market}[/bold cyan]")
-    console.print("Bin 0: [0.0 - 0.1] Count: 100, Mean Pred: 0.05, Emp Freq: 0.04, Gap: 0.01")
-    console.print("Bin 1: [0.1 - 0.2] Count: 150, Mean Pred: 0.15, Emp Freq: 0.16, Gap: -0.01")
-
-
-
+    console.print(
+        f"[bold cyan]Previewing reliability for {sport} - {market}[/bold cyan]"
+    )
+    console.print(
+        "Bin 0: [0.0 - 0.1] Count: 100, Mean Pred: 0.05, Emp Freq: 0.04, Gap: 0.01"
+    )
+    console.print(
+        "Bin 1: [0.1 - 0.2] Count: 150, Mean Pred: 0.15, Emp Freq: 0.16, Gap: -0.01"
+    )
 
 
 @app.command()
 def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
     """Run an ensemble strategy over mocked sources."""
-    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-    from sports_signal_bot.ensemble.input_builder import group_predictions_by_event_market
-    from sports_signal_bot.ensemble.runner import EnsembleRunner
     import json
 
-    console.print(f"[bold cyan]Running Ensemble for {sport} - {market} using {ensembler}[/bold cyan]")
+    from sports_signal_bot.ensemble.contracts import \
+        StandardizedPredictionRecord
+    from sports_signal_bot.ensemble.input_builder import \
+        group_predictions_by_event_market
+    from sports_signal_bot.ensemble.runner import EnsembleRunner
+
+    console.print(
+        f"[bold cyan]Running Ensemble for {sport} - {market} using {ensembler}[/bold cyan]"
+    )
 
     # Generate mock inputs based on sport/market
     preds = []
@@ -774,30 +1045,143 @@ def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
     if sport == "football" and market == "1x2":
         classes = ["1", "X", "2"]
         preds = [
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="poisson_model", class_labels=classes, probabilities={"1": 0.45, "X": 0.3, "2": 0.25}, predicted_class="1"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="elo_benchmark", class_labels=classes, probabilities={"1": 0.5, "X": 0.25, "2": 0.25}, predicted_class="1"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_raw", source_name="logistic_regression", class_labels=classes, probabilities={"1": 0.4, "X": 0.4, "2": 0.2}, predicted_class="1", is_calibrated=False),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="logistic_regression", class_labels=classes, probabilities={"1": 0.38, "X": 0.42, "2": 0.2}, predicted_class="X", is_calibrated=True),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="probabilistic",
+                source_name="poisson_model",
+                class_labels=classes,
+                probabilities={"1": 0.45, "X": 0.3, "2": 0.25},
+                predicted_class="1",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="benchmark",
+                source_name="elo_benchmark",
+                class_labels=classes,
+                probabilities={"1": 0.5, "X": 0.25, "2": 0.25},
+                predicted_class="1",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="ml_raw",
+                source_name="logistic_regression",
+                class_labels=classes,
+                probabilities={"1": 0.4, "X": 0.4, "2": 0.2},
+                predicted_class="1",
+                is_calibrated=False,
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="ml_calibrated",
+                source_name="logistic_regression",
+                class_labels=classes,
+                probabilities={"1": 0.38, "X": 0.42, "2": 0.2},
+                predicted_class="X",
+                is_calibrated=True,
+            ),
         ]
     elif sport == "football" and market == "ou_2_5":
         classes = ["over", "under"]
         preds = [
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="poisson_model", class_labels=classes, probabilities={"over": 0.6, "under": 0.4}, predicted_class="over"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="bookmaker_implied", class_labels=classes, probabilities={"over": 0.55, "under": 0.45}, predicted_class="over"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="xgboost", class_labels=classes, probabilities={"over": 0.45, "under": 0.55}, predicted_class="under", is_calibrated=True),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="probabilistic",
+                source_name="poisson_model",
+                class_labels=classes,
+                probabilities={"over": 0.6, "under": 0.4},
+                predicted_class="over",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="benchmark",
+                source_name="bookmaker_implied",
+                class_labels=classes,
+                probabilities={"over": 0.55, "under": 0.45},
+                predicted_class="over",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="ml_calibrated",
+                source_name="xgboost",
+                class_labels=classes,
+                probabilities={"over": 0.45, "under": 0.55},
+                predicted_class="under",
+                is_calibrated=True,
+            ),
         ]
     elif sport == "basketball" and market == "moneyline":
         classes = ["home", "away"]
         preds = [
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="benchmark", source_name="rating_benchmark", class_labels=classes, probabilities={"home": 0.7, "away": 0.3}, predicted_class="home"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="structural_model", class_labels=classes, probabilities={"home": 0.75, "away": 0.25}, predicted_class="home"),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="logistic_regression", class_labels=classes, probabilities={"home": 0.65, "away": 0.35}, predicted_class="home", is_calibrated=True),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="benchmark",
+                source_name="rating_benchmark",
+                class_labels=classes,
+                probabilities={"home": 0.7, "away": 0.3},
+                predicted_class="home",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="probabilistic",
+                source_name="structural_model",
+                class_labels=classes,
+                probabilities={"home": 0.75, "away": 0.25},
+                predicted_class="home",
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="ml_calibrated",
+                source_name="logistic_regression",
+                class_labels=classes,
+                probabilities={"home": 0.65, "away": 0.35},
+                predicted_class="home",
+                is_calibrated=True,
+            ),
         ]
     else:
         classes = ["over", "under"]
         preds = [
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="ml_calibrated", source_name="random_forest", class_labels=classes, probabilities={"over": 0.52, "under": 0.48}, predicted_class="over", is_calibrated=True),
-            StandardizedPredictionRecord(event_id="e1", sport=sport, market_type=market, source_family="probabilistic", source_name="structural_total", class_labels=classes, probabilities={"over": 0.49, "under": 0.51}, predicted_class="under"),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="ml_calibrated",
+                source_name="random_forest",
+                class_labels=classes,
+                probabilities={"over": 0.52, "under": 0.48},
+                predicted_class="over",
+                is_calibrated=True,
+            ),
+            StandardizedPredictionRecord(
+                event_id="e1",
+                sport=sport,
+                market_type=market,
+                source_family="probabilistic",
+                source_name="structural_total",
+                class_labels=classes,
+                probabilities={"over": 0.49, "under": 0.51},
+                predicted_class="under",
+            ),
         ]
 
     input_records = group_predictions_by_event_market(preds)
@@ -809,20 +1193,24 @@ def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
             "weights": {
                 "poisson_model": 1.5,
                 "logistic_regression": 1.2,
-                "elo_benchmark": 0.8
+                "elo_benchmark": 0.8,
             },
             "reliability_table": {
                 "poisson_model": {"validation_log_loss": 0.65},
                 "logistic_regression": {"validation_log_loss": 0.55},
-                "elo_benchmark": {"validation_log_loss": 0.75}
+                "elo_benchmark": {"validation_log_loss": 0.75},
             },
-            "source_priority": ["structural_model", "logistic_regression", "rating_benchmark"],
+            "source_priority": [
+                "structural_model",
+                "logistic_regression",
+                "rating_benchmark",
+            ],
             "rules": {
                 "football_1x2": "weighted_average",
-                "basketball_moneyline": "best_source_fallback"
+                "basketball_moneyline": "best_source_fallback",
             },
-            "default_strategy": "simple_average"
-        }
+            "default_strategy": "simple_average",
+        },
     }
 
     runner = EnsembleRunner(config)
@@ -834,25 +1222,34 @@ def run_ensemble(sport: str, market: str, ensembler: str = "simple_average"):
 
         for out in result["outputs"]:
             console.print(f"\n[bold yellow]Event ID: {out.event_id}[/bold yellow]")
-            console.print(f"Eligible Sources: {out.diagnostics.num_sources_eligible}, Used: {out.diagnostics.num_sources_used}")
+            console.print(
+                f"Eligible Sources: {out.diagnostics.num_sources_eligible}, Used: {out.diagnostics.num_sources_used}"
+            )
 
             console.print("[cyan]Selected Sources:[/cyan]")
             for src in out.component_sources:
-                 console.print(f"  - {src.source_name} (weight: {src.weight:.3f}, calibrated: {src.is_calibrated})")
+                console.print(
+                    f"  - {src.source_name} (weight: {src.weight:.3f}, calibrated: {src.is_calibrated})"
+                )
 
             console.print("[cyan]Final Output:[/cyan]")
             console.print(f"  Predicted Class: {out.final_predicted_class}")
-            probs_str = ", ".join([f"{k}: {v:.3f}" for k, v in out.final_probabilities.items()])
+            probs_str = ", ".join(
+                [f"{k}: {v:.3f}" for k, v in out.final_probabilities.items()]
+            )
             console.print(f"  Probabilities: {probs_str}")
 
             console.print("[cyan]Diagnostics Summary:[/cyan]")
             console.print(f"  Entropy: {out.diagnostics.entropy:.3f}")
-            console.print(f"  Top Class Disagreement: {out.diagnostics.max_disagreement:.2%}")
+            console.print(
+                f"  Top Class Disagreement: {out.diagnostics.max_disagreement:.2%}"
+            )
             console.print(f"  Source Variance: {out.diagnostics.source_variance:.5f}")
             if out.diagnostics.warnings:
                 console.print(f"  [red]Warnings:[/red] {out.diagnostics.warnings}")
     else:
         console.print(f"[bold red]Ensemble run failed:[/bold red] {result}")
+
 
 @app.command()
 def preview_ensemble_sources(sport: str, market: str):
@@ -869,14 +1266,15 @@ def preview_ensemble_sources(sport: str, market: str):
         console.print("- ml_raw: random_forest, logistic_regression")
         console.print("- ml_calibrated: random_forest, logistic_regression")
 
+
 @app.command()
 def list_ensemblers():
     """List available ensemble strategies."""
     from sports_signal_bot.ensemble.registry import EnsembleRegistry
+
     console.print("[bold cyan]Available Ensemble Strategies:[/bold cyan]")
     for strategy in EnsembleRegistry.list_available():
         console.print(f"  - {strategy}")
-
 
 
 @app.command()
@@ -884,12 +1282,15 @@ def build_meta_dataset(sport: str, market: str):
     """
     Builds the meta-training dataset from out-of-fold validation predictions.
     """
-    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
-    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
-    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-    from sports_signal_bot.core.paths import get_configs_dir
-    import yaml
     import json
+
+    import yaml
+
+    from sports_signal_bot.core.paths import get_configs_dir
+    from sports_signal_bot.ensemble.contracts import \
+        StandardizedPredictionRecord
+    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
 
     console.print(f"[{sport}] Building meta-dataset for {market}...")
 
@@ -906,18 +1307,29 @@ def build_meta_dataset(sport: str, market: str):
     # We mock it for the CLI skeleton.
     preds = [
         StandardizedPredictionRecord(
-            event_id="e1", sport=sport, market_type=market,
-            source_family="ml", source_name="logreg_baseline",
-            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
-            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            event_id="e1",
+            sport=sport,
+            market_type=market,
+            source_family="ml",
+            source_name="logreg_baseline",
+            class_labels=(
+                ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+            ),
+            probabilities=(
+                {"home": 0.5, "draw": 0.3, "away": 0.2}
+                if sport == "football"
+                else {"home": 0.6, "away": 0.4}
+            ),
             predicted_class="home",
-            is_calibrated=True
+            is_calibrated=True,
         )
     ]
     target_labels = {"e1": "home", "e2": "away"}
     class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
 
-    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+    dataset = builder.build_meta_dataset(
+        preds, target_labels, class_labels, sport, market
+    )
 
     console.print(f"[bold green]Dataset built.[/bold green]")
     console.print(f"Records: {len(dataset.records)}")
@@ -930,12 +1342,14 @@ def run_stacker(sport: str, market: str, model: str = "meta_logistic"):
     """
     Runs stacker training on the meta-dataset.
     """
-    from sports_signal_bot.stacker.runner import StackerRunner
-    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
-    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
-    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-    from sports_signal_bot.core.paths import get_configs_dir
     import yaml
+
+    from sports_signal_bot.core.paths import get_configs_dir
+    from sports_signal_bot.ensemble.contracts import \
+        StandardizedPredictionRecord
+    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
+    from sports_signal_bot.stacker.runner import StackerRunner
 
     console.print(f"[{sport}] Running stacker {model} for {market}...")
 
@@ -952,26 +1366,46 @@ def run_stacker(sport: str, market: str, model: str = "meta_logistic"):
     # Mock data
     preds = [
         StandardizedPredictionRecord(
-            event_id="e1", sport=sport, market_type=market,
-            source_family="ml", source_name="model_A",
-            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
-            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            event_id="e1",
+            sport=sport,
+            market_type=market,
+            source_family="ml",
+            source_name="model_A",
+            class_labels=(
+                ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+            ),
+            probabilities=(
+                {"home": 0.5, "draw": 0.3, "away": 0.2}
+                if sport == "football"
+                else {"home": 0.6, "away": 0.4}
+            ),
             predicted_class="home",
-            is_calibrated=True
+            is_calibrated=True,
         ),
         StandardizedPredictionRecord(
-            event_id="e2", sport=sport, market_type=market,
-            source_family="ml", source_name="model_A",
-            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
-            probabilities={"home": 0.1, "draw": 0.3, "away": 0.6} if sport == "football" else {"home": 0.2, "away": 0.8},
+            event_id="e2",
+            sport=sport,
+            market_type=market,
+            source_family="ml",
+            source_name="model_A",
+            class_labels=(
+                ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+            ),
+            probabilities=(
+                {"home": 0.1, "draw": 0.3, "away": 0.6}
+                if sport == "football"
+                else {"home": 0.2, "away": 0.8}
+            ),
             predicted_class="away",
-            is_calibrated=True
-        )
+            is_calibrated=True,
+        ),
     ]
     target_labels = {"e1": "home", "e2": "away"}
     class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
 
-    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+    dataset = builder.build_meta_dataset(
+        preds, target_labels, class_labels, sport, market
+    )
 
     runner = StackerRunner(config)
     train_result = runner.train(dataset)
@@ -985,15 +1419,18 @@ def run_stacker(sport: str, market: str, model: str = "meta_logistic"):
     preds_out = runner.predict(dataset)
     console.print(f"Generated {len(preds_out)} meta-predictions.")
 
+
 @app.command()
 def preview_source_coverage(sport: str, market: str):
     """
     Previews source coverage for meta-level training.
     """
-    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
-    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-    from sports_signal_bot.core.paths import get_configs_dir
     import yaml
+
+    from sports_signal_bot.core.paths import get_configs_dir
+    from sports_signal_bot.ensemble.contracts import \
+        StandardizedPredictionRecord
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
 
     console.print(f"[{sport}] Previewing source coverage for {market}...")
 
@@ -1007,26 +1444,41 @@ def preview_source_coverage(sport: str, market: str):
 
     preds = [
         StandardizedPredictionRecord(
-            event_id="e1", sport=sport, market_type=market,
-            source_family="ml", source_name="model_A",
-            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
-            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            event_id="e1",
+            sport=sport,
+            market_type=market,
+            source_family="ml",
+            source_name="model_A",
+            class_labels=(
+                ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+            ),
+            probabilities=(
+                {"home": 0.5, "draw": 0.3, "away": 0.2}
+                if sport == "football"
+                else {"home": 0.6, "away": 0.4}
+            ),
             predicted_class="home",
-            is_calibrated=True
+            is_calibrated=True,
         )
     ]
     target_labels = {"e1": "home", "e2": "away"}
     class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
 
-    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+    dataset = builder.build_meta_dataset(
+        preds, target_labels, class_labels, sport, market
+    )
 
     # We can use the runner to build coverage
     from sports_signal_bot.stacker.runner import StackerRunner
+
     runner = StackerRunner(config)
     coverage = runner._build_coverage_report(dataset)
 
     for c in coverage:
-        console.print(f"Source: {c.source_name} | Events: {c.total_events} | OOF coverage: {c.oof_coverage_ratio:.2f}")
+        console.print(
+            f"Source: {c.source_name} | Events: {c.total_events} | OOF coverage: {c.oof_coverage_ratio:.2f}"
+        )
+
 
 @app.command()
 def list_stackers():
@@ -1040,5 +1492,181 @@ def list_stackers():
         console.print(f"  - {name}")
 
 
-if __name__ == '__main__':
+@app.command()
+def plan_research(sport: str, market: str, scenario_id: str = "default"):
+    """Generates a walk-forward research plan."""
+    import os
+
+    import yaml
+
+    from sports_signal_bot.research.planner import WalkForwardPlanner
+    from sports_signal_bot.research.scenarios import ResearchScenarioLoader
+    from sports_signal_bot.research.utils import \
+        get_default_research_config_path
+
+    config_path = get_default_research_config_path(sport)
+    config = {}
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            all_configs = yaml.safe_load(f) or {}
+            config = all_configs.get(scenario_id, {})
+
+    config["sport"] = sport
+    config["market_type"] = market
+
+    scenario = ResearchScenarioLoader.load_from_config(config, scenario_id)
+    planner = WalkForwardPlanner(scenario)
+    plan = planner.generate_plan()
+
+    console.print(
+        f"[bold cyan]Research Plan generated for {sport} - {market}[/bold cyan]"
+    )
+    console.print(f"Total Periods: {plan.total_periods}")
+    console.print(f"Planning Mode: {plan.planning_mode}")
+
+    if plan.periods:
+        console.print("\n[bold]Sample Period 1:[/bold]")
+        p1 = plan.periods[0]
+        console.print(f"  Train: {p1.train_start} to {p1.train_end}")
+        if p1.calibration_start:
+            console.print(
+                f"  Calibration: {p1.calibration_start} to {p1.calibration_end}"
+            )
+        console.print(f"  Forward: {p1.forward_start} to {p1.forward_end}")
+        console.print(
+            f"  Refresh: Retrain={p1.should_retrain}, Recalibrate={p1.should_recalibrate}, Ensemble={p1.should_reensemble}, Stacker={p1.should_refresh_stacker}"
+        )
+
+
+@app.command()
+def run_research(sport: str, market: str, scenario_id: str = "default"):
+    """Runs a complete walk-forward research scenario."""
+    import os
+
+    import yaml
+
+    from sports_signal_bot.research.runner import ResearchRunner
+    from sports_signal_bot.research.scenarios import ResearchScenarioLoader
+    from sports_signal_bot.research.utils import \
+        get_default_research_config_path
+
+    config_path = get_default_research_config_path(sport)
+    config = {}
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            all_configs = yaml.safe_load(f) or {}
+            config = all_configs.get(scenario_id, {})
+
+    config["sport"] = sport
+    config["market_type"] = market
+
+    # Defaults if missing to ensure it runs
+    if "enabled_models" not in config:
+        config["enabled_models"] = ["logistic_regression"]
+
+    scenario = ResearchScenarioLoader.load_from_config(config, scenario_id)
+    runner = ResearchRunner(scenario)
+
+    console.print(
+        f"[bold cyan]Starting Research Run for {sport} - {market}[/bold cyan]"
+    )
+    manifest_path = runner.run()
+
+    import json
+
+    with open(manifest_path, "r") as f:
+        manifest = json.load(f)
+
+    console.print("[bold green]Research Run Complete![/bold green]")
+    console.print(f"Total planned periods: {manifest['total_periods']}")
+    console.print(
+        f"Completed: {manifest['completed_periods']}, Skipped: {manifest['skipped_periods']}"
+    )
+    console.print("Warnings:")
+    for w in manifest.get("warnings", []):
+        console.print(f"  - [yellow]{w}[/yellow]")
+    console.print(f"Artifact Path: {manifest_path}")
+
+
+@app.command()
+def preview_research_plan(sport: str, market: str, scenario_id: str = "default"):
+    """Alias for plan-research to see the periods."""
+    plan_research(sport, market, scenario_id)
+
+
+@app.command()
+def preview_time_slices(sport: str, market: str, scenario_id: str = "default"):
+    """Runs a research scenario and previews the time-sliced summary."""
+    import json
+    import os
+
+    import yaml
+
+    from sports_signal_bot.research.runner import ResearchRunner
+    from sports_signal_bot.research.scenarios import ResearchScenarioLoader
+    from sports_signal_bot.research.utils import \
+        get_default_research_config_path
+
+    config_path = get_default_research_config_path(sport)
+    config = {}
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            all_configs = yaml.safe_load(f) or {}
+            config = all_configs.get(scenario_id, {})
+
+    config["sport"] = sport
+    config["market_type"] = market
+    if "enabled_models" not in config:
+        config["enabled_models"] = ["logistic_regression"]
+
+    scenario = ResearchScenarioLoader.load_from_config(config, scenario_id)
+    runner = ResearchRunner(scenario)
+
+    console.print(
+        f"[bold cyan]Generating time slices for {sport} - {market}[/bold cyan]"
+    )
+    manifest_path = runner.run()
+
+    with open(manifest_path, "r") as f:
+        manifest = json.load(f)
+
+    summary_path = manifest["aggregate_summary_paths"]["time_slice_summary"]
+    with open(summary_path, "r") as f:
+        summary = json.load(f)
+
+    console.print("[bold cyan]Time-Slice Cumulative Leaderboard:[/bold cyan]")
+    for src, metrics in summary.get("cumulative_leaderboard", {}).items():
+        console.print(f"  - {src}: {metrics}")
+
+    if summary.get("warnings"):
+        console.print("\n[bold red]Instability Warnings:[/bold red]")
+        for w in summary["warnings"]:
+            console.print(f"  - {w}")
+
+
+@app.command()
+def list_research_scenarios():
+    """Lists available research scenarios across sports."""
+    import yaml
+
+    from sports_signal_bot.core.paths import get_configs_dir
+
+    research_dir = get_configs_dir() / "research"
+    console.print("[bold cyan]Available Research Scenarios:[/bold cyan]")
+    if not research_dir.exists():
+        console.print("No research config directory found.")
+        return
+
+    for fpath in research_dir.glob("*.yaml"):
+        sport = fpath.stem
+        console.print(f"\n[bold]{sport}[/bold]:")
+        with open(fpath, "r") as f:
+            configs = yaml.safe_load(f) or {}
+            for sid, details in configs.items():
+                console.print(
+                    f"  - {sid} (mode: {details.get('planning_mode', 'expanding')})"
+                )
+
+
+if __name__ == "__main__":
     app()

@@ -1,7 +1,10 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
+
 
 class BasketballSpreadEnvironmentBuilder(BaseFeatureBuilder):
     """Calculates basketball-specific spread covering proxies."""
@@ -24,11 +27,11 @@ class BasketballSpreadEnvironmentBuilder(BaseFeatureBuilder):
 
     @property
     def output_columns(self) -> List[str]:
-        return [
-            "home_ats_proxy", "away_ats_proxy"
-        ]
+        return ["home_ats_proxy", "away_ats_proxy"]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"]
         df = pd.DataFrame({"event_id": events_df["event_id"]})
 

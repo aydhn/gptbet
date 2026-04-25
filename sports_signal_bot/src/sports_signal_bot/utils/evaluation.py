@@ -1,10 +1,14 @@
+from typing import Any, Dict
+
 import numpy as np
-from sklearn.metrics import accuracy_score, log_loss, brier_score_loss
-from typing import Dict, Any
+from sklearn.metrics import accuracy_score, brier_score_loss, log_loss
+
 
 class EvaluationHelper:
     @staticmethod
-    def evaluate_predictions(y_true: np.ndarray, y_pred_proba: np.ndarray) -> Dict[str, float]:
+    def evaluate_predictions(
+        y_true: np.ndarray, y_pred_proba: np.ndarray
+    ) -> Dict[str, float]:
         """
         Evaluates predictions using basic metrics.
         Assumes binary classification for Brier score currently.

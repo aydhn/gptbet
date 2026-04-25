@@ -1,5 +1,7 @@
 from typing import Dict, Type
+
 from sports_signal_bot.calibration.base import BaseCalibrator
+
 
 class CalibrationRegistry:
     """Registry for calibration methods."""
@@ -11,12 +13,15 @@ class CalibrationRegistry:
         def decorator(calibrator_cls: Type[BaseCalibrator]):
             cls._registry[name] = calibrator_cls
             return calibrator_cls
+
         return decorator
 
     @classmethod
     def get(cls, name: str) -> Type[BaseCalibrator]:
         if name not in cls._registry:
-            raise ValueError(f"Calibrator '{name}' not found in registry. Available: {list(cls._registry.keys())}")
+            raise ValueError(
+                f"Calibrator '{name}' not found in registry. Available: {list(cls._registry.keys())}"
+            )
         return cls._registry[name]
 
     @classmethod

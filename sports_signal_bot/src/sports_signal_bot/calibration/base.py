@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
+from typing import Any, Dict, Optional
+
 import numpy as np
-from typing import Dict, Any, Optional
+
 
 class BaseCalibrator(ABC):
     """
@@ -12,7 +14,7 @@ class BaseCalibrator(ABC):
         self.is_fitted = False
 
     @abstractmethod
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BaseCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "BaseCalibrator":
         """Fits the calibrator on raw probabilities X and true targets y."""
         pass
 
@@ -40,5 +42,5 @@ class BaseCalibrator(ABC):
         return {
             "name": self.__class__.__name__,
             "is_fitted": self.is_fitted,
-            "config": self.config
+            "config": self.config,
         }

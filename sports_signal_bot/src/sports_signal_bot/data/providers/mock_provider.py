@@ -1,9 +1,13 @@
+import random
 from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Any
-from sports_signal_bot.data.providers.base import BaseFixtureProvider, BaseOddsProvider, BaseStatsProvider
+from typing import Any, Dict, List, Optional
+
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.core.random import get_global_seed
-import random
+from sports_signal_bot.data.providers.base import (BaseFixtureProvider,
+                                                   BaseOddsProvider,
+                                                   BaseStatsProvider)
+
 
 class MockProviderBase:
     def __init__(self, config: Dict[str, Any]):
@@ -30,8 +34,14 @@ class MockProviderBase:
     def supports_incremental_fetch(self) -> bool:
         return True
 
+
 class AdvancedMockFixtureProvider(MockProviderBase, BaseFixtureProvider):
-    def fetch_fixtures(self, sport: SportType, start_date: Optional[datetime] = None, end_date: Optional[datetime] = None) -> List[dict]:
+    def fetch_fixtures(
+        self,
+        sport: SportType,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+    ) -> List[dict]:
         if sport not in self.sport_support():
             return []
 
@@ -39,21 +49,26 @@ class AdvancedMockFixtureProvider(MockProviderBase, BaseFixtureProvider):
 
         events = []
         for i in range(1, 4):
-            events.append({
-                "source_event_id": f"mock_{sport.value}_{i}",
-                "sport": sport.value,
-                "league": "mock_league",
-                "season": "2023",
-                "event_datetime_utc": (start + timedelta(days=i)).isoformat() + "Z",
-                "home_team": f"Home_{i}",
-                "away_team": f"Away_{i}",
-                "status": "UPCOMING",
-                "venue": f"Stadium_{i}"
-            })
+            events.append(
+                {
+                    "source_event_id": f"mock_{sport.value}_{i}",
+                    "sport": sport.value,
+                    "league": "mock_league",
+                    "season": "2023",
+                    "event_datetime_utc": (start + timedelta(days=i)).isoformat() + "Z",
+                    "home_team": f"Home_{i}",
+                    "away_team": f"Away_{i}",
+                    "status": "UPCOMING",
+                    "venue": f"Stadium_{i}",
+                }
+            )
         return events
 
+
 class AdvancedMockOddsProvider(MockProviderBase, BaseOddsProvider):
-    def fetch_odds(self, sport: SportType, event_ids: Optional[List[str]] = None) -> List[dict]:
+    def fetch_odds(
+        self, sport: SportType, event_ids: Optional[List[str]] = None
+    ) -> List[dict]:
         if sport not in self.sport_support():
             return []
 
@@ -61,58 +76,67 @@ class AdvancedMockOddsProvider(MockProviderBase, BaseOddsProvider):
         odds = []
 
         for eid in target_ids:
-            odds.extend([
-                {
-                    "source_event_id": eid,
-                    "market_type": "1X2" if sport == SportType.FOOTBALL else "moneyline",
-                    "bookmaker": "mock_bookie",
-                    "snapshot_ts_utc": datetime.now().isoformat() + "Z",
-                    "selection": "1" if sport == SportType.FOOTBALL else "home",
-                    "decimal_odds": str(round(random.uniform(1.5, 3.0), 2)),
-                    "implied_probability": "",
-                    "handicap_line": "",
-                    "total_line": ""
-                },
-                {
-                    "source_event_id": eid,
-                    "market_type": "1X2" if sport == SportType.FOOTBALL else "moneyline",
-                    "bookmaker": "mock_bookie",
-                    "snapshot_ts_utc": datetime.now().isoformat() + "Z",
-                    "selection": "2" if sport == SportType.FOOTBALL else "away",
-                    "decimal_odds": str(round(random.uniform(1.5, 3.0), 2)),
-                    "implied_probability": "",
-                    "handicap_line": "",
-                    "total_line": ""
-                }
-            ])
+            odds.extend(
+                [
+                    {
+                        "source_event_id": eid,
+                        "market_type": (
+                            "1X2" if sport == SportType.FOOTBALL else "moneyline"
+                        ),
+                        "bookmaker": "mock_bookie",
+                        "snapshot_ts_utc": datetime.now().isoformat() + "Z",
+                        "selection": "1" if sport == SportType.FOOTBALL else "home",
+                        "decimal_odds": str(round(random.uniform(1.5, 3.0), 2)),
+                        "implied_probability": "",
+                        "handicap_line": "",
+                        "total_line": "",
+                    },
+                    {
+                        "source_event_id": eid,
+                        "market_type": (
+                            "1X2" if sport == SportType.FOOTBALL else "moneyline"
+                        ),
+                        "bookmaker": "mock_bookie",
+                        "snapshot_ts_utc": datetime.now().isoformat() + "Z",
+                        "selection": "2" if sport == SportType.FOOTBALL else "away",
+                        "decimal_odds": str(round(random.uniform(1.5, 3.0), 2)),
+                        "implied_probability": "",
+                        "handicap_line": "",
+                        "total_line": "",
+                    },
+                ]
+            )
             if sport == SportType.FOOTBALL:
-                 odds.append({
-                    "source_event_id": eid,
-                    "market_type": "1X2",
-                    "bookmaker": "mock_bookie",
-                    "snapshot_ts_utc": datetime.now().isoformat() + "Z",
-                    "selection": "X",
-                    "decimal_odds": str(round(random.uniform(2.5, 4.0), 2)),
-                    "implied_probability": "",
-                    "handicap_line": "",
-                    "total_line": ""
-                })
+                odds.append(
+                    {
+                        "source_event_id": eid,
+                        "market_type": "1X2",
+                        "bookmaker": "mock_bookie",
+                        "snapshot_ts_utc": datetime.now().isoformat() + "Z",
+                        "selection": "X",
+                        "decimal_odds": str(round(random.uniform(2.5, 4.0), 2)),
+                        "implied_probability": "",
+                        "handicap_line": "",
+                        "total_line": "",
+                    }
+                )
         return odds
+
 
 class AdvancedMockStatsProvider(MockProviderBase, BaseStatsProvider):
     def fetch_team_stats(self, sport: SportType) -> List[dict]:
-         if sport not in self.sport_support():
-             return []
-         return [
-             {
-                 "team_id": "Home_1",
-                 "team_name": "Home_1",
-                 "sport": sport.value,
-                 "league": "mock_league",
-                 "season": "2023",
-                 "rating": "1500",
-                 "recent_form": "0.5",
-                 "rest_days": "3",
-                 "rolling_metrics": ""
-             }
-         ]
+        if sport not in self.sport_support():
+            return []
+        return [
+            {
+                "team_id": "Home_1",
+                "team_name": "Home_1",
+                "sport": sport.value,
+                "league": "mock_league",
+                "season": "2023",
+                "rating": "1500",
+                "recent_form": "0.5",
+                "rest_days": "3",
+                "rolling_metrics": "",
+            }
+        ]

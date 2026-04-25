@@ -1,7 +1,10 @@
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, Any, List
 from datetime import datetime
-from sports_signal_bot.core.constants import SportType, LeagueType, MarketType
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
+from sports_signal_bot.core.constants import LeagueType, MarketType, SportType
+
 
 class CanonicalEventRecord(BaseModel):
     event_id: str
@@ -16,6 +19,7 @@ class CanonicalEventRecord(BaseModel):
     source: str
     source_event_id: str
 
+
 class CanonicalOddsRecord(BaseModel):
     event_id: str
     market_type: MarketType
@@ -28,6 +32,7 @@ class CanonicalOddsRecord(BaseModel):
     total_line: Optional[float] = None
     raw_payload_metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
+
 class CanonicalTeamStatsRecord(BaseModel):
     team_id: str
     team_name: str
@@ -38,6 +43,7 @@ class CanonicalTeamStatsRecord(BaseModel):
     recent_form: Optional[float] = None
     rest_days: Optional[int] = None
     rolling_metrics: Optional[Dict[str, float]] = Field(default_factory=dict)
+
 
 class CanonicalAvailabilityRecord(BaseModel):
     event_id: str

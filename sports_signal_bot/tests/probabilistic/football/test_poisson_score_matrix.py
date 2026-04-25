@@ -1,13 +1,19 @@
-import pytest
 import numpy as np
-from sports_signal_bot.probabilistic.football import (
-    GoalLambdaEstimate, GoalEnvironmentConfig, PoissonScoreMatrix
-)
+import pytest
+
+from sports_signal_bot.probabilistic.football import (GoalEnvironmentConfig,
+                                                      GoalLambdaEstimate,
+                                                      PoissonScoreMatrix)
+
 
 def test_score_matrix_generation_and_normalization():
     estimate = GoalLambdaEstimate(
-        event_id="test1", home_lambda=1.5, away_lambda=1.0,
-        expected_total_goals=2.5, expected_goal_diff=0.5, model_name="test"
+        event_id="test1",
+        home_lambda=1.5,
+        away_lambda=1.0,
+        expected_total_goals=2.5,
+        expected_goal_diff=0.5,
+        model_name="test",
     )
     config = GoalEnvironmentConfig(max_goals_cutoff=10, renormalize_truncated_mass=True)
 
@@ -26,14 +32,21 @@ def test_score_matrix_generation_and_normalization():
 
     # 3. Truncated mass should be tracked
     assert matrix.record.truncated_mass > 0.0
-    assert matrix.record.truncated_mass < 0.01 # Should be tiny for cutoff 10 and lambdas < 2
+    assert (
+        matrix.record.truncated_mass < 0.01
+    )  # Should be tiny for cutoff 10 and lambdas < 2
+
 
 def test_score_matrix_high_cutoff_warning():
     estimate = GoalLambdaEstimate(
-        event_id="test2", home_lambda=8.0, away_lambda=7.0, # Huge lambdas
-        expected_total_goals=15.0, expected_goal_diff=1.0, model_name="test"
+        event_id="test2",
+        home_lambda=8.0,
+        away_lambda=7.0,  # Huge lambdas
+        expected_total_goals=15.0,
+        expected_goal_diff=1.0,
+        model_name="test",
     )
-    config = GoalEnvironmentConfig(max_goals_cutoff=5) # Unreasonably low cutoff
+    config = GoalEnvironmentConfig(max_goals_cutoff=5)  # Unreasonably low cutoff
 
     matrix = PoissonScoreMatrix(estimate, config)
 

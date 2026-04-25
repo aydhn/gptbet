@@ -1,8 +1,11 @@
-import numpy as np
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import joblib
+import numpy as np
+
 from sports_signal_bot.calibration.base import BaseCalibrator
 from sports_signal_bot.calibration.registry import CalibrationRegistry
+
 
 @CalibrationRegistry.register("multiclass_identity")
 class MulticlassIdentityCalibrator(BaseCalibrator):
@@ -10,7 +13,7 @@ class MulticlassIdentityCalibrator(BaseCalibrator):
     A baseline calibrator for multiclass that performs no transformation.
     """
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'MulticlassIdentityCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "MulticlassIdentityCalibrator":
         self.is_fitted = True
         return self
 

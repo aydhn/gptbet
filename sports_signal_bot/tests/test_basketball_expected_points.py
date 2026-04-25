@@ -1,9 +1,15 @@
 import pytest
-from sports_signal_bot.probabilistic.basketball.contracts import BasketballDistributionConfig
-from sports_signal_bot.probabilistic.basketball.expected_points import ExpectedPointsBuilder
+
+from sports_signal_bot.probabilistic.basketball.contracts import \
+    BasketballDistributionConfig
+from sports_signal_bot.probabilistic.basketball.expected_points import \
+    ExpectedPointsBuilder
+
 
 def test_expected_points_builder_baseline():
-    config = BasketballDistributionConfig(base_total_points=220.0, home_advantage_points=4.0)
+    config = BasketballDistributionConfig(
+        base_total_points=220.0, home_advantage_points=4.0
+    )
     builder = ExpectedPointsBuilder()
 
     # No extra features
@@ -16,13 +22,16 @@ def test_expected_points_builder_baseline():
     assert est.expected_total_points == 220.0
     assert est.expected_margin_home == 4.0
 
+
 def test_expected_points_with_pace_and_rating():
-    config = BasketballDistributionConfig(base_total_points=200.0, home_advantage_points=2.0)
+    config = BasketballDistributionConfig(
+        base_total_points=200.0, home_advantage_points=2.0
+    )
     builder = ExpectedPointsBuilder()
 
     features = {
         "pace_adjustment": 10.0,  # Adds 5 to each
-        "rating_diff": 6.0        # Adds 3 to home, subtracts 3 from away
+        "rating_diff": 6.0,  # Adds 3 to home, subtracts 3 from away
     }
 
     est = builder.build("test", features, config)
@@ -34,14 +43,15 @@ def test_expected_points_with_pace_and_rating():
     assert est.expected_total_points == 210.0
     assert est.expected_margin_home == 8.0
 
+
 def test_expected_points_clipping():
-    config = BasketballDistributionConfig(base_total_points=200.0, home_advantage_points=0.0)
+    config = BasketballDistributionConfig(
+        base_total_points=200.0, home_advantage_points=0.0
+    )
     builder = ExpectedPointsBuilder()
 
     # Extreme away favorite
-    features = {
-        "rating_diff": -300.0
-    }
+    features = {"rating_diff": -300.0}
 
     est = builder.build("test", features, config)
 

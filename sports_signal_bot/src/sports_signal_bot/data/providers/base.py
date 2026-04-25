@@ -1,13 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
 from datetime import datetime
-from sports_signal_bot.data.contracts.canonical import (
-    CanonicalEventRecord,
-    CanonicalOddsRecord,
-    CanonicalTeamStatsRecord,
-    CanonicalAvailabilityRecord
-)
+from typing import List, Optional
+
 from sports_signal_bot.core.constants import SportType
+from sports_signal_bot.data.contracts.canonical import (
+    CanonicalAvailabilityRecord, CanonicalEventRecord, CanonicalOddsRecord,
+    CanonicalTeamStatsRecord)
+
 
 class BaseProvider(ABC):
     @property
@@ -27,23 +26,34 @@ class BaseProvider(ABC):
     def supports_incremental_fetch(self) -> bool:
         pass
 
+
 class BaseFixtureProvider(BaseProvider):
     @abstractmethod
-    def fetch_fixtures(self, sport: SportType, start_date: Optional[datetime] = None, end_date: Optional[datetime] = None) -> List[dict]:
+    def fetch_fixtures(
+        self,
+        sport: SportType,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+    ) -> List[dict]:
         """Fetches raw fixtures data as a list of dicts"""
         pass
 
+
 class BaseOddsProvider(BaseProvider):
     @abstractmethod
-    def fetch_odds(self, sport: SportType, event_ids: Optional[List[str]] = None) -> List[dict]:
+    def fetch_odds(
+        self, sport: SportType, event_ids: Optional[List[str]] = None
+    ) -> List[dict]:
         """Fetches raw odds data as a list of dicts"""
         pass
+
 
 class BaseStatsProvider(BaseProvider):
     @abstractmethod
     def fetch_team_stats(self, sport: SportType) -> List[dict]:
-         """Fetches raw team stats data as a list of dicts"""
-         pass
+        """Fetches raw team stats data as a list of dicts"""
+        pass
+
 
 class BaseAvailabilityProvider(BaseProvider):
     @abstractmethod

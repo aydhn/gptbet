@@ -1,17 +1,17 @@
-import pytest
-import pandas as pd
 import numpy as np
-from sports_signal_bot.training.predictions import format_validation_predictions
+import pandas as pd
+import pytest
+
 from sports_signal_bot.labels.contracts import BenchmarkPredictionRecord
+from sports_signal_bot.training.predictions import \
+    format_validation_predictions
+
 
 def test_benchmark_alignment():
     # We want to ensure that our ValidationPredictionRecord maps nicely or resembles BenchmarkPredictionRecord
     # This test asserts that the schema concepts align.
 
-    df = pd.DataFrame({
-        'event_id': ['e1'],
-        'target': [1]
-    })
+    df = pd.DataFrame({"event_id": ["e1"], "target": [1]})
 
     valid_indices = np.array([0])
     y_pred_proba = np.array([[0.2, 0.8]])
@@ -28,7 +28,7 @@ def test_benchmark_alignment():
         target_column="target",
         model_name="test_model",
         fold_id="fold_1",
-        split_metadata={}
+        split_metadata={},
     )
 
     vr = valid_records[0]
@@ -40,7 +40,7 @@ def test_benchmark_alignment():
         benchmark_name=vr.model_name,
         predicted_class=str(vr.predicted_class),
         predicted_probabilities=vr.predicted_probabilities,
-        metadata={"fold_id": vr.fold_id, "split_metadata": vr.split_metadata}
+        metadata={"fold_id": vr.fold_id, "split_metadata": vr.split_metadata},
     )
 
     assert br.event_id == "e1"

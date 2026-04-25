@@ -1,7 +1,12 @@
-from typing import Dict, Any
-from sports_signal_bot.probabilistic.football.contracts import GoalEnvironmentConfig
+from typing import Any, Dict
 
-def load_football_probabilistic_config(overrides: Dict[str, Any] = None) -> GoalEnvironmentConfig:
+from sports_signal_bot.probabilistic.football.contracts import \
+    GoalEnvironmentConfig
+
+
+def load_football_probabilistic_config(
+    overrides: Dict[str, Any] = None,
+) -> GoalEnvironmentConfig:
     """Loads and optionally overrides default goal environment configuration."""
     config = GoalEnvironmentConfig()
     if overrides:

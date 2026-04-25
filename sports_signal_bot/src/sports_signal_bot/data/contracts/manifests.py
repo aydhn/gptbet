@@ -1,7 +1,10 @@
-from pydantic import BaseModel
-from typing import List, Optional
 from datetime import datetime
+from typing import List, Optional
+
+from pydantic import BaseModel
+
 from sports_signal_bot.core.constants import SportType
+
 
 class ValidationIssueRecord(BaseModel):
     level: str  # "error", "warning"
@@ -10,12 +13,13 @@ class ValidationIssueRecord(BaseModel):
     message: str
     record_id: Optional[str] = None
 
+
 class IngestManifestRecord(BaseModel):
     ingest_id: str
     run_timestamp_utc: datetime
     provider: str
     sport: SportType
-    dataset_type: str # "fixtures", "odds", "stats"
+    dataset_type: str  # "fixtures", "odds", "stats"
     source_path: str
     output_path: str
     record_count: int = 0

@@ -1,6 +1,8 @@
-from typing import Dict, Any
-from sports_signal_bot.training.trainers.base import BaseTrainer
+from typing import Any, Dict
+
 from sports_signal_bot.training.registry import TRAINER_REGISTRY
+from sports_signal_bot.training.trainers.base import BaseTrainer
+
 
 class TrainerFactory:
     @staticmethod

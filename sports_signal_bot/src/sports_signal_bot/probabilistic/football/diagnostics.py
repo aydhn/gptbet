@@ -1,5 +1,8 @@
 from typing import List
-from sports_signal_bot.probabilistic.football.contracts import FootballProbabilityRecord
+
+from sports_signal_bot.probabilistic.football.contracts import \
+    FootballProbabilityRecord
+
 
 class Diagnostics:
     """Helper to collect and format warnings from prediction records."""

@@ -1,12 +1,19 @@
+from typing import Dict, List
+
 import numpy as np
 import pandas as pd
-from typing import List, Dict
 
-def ensure_class_order(probabilities: Dict[str, float], class_labels: List[str]) -> np.ndarray:
+
+def ensure_class_order(
+    probabilities: Dict[str, float], class_labels: List[str]
+) -> np.ndarray:
     """
     Converts a probability dictionary into a numpy array matching the specific class order.
     """
-    return np.array([probabilities.get(label, 0.0) for label in class_labels], dtype=np.float64)
+    return np.array(
+        [probabilities.get(label, 0.0) for label in class_labels], dtype=np.float64
+    )
+
 
 def validate_probability_vectors(X: np.ndarray, n_classes: int) -> bool:
     """
@@ -24,7 +31,10 @@ def validate_probability_vectors(X: np.ndarray, n_classes: int) -> bool:
 
     return True
 
-def flatten_binary_probabilities(X: np.ndarray, positive_class_index: int = 1) -> np.ndarray:
+
+def flatten_binary_probabilities(
+    X: np.ndarray, positive_class_index: int = 1
+) -> np.ndarray:
     """
     Extracts the positive class probability from a binary probability matrix.
     """
@@ -32,7 +42,10 @@ def flatten_binary_probabilities(X: np.ndarray, positive_class_index: int = 1) -
         raise ValueError("flatten_binary_probabilities expects a matrix with 2 columns")
     return X[:, positive_class_index]
 
-def expand_multiclass_probabilities(p: np.ndarray, positive_class_index: int = 1) -> np.ndarray:
+
+def expand_multiclass_probabilities(
+    p: np.ndarray, positive_class_index: int = 1
+) -> np.ndarray:
     """
     Expands a 1D array of positive class probabilities into a 2D binary probability matrix.
     """
@@ -41,6 +54,7 @@ def expand_multiclass_probabilities(p: np.ndarray, positive_class_index: int = 1
     X[:, positive_class_index] = p
     X[:, 1 - positive_class_index] = 1.0 - p
     return X
+
 
 def clip_probabilities(X: np.ndarray, eps: float = 1e-15) -> np.ndarray:
     """

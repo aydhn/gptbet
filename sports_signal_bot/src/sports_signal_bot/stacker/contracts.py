@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class MetaFeatureRecord(BaseModel):
     event_id: str
@@ -16,6 +18,7 @@ class MetaFeatureRecord(BaseModel):
     missing_sources: List[str] = Field(default_factory=list)
     available_sources: List[str] = Field(default_factory=list)
 
+
 class MetaTrainingDataset(BaseModel):
     records: List[MetaFeatureRecord]
     class_labels: List[str]
@@ -24,6 +27,7 @@ class MetaTrainingDataset(BaseModel):
     feature_names: List[str]
     created_at_utc: datetime = Field(default_factory=datetime.utcnow)
 
+
 class SourceCoverageRecord(BaseModel):
     source_name: str
     total_events: int
@@ -31,6 +35,7 @@ class SourceCoverageRecord(BaseModel):
     oof_coverage_ratio: float
     calibrated_ratio: float
     excluded_rows: int
+
 
 class MetaFeatureManifest(BaseModel):
     sport: str
@@ -41,10 +46,12 @@ class MetaFeatureManifest(BaseModel):
     total_records: int
     missing_source_strategy: str
 
+
 class OOFIntegrityReport(BaseModel):
     is_valid: bool
     violations_found: int
     violation_details: List[str] = Field(default_factory=list)
+
 
 class MetaPredictionDiagnostics(BaseModel):
     sources_used: int
@@ -53,6 +60,7 @@ class MetaPredictionDiagnostics(BaseModel):
     meta_confidence: float
     top_class_margin: float
     warnings: List[str] = Field(default_factory=list)
+
 
 class MetaPredictionRecord(BaseModel):
     event_id: str

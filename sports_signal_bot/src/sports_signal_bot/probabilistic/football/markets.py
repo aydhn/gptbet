@@ -1,6 +1,10 @@
-import numpy as np
 from typing import Dict, Tuple
-from sports_signal_bot.probabilistic.football.score_matrix import PoissonScoreMatrix
+
+import numpy as np
+
+from sports_signal_bot.probabilistic.football.score_matrix import \
+    PoissonScoreMatrix
+
 
 class MarketExtractor:
     """
@@ -22,12 +26,14 @@ class MarketExtractor:
             return {
                 "home_win": float(home_win / total),
                 "draw": float(draw / total),
-                "away_win": float(away_win / total)
+                "away_win": float(away_win / total),
             }
         return {"home_win": 0.0, "draw": 0.0, "away_win": 0.0}
 
     @staticmethod
-    def extract_over_under(score_matrix: PoissonScoreMatrix, line: float) -> Dict[str, float]:
+    def extract_over_under(
+        score_matrix: PoissonScoreMatrix, line: float
+    ) -> Dict[str, float]:
         """Returns P(Over), P(Under) for a specific line (e.g., 2.5)"""
         mat = score_matrix.matrix
         max_g = score_matrix.max_goals
@@ -49,7 +55,7 @@ class MarketExtractor:
         if total > 0:
             return {
                 "over": float(prob_over / total),
-                "under": float(prob_under / total)
+                "under": float(prob_under / total),
             }
         return {"over": 0.0, "under": 0.0}
 
@@ -67,10 +73,7 @@ class MarketExtractor:
         prob_no = max(0.0, min(1.0, prob_no))
         prob_yes = max(0.0, min(1.0, prob_yes))
 
-        return {
-            "yes": float(prob_yes),
-            "no": float(prob_no)
-        }
+        return {"yes": float(prob_yes), "no": float(prob_no)}
 
     @staticmethod
     def extract_expected_metrics(score_matrix: PoissonScoreMatrix) -> Dict[str, float]:
@@ -84,8 +87,8 @@ class MarketExtractor:
         away_goals_range = np.arange(max_g + 1)
 
         # Marginal probabilities
-        home_marginals = np.sum(mat, axis=1) # sum across columns
-        away_marginals = np.sum(mat, axis=0) # sum across rows
+        home_marginals = np.sum(mat, axis=1)  # sum across columns
+        away_marginals = np.sum(mat, axis=0)  # sum across rows
 
         exp_home = np.sum(home_goals_range * home_marginals)
         exp_away = np.sum(away_goals_range * away_marginals)
@@ -94,5 +97,5 @@ class MarketExtractor:
             "expected_home_goals": float(exp_home),
             "expected_away_goals": float(exp_away),
             "expected_total_goals": float(exp_home + exp_away),
-            "expected_goal_diff": float(exp_home - exp_away)
+            "expected_goal_diff": float(exp_home - exp_away),
         }

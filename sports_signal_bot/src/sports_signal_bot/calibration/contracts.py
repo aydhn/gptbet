@@ -1,5 +1,7 @@
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional
+
 
 class CalibrationDataset(BaseModel):
     event_id: str
@@ -15,6 +17,7 @@ class CalibrationDataset(BaseModel):
     split_metadata: Dict[str, Any] = Field(default_factory=dict)
     timestamp_utc: str
 
+
 class ReliabilityBinRecord(BaseModel):
     bin_index: int
     lower_bound: float
@@ -23,6 +26,7 @@ class ReliabilityBinRecord(BaseModel):
     mean_predicted_probability: float
     empirical_frequency: float
     calibration_gap: float
+
 
 class CalibrationSummary(BaseModel):
     method: str
@@ -34,6 +38,7 @@ class CalibrationSummary(BaseModel):
     mean_confidence: float
     calibration_coverage: float
     class_name: Optional[str] = None
+
 
 class CalibratedPredictionRecord(BaseModel):
     event_id: str
@@ -50,6 +55,7 @@ class CalibratedPredictionRecord(BaseModel):
     fold_id: str
     timestamp_utc: str
 
+
 class CalibrationComparisonRecord(BaseModel):
     run_id: str
     raw_log_loss: float
@@ -63,6 +69,7 @@ class CalibrationComparisonRecord(BaseModel):
     delta_ece: float
     calibration_improvement: bool
     possible_overfit_warning: bool
+
 
 class CalibrationRunManifest(BaseModel):
     run_id: str

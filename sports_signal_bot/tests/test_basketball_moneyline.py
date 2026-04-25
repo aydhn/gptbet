@@ -1,7 +1,12 @@
 import pytest
-from sports_signal_bot.probabilistic.basketball.contracts import BasketballDistributionConfig
-from sports_signal_bot.probabilistic.basketball.distribution import BasketballDistributionCore
-from sports_signal_bot.probabilistic.basketball.markets import BasketballMarketExtractor
+
+from sports_signal_bot.probabilistic.basketball.contracts import \
+    BasketballDistributionConfig
+from sports_signal_bot.probabilistic.basketball.distribution import \
+    BasketballDistributionCore
+from sports_signal_bot.probabilistic.basketball.markets import \
+    BasketballMarketExtractor
+
 
 def test_moneyline_probability_extraction():
     config = BasketballDistributionConfig()

@@ -1,12 +1,15 @@
-import pandas as pd
-import numpy as np
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Tuple, List
-import joblib
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import joblib
+import numpy as np
+import pandas as pd
 
 from sports_signal_bot.training.contracts import TrainingDataset
-from sports_signal_bot.training.preprocessing import build_preprocessing_pipeline
+from sports_signal_bot.training.preprocessing import \
+    build_preprocessing_pipeline
+
 
 class BaseTrainer(ABC):
     def __init__(self, config: Dict[str, Any]):
@@ -19,7 +22,13 @@ class BaseTrainer(ABC):
         pass
 
     @abstractmethod
-    def fit(self, dataset: TrainingDataset, df: pd.DataFrame, train_indices: np.ndarray, valid_indices: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def fit(
+        self,
+        dataset: TrainingDataset,
+        df: pd.DataFrame,
+        train_indices: np.ndarray,
+        valid_indices: Optional[np.ndarray] = None,
+    ) -> Dict[str, float]:
         """Trains the model on the specified indices, returning validation metrics if valid_indices provided."""
         pass
 
@@ -59,11 +68,21 @@ class SklearnClassifierTrainer(BaseTrainer):
         self.feature_columns = []
         self.classes_ = []
 
-    def _build_preprocessor(self, numeric_features: List[str], categorical_features: List[str] = None):
-        scale_numeric = self.config.get('scale_numeric', False)
-        return build_preprocessing_pipeline(numeric_features, categorical_features, scale_numeric)
+    def _build_preprocessor(
+        self, numeric_features: List[str], categorical_features: List[str] = None
+    ):
+        scale_numeric = self.config.get("scale_numeric", False)
+        return build_preprocessing_pipeline(
+            numeric_features, categorical_features, scale_numeric
+        )
 
-    def fit(self, dataset: TrainingDataset, df: pd.DataFrame, train_indices: np.ndarray, valid_indices: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def fit(
+        self,
+        dataset: TrainingDataset,
+        df: pd.DataFrame,
+        train_indices: np.ndarray,
+        valid_indices: Optional[np.ndarray] = None,
+    ) -> Dict[str, float]:
         self.feature_columns = dataset.feature_columns
         target_col = dataset.target_column
 
@@ -72,7 +91,9 @@ class SklearnClassifierTrainer(BaseTrainer):
         numeric_features = self.feature_columns
         categorical_features = []
 
-        self.preprocessor = self._build_preprocessor(numeric_features, categorical_features)
+        self.preprocessor = self._build_preprocessor(
+            numeric_features, categorical_features
+        )
 
         train_df = df.iloc[train_indices]
         X_train = train_df[self.feature_columns]
@@ -95,10 +116,13 @@ class SklearnClassifierTrainer(BaseTrainer):
             X_valid_processed = self.preprocessor.transform(X_valid)
             y_pred_proba = self.model.predict_proba(X_valid_processed)
 
-            from sklearn.metrics import log_loss, accuracy_score
-            metrics['log_loss'] = float(log_loss(y_valid, y_pred_proba, labels=self.classes_))
+            from sklearn.metrics import accuracy_score, log_loss
+
+            metrics["log_loss"] = float(
+                log_loss(y_valid, y_pred_proba, labels=self.classes_)
+            )
             y_pred = self.model.predict(X_valid_processed)
-            metrics['accuracy'] = float(accuracy_score(y_valid, y_pred))
+            metrics["accuracy"] = float(accuracy_score(y_valid, y_pred))
 
         return metrics
 
@@ -123,7 +147,13 @@ class SklearnClassifierTrainer(BaseTrainer):
         artifact_path.mkdir(parents=True, exist_ok=True)
         joblib.dump(self.model, artifact_path / "model.joblib")
         joblib.dump(self.preprocessor, artifact_path / "preprocessor.joblib")
-        joblib.dump({"feature_columns": self.feature_columns, "classes_": self.classes_.tolist()}, artifact_path / "metadata.joblib")
+        joblib.dump(
+            {
+                "feature_columns": self.feature_columns,
+                "classes_": self.classes_.tolist(),
+            },
+            artifact_path / "metadata.joblib",
+        )
 
     def load_artifact(self, path: str) -> None:
         artifact_path = Path(path)
@@ -150,9 +180,11 @@ class SklearnClassifierTrainer(BaseTrainer):
         # This is simple if only numeric features, complex if onehot encoded.
         # We'll just return raw array mapped to generic names if shapes mismatch.
 
-        feature_names = getattr(self.preprocessor, "get_feature_names_out", lambda: None)()
+        feature_names = getattr(
+            self.preprocessor, "get_feature_names_out", lambda: None
+        )()
         if feature_names is not None and len(feature_names) == len(importances):
-             return dict(zip(feature_names, importances.tolist()))
+            return dict(zip(feature_names, importances.tolist()))
 
         if len(self.feature_columns) == len(importances):
             return dict(zip(self.feature_columns, importances.tolist()))

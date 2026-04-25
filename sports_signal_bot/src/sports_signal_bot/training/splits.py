@@ -1,20 +1,26 @@
-import pandas as pd
-import numpy as np
-from typing import List, Tuple, Generator, Dict, Any
 from abc import ABC, abstractmethod
+from typing import Any, Dict, Generator, List, Tuple
+
+import numpy as np
+import pandas as pd
+
 from sports_signal_bot.core.logger import get_logger
 
 logger = get_logger("SplitStrategies")
+
 
 class BaseSplitStrategy(ABC):
     """Abstract base class for all time-aware split strategies."""
 
     @abstractmethod
-    def split(self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc") -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
+    def split(
+        self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc"
+    ) -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
         """
         Yields fold_id, train_indices, valid_indices, test_indices (optional)
         """
         pass
+
 
 class HoldoutTimeSplit(BaseSplitStrategy):
     """Simple chronological train/valid/test split based on cutoff dates or fractions."""
@@ -24,13 +30,15 @@ class HoldoutTimeSplit(BaseSplitStrategy):
         self.test_fraction = test_fraction
         self.valid_fraction = 1.0 - train_fraction - test_fraction
 
-    def split(self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc") -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
+    def split(
+        self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc"
+    ) -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
         if df.empty:
             return
 
         # Ensure sorted
         if not df[datetime_col].is_monotonic_increasing:
-             df = df.sort_values(datetime_col)
+            df = df.sort_values(datetime_col)
 
         n = len(df)
         train_end = int(n * self.train_fraction)
@@ -43,6 +51,7 @@ class HoldoutTimeSplit(BaseSplitStrategy):
 
         yield "holdout_1", train_idx, valid_idx, test_idx
 
+
 class ExpandingWindowSplit(BaseSplitStrategy):
     """Expanding train window, fixed-size valid window. Time-based (e.g. months) or row-based."""
 
@@ -51,7 +60,9 @@ class ExpandingWindowSplit(BaseSplitStrategy):
         self.valid_size = valid_size
         self.step_size = step_size or valid_size
 
-    def split(self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc") -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
+    def split(
+        self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc"
+    ) -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
         if df.empty:
             return
 
@@ -73,6 +84,7 @@ class ExpandingWindowSplit(BaseSplitStrategy):
             train_end += self.step_size
             fold += 1
 
+
 class RollingWindowSplit(BaseSplitStrategy):
     """Fixed-size rolling train window, fixed-size valid window."""
 
@@ -81,7 +93,9 @@ class RollingWindowSplit(BaseSplitStrategy):
         self.valid_size = valid_size
         self.step_size = step_size or valid_size
 
-    def split(self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc") -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
+    def split(
+        self, df: pd.DataFrame, datetime_col: str = "event_datetime_utc"
+    ) -> Generator[Tuple[str, np.ndarray, np.ndarray, np.ndarray], None, None]:
         if df.empty:
             return
 
@@ -104,6 +118,8 @@ class RollingWindowSplit(BaseSplitStrategy):
             train_end += self.step_size
             fold += 1
 
+
 class WalkForwardSplit(ExpandingWindowSplit):
     """Alias for ExpandingWindowSplit in many contexts, but can be customized."""
+
     pass

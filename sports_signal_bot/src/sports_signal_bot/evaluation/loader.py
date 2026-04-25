@@ -1,10 +1,11 @@
-import pandas as pd
-from typing import List, Dict, Any, Optional
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import pandas as pd
+
 
 def load_evaluation_dataframe(
-    file_paths: List[Path],
-    required_cols: Optional[List[str]] = None
+    file_paths: List[Path], required_cols: Optional[List[str]] = None
 ) -> pd.DataFrame:
     """Loads and concatenates prediction artifacts into a single DataFrame."""
 
@@ -13,12 +14,12 @@ def load_evaluation_dataframe(
 
     dfs = []
     for path in file_paths:
-        if path.suffix == '.csv':
+        if path.suffix == ".csv":
             df = pd.read_csv(path)
-        elif path.suffix in ['.parquet']:
+        elif path.suffix in [".parquet"]:
             df = pd.read_parquet(path)
-        elif path.suffix in ['.json']:
-            df = pd.read_json(path, orient='records')
+        elif path.suffix in [".json"]:
+            df = pd.read_json(path, orient="records")
         else:
             raise ValueError(f"Unsupported file format for evaluation: {path}")
 
@@ -32,6 +33,7 @@ def load_evaluation_dataframe(
             raise ValueError(f"Missing required columns in loaded data: {missing}")
 
     return combined_df
+
 
 def extract_probability_columns(df: pd.DataFrame, class_labels: List[str]) -> List[str]:
     """Helper to find or construct probability column names based on class labels."""

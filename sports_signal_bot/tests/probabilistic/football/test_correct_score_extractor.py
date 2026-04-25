@@ -1,12 +1,19 @@
 import pytest
-from sports_signal_bot.probabilistic.football import (
-    GoalLambdaEstimate, GoalEnvironmentConfig, PoissonScoreMatrix, CorrectScoreExtractor
-)
+
+from sports_signal_bot.probabilistic.football import (CorrectScoreExtractor,
+                                                      GoalEnvironmentConfig,
+                                                      GoalLambdaEstimate,
+                                                      PoissonScoreMatrix)
+
 
 def test_correct_score_top_k():
     estimate = GoalLambdaEstimate(
-        event_id="test", home_lambda=1.2, away_lambda=0.8,
-        expected_total_goals=2.0, expected_goal_diff=0.4, model_name="test"
+        event_id="test",
+        home_lambda=1.2,
+        away_lambda=0.8,
+        expected_total_goals=2.0,
+        expected_goal_diff=0.4,
+        model_name="test",
     )
     config = GoalEnvironmentConfig(max_goals_cutoff=10)
     matrix = PoissonScoreMatrix(estimate, config)

@@ -1,11 +1,15 @@
-import numpy as np
-from typing import Dict, Any, Optional
-from sklearn.linear_model import LogisticRegression
+from typing import Any, Dict, Optional
+
 import joblib
+import numpy as np
+from sklearn.linear_model import LogisticRegression
 
 from sports_signal_bot.calibration.base import BaseCalibrator
 from sports_signal_bot.calibration.registry import CalibrationRegistry
-from sports_signal_bot.calibration.utils import flatten_binary_probabilities, expand_multiclass_probabilities, clip_probabilities
+from sports_signal_bot.calibration.utils import (
+    clip_probabilities, expand_multiclass_probabilities,
+    flatten_binary_probabilities)
+
 
 @CalibrationRegistry.register("binary_sigmoid")
 class BinarySigmoidCalibrator(BaseCalibrator):
@@ -17,13 +21,15 @@ class BinarySigmoidCalibrator(BaseCalibrator):
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__(config)
         self.eps = self.config.get("clip_eps", 1e-15)
-        self.model = LogisticRegression(solver='lbfgs', C=99999999.9) # minimal regularization
+        self.model = LogisticRegression(
+            solver="lbfgs", C=99999999.9
+        )  # minimal regularization
 
     def _to_log_odds(self, p: np.ndarray) -> np.ndarray:
         p_clipped = clip_probabilities(p, eps=self.eps)
         return np.log(p_clipped / (1.0 - p_clipped))
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'BinarySigmoidCalibrator':
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "BinarySigmoidCalibrator":
         # Assume X is (N, 2), we calibrate the positive class (index 1)
         if len(X.shape) != 2 or X.shape[1] != 2:
             raise ValueError("BinarySigmoidCalibrator requires X of shape (N, 2)")
@@ -53,7 +59,7 @@ class BinarySigmoidCalibrator(BaseCalibrator):
         state = {
             "is_fitted": self.is_fitted,
             "config": self.config,
-            "model": self.model
+            "model": self.model,
         }
         joblib.dump(state, path)
 

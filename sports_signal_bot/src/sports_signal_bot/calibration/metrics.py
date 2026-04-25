@@ -1,10 +1,14 @@
+from typing import Any, Dict, Optional
+
 import numpy as np
-from sklearn.metrics import log_loss, brier_score_loss
-from typing import Dict, Any, Optional
+from sklearn.metrics import brier_score_loss, log_loss
 
 from sports_signal_bot.calibration.utils import clip_probabilities
 
-def calculate_log_loss(y_true: np.ndarray, y_prob: np.ndarray, labels: Optional[np.ndarray] = None) -> float:
+
+def calculate_log_loss(
+    y_true: np.ndarray, y_prob: np.ndarray, labels: Optional[np.ndarray] = None
+) -> float:
     """Calculates log loss, handling 1D (binary) and 2D (multiclass) probabilities."""
     y_prob = clip_probabilities(y_prob)
     if labels is None and len(y_prob.shape) == 2:
@@ -12,9 +16,12 @@ def calculate_log_loss(y_true: np.ndarray, y_prob: np.ndarray, labels: Optional[
     try:
         return float(log_loss(y_true, y_prob, labels=labels))
     except ValueError:
-        return float('nan') # E.g., if only one class is present in y_true
+        return float("nan")  # E.g., if only one class is present in y_true
 
-def calculate_brier_score(y_true: np.ndarray, y_prob: np.ndarray, positive_class_index: int = 1) -> float:
+
+def calculate_brier_score(
+    y_true: np.ndarray, y_prob: np.ndarray, positive_class_index: int = 1
+) -> float:
     """Calculates Brier score. Currently standard Brier score is binary."""
     # Scikit-learn's brier_score_loss is for binary classification.
     # For multiclass, one typically uses the Brier score definition which sums over all classes.
@@ -28,9 +35,9 @@ def calculate_brier_score(y_true: np.ndarray, y_prob: np.ndarray, positive_class
         # Ensure y_true is 0 or 1 based on positive_class_index
         y_true_binary = (y_true == positive_class_index).astype(int)
         try:
-             return float(brier_score_loss(y_true_binary, y_prob_pos))
+            return float(brier_score_loss(y_true_binary, y_prob_pos))
         except ValueError:
-             return float('nan')
+            return float("nan")
     else:
         # Multiclass case (Brier score is sum of squared differences over all classes)
         # B = 1/N * sum( sum( (y_ij - p_ij)^2 ) )
@@ -39,13 +46,19 @@ def calculate_brier_score(y_true: np.ndarray, y_prob: np.ndarray, positive_class
 
         # One-hot encode y_true
         y_true_onehot = np.zeros((N, C))
-        valid_idx = (y_true >= 0) & (y_true < C) # Ignore NaNs or out of bounds
+        valid_idx = (y_true >= 0) & (y_true < C)  # Ignore NaNs or out of bounds
         y_true_onehot[np.arange(N)[valid_idx], y_true[valid_idx].astype(int)] = 1
 
-        brier_score = np.mean(np.sum((y_prob - y_true_onehot)**2, axis=1))
+        brier_score = np.mean(np.sum((y_prob - y_true_onehot) ** 2, axis=1))
         return float(brier_score)
 
-def calculate_ece_mce(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10, positive_class_index: int = 1) -> tuple[float, float]:
+
+def calculate_ece_mce(
+    y_true: np.ndarray,
+    y_prob: np.ndarray,
+    n_bins: int = 10,
+    positive_class_index: int = 1,
+) -> tuple[float, float]:
     """
     Calculates Expected Calibration Error (ECE) and Maximum Calibration Error (MCE)
     for a single class (usually the positive class or the predicted class).
@@ -56,10 +69,10 @@ def calculate_ece_mce(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10, 
             confidences = y_prob[:, positive_class_index]
             accuracies = (y_true == positive_class_index).astype(int)
         else:
-             # Multiclass, typical ECE is top-class ECE
-             pred_classes = np.argmax(y_prob, axis=1)
-             confidences = np.max(y_prob, axis=1)
-             accuracies = (y_true == pred_classes).astype(int)
+            # Multiclass, typical ECE is top-class ECE
+            pred_classes = np.argmax(y_prob, axis=1)
+            confidences = np.max(y_prob, axis=1)
+            accuracies = (y_true == pred_classes).astype(int)
     else:
         confidences = y_prob
         accuracies = (y_true == positive_class_index).astype(int)

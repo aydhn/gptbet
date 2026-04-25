@@ -1,7 +1,10 @@
-import pandas as pd
+from typing import Any, Dict
+
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+
 from .interfaces import BasePredictor
+
 
 class DummyPredictor(BasePredictor):
     def __init__(self):

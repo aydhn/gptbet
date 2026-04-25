@@ -1,6 +1,9 @@
+from typing import Any, Dict
+
 from sklearn.linear_model import LogisticRegression
+
 from sports_signal_bot.training.trainers.base import SklearnClassifierTrainer
-from typing import Dict, Any
+
 
 class LogisticRegressionTrainer(SklearnClassifierTrainer):
     @property
@@ -9,7 +12,7 @@ class LogisticRegressionTrainer(SklearnClassifierTrainer):
 
     def __init__(self, config: Dict[str, Any]):
         # Default to scaling for Logistic Regression
-        config.setdefault('scale_numeric', True)
+        config.setdefault("scale_numeric", True)
         super().__init__(config)
 
         kwargs = self.config.get("model_kwargs", {})

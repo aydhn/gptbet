@@ -1,0 +1,13 @@
+default:
+  sport: basketball
+  market_type: moneyline
+  planning_mode: expanding
+  initial_train_window_days: 90
+  calibration_window_days: 15
+  forward_test_window_days: 30
+  retrain_frequency: 1
+  recalibration_frequency: 2
+  reensemble_frequency: 1
+  minimum_rows_guard: 30
+  enabled_models:
+    - logistic_regression

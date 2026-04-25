@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 def generate_label_name(market_type: str, line: Optional[float] = None) -> str:
     """
     Deterministically generate a label name.
@@ -13,6 +14,6 @@ def generate_label_name(market_type: str, line: Optional[float] = None) -> str:
 
     if line is not None:
         # replace decimal point with underscore for clean naming
-        line_str = str(line).replace('.', '_')
+        line_str = str(line).replace(".", "_")
         return f"{base}_{line_str}"
     return base

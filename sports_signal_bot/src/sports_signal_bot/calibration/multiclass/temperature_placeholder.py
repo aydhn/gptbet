@@ -1,12 +1,14 @@
-import numpy as np
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import joblib
+import numpy as np
 
 from sports_signal_bot.calibration.base import BaseCalibrator
 from sports_signal_bot.calibration.registry import CalibrationRegistry
 from sports_signal_bot.core.logger import get_logger
 
 logger = get_logger("TemperatureScaling")
+
 
 @CalibrationRegistry.register("multiclass_temperature")
 class TemperatureScalingPlaceholder(BaseCalibrator):
@@ -19,8 +21,10 @@ class TemperatureScalingPlaceholder(BaseCalibrator):
     with a warning, ready to be expanded in a future phase that captures logits.
     """
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> 'TemperatureScalingPlaceholder':
-        logger.warning("TemperatureScalingPlaceholder: True temperature scaling requires logits, not probabilities. Acting as Identity.")
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "TemperatureScalingPlaceholder":
+        logger.warning(
+            "TemperatureScalingPlaceholder: True temperature scaling requires logits, not probabilities. Acting as Identity."
+        )
         self.is_fitted = True
         return self
 

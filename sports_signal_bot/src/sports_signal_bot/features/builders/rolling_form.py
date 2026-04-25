@@ -1,8 +1,12 @@
-import pandas as pd
 from typing import Dict, List
+
+import pandas as pd
+
 from sports_signal_bot.features.base import BaseFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
-from sports_signal_bot.features.utils.rolling import calculate_rolling_aggregates
+from sports_signal_bot.features.utils.rolling import \
+    calculate_rolling_aggregates
+
 
 class RollingFormFeatureBuilder(BaseFeatureBuilder):
     """Calculates generic rolling form aggregations (e.g., points, wins)."""
@@ -26,11 +30,15 @@ class RollingFormFeatureBuilder(BaseFeatureBuilder):
     @property
     def output_columns(self) -> List[str]:
         return [
-            "home_last_5_wins_proxy", "away_last_5_wins_proxy",
-            "home_last_5_points_proxy", "away_last_5_points_proxy"
+            "home_last_5_wins_proxy",
+            "away_last_5_wins_proxy",
+            "home_last_5_points_proxy",
+            "away_last_5_points_proxy",
         ]
 
-    def build(self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def build(
+        self, context: FeatureBuildContext, data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
         events_df = data["events"].copy()
         if "event_id" not in events_df.columns:
             return pd.DataFrame(columns=["event_id"] + self.output_columns)

@@ -1,5 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from .contracts import StandardizedPredictionRecord
+
 
 def standardize_prediction(
     event_id: str,
@@ -14,7 +16,7 @@ def standardize_prediction(
     source_run_id: str = None,
     calibration_method: str = None,
     label_name: str = None,
-    metadata: Dict[str, Any] = None
+    metadata: Dict[str, Any] = None,
 ) -> StandardizedPredictionRecord:
     """Helper to create a standardized prediction record."""
     return StandardizedPredictionRecord(
@@ -30,5 +32,5 @@ def standardize_prediction(
         source_run_id=source_run_id,
         calibration_method=calibration_method,
         label_name=label_name,
-        metadata=metadata or {}
+        metadata=metadata or {},
     )

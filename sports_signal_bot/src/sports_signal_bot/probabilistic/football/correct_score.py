@@ -1,7 +1,12 @@
-import numpy as np
 from typing import List
-from sports_signal_bot.probabilistic.football.contracts import CorrectScoreProbability
-from sports_signal_bot.probabilistic.football.score_matrix import PoissonScoreMatrix
+
+import numpy as np
+
+from sports_signal_bot.probabilistic.football.contracts import \
+    CorrectScoreProbability
+from sports_signal_bot.probabilistic.football.score_matrix import \
+    PoissonScoreMatrix
+
 
 class CorrectScoreExtractor:
     """
@@ -9,7 +14,9 @@ class CorrectScoreExtractor:
     """
 
     @staticmethod
-    def get_top_k(score_matrix: PoissonScoreMatrix, k: int = 5) -> List[CorrectScoreProbability]:
+    def get_top_k(
+        score_matrix: PoissonScoreMatrix, k: int = 5
+    ) -> List[CorrectScoreProbability]:
         """Returns the top K most probable correct scorelines."""
         mat = score_matrix.matrix
 
@@ -25,10 +32,10 @@ class CorrectScoreExtractor:
             h_goals = int(top_k_indices[0][i])
             a_goals = int(top_k_indices[1][i])
             prob = float(mat[h_goals, a_goals])
-            results.append(CorrectScoreProbability(
-                home_goals=h_goals,
-                away_goals=a_goals,
-                probability=prob
-            ))
+            results.append(
+                CorrectScoreProbability(
+                    home_goals=h_goals, away_goals=a_goals, probability=prob
+                )
+            )
 
         return results

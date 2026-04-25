@@ -1,7 +1,10 @@
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, Field
+
 from sports_signal_bot.core.constants import SportType
+
 
 class EventResultRecord(BaseModel):
     event_id: str

@@ -1,11 +1,23 @@
 import pytest
-from sports_signal_bot.results.contracts import EventResultRecord
-from sports_signal_bot.labels.contracts import LabelValidityStatus
-from sports_signal_bot.results.resolvers import resolve_1x2, resolve_over_under, resolve_btts, resolve_basketball_moneyline, resolve_basketball_totals
+
 from sports_signal_bot.core.constants import SportType
+from sports_signal_bot.labels.contracts import LabelValidityStatus
+from sports_signal_bot.results.contracts import EventResultRecord
+from sports_signal_bot.results.resolvers import (resolve_1x2,
+                                                 resolve_basketball_moneyline,
+                                                 resolve_basketball_totals,
+                                                 resolve_btts,
+                                                 resolve_over_under)
+
 
 def test_resolve_1x2():
-    rec = EventResultRecord(event_id="1", sport=SportType.FOOTBALL, status="finished", final_home_score=2, final_away_score=1)
+    rec = EventResultRecord(
+        event_id="1",
+        sport=SportType.FOOTBALL,
+        status="finished",
+        final_home_score=2,
+        final_away_score=1,
+    )
     res, status, _ = resolve_1x2(rec)
     assert res == "home"
     assert status == LabelValidityStatus.VALID
@@ -18,8 +30,15 @@ def test_resolve_1x2():
     res, status, _ = resolve_1x2(rec)
     assert res == "away"
 
+
 def test_resolve_over_under():
-    rec = EventResultRecord(event_id="1", sport=SportType.FOOTBALL, status="finished", final_home_score=2, final_away_score=1)
+    rec = EventResultRecord(
+        event_id="1",
+        sport=SportType.FOOTBALL,
+        status="finished",
+        final_home_score=2,
+        final_away_score=1,
+    )
     res, status, _ = resolve_over_under(rec, line=2.5)
     assert res == "over"
 
@@ -30,8 +49,15 @@ def test_resolve_over_under():
     assert res == "push"
     assert status == LabelValidityStatus.VOID
 
+
 def test_resolve_btts():
-    rec = EventResultRecord(event_id="1", sport=SportType.FOOTBALL, status="finished", final_home_score=2, final_away_score=1)
+    rec = EventResultRecord(
+        event_id="1",
+        sport=SportType.FOOTBALL,
+        status="finished",
+        final_home_score=2,
+        final_away_score=1,
+    )
     res, status, _ = resolve_btts(rec)
     assert res == "yes"
 
@@ -39,8 +65,15 @@ def test_resolve_btts():
     res, status, _ = resolve_btts(rec)
     assert res == "no"
 
+
 def test_resolve_basketball_moneyline():
-    rec = EventResultRecord(event_id="1", sport=SportType.BASKETBALL, status="finished", final_home_score=110, final_away_score=105)
+    rec = EventResultRecord(
+        event_id="1",
+        sport=SportType.BASKETBALL,
+        status="finished",
+        final_home_score=110,
+        final_away_score=105,
+    )
     res, status, _ = resolve_basketball_moneyline(rec)
     assert res == "home"
 
@@ -48,8 +81,15 @@ def test_resolve_basketball_moneyline():
     res, status, _ = resolve_basketball_moneyline(rec)
     assert res == "away"
 
+
 def test_resolve_missing_scores():
-    rec = EventResultRecord(event_id="1", sport=SportType.FOOTBALL, status="finished", final_home_score=None, final_away_score=None)
+    rec = EventResultRecord(
+        event_id="1",
+        sport=SportType.FOOTBALL,
+        status="finished",
+        final_home_score=None,
+        final_away_score=None,
+    )
     res, status, _ = resolve_1x2(rec)
     assert status == LabelValidityStatus.INVALID
 

@@ -1,9 +1,12 @@
-from sports_signal_bot.ensemble.alignment import align_probability_vector, validate_market_compatibility
+from sports_signal_bot.ensemble.alignment import (
+    align_probability_vector, validate_market_compatibility)
+
 
 def test_validate_market_compatibility():
     assert validate_market_compatibility(["1", "X", "2"], ["1", "X", "2"]) is True
     assert validate_market_compatibility(["1", "X"], ["1", "X", "2"]) is True
     assert validate_market_compatibility(["1", "X", "2", "3"], ["1", "X", "2"]) is False
+
 
 def test_align_probability_vector():
     source_probs = {"1": 0.5, "X": 0.3, "2": 0.2}

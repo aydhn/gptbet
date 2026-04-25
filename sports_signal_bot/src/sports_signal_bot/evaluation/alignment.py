@@ -1,10 +1,10 @@
+from typing import Dict, List, Set, Tuple
+
 import pandas as pd
-from typing import List, Dict, Tuple, Set
+
 
 def get_common_universe(
-    df: pd.DataFrame,
-    source_col: str = "source_name",
-    event_id_col: str = "event_id"
+    df: pd.DataFrame, source_col: str = "source_name", event_id_col: str = "event_id"
 ) -> Set[str]:
     """Finds the intersection of event_ids present in ALL sources."""
     sources = df[source_col].unique()
@@ -21,11 +21,12 @@ def get_common_universe(
 
     return common_events if common_events is not None else set()
 
+
 def align_predictions_to_common_universe(
     df: pd.DataFrame,
     source_col: str = "source_name",
     event_id_col: str = "event_id",
-    same_sample_only: bool = True
+    same_sample_only: bool = True,
 ) -> Tuple[pd.DataFrame, Dict[str, int]]:
     """Filters dataframe to only include events present in all sources if requested."""
 
@@ -40,10 +41,11 @@ def align_predictions_to_common_universe(
 
     return aligned_df, original_counts
 
+
 def summarize_coverage_by_source(
     aligned_df: pd.DataFrame,
     original_counts: Dict[str, int],
-    source_col: str = "source_name"
+    source_col: str = "source_name",
 ) -> Dict[str, float]:
     """Calculates coverage rate (aligned count / original count) for each source."""
     coverage = {}
