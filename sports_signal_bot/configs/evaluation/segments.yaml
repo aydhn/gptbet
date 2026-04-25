@@ -1,0 +1,4 @@
+enabled_segments:
+  - source_family
+  - market_type
+confidence_bucket_edges: 10

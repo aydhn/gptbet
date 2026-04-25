@@ -1,0 +1,16 @@
+probabilistic:
+  - log_loss
+  - brier
+  - average_confidence
+  - average_entropy
+classification:
+  binary:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - roc_auc
+  multiclass:
+    - accuracy
+    - macro_f1
+    - weighted_f1

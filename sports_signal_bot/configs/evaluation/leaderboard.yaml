@@ -1,0 +1,7 @@
+primary_metric: log_loss
+secondary_metrics:
+  - brier
+  - accuracy
+source_grouping_rules:
+  - by_family
+  - by_calibration_status

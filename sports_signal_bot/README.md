@@ -179,3 +179,12 @@ CLI Commands:
 - `python -m sports_signal_bot.main list-stackers`
 
 For more details on the architecture, fallback strategies, and feature design, see `docs/stacker_architecture.md`.
+
+## Phase 12: Centralized Evaluation
+The repository now includes a centralized evaluation runner. It is designed to compare prediction outputs (from benchmark, ML, calibrated, ensemble, and stacker layers) fairly.
+Key features:
+* **Same-Sample Fairness**: By default, models are strictly evaluated on the exact overlapping set of events.
+* **Leaderboards and Pairwise Comparisons**: Automatically generates ranked leaderboards and detailed head-to-head comparisons.
+* **Confidence Bucket Analysis**: Bins predictions by confidence to assess calibration and empirical win rates.
+* **Segments**: Supports slicing metrics by sport, market type, or source family.
+* **CLI Commands**: `run-evaluation`, `preview-leaderboard`, `preview-pairwise`, `preview-confidence-buckets`, `list-evaluation-metrics`

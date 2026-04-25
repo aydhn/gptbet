@@ -1,0 +1,6 @@
+same_sample_only: true
+minimum_common_rows: 10
+include_pairwise_comparisons: true
+coverage_warning_thresholds:
+  warning: 0.95
+  critical: 0.80

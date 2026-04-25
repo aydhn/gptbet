@@ -25,6 +25,74 @@ def smoke_run():
     runner = SmokeRunner()
     runner.run()
 
+
+@app.command()
+def run_evaluation(sport: str, market: str, class_labels: str = "home_win,draw,away_win"):
+    """Run the centralized evaluation pipeline for a given sport and market."""
+    from sports_signal_bot.evaluation.registry import EvaluationRegistry
+    from sports_signal_bot.evaluation.runner import EvaluationRunner
+    from pathlib import Path
+    import yaml
+
+    console.print(f"Starting evaluation for {sport} - {market}...")
+
+    # Load config
+    config_path = Path("configs/evaluation/default.yaml")
+    config = {}
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            config = yaml.safe_load(f)
+
+    # Load leaderboard config
+    lb_config_path = Path("configs/evaluation/leaderboard.yaml")
+    if lb_config_path.exists():
+        with open(lb_config_path, "r") as f:
+            config.update(yaml.safe_load(f))
+
+    # Load segment config
+    seg_config_path = Path("configs/evaluation/segments.yaml")
+    if seg_config_path.exists():
+        with open(seg_config_path, "r") as f:
+            config.update(yaml.safe_load(f))
+
+    registry = EvaluationRegistry()
+    # Mocking registry registration for CLI run since we don't have real artifacts yet
+    # In a real run, this would scan the artifacts directory
+
+    runner = EvaluationRunner(registry=registry, output_dir=Path("data/evaluation_runs"), config=config)
+    try:
+        manifest = runner.run(sport=sport, market_type=market, class_labels=class_labels.split(","))
+        console.print(f"[green]Evaluation complete. Run ID: {manifest.run_id}[/green]")
+        console.print(f"Artifacts saved to: {manifest.leaderboard_path}")
+    except ValueError as e:
+        console.print(f"[yellow]Evaluation skipped: {e}[/yellow]")
+
+@app.command()
+def preview_leaderboard(sport: str, market: str):
+    """Preview the latest leaderboard for a sport/market."""
+    console.print(f"Previewing leaderboard for {sport} - {market}...")
+    console.print("[yellow]Feature under construction.[/yellow]")
+
+@app.command()
+def preview_pairwise(sport: str, market: str):
+    """Preview pairwise comparisons for a sport/market."""
+    console.print(f"Previewing pairwise comparisons for {sport} - {market}...")
+    console.print("[yellow]Feature under construction.[/yellow]")
+
+@app.command()
+def preview_confidence_buckets(sport: str, market: str):
+    """Preview confidence buckets for a sport/market."""
+    console.print(f"Previewing confidence buckets for {sport} - {market}...")
+    console.print("[yellow]Feature under construction.[/yellow]")
+
+@app.command()
+def list_evaluation_metrics():
+    """List all supported evaluation metrics."""
+    console.print("Supported Metrics:")
+    console.print("- Probabilistic: log_loss, brier, average_confidence, average_entropy")
+    console.print("- Classification (Binary): accuracy, precision, recall, f1, roc_auc")
+    console.print("- Classification (Multiclass): accuracy, macro_f1, weighted_f1")
+
 @app.command()
 def show_config():
     """Display the current configuration settings."""
