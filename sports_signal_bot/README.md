@@ -188,3 +188,20 @@ Key features:
 * **Confidence Bucket Analysis**: Bins predictions by confidence to assess calibration and empirical win rates.
 * **Segments**: Supports slicing metrics by sport, market type, or source family.
 * **CLI Commands**: `run-evaluation`, `preview-leaderboard`, `preview-pairwise`, `preview-confidence-buckets`, `list-evaluation-metrics`
+
+## Regimes
+
+The Regime layer allows systematic segmentation of model performance and behavior across varying conditions (e.g., source disagreement, season phase, team form).
+
+- **Event-Level Regimes**: Assessed per game, completely prior to start time.
+- **Period-Level Regimes**: Assessed per time period, looking at model stability and degradation.
+
+**Usage:**
+```bash
+python -m sports_signal_bot.main assign-regimes --sport football --market 1x2
+python -m sports_signal_bot.main preview-regime-coverage --sport football --market 1x2
+python -m sports_signal_bot.main preview-period-regimes --sport basketball --market moneyline
+python -m sports_signal_bot.main list-regime-families
+```
+
+Regime analysis produces coverages and evaluation metrics scoped to context, essential for subsequent optimization and dynamic weighting.

@@ -1,0 +1,81 @@
+{
+  "run_id": "bdb5de3a-1d84-4fc1-a7b2-65372a3ccd0f",
+  "timestamp": "2026-04-25T18:50:58.157834",
+  "active_families": [
+    "form",
+    "market_disagreement",
+    "volatility",
+    "data_quality",
+    "schedule",
+    "season",
+    "performance",
+    "stability"
+  ],
+  "coverage_summaries": [
+    {
+      "regime_family": "data_quality",
+      "regime_label": "high_data_completeness",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "form",
+      "regime_label": "mixed_form",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "market_disagreement",
+      "regime_label": "line_uncertain",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "schedule",
+      "regime_label": "normal_rest",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "season",
+      "regime_label": "season_mid",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "volatility",
+      "regime_label": "high_entropy_prediction",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    },
+    {
+      "regime_family": "volatility",
+      "regime_label": "high_uncertainty",
+      "row_count": 150,
+      "coverage_rate": 1.0,
+      "minimum_rows_satisfied": true,
+      "source_coverage": {},
+      "warnings": []
+    }
+  ],
+  "evaluation_summaries": [],
+  "warnings": []
+}

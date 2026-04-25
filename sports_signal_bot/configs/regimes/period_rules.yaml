@@ -1,0 +1,3 @@
+performance_rules:
+  lookback_periods: 3
+  min_history: 5
