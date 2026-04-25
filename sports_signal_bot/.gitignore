@@ -74,3 +74,4 @@ data/logs/*
 !data/logs/.gitkeep
 __pycache__/
 *.pyc
+src/sports_signal_bot/source_selection/*

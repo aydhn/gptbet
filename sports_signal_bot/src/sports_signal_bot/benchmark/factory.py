@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 from .base import BaseBenchmark
 from .bookmaker_implied import BookmakerImpliedBenchmark

@@ -1,0 +1,4 @@
+# Football specific source selection config
+fallback_source_priority:
+  - "football_poisson_core"
+  - "elo_rating_source"
