@@ -1677,6 +1677,9 @@ def list_research_scenarios():
                     f"  - {sid} (mode: {details.get('planning_mode', 'expanding')})"
                 )
 
+from sports_signal_bot.main_dynamic_weighting import app as dynamic_weighting_app
+app.add_typer(dynamic_weighting_app, name="weighting", help="Dynamic Weighting Operations")
+
 
 if __name__ == "__main__":
     app()

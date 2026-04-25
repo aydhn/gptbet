@@ -1,0 +1,102 @@
+from typing import Any, Dict, List
+
+from ..alignment import align_predictions_to_reference_classes
+from ..contracts import (EnsembleDiagnosticsRecord, EnsembleInputRecord,
+                         EnsembleOutputRecord, SourceContributionRecord)
+from ..diagnostics import (calculate_entropy, probability_dispersion,
+                           top_class_disagreement)
+from ..weights import normalize_source_weights
+from .base import BaseEnsembler
+
+
+class DynamicWeightedAverageEnsembler(BaseEnsembler):
+
+    def __init__(self, name: str = "dynamic_weighted_average", config: Dict[str, Any] = None):
+        super().__init__(name, config)
+        self.weights_config = self.config.get("dynamic_weights", {})
+
+    def combine(self, input_record: EnsembleInputRecord) -> EnsembleOutputRecord:
+        if not input_record.predictions:
+            return self._create_empty_output(input_record)
+
+        reference_classes = input_record.predictions[0].class_labels
+        aligned_preds = align_predictions_to_reference_classes(
+            input_record.predictions, reference_classes
+        )
+
+        if not aligned_preds:
+            return self._create_empty_output(
+                input_record, warnings=["No compatible sources found after alignment."]
+            )
+
+        raw_weights = {}
+        for p in aligned_preds:
+            w = p.metadata.get("dynamic_weight")
+            if w is None:
+                w = self.weights_config.get(p.source_name, 1.0)
+            raw_weights[p.source_name] = w
+
+        norm_weights = normalize_source_weights(raw_weights)
+
+        final_probs = {cls: 0.0 for cls in reference_classes}
+        components = []
+
+        for p in aligned_preds:
+            w = norm_weights.get(p.source_name, 0.0)
+            for cls, prob in p.probabilities.items():
+                final_probs[cls] += prob * w
+
+            explanation = p.metadata.get("dynamic_weight_explanation", "")
+
+            components.append(
+                SourceContributionRecord(
+                    source_name=p.source_name,
+                    source_family=p.source_family,
+                    weight=w,
+                    is_calibrated=p.is_calibrated,
+                    status=f"included | {explanation}" if explanation else "included",
+                )
+            )
+
+        final_predicted_class = max(final_probs.items(), key=lambda x: x[1])[0]
+
+        probs_list = [p.probabilities for p in aligned_preds]
+        diagnostics = EnsembleDiagnosticsRecord(
+            num_sources_eligible=len(input_record.predictions),
+            num_sources_used=len(aligned_preds),
+            top_class_confidence=final_probs[final_predicted_class],
+            entropy=calculate_entropy(final_probs),
+            max_disagreement=top_class_disagreement(probs_list, reference_classes),
+            source_variance=probability_dispersion(probs_list, reference_classes),
+        )
+
+        return EnsembleOutputRecord(
+            event_id=input_record.event_id,
+            sport=input_record.sport,
+            market_type=input_record.market_type,
+            ensemble_name=self.name,
+            final_probabilities=final_probs,
+            final_predicted_class=final_predicted_class,
+            component_sources=components,
+            diagnostics=diagnostics,
+        )
+
+    def _create_empty_output(
+        self, input_record: EnsembleInputRecord, warnings: List[str] = None
+    ) -> EnsembleOutputRecord:
+        diag = EnsembleDiagnosticsRecord(
+            num_sources_eligible=len(input_record.predictions),
+            num_sources_used=0,
+            warnings=warnings or ["No valid input predictions."],
+        )
+        return EnsembleOutputRecord(
+            event_id=input_record.event_id,
+            sport=input_record.sport,
+            market_type=input_record.market_type,
+            ensemble_name=self.name,
+            final_probabilities={},
+            final_predicted_class="UNKNOWN",
+            component_sources=[],
+            diagnostics=diag,
+            status="failed",
+        )

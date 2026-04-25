@@ -6,6 +6,7 @@ from .strategies.reliability_weighted import ReliabilityWeightedEnsembler
 from .strategies.rule_based_hybrid import RuleBasedHybridEnsembler
 from .strategies.simple_average import SimpleAverageEnsembler
 from .strategies.weighted_average import WeightedAverageEnsembler
+from .strategies.dynamic_weighted_average import DynamicWeightedAverageEnsembler
 
 
 class EnsembleRegistry:
@@ -13,6 +14,7 @@ class EnsembleRegistry:
     _registry: Dict[str, Type[BaseEnsembler]] = {
         "simple_average": SimpleAverageEnsembler,
         "weighted_average": WeightedAverageEnsembler,
+        "dynamic_weighted_average": DynamicWeightedAverageEnsembler,
         "reliability_weighted": ReliabilityWeightedEnsembler,
         "best_source_fallback": BestSourceFallbackEnsembler,
         "rule_based_hybrid": RuleBasedHybridEnsembler,

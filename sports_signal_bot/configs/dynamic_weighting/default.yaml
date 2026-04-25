@@ -1,0 +1,12 @@
+default_strategy: dynamic_hybrid
+trust_component_weight: 1.0
+regime_component_weight: 0.8
+disagreement_penalty_weight: 0.5
+recency_penalty_weight: 0.5
+health_component_weight: 1.0
+min_weight_floor: 0.05
+max_weight_cap: 0.8
+score_temperature: 1.0
+minimum_peer_count_for_disagreement: 3
+regime_sample_damping: 10.0
+calibrated_bonus: 0.1
