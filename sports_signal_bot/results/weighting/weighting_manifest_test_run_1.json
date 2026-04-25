@@ -1,0 +1,100 @@
+{
+  "run_id": "test_run_1",
+  "sport": "football",
+  "market_type": "ou_2_5",
+  "event_count": 1,
+  "decisions": [
+    {
+      "event_id": "evt_football_ou_2_5_1",
+      "sport": "football",
+      "market_type": "ou_2_5",
+      "policy": "football_ou_2_5_policy",
+      "decisions": [
+        {
+          "event_id": "evt_football_ou_2_5_1",
+          "sport": "football",
+          "market_type": "ou_2_5",
+          "source_name": "bookmaker_1",
+          "source_family": "benchmark",
+          "base_weight": 1.0,
+          "component_scores": {
+            "trust_score": 0.95,
+            "regime_fit_score": 0.9405,
+            "disagreement_penalty": 0.0,
+            "recency_penalty": 0.0,
+            "health_score": 1.0,
+            "family_prior": 1.0,
+            "calibration_bonus": 0.0,
+            "combined_score": 3.7024,
+            "explanation": "Combined: 3.70 (Prior:1.00, Trust:0.95, Regime:0.94)"
+          },
+          "pre_normalized_weight": 3.7024,
+          "final_weight": 0.3582829051778641,
+          "weighting_policy_name": "football_ou_2_5_policy",
+          "warnings": [],
+          "explanation_summary": "bookmaker_1: Final=0.358 | Trust=0.95 | Regime=0.94"
+        },
+        {
+          "event_id": "evt_football_ou_2_5_1",
+          "sport": "football",
+          "market_type": "ou_2_5",
+          "source_name": "rf_cal_1",
+          "source_family": "ml_calibrated",
+          "base_weight": 1.0,
+          "component_scores": {
+            "trust_score": 0.85,
+            "regime_fit_score": 0.7466666666666667,
+            "disagreement_penalty": 0.0,
+            "recency_penalty": 0.0,
+            "health_score": 1.0,
+            "family_prior": 1.0,
+            "calibration_bonus": 0.1,
+            "combined_score": 3.5473333333333334,
+            "explanation": "Combined: 3.55 (Prior:1.00, Trust:0.85, Regime:0.75)"
+          },
+          "pre_normalized_weight": 3.5473333333333334,
+          "final_weight": 0.3432770344373766,
+          "weighting_policy_name": "football_ou_2_5_policy",
+          "warnings": [],
+          "explanation_summary": "rf_cal_1: Final=0.343 | Trust=0.85 | Regime=0.75"
+        },
+        {
+          "event_id": "evt_football_ou_2_5_1",
+          "sport": "football",
+          "market_type": "ou_2_5",
+          "source_name": "total_prob_1",
+          "source_family": "probabilistic",
+          "base_weight": 1.0,
+          "component_scores": {
+            "trust_score": 0.7,
+            "regime_fit_score": 0.48,
+            "disagreement_penalty": 0.0,
+            "recency_penalty": 0.0,
+            "health_score": 1.0,
+            "family_prior": 1.0,
+            "calibration_bonus": 0.0,
+            "combined_score": 3.084,
+            "explanation": "Combined: 3.08 (Prior:1.00, Trust:0.70, Regime:0.48)"
+          },
+          "pre_normalized_weight": 3.084,
+          "final_weight": 0.29844006038475934,
+          "weighting_policy_name": "football_ou_2_5_policy",
+          "warnings": [],
+          "explanation_summary": "total_prob_1: Final=0.298 | Trust=0.70 | Regime=0.48"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "event_id": "evt_football_ou_2_5_1",
+      "source_count": 3,
+      "capped_sources": [],
+      "floored_sources": [],
+      "stale_penalties": [],
+      "fallback_used": false,
+      "average_trust": 0.8333333333333334,
+      "top_source": "bookmaker_1"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+football:
+  1x2:
+    probabilistic: 1.2
+    ml_calibrated: 1.1
+    benchmark: 1.0
+    ml_raw: 0.8
+  ou_2_5:
+    ml_calibrated: 1.2
+    probabilistic: 1.1
+    benchmark: 1.0
+basketball:
+  moneyline:
+    elo: 1.2
+    structural: 1.1
+    ml_calibrated: 1.1
+    benchmark: 1.0
+default:
+  benchmark: 1.0
+  probabilistic: 1.0
+  ml_calibrated: 1.0
+  ml_raw: 0.8
+  elo: 1.0
+  structural: 1.0
