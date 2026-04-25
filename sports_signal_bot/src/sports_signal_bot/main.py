@@ -810,5 +810,167 @@ def list_ensemblers():
         console.print(f"  - {strategy}")
 
 
+
+@app.command()
+def build_meta_dataset(sport: str, market: str):
+    """
+    Builds the meta-training dataset from out-of-fold validation predictions.
+    """
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
+    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
+    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+    from sports_signal_bot.core.paths import get_configs_dir
+    import yaml
+    import json
+
+    console.print(f"[{sport}] Building meta-dataset for {market}...")
+
+    # Load config
+    config_path = get_configs_dir() / "stacker" / "default.yaml"
+    config = {}
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            config = yaml.safe_load(f)
+
+    builder = MetaDatasetBuilder(config)
+
+    # In a real scenario, these would come from stored artifacts.
+    # We mock it for the CLI skeleton.
+    preds = [
+        StandardizedPredictionRecord(
+            event_id="e1", sport=sport, market_type=market,
+            source_family="ml", source_name="logreg_baseline",
+            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
+            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            predicted_class="home",
+            is_calibrated=True
+        )
+    ]
+    target_labels = {"e1": "home", "e2": "away"}
+    class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+
+    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+
+    console.print(f"[bold green]Dataset built.[/bold green]")
+    console.print(f"Records: {len(dataset.records)}")
+    console.print(f"Features: {len(dataset.feature_names)}")
+    console.print(dataset.feature_names)
+
+
+@app.command()
+def run_stacker(sport: str, market: str, model: str = "meta_logistic"):
+    """
+    Runs stacker training on the meta-dataset.
+    """
+    from sports_signal_bot.stacker.runner import StackerRunner
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
+    from sports_signal_bot.stacker.contracts import MetaTrainingDataset
+    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+    from sports_signal_bot.core.paths import get_configs_dir
+    import yaml
+
+    console.print(f"[{sport}] Running stacker {model} for {market}...")
+
+    config_path = get_configs_dir() / "stacker" / "default.yaml"
+    config = {}
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            config = yaml.safe_load(f)
+
+    config["model_name"] = model
+
+    builder = MetaDatasetBuilder(config)
+
+    # Mock data
+    preds = [
+        StandardizedPredictionRecord(
+            event_id="e1", sport=sport, market_type=market,
+            source_family="ml", source_name="model_A",
+            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
+            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            predicted_class="home",
+            is_calibrated=True
+        ),
+        StandardizedPredictionRecord(
+            event_id="e2", sport=sport, market_type=market,
+            source_family="ml", source_name="model_A",
+            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
+            probabilities={"home": 0.1, "draw": 0.3, "away": 0.6} if sport == "football" else {"home": 0.2, "away": 0.8},
+            predicted_class="away",
+            is_calibrated=True
+        )
+    ]
+    target_labels = {"e1": "home", "e2": "away"}
+    class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+
+    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+
+    runner = StackerRunner(config)
+    train_result = runner.train(dataset)
+
+    console.print("[bold green]Training complete.[/bold green]")
+    console.print(f"Status: {train_result['status']}")
+    console.print(f"Feature count: {train_result['feature_count']}")
+    console.print("Manifest:")
+    console.print(train_result["manifest"])
+
+    preds_out = runner.predict(dataset)
+    console.print(f"Generated {len(preds_out)} meta-predictions.")
+
+@app.command()
+def preview_source_coverage(sport: str, market: str):
+    """
+    Previews source coverage for meta-level training.
+    """
+    from sports_signal_bot.stacker.dataset import MetaDatasetBuilder
+    from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
+    from sports_signal_bot.core.paths import get_configs_dir
+    import yaml
+
+    console.print(f"[{sport}] Previewing source coverage for {market}...")
+
+    config_path = get_configs_dir() / "stacker" / "default.yaml"
+    config = {}
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            config = yaml.safe_load(f)
+
+    builder = MetaDatasetBuilder(config)
+
+    preds = [
+        StandardizedPredictionRecord(
+            event_id="e1", sport=sport, market_type=market,
+            source_family="ml", source_name="model_A",
+            class_labels=["home", "draw", "away"] if sport == "football" else ["home", "away"],
+            probabilities={"home": 0.5, "draw": 0.3, "away": 0.2} if sport == "football" else {"home": 0.6, "away": 0.4},
+            predicted_class="home",
+            is_calibrated=True
+        )
+    ]
+    target_labels = {"e1": "home", "e2": "away"}
+    class_labels = ["home", "draw", "away"] if sport == "football" else ["home", "away"]
+
+    dataset = builder.build_meta_dataset(preds, target_labels, class_labels, sport, market)
+
+    # We can use the runner to build coverage
+    from sports_signal_bot.stacker.runner import StackerRunner
+    runner = StackerRunner(config)
+    coverage = runner._build_coverage_report(dataset)
+
+    for c in coverage:
+        console.print(f"Source: {c.source_name} | Events: {c.total_events} | OOF coverage: {c.oof_coverage_ratio:.2f}")
+
+@app.command()
+def list_stackers():
+    """
+    Lists registered stacker models.
+    """
+    from sports_signal_bot.stacker.registry import StackerRegistry
+
+    console.print("[bold]Registered Stackers:[/bold]")
+    for name in StackerRegistry.list_stackers():
+        console.print(f"  - {name}")
+
+
 if __name__ == '__main__':
     app()

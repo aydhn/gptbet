@@ -1,0 +1,12 @@
+enabled_sources: []
+use_only_calibrated_sources: true
+include_source_metadata: true
+include_disagreement_features: true
+include_context_meta_features: true
+minimum_source_count: 1
+fallback_ensembler: "identity"
+default_stacker: "meta_logistic"
+missing_source_strategy: "mean_impute"
+meta_model_hyperparams:
+  C: 1.0
+  max_iter: 1000
