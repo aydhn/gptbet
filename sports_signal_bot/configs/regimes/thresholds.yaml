@@ -1,0 +1,33 @@
+disagreement_thresholds:
+  low: 0.05
+  high: 0.15
+
+favorite_prob_thresholds:
+  clear_favorite: 0.65
+  market_close_diff: 0.10
+
+entropy_thresholds:
+  high: 0.8
+
+data_completeness_thresholds:
+  high_completeness_max_missing: 0.05
+  low_completeness_min_missing: 0.20
+
+sparse_history_thresholds:
+  low_history_max_matches: 5
+
+short_rest_days: 3
+
+congestion_match_count_thresholds:
+  congested_min_matches: 3
+  congested_days_window: 10
+
+season_progress_buckets:
+  early_max: 0.25
+  late_min: 0.75
+
+performance_degradation_thresholds:
+  degrading_min_delta: 0.02
+  recovering_min_delta: -0.02
+
+minimum_rows_per_regime: 100

@@ -1,0 +1,9 @@
+enabled_regime_families:
+  - form
+  - market_disagreement
+  - volatility
+  - data_quality
+  - schedule
+  - season
+  - performance
+  - stability

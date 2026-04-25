@@ -1,13 +1,9 @@
-import os
-import uuid
 from pathlib import Path
 
 import typer
 import yaml
 from rich.console import Console
 
-import sports_signal_bot.regimes.event
-import sports_signal_bot.regimes.period
 from sports_signal_bot.config.settings import get_settings
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.core.paths import get_configs_dir, get_data_dir
@@ -21,21 +17,8 @@ from sports_signal_bot.data.providers.mock_provider import (
 from sports_signal_bot.data.resolution.team_aliases import TeamResolver
 from sports_signal_bot.data.storage.paths import get_manifest_storage_path
 from sports_signal_bot.orchestration.runner import SmokeRunner
-from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
-                                       RegimeRegistry, RegimeRunner,
-                                       RegimeThresholdsConfig,
-                                       build_event_regime_inputs,
-                                       build_period_regime_inputs,
-                                       build_regime_manifest,
-                                       calculate_coverage,
-                                       export_event_regimes_csv,
-                                       export_period_regimes_csv,
-                                       export_regime_manifest,
-                                       generate_regime_summary)
 
 app = typer.Typer(help="Sports Signal Bot CLI")
-from sports_signal_bot.main_cli import *
-
 console = Console()
 
 
@@ -1687,6 +1670,30 @@ def list_research_scenarios():
 
 if __name__ == "__main__":
     app()
+import os
+import uuid
+from typing import List
+
+import typer
+import yaml
+
+# Dummy imports to simulate classifiers registration
+import sports_signal_bot.regimes.event
+import sports_signal_bot.regimes.period
+from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
+                                       RegimeRegistry, RegimeRunner,
+                                       RegimeThresholdsConfig,
+                                       build_event_regime_inputs,
+                                       build_period_regime_inputs,
+                                       build_regime_manifest,
+                                       calculate_coverage,
+                                       export_event_regimes_csv,
+                                       export_period_regimes_csv,
+                                       export_regime_manifest,
+                                       generate_regime_summary)
+
+# Assuming app is already defined in main.py, we will just patch it
+app = typer.Typer(help="Sports Signal Bot CLI")
 
 
 def _load_configs(sport: str):
@@ -1831,3 +1838,7 @@ def preview_period_regimes(
         result.period_regimes, "results/regimes/period_regimes.csv"
     )
     typer.echo("Saved to results/regimes/period_regimes.csv")
+
+
+if __name__ == "__main__":
+    app()
