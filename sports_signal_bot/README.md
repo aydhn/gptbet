@@ -269,3 +269,4 @@ It provides functionality for:
 - Exposing simple CLI commands (`run-bankroll`, `preview-capital-curve`) to review strategies.
 
 **Note:** This layer provides *research-grade* placeholders. Future phases will introduce concurrency handling and Kelly-optimized fractional betting.
+\n## Phase 22: Advanced Sizing Engine\nBuilt an advanced, risk-aware stake sizing engine supporting Kelly variants, confidence dampening, and drawdown throttles. See `docs/advanced_sizing_architecture.md`.

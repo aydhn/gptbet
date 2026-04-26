@@ -14,6 +14,7 @@ class OverlayStrategyName(str, Enum):
     TIERED_FLAT = "tiered_flat"
     CONSERVATIVE_CAPPED_FRACTION = "conservative_capped_fraction"
     NO_FINANCIAL_SHADOW = "no_financial_shadow"
+    ADVANCED_SIZING = "advanced_sizing"
 
 class BankrollConfig(BaseModel):
     initial_bankroll: float = Field(default=10000.0, ge=0.0)
