@@ -1,6 +1,7 @@
 from sports_signal_bot.bankroll.streaks import StreakAnalyzer
 import datetime
 
+
 def test_streaks():
     analyzer = StreakAnalyzer()
 

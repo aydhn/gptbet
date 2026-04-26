@@ -1,8 +1,9 @@
 from sports_signal_bot.source_selection.contracts import (
-    SourceEligibilityRecord, SourcePolicyDefinition)
+    SourceEligibilityRecord,
+    SourcePolicyDefinition,
+)
 from sports_signal_bot.source_selection.metadata import SourceMetadataRecord
-from sports_signal_bot.source_selection.policies import \
-    PreferredCalibratedPolicy
+from sports_signal_bot.source_selection.policies import PreferredCalibratedPolicy
 
 
 def test_preferred_calibrated_policy():

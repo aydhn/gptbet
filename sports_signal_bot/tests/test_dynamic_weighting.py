@@ -1,14 +1,12 @@
 import pytest
 
-from sports_signal_bot.dynamic_weighting.components import \
-    combine_weight_components
-from sports_signal_bot.dynamic_weighting.contracts import \
-    WeightingPolicyDefinition
+from sports_signal_bot.dynamic_weighting.components import combine_weight_components
+from sports_signal_bot.dynamic_weighting.contracts import WeightingPolicyDefinition
 from sports_signal_bot.dynamic_weighting.runner import DynamicWeightingRunner
-from sports_signal_bot.dynamic_weighting.strategies.dynamic_hybrid import \
-    DynamicHybridWeighted
-from sports_signal_bot.dynamic_weighting.strategies.trust_weighted import \
-    TrustWeighted
+from sports_signal_bot.dynamic_weighting.strategies.dynamic_hybrid import (
+    DynamicHybridWeighted,
+)
+from sports_signal_bot.dynamic_weighting.strategies.trust_weighted import TrustWeighted
 
 
 def test_trust_weighted_strategy():

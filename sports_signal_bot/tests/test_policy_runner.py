@@ -3,7 +3,9 @@ import pytest
 from sports_signal_bot.policy.contracts import ActionClass, PolicySignalStatus
 from sports_signal_bot.policy.runner import PolicyRunner
 from sports_signal_bot.signal_scoring.contracts import (
-    SignalPolicyInputRecord, SignalStatus)
+    SignalPolicyInputRecord,
+    SignalStatus,
+)
 
 
 @pytest.fixture

@@ -4,7 +4,9 @@ import pytest
 
 from sports_signal_bot.audit.leakage import detect_post_event_snapshot_leakage
 from sports_signal_bot.benchmark.bookmaker_implied import (
-    decimal_odds_to_implied_prob, normalize_overround)
+    decimal_odds_to_implied_prob,
+    normalize_overround,
+)
 
 
 def test_detect_leakage():

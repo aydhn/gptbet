@@ -2519,98 +2519,11 @@ def list_bankroll_overlays():
         typer.echo(f"  - {s.value}")
 
 
+from sports_signal_bot.portfolio.cli.commands import portfolio_app
+app.add_typer(portfolio_app, name="portfolio", help="Portfolio management commands")
+
+from sports_signal_bot.inference.cli import app as inference_app
+app.add_typer(inference_app, name="inference", help="Live-like inference execution")
+
 if __name__ == "__main__":
     app()
-
-@app.command(name="run-bankroll", help="Run chronological bankroll overlay replay")
-def run_bankroll(
-    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-    overlay: str = typer.Option("flat_stake", help="Overlay strategy (flat_stake, fixed_fraction, etc)"),
-):
-    from sports_signal_bot.bankroll.contracts import BankrollConfig, BankrollDecisionRecord, OverlayStrategyName
-    from sports_signal_bot.bankroll.runner import BankrollRunner
-    from sports_signal_bot.bankroll.manifests import export_bankroll_manifest
-    from sports_signal_bot.bankroll.reporting import build_ledger_dataframe, build_curve_dataframe, build_drawdown_dataframe
-    from datetime import datetime, timedelta
-    import os
-
-    typer.echo(f"Starting bankroll replay for {sport} - {market} using {overlay} overlay")
-
-    config = BankrollConfig(default_overlay_strategy=OverlayStrategyName(overlay))
-    runner = BankrollRunner(config=config)
-
-    # Mock some data
-    now = datetime.utcnow()
-    decisions = [
-        BankrollDecisionRecord(
-            event_id="evt_1", sport=sport, market_type=market,
-            event_datetime_utc=now, action_class="approved_candidate",
-            executed_flag=True, result_status="settled_win", hit_flag=True, payout_multiple=0.9
-        ),
-        BankrollDecisionRecord(
-            event_id="evt_2", sport=sport, market_type=market,
-            event_datetime_utc=now + timedelta(hours=1), action_class="candidate",
-            executed_flag=True, result_status="settled_loss", hit_flag=False, payout_multiple=None
-        ),
-    ]
-
-    manifest, ledger, curve, drawdowns = runner.run(decisions, sport, market)
-
-    typer.echo("\nBankroll Summary:")
-    typer.echo(f"  Overlay Strategy: {manifest.overlay_strategy}")
-    typer.echo(f"  Initial Bankroll: {manifest.summary.initial_bankroll}")
-    typer.echo(f"  Ending Bankroll: {manifest.summary.ending_bankroll}")
-    typer.echo(f"  Executed Count: {manifest.summary.executed_count}")
-    typer.echo(f"  Net PnL: {manifest.summary.net_pnl_units}")
-    typer.echo(f"  Max Drawdown: {manifest.summary.max_drawdown_pct * 100:.2f}%")
-    typer.echo(f"  Longest Losing Streak: {manifest.summary.longest_loss_streak}")
-
-    output_dir = f"results/bankroll/{sport}/{market}/{overlay}"
-    manifest_path = export_bankroll_manifest(manifest, output_dir)
-
-    ledger_df = build_ledger_dataframe(ledger)
-    ledger_path = os.path.join(output_dir, "bankroll_ledger.csv")
-    if not ledger_df.empty:
-         ledger_df.to_csv(ledger_path, index=False)
-
-    typer.echo(f"\nArtifacts saved to {output_dir}")
-
-@app.command(name="preview-capital-curve", help="Preview capital curve points")
-def preview_capital_curve(
-    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-):
-    typer.echo(f"Previewing capital curve for {sport} {market}")
-    typer.echo("timestamp | bankroll | pnl | peak | drawdown_abs | streak")
-    typer.echo("2024-01-01T12:00:00Z | 10090.0 | 90.0 | 10090.0 | 0.0 | W:1/L:0")
-    typer.echo("2024-01-01T14:00:00Z | 9990.0 | -100.0 | 10090.0 | 100.0 | W:0/L:1")
-
-@app.command(name="preview-drawdowns", help="Preview drawdown analysis")
-def preview_drawdowns(
-    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-):
-    typer.echo(f"Previewing drawdowns for {sport} {market}")
-    typer.echo("event_id | drawdown_abs | drawdown_pct | is_trough")
-    typer.echo("evt_2 | 100.0 | 0.99% | True")
-
-@app.command(name="preview-streaks", help="Preview streak analysis")
-def preview_streaks(
-    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-):
-    typer.echo(f"Previewing streaks for {sport} {market}")
-    typer.echo("Longest Win Streak: 5")
-    typer.echo("Longest Loss Streak: 3")
-    typer.echo("Current Streak: W:2 / L:0")
-
-@app.command(name="list-bankroll-overlays", help="List available bankroll overlays")
-def list_bankroll_overlays():
-    from sports_signal_bot.bankroll.registry import OverlayStrategyRegistry
-    strategies = OverlayStrategyRegistry.list_strategies()
-    typer.echo("Available Bankroll Overlay Strategies:")
-    for s in strategies:
-        typer.echo(f"  - {s.value}")
-from sports_signal_bot.portfolio import portfolio_app
-app.add_typer(portfolio_app, name="portfolio", help="Portfolio management commands")

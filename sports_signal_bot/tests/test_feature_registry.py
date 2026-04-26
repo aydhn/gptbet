@@ -1,8 +1,9 @@
 import pytest
 
 from sports_signal_bot.features.builders.context import ContextFeatureBuilder
-from sports_signal_bot.features.builders.football_strength import \
-    FootballTeamStrengthBuilder
+from sports_signal_bot.features.builders.football_strength import (
+    FootballTeamStrengthBuilder,
+)
 from sports_signal_bot.features.registry import FeatureRegistry
 
 

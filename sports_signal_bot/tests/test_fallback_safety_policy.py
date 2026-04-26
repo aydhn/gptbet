@@ -1,6 +1,8 @@
 from sports_signal_bot.source_selection.contracts import (
-    SourceEligibilityRecord, SourceExclusionReasonRecord,
-    SourcePolicyDefinition)
+    SourceEligibilityRecord,
+    SourceExclusionReasonRecord,
+    SourcePolicyDefinition,
+)
 from sports_signal_bot.source_selection.policies import FallbackSafetyPolicy
 
 

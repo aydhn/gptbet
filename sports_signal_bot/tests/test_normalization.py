@@ -4,9 +4,14 @@ import pytest
 
 from sports_signal_bot.core.constants import MarketType
 from sports_signal_bot.data.normalization.markets import (
-    implied_prob_from_decimal_odds, normalize_market_name, safe_decimal_odds)
-from sports_signal_bot.data.normalization.names import (normalize_league_name,
-                                                        normalize_team_name)
+    implied_prob_from_decimal_odds,
+    normalize_market_name,
+    safe_decimal_odds,
+)
+from sports_signal_bot.data.normalization.names import (
+    normalize_league_name,
+    normalize_team_name,
+)
 from sports_signal_bot.data.resolution.team_aliases import TeamResolver
 
 

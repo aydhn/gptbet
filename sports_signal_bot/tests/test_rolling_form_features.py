@@ -1,8 +1,7 @@
 import pandas as pd
 import pytest
 
-from sports_signal_bot.features.builders.rolling_form import \
-    RollingFormFeatureBuilder
+from sports_signal_bot.features.builders.rolling_form import RollingFormFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
 
 

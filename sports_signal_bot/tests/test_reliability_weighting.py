@@ -1,7 +1,9 @@
 import numpy as np
 
-from sports_signal_bot.ensemble.weights import (derive_source_weight,
-                                                normalize_source_weights)
+from sports_signal_bot.ensemble.weights import (
+    derive_source_weight,
+    normalize_source_weights,
+)
 
 
 def test_derive_source_weight():

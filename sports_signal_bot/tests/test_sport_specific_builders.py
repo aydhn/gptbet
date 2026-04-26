@@ -1,10 +1,10 @@
 import pandas as pd
 import pytest
 
-from sports_signal_bot.features.builders.basketball_tempo import \
-    BasketballTempoBuilder
-from sports_signal_bot.features.builders.football_strength import \
-    FootballTeamStrengthBuilder
+from sports_signal_bot.features.builders.basketball_tempo import BasketballTempoBuilder
+from sports_signal_bot.features.builders.football_strength import (
+    FootballTeamStrengthBuilder,
+)
 from sports_signal_bot.features.contracts import FeatureBuildContext
 
 

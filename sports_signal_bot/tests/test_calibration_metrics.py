@@ -1,9 +1,11 @@
 import numpy as np
 import pytest
 
-from sports_signal_bot.calibration.metrics import (calculate_brier_score,
-                                                   calculate_ece_mce,
-                                                   calculate_log_loss)
+from sports_signal_bot.calibration.metrics import (
+    calculate_brier_score,
+    calculate_ece_mce,
+    calculate_log_loss,
+)
 
 
 def test_calculate_log_loss_binary():

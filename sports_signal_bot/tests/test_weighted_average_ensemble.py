@@ -1,9 +1,12 @@
 import numpy as np
 
-from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
-                                                  StandardizedPredictionRecord)
-from sports_signal_bot.ensemble.strategies.weighted_average import \
-    WeightedAverageEnsembler
+from sports_signal_bot.ensemble.contracts import (
+    EnsembleInputRecord,
+    StandardizedPredictionRecord,
+)
+from sports_signal_bot.ensemble.strategies.weighted_average import (
+    WeightedAverageEnsembler,
+)
 
 
 def test_weighted_average_combine():

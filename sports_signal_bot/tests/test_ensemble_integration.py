@@ -1,7 +1,9 @@
 import pytest
 
-from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
-                                                  StandardizedPredictionRecord)
+from sports_signal_bot.ensemble.contracts import (
+    EnsembleInputRecord,
+    StandardizedPredictionRecord,
+)
 from sports_signal_bot.ensemble.runner import EnsembleRunner
 
 

@@ -1,9 +1,11 @@
 import pytest
 
-from sports_signal_bot.probabilistic.basketball.contracts import \
-    BasketballDistributionConfig
-from sports_signal_bot.probabilistic.basketball.distribution import \
-    BasketballDistributionCore
+from sports_signal_bot.probabilistic.basketball.contracts import (
+    BasketballDistributionConfig,
+)
+from sports_signal_bot.probabilistic.basketball.distribution import (
+    BasketballDistributionCore,
+)
 
 
 def test_variance_assumptions_floor():

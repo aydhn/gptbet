@@ -3,8 +3,10 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from sports_signal_bot.evaluation.loader import (extract_probability_columns,
-                                                 load_evaluation_dataframe)
+from sports_signal_bot.evaluation.loader import (
+    extract_probability_columns,
+    load_evaluation_dataframe,
+)
 
 
 def test_extract_probability_columns():

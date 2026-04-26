@@ -1,8 +1,7 @@
 import pandas as pd
 import pytest
 
-from sports_signal_bot.features.builders.market_odds import \
-    MarketOddsFeatureBuilder
+from sports_signal_bot.features.builders.market_odds import MarketOddsFeatureBuilder
 from sports_signal_bot.features.contracts import FeatureBuildContext
 
 

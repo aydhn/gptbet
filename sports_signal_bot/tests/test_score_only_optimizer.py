@@ -1,9 +1,12 @@
 import pytest
 
-from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
-                                                        SignalScoreRecord)
-from sports_signal_bot.thresholds.strategies.score_only import \
-    ScoreOnlyThresholdOptimizer
+from sports_signal_bot.signal_scoring.contracts import (
+    SignalComponentRecord,
+    SignalScoreRecord,
+)
+from sports_signal_bot.thresholds.strategies.score_only import (
+    ScoreOnlyThresholdOptimizer,
+)
 
 
 def test_score_only_optimizer():

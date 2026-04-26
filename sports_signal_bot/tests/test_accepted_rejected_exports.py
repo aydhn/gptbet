@@ -1,7 +1,9 @@
 import pytest
 
-from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
-                                                        SignalScoreRecord)
+from sports_signal_bot.signal_scoring.contracts import (
+    SignalComponentRecord,
+    SignalScoreRecord,
+)
 from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
 from sports_signal_bot.thresholds.runner import ThresholdRunner
 

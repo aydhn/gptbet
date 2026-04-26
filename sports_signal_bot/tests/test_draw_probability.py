@@ -1,7 +1,6 @@
 import pytest
 
-from sports_signal_bot.ratings.draw_probability import \
-    calculate_1x2_probabilities
+from sports_signal_bot.ratings.draw_probability import calculate_1x2_probabilities
 
 
 def test_draw_probability_heuristic_normalization():

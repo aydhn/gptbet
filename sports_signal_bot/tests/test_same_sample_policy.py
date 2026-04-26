@@ -1,8 +1,7 @@
 import pandas as pd
 import pytest
 
-from sports_signal_bot.evaluation.alignment import \
-    align_predictions_to_common_universe
+from sports_signal_bot.evaluation.alignment import align_predictions_to_common_universe
 
 
 def test_same_sample_policy_empty_intersection():

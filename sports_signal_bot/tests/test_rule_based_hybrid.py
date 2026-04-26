@@ -1,7 +1,10 @@
-from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
-                                                  StandardizedPredictionRecord)
-from sports_signal_bot.ensemble.strategies.rule_based_hybrid import \
-    RuleBasedHybridEnsembler
+from sports_signal_bot.ensemble.contracts import (
+    EnsembleInputRecord,
+    StandardizedPredictionRecord,
+)
+from sports_signal_bot.ensemble.strategies.rule_based_hybrid import (
+    RuleBasedHybridEnsembler,
+)
 
 
 def test_rule_based_hybrid():

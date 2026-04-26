@@ -6,7 +6,8 @@ import pytest
 
 from sports_signal_bot.calibration.dataset import (
     build_calibration_dataset_from_validation_predictions,
-    extract_calibration_features_and_targets)
+    extract_calibration_features_and_targets,
+)
 from sports_signal_bot.training.contracts import ValidationPredictionRecord
 
 

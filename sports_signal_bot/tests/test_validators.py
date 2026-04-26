@@ -1,9 +1,11 @@
 import pytest
 
-from sports_signal_bot.data.validators.odds_validator import \
-    OddsSanityValidator
+from sports_signal_bot.data.validators.odds_validator import OddsSanityValidator
 from sports_signal_bot.data.validators.schema_validator import (
-    HomeAwayValidator, RequiredFieldsValidator, UniqueEventValidator)
+    HomeAwayValidator,
+    RequiredFieldsValidator,
+    UniqueEventValidator,
+)
 
 
 def test_required_fields_validator():

@@ -1,13 +1,18 @@
 import pytest
 
 from sports_signal_bot.dynamic_weighting.components import (
-    combine_weight_components, compute_base_prior,
-    compute_disagreement_component, compute_recency_component,
-    compute_regime_weight_component, compute_trust_weight_component)
-from sports_signal_bot.dynamic_weighting.contracts import \
-    WeightingPolicyDefinition
+    combine_weight_components,
+    compute_base_prior,
+    compute_disagreement_component,
+    compute_recency_component,
+    compute_regime_weight_component,
+    compute_trust_weight_component,
+)
+from sports_signal_bot.dynamic_weighting.contracts import WeightingPolicyDefinition
 from sports_signal_bot.dynamic_weighting.normalization import (
-    apply_weight_caps_and_floors, normalize_weights)
+    apply_weight_caps_and_floors,
+    normalize_weights,
+)
 
 
 def test_base_prior():

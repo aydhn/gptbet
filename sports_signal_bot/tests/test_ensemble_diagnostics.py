@@ -1,8 +1,10 @@
 import numpy as np
 
-from sports_signal_bot.ensemble.diagnostics import (calculate_entropy,
-                                                    probability_dispersion,
-                                                    top_class_disagreement)
+from sports_signal_bot.ensemble.diagnostics import (
+    calculate_entropy,
+    probability_dispersion,
+    top_class_disagreement,
+)
 
 
 def test_diagnostics():
