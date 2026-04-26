@@ -1,6 +1,8 @@
 from typing import Dict, List, Optional
+
 from .contracts import SourceTrustScoreRecord
 from .metadata import SourceMetadataRecord
+
 
 class SourceTrustScorer:
     def __init__(self, weights: Optional[Dict[str, float]] = None):
@@ -10,7 +12,7 @@ class SourceTrustScorer:
             "recency": 0.2,
             "coverage": 0.2,
             "regime_fit": 0.2,
-            "data_quality": 0.1
+            "data_quality": 0.1,
         }
         # Normalize weights
         total = sum(self.weights.values())
@@ -19,7 +21,7 @@ class SourceTrustScorer:
 
     def compute_performance_component(self, metadata: SourceMetadataRecord) -> float:
         """Score based on historical log loss/brier and benchmark relative perf."""
-        score = 0.5 # Default safe middle
+        score = 0.5  # Default safe middle
         if metadata.eval_info.recent_log_loss is not None:
             # Assume log_loss of 0.69 is random, 0.5 is good.
             ll = metadata.eval_info.recent_log_loss
@@ -44,7 +46,7 @@ class SourceTrustScorer:
 
         m_score = max(0.0, 1.0 - (m_age / 30.0))  # Decays over 30 days
         if metadata.is_calibrated:
-            c_score = max(0.0, 1.0 - (c_age / 14.0)) # Calibrator decays faster
+            c_score = max(0.0, 1.0 - (c_age / 14.0))  # Calibrator decays faster
             return (m_score * 0.4) + (c_score * 0.6)
 
         return m_score
@@ -53,10 +55,12 @@ class SourceTrustScorer:
         """Score based on historical coverage rate."""
         return max(0.0, min(1.0, metadata.recent_coverage_rate))
 
-    def compute_regime_fit_component(self, metadata: SourceMetadataRecord, active_regimes: List[str]) -> float:
+    def compute_regime_fit_component(
+        self, metadata: SourceMetadataRecord, active_regimes: List[str]
+    ) -> float:
         """Score based on performance in currently active regimes."""
         if not active_regimes or not metadata.regime_profile.regime_scores:
-            return 0.5 # Neutral fallback
+            return 0.5  # Neutral fallback
 
         total_score = 0.0
         valid_regimes = 0
@@ -79,7 +83,9 @@ class SourceTrustScorer:
 
         return total_score / valid_regimes
 
-    def combine_trust_components(self, metadata: SourceMetadataRecord, active_regimes: Optional[List[str]] = None) -> SourceTrustScoreRecord:
+    def combine_trust_components(
+        self, metadata: SourceMetadataRecord, active_regimes: Optional[List[str]] = None
+    ) -> SourceTrustScoreRecord:
         """Combines all components into a final trust score."""
         perf = self.compute_performance_component(metadata)
         rec = self.compute_recency_component(metadata)
@@ -92,15 +98,18 @@ class SourceTrustScorer:
             "recency": rec,
             "coverage": cov,
             "regime_fit": reg,
-            "data_quality": dq
+            "data_quality": dq,
         }
 
         total = sum(breakdown[k] * self.weights.get(k, 0.0) for k in breakdown)
 
         warnings = []
-        if rec < 0.2: warnings.append("Low recency score.")
-        if cov < 0.5: warnings.append("Low coverage rate.")
-        if dq == 0.0: warnings.append("Invalid probabilities detected.")
+        if rec < 0.2:
+            warnings.append("Low recency score.")
+        if cov < 0.5:
+            warnings.append("Low coverage rate.")
+        if dq == 0.0:
+            warnings.append("Invalid probabilities detected.")
 
         return SourceTrustScoreRecord(
             performance_score=perf,
@@ -111,7 +120,7 @@ class SourceTrustScorer:
             disagreement_penalty=0.0,
             total_trust_score=max(0.0, min(1.0, total)),
             component_breakdown=breakdown,
-            warnings=warnings
+            warnings=warnings,
         )
 
     def explain_trust_score(self, score: SourceTrustScoreRecord) -> str:
@@ -119,7 +128,9 @@ class SourceTrustScorer:
         explanation = f"Total Trust Score: {score.total_trust_score:.2f}\n"
         explanation += "Breakdown:\n"
         for k, v in score.component_breakdown.items():
-            explanation += f"  - {k}: {v:.2f} (weight: {self.weights.get(k, 0.0):.2f})\n"
+            explanation += (
+                f"  - {k}: {v:.2f} (weight: {self.weights.get(k, 0.0):.2f})\n"
+            )
         if score.warnings:
             explanation += "Warnings:\n"
             for w in score.warnings:

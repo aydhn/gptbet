@@ -11,7 +11,9 @@ from .base import BaseEnsembler
 
 class DynamicWeightedAverageEnsembler(BaseEnsembler):
 
-    def __init__(self, name: str = "dynamic_weighted_average", config: Dict[str, Any] = None):
+    def __init__(
+        self, name: str = "dynamic_weighted_average", config: Dict[str, Any] = None
+    ):
         super().__init__(name, config)
         self.weights_config = self.config.get("dynamic_weights", {})
 

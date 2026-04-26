@@ -1,6 +1,8 @@
 import pytest
-from sports_signal_bot.thresholds.manifests import ThresholdManifestRecord
+
 from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
+from sports_signal_bot.thresholds.manifests import ThresholdManifestRecord
+
 
 def test_threshold_manifest_record():
     policy = ThresholdPolicyRecord(
@@ -10,7 +12,7 @@ def test_threshold_manifest_record():
         signal_strategy="score_only",
         threshold_type="min_score",
         selected_threshold=0.5,
-        optimization_objective="balanced"
+        optimization_objective="balanced",
     )
 
     manifest = ThresholdManifestRecord(
@@ -20,7 +22,7 @@ def test_threshold_manifest_record():
         best_policy=policy,
         total_evaluated_candidates=10,
         accepted_count=5,
-        rejected_count=5
+        rejected_count=5,
     )
 
     assert manifest.run_id == "test_run"

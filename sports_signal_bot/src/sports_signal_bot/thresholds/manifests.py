@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
-from .contracts import ThresholdPolicyRecord, ThresholdCandidateRecord
+from .contracts import ThresholdCandidateRecord, ThresholdPolicyRecord
+
 
 class ThresholdManifestRecord(BaseModel):
     run_id: str

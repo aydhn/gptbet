@@ -252,3 +252,10 @@ The system incorporates a robust Policy Engine layer.
 - **No-Bet Zone**: A core philosophy. The system explicitly tags signals that are decent but have high uncertainty, disagreement, or borderline edge as `no_bet_zone`.
 - **Action Classes**: Maps signal statuses to final action categories like `approved_candidate`, `watchlist`, and `no_action`.
 - **Apply Policy**: `python -m sports_signal_bot.main apply-policy --sport football --market 1x2`
+
+### Backtest Engine
+A chronological backtest replay engine evaluates the policy engine decisions chronologically over time. This implements a decision-quality-only backtest approach allowing the performance evaluation of specific subset action classes (executed vs skipped vs void) before adding stake sizes or full capital overlay strategies.
+Run it using:
+```bash
+python -m sports_signal_bot.main run-backtest --sport football --market 1x2
+```

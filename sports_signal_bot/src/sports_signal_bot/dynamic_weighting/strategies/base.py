@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
-from sports_signal_bot.dynamic_weighting.contracts import DynamicWeightRecord, WeightingPolicyDefinition
+from typing import Any, Dict, List
+
+from sports_signal_bot.dynamic_weighting.contracts import (
+    DynamicWeightRecord, WeightingPolicyDefinition)
+
 
 class BaseWeightingStrategy(ABC):
     def __init__(self, policy: WeightingPolicyDefinition, config: Dict[str, Any]):
@@ -8,7 +11,9 @@ class BaseWeightingStrategy(ABC):
         self.config = config
 
     @abstractmethod
-    def compute_weights(self, eligible_sources: List[Dict[str, Any]], context: Dict[str, Any]) -> List[DynamicWeightRecord]:
+    def compute_weights(
+        self, eligible_sources: List[Dict[str, Any]], context: Dict[str, Any]
+    ) -> List[DynamicWeightRecord]:
         """Compute dynamic weights for a list of eligible sources."""
         pass
 

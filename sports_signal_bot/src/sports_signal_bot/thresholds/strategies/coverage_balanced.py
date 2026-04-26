@@ -1,8 +1,12 @@
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
+
 import numpy as np
-from .base import BaseThresholdOptimizer
-from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
 from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord
+from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
+from .base import BaseThresholdOptimizer
+
 
 class CoverageBalancedOptimizer(BaseThresholdOptimizer):
     def generate_grid(self) -> List[Dict[str, float]]:
@@ -18,7 +22,9 @@ class CoverageBalancedOptimizer(BaseThresholdOptimizer):
 
         return grid
 
-    def apply_threshold(self, signals: List[SignalScoreRecord], params: Dict[str, float]) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
+    def apply_threshold(
+        self, signals: List[SignalScoreRecord], params: Dict[str, float]
+    ) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
         score_threshold = params.get("score_threshold", 0.0)
 
         accepted = []

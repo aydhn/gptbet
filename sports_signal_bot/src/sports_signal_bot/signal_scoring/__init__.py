@@ -14,5 +14,5 @@ __all__ = [
     "SignalManifest",
     "SignalPolicyInputRecord",
     "SignalInputBuilder",
-    "SignalInputBuilderContext"
+    "SignalInputBuilderContext",
 ]

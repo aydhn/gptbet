@@ -1,7 +1,10 @@
 import pytest
-from sports_signal_bot.thresholds.runner import ThresholdRunner
+
+from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
+                                                        SignalScoreRecord)
 from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
-from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
+from sports_signal_bot.thresholds.runner import ThresholdRunner
+
 
 def test_accepted_rejected_records():
     runner = ThresholdRunner({})
@@ -12,7 +15,7 @@ def test_accepted_rejected_records():
         signal_strategy="score_only",
         threshold_type="score",
         selected_threshold=0.55,
-        optimization_objective="balanced"
+        optimization_objective="balanced",
     )
 
     signals = [
@@ -22,10 +25,13 @@ def test_accepted_rejected_records():
             market_type="1x2",
             selection="home",
             final_probability=0.6,
-            components=SignalComponentRecord(edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1),
+            components=SignalComponentRecord(
+                edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1
+            ),
             final_signal_score=0.45 + (i * 0.05),
-            strategy_name="test"
-        ) for i in range(5)
+            strategy_name="test",
+        )
+        for i in range(5)
     ]
 
     res = runner.apply_policy(policy, signals)

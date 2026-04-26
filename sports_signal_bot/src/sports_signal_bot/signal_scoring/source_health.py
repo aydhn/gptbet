@@ -1,8 +1,8 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 def compute_source_health_penalty(
-    source_selection_diagnostics: Dict[str, Any],
-    thresholds: Dict[str, float]
+    source_selection_diagnostics: Dict[str, Any], thresholds: Dict[str, float]
 ) -> float:
     """Computes a penalty based on stale components and weak source dominance."""
 
@@ -12,7 +12,9 @@ def compute_source_health_penalty(
     penalty = 0.0
 
     stale_ratio = source_selection_diagnostics.get("stale_components_ratio", 0.0)
-    weak_trust_dominance = source_selection_diagnostics.get("weak_trust_dominance", False)
+    weak_trust_dominance = source_selection_diagnostics.get(
+        "weak_trust_dominance", False
+    )
     fallback_heavy = source_selection_diagnostics.get("fallback_heavy_selection", False)
 
     # Stale components penalty

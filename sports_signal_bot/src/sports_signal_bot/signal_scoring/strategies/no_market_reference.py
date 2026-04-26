@@ -1,11 +1,15 @@
 import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import (
-    SignalCandidateRecord, SignalScoreRecord, SignalComponentRecord, SignalStatus
-)
-from sports_signal_bot.signal_scoring.strategies.balanced import BalancedSignalScorer
-from sports_signal_bot.signal_scoring.combine import combine_signal_components, normalize_signal_score
+from sports_signal_bot.signal_scoring.combine import (
+    combine_signal_components, normalize_signal_score)
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalComponentRecord,
+                                                        SignalScoreRecord,
+                                                        SignalStatus)
+from sports_signal_bot.signal_scoring.strategies.balanced import \
+    BalancedSignalScorer
+
 
 class NoMarketReferenceFallbackScorer(BalancedSignalScorer):
 
@@ -22,10 +26,12 @@ class NoMarketReferenceFallbackScorer(BalancedSignalScorer):
         # We can inherit from Balanced, but we change weights and status
         original_weights = self.weights.copy()
 
-        self.weights.update({
-            "edge_weight": 0.0,
-            "confidence_weight": 2.0, # Lean heavily on confidence
-        })
+        self.weights.update(
+            {
+                "edge_weight": 0.0,
+                "confidence_weight": 2.0,  # Lean heavily on confidence
+            }
+        )
 
         results = super().score_signals(candidates)
         self.weights = original_weights

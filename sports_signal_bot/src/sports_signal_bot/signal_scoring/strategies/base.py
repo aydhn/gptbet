@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import SignalCandidateRecord, SignalScoreRecord
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalScoreRecord)
+
 
 class BaseSignalScorer(ABC):
 

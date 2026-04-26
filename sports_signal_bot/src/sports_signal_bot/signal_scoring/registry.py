@@ -1,5 +1,7 @@
 from typing import Dict, Type
+
 from sports_signal_bot.signal_scoring.strategies.base import BaseSignalScorer
+
 
 class SignalScorerRegistry:
 

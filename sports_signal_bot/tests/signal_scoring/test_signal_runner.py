@@ -1,18 +1,23 @@
 from sports_signal_bot.signal_scoring.contracts import SignalCandidateRecord
 from sports_signal_bot.signal_scoring.runner import SignalScoringRunner
 
+
 def test_runner_initialization_and_flow(tmp_path):
     config = {
         "default_signal_strategy": "edge_focused",
         "weights": {},
-        "thresholds": {}
+        "thresholds": {},
     }
 
     runner = SignalScoringRunner(config, str(tmp_path))
 
     cand1 = SignalCandidateRecord(
-        event_id="e1", sport="football", market_type="1x2", selection="home",
-        final_probability=0.6, market_implied_probability=0.5
+        event_id="e1",
+        sport="football",
+        market_type="1x2",
+        selection="home",
+        final_probability=0.6,
+        market_implied_probability=0.5,
     )
 
     manifest = runner.run([cand1], "football", "1x2")

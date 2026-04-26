@@ -1,6 +1,8 @@
 import pytest
+
 from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
 from sports_signal_bot.thresholds.frontier import ThresholdFrontierBuilder
+
 
 def test_frontier_builder():
     candidates = [
@@ -13,7 +15,7 @@ def test_frontier_builder():
             coverage_rate=1.0,
             acceptance_rate=1.0,
             objective_value=0.5,
-            quality_metrics={"accuracy": 0.5, "log_loss": 0.69}
+            quality_metrics={"accuracy": 0.5, "log_loss": 0.69},
         ),
         ThresholdCandidateRecord(
             market_type="1x2",
@@ -24,8 +26,8 @@ def test_frontier_builder():
             coverage_rate=0.5,
             acceptance_rate=0.5,
             objective_value=0.6,
-            quality_metrics={"accuracy": 0.6, "log_loss": 0.60}
-        )
+            quality_metrics={"accuracy": 0.6, "log_loss": 0.60},
+        ),
     ]
 
     builder = ThresholdFrontierBuilder(candidates, "football", "1x2")

@@ -1,12 +1,16 @@
 from collections import defaultdict
-from typing import List, Dict
-from .contracts import SourceSelectionDecision, SourceEligibilitySummary
+from typing import Dict, List
+
+from .contracts import SourceEligibilitySummary, SourceSelectionDecision
+
 
 class DiagnosticsBuilder:
-    def build_summary(self, decisions: List[SourceSelectionDecision], context: Dict) -> SourceEligibilitySummary:
+    def build_summary(
+        self, decisions: List[SourceSelectionDecision], context: Dict
+    ) -> SourceEligibilitySummary:
         summary = SourceEligibilitySummary(
             total_candidates=len(decisions),
-            fallback_used=context.get('fallback_used', False)
+            fallback_used=context.get("fallback_used", False),
         )
 
         exclusion_counts: Dict[str, int] = defaultdict(int)
@@ -29,7 +33,9 @@ class DiagnosticsBuilder:
             if any("stale" in w.lower() for w in d.eligibility_record.warnings):
                 summary.stale_source_warnings += 1
 
-        summary.top_exclusion_reasons = dict(sorted(exclusion_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+        summary.top_exclusion_reasons = dict(
+            sorted(exclusion_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+        )
 
         for fam, total in family_totals.items():
             summary.family_eligibility_rates[fam] = family_eligible[fam] / total

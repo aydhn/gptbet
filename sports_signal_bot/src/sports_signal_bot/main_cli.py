@@ -170,14 +170,18 @@ if __name__ == "__main__":
 
 # --- SOURCE SELECTION COMMANDS ---
 
-from sports_signal_bot.source_selection.contracts import SourcePolicyDefinition
-from sports_signal_bot.source_selection.catalog import SourceCatalog, SourceCatalogEntry
-from sports_signal_bot.source_selection.metadata import SourceMetadataLoader
-from sports_signal_bot.source_selection.scoring import SourceTrustScorer
-from sports_signal_bot.source_selection.chain import SourcePolicyChain
-from sports_signal_bot.source_selection.runner import SourceSelectionRunner
 from pathlib import Path
+
 from rich.console import Console
+
+from sports_signal_bot.source_selection.catalog import (SourceCatalog,
+                                                        SourceCatalogEntry)
+from sports_signal_bot.source_selection.chain import SourcePolicyChain
+from sports_signal_bot.source_selection.contracts import SourcePolicyDefinition
+from sports_signal_bot.source_selection.metadata import SourceMetadataLoader
+from sports_signal_bot.source_selection.runner import SourceSelectionRunner
+from sports_signal_bot.source_selection.scoring import SourceTrustScorer
+
 
 def _build_source_runner(sport: str) -> SourceSelectionRunner:
     # 1. Load config
@@ -196,26 +200,64 @@ def _build_source_runner(sport: str) -> SourceSelectionRunner:
     try:
         with open("configs/source_selection/policies.yaml") as f:
             policies_data = yaml.safe_load(f)
-            policy_defs = [SourcePolicyDefinition(**p) for p in policies_data.get("policies", [])]
+            policy_defs = [
+                SourcePolicyDefinition(**p) for p in policies_data.get("policies", [])
+            ]
     except FileNotFoundError:
         policy_defs = [
             SourcePolicyDefinition(policy_name="BasicAvailabilityPolicy"),
-            SourcePolicyDefinition(policy_name="FallbackSafetyPolicy")
+            SourcePolicyDefinition(policy_name="FallbackSafetyPolicy"),
         ]
 
     # Override fallback from sport config if present
     for p in policy_defs:
-        if p.policy_name == "FallbackSafetyPolicy" and "fallback_source_priority" in sport_config:
-            p.parameters["fallback_source_priority"] = sport_config["fallback_source_priority"]
+        if (
+            p.policy_name == "FallbackSafetyPolicy"
+            and "fallback_source_priority" in sport_config
+        ):
+            p.parameters["fallback_source_priority"] = sport_config[
+                "fallback_source_priority"
+            ]
 
     # 2. Build mock catalog for demonstration
     entries = [
-        SourceCatalogEntry(source_name="football_poisson_core", source_family="poisson", supported_sports=["football"], supported_markets=["1x2", "ou_2_5"]),
-        SourceCatalogEntry(source_name="elo_rating_source", source_family="rating", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline"]),
-        SourceCatalogEntry(source_name="calibrated_logistic", source_family="ml", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline", "ou_2_5"], requires_calibration=True),
-        SourceCatalogEntry(source_name="raw_logistic", source_family="ml", supported_sports=["football", "basketball"], supported_markets=["1x2", "moneyline", "ou_2_5"]),
-        SourceCatalogEntry(source_name="basketball_structural_core", source_family="structural", supported_sports=["basketball"], supported_markets=["moneyline"]),
-        SourceCatalogEntry(source_name="bookmaker_implied", source_family="market", supported_sports=["football"], supported_markets=["ou_2_5"])
+        SourceCatalogEntry(
+            source_name="football_poisson_core",
+            source_family="poisson",
+            supported_sports=["football"],
+            supported_markets=["1x2", "ou_2_5"],
+        ),
+        SourceCatalogEntry(
+            source_name="elo_rating_source",
+            source_family="rating",
+            supported_sports=["football", "basketball"],
+            supported_markets=["1x2", "moneyline"],
+        ),
+        SourceCatalogEntry(
+            source_name="calibrated_logistic",
+            source_family="ml",
+            supported_sports=["football", "basketball"],
+            supported_markets=["1x2", "moneyline", "ou_2_5"],
+            requires_calibration=True,
+        ),
+        SourceCatalogEntry(
+            source_name="raw_logistic",
+            source_family="ml",
+            supported_sports=["football", "basketball"],
+            supported_markets=["1x2", "moneyline", "ou_2_5"],
+        ),
+        SourceCatalogEntry(
+            source_name="basketball_structural_core",
+            source_family="structural",
+            supported_sports=["basketball"],
+            supported_markets=["moneyline"],
+        ),
+        SourceCatalogEntry(
+            source_name="bookmaker_implied",
+            source_family="market",
+            supported_sports=["football"],
+            supported_markets=["ou_2_5"],
+        ),
     ]
     catalog = SourceCatalog(entries)
 
@@ -226,18 +268,21 @@ def _build_source_runner(sport: str) -> SourceSelectionRunner:
         scorer=SourceTrustScorer(weights=weights),
         policy_chain=SourcePolicyChain(policy_definitions=policy_defs),
         manifest_dir=Path("results/manifests/selection"),
-        report_dir=Path("results/reports/selection")
+        report_dir=Path("results/reports/selection"),
     )
+
 
 @app.command()
 def select_sources(
     sport: str = typer.Option(..., help="Sport type (football/basketball)"),
     market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-    event_id: str = typer.Option("mock_event_123", help="Event ID")
+    event_id: str = typer.Option("mock_event_123", help="Event ID"),
 ):
     """Run full source selection and generate manifest."""
     console = Console()
-    console.print(f"[bold blue]Running source selection for {sport} - {market}...[/bold blue]")
+    console.print(
+        f"[bold blue]Running source selection for {sport} - {market}...[/bold blue]"
+    )
 
     runner = _build_source_runner(sport)
     manifest = runner.run_selection(event_id=event_id, sport=sport, market_type=market)
@@ -249,11 +294,12 @@ def select_sources(
     console.print(f"Fallback used: {manifest.summary.fallback_used}")
     console.print(f"Manifest written to results/manifests/selection/{manifest.run_id}")
 
+
 @app.command()
 def preview_source_trust(
     sport: str = typer.Option(..., help="Sport type"),
     market: str = typer.Option(..., help="Market type"),
-    event_id: str = typer.Option("mock_event_123", help="Event ID")
+    event_id: str = typer.Option("mock_event_123", help="Event ID"),
 ):
     """Preview trust scores for candidate sources."""
     console = Console()
@@ -263,13 +309,16 @@ def preview_source_trust(
     console.print(f"\n[bold]Trust Scores Preview ({sport} - {market})[/bold]")
     for d in manifest.decisions:
         if d.eligibility_record.trust_score:
-            console.print(f"- {d.source_name}: {d.eligibility_record.trust_score.total_trust_score:.3f}")
+            console.print(
+                f"- {d.source_name}: {d.eligibility_record.trust_score.total_trust_score:.3f}"
+            )
+
 
 @app.command()
 def preview_source_exclusions(
     sport: str = typer.Option(..., help="Sport type"),
     market: str = typer.Option(..., help="Market type"),
-    event_id: str = typer.Option("mock_event_123", help="Event ID")
+    event_id: str = typer.Option("mock_event_123", help="Event ID"),
 ):
     """Preview exclusion reasons for an event."""
     console = Console()
@@ -282,14 +331,17 @@ def preview_source_exclusions(
     else:
         for d in manifest.decisions:
             if not d.is_selected:
-                reasons = ", ".join([ex.reason_code for ex in d.eligibility_record.exclusion_reasons])
+                reasons = ", ".join(
+                    [ex.reason_code for ex in d.eligibility_record.exclusion_reasons]
+                )
                 console.print(f"- {d.source_name} excluded: {reasons}")
+
 
 @app.command()
 def preview_source_eligibility(
     sport: str = typer.Option(..., help="Sport type"),
     market: str = typer.Option(..., help="Market type"),
-    event_id: str = typer.Option("mock_event_123", help="Event ID")
+    event_id: str = typer.Option("mock_event_123", help="Event ID"),
 ):
     """Preview final eligibility status of sources."""
     console = Console()
@@ -301,6 +353,7 @@ def preview_source_eligibility(
         status = "[green]ELIGIBLE[/green]" if d.is_selected else "[red]EXCLUDED[/red]"
         console.print(f"{status} - {d.source_name}")
 
+
 @app.command()
 def list_source_policies():
     """List currently configured eligibility policies."""
@@ -311,7 +364,11 @@ def list_source_policies():
 
         console.print("\n[bold]Configured Source Policies:[/bold]")
         for p in policies_data.get("policies", []):
-            status = "[green]Enabled[/green]" if p.get("is_enabled", True) else "[red]Disabled[/red]"
+            status = (
+                "[green]Enabled[/green]"
+                if p.get("is_enabled", True)
+                else "[red]Disabled[/red]"
+            )
             console.print(f"- {p['policy_name']} ({status})")
             if p.get("parameters"):
                 for k, v in p["parameters"].items():
@@ -319,21 +376,34 @@ def list_source_policies():
     except FileNotFoundError:
         console.print("[red]Policy configuration file not found.[/red]")
 
+
 from rich.console import Console
+
 console = Console()
 
 from sports_signal_bot.core.paths import get_configs_dir
+
+
 def register_signal_scoring_commands(app: typer.Typer):
 
     @app.command(name="score-signals")
     def score_signals(
-        sport: str = typer.Option(..., "--sport", "-s", help="Sport name (e.g. football, basketball)"),
-        market: str = typer.Option(..., "--market", "-m", help="Market type (e.g. 1x2, moneyline)"),
-        strategy: str = typer.Option(None, "--strategy", help="Specific scoring strategy to use"),
-        config: str = typer.Option(None, "--config", "-c", help="Path to specific signal scoring config file")
+        sport: str = typer.Option(
+            ..., "--sport", "-s", help="Sport name (e.g. football, basketball)"
+        ),
+        market: str = typer.Option(
+            ..., "--market", "-m", help="Market type (e.g. 1x2, moneyline)"
+        ),
+        strategy: str = typer.Option(
+            None, "--strategy", help="Specific scoring strategy to use"
+        ),
+        config: str = typer.Option(
+            None, "--config", "-c", help="Path to specific signal scoring config file"
+        ),
     ):
         """Scores final probabilities into operational signals (Phase 17)."""
-        from sports_signal_bot.signal_scoring.contracts import SignalCandidateRecord
+        from sports_signal_bot.signal_scoring.contracts import \
+            SignalCandidateRecord
         from sports_signal_bot.signal_scoring.runner import SignalScoringRunner
 
         console.print(f"[bold cyan]Scoring Signals for {sport} - {market}[/bold cyan]")
@@ -352,7 +422,11 @@ def register_signal_scoring_commands(app: typer.Typer):
             with open(sport_config_path, "r") as f:
                 sport_specific = yaml.safe_load(f) or {}
                 for k, v in sport_specific.items():
-                    if isinstance(v, dict) and k in scoring_config and isinstance(scoring_config[k], dict):
+                    if (
+                        isinstance(v, dict)
+                        and k in scoring_config
+                        and isinstance(scoring_config[k], dict)
+                    ):
                         scoring_config[k].update(v)
                     else:
                         scoring_config[k] = v
@@ -367,11 +441,15 @@ def register_signal_scoring_commands(app: typer.Typer):
                 market_implied_probability=0.50 + (i * 0.01) if i % 3 != 0 else None,
                 class_probabilities={"home": 0.55, "draw": 0.25, "away": 0.20},
                 metadata={
-                    "source_disagreement_diagnostics": {"source_variance": 0.02 + (i*0.01)},
+                    "source_disagreement_diagnostics": {
+                        "source_variance": 0.02 + (i * 0.01)
+                    },
                     "data_quality_summaries": {"missing_feature_ratio": 0.05},
                     "source_selection_diagnostics": {"stale_components_ratio": 0.0},
-                    "regime_assignments": [{"regime_family": "data_completeness", "regime_label": "high"}]
-                }
+                    "regime_assignments": [
+                        {"regime_family": "data_completeness", "regime_label": "high"}
+                    ],
+                },
             )
             for i in range(10)
         ]
@@ -381,44 +459,67 @@ def register_signal_scoring_commands(app: typer.Typer):
 
         manifest = runner.run(candidates, sport, market, strategy_name=strategy)
 
-        console.print(f"[green]Scoring Complete.[/green] Total processed: {manifest.total_processed}")
-        console.print(f"Scored: {manifest.scored_count}, Weak: {manifest.weak_signal_count}, No Ref: {manifest.no_market_reference_count}")
+        console.print(
+            f"[green]Scoring Complete.[/green] Total processed: {manifest.total_processed}"
+        )
+        console.print(
+            f"Scored: {manifest.scored_count}, Weak: {manifest.weak_signal_count}, No Ref: {manifest.no_market_reference_count}"
+        )
         if manifest.top_signals:
-            console.print(f"Top signal: {manifest.top_signals[0].event_id} ({manifest.top_signals[0].tier} tier)")
-        console.print(f"Artifacts saved in: {results_dir}/{sport}/{market}/{manifest.run_id}")
+            console.print(
+                f"Top signal: {manifest.top_signals[0].event_id} ({manifest.top_signals[0].tier} tier)"
+            )
+        console.print(
+            f"Artifacts saved in: {results_dir}/{sport}/{market}/{manifest.run_id}"
+        )
 
     @app.command(name="preview-signal-breakdown")
     def preview_signal_breakdown(
         sport: str = typer.Option(..., "--sport", "-s"),
-        market: str = typer.Option(..., "--market", "-m")
+        market: str = typer.Option(..., "--market", "-m"),
     ):
         """Previews signal score components breakdown (Phase 17)."""
-        console.print(f"[bold yellow]Signal Breakdown Preview: {sport} - {market}[/bold yellow]")
-        console.print("This command reads the latest signal scores and displays component breakdown.")
+        console.print(
+            f"[bold yellow]Signal Breakdown Preview: {sport} - {market}[/bold yellow]"
+        )
+        console.print(
+            "This command reads the latest signal scores and displays component breakdown."
+        )
 
     @app.command(name="preview-signal-ranking")
     def preview_signal_ranking(
         sport: str = typer.Option(..., "--sport", "-s"),
-        market: str = typer.Option(..., "--market", "-m")
+        market: str = typer.Option(..., "--market", "-m"),
     ):
         """Previews top ranked signals (Phase 17)."""
-        console.print(f"[bold magenta]Signal Ranking Preview: {sport} - {market}[/bold magenta]")
-        console.print("This command displays the top tier signals based on the latest run.")
+        console.print(
+            f"[bold magenta]Signal Ranking Preview: {sport} - {market}[/bold magenta]"
+        )
+        console.print(
+            "This command displays the top tier signals based on the latest run."
+        )
 
     @app.command(name="preview-signal-diagnostics")
     def preview_signal_diagnostics(
         sport: str = typer.Option(..., "--sport", "-s"),
-        market: str = typer.Option(..., "--market", "-m")
+        market: str = typer.Option(..., "--market", "-m"),
     ):
         """Previews signal quality diagnostics (Phase 17)."""
-        console.print(f"[bold cyan]Signal Diagnostics Preview: {sport} - {market}[/bold cyan]")
-        console.print("This command displays aggregate signal quality, coverage, and warnings.")
+        console.print(
+            f"[bold cyan]Signal Diagnostics Preview: {sport} - {market}[/bold cyan]"
+        )
+        console.print(
+            "This command displays aggregate signal quality, coverage, and warnings."
+        )
 
     @app.command(name="list-signal-strategies")
     def list_signal_strategies():
         """Lists available signal scoring strategies (Phase 17)."""
-        from sports_signal_bot.signal_scoring.registry import SignalScorerRegistry
-        from sports_signal_bot.signal_scoring.factory import SignalScorerFactory  # Forces registration
+        from sports_signal_bot.signal_scoring.factory import \
+            SignalScorerFactory  # Forces registration
+        from sports_signal_bot.signal_scoring.registry import \
+            SignalScorerRegistry
+
         strategies = SignalScorerRegistry.list_strategies()
         console.print("[bold green]Available Signal Scoring Strategies:[/bold green]")
         for name, cls in strategies.items():
@@ -429,31 +530,38 @@ def register_signal_scoring_commands(app: typer.Typer):
                 desc = "No description available."
             console.print(f"  - [cyan]{name}[/cyan]: {desc}")
 
+
 @app.command()
 def list_threshold_strategies():
     """Lists available threshold optimization strategies"""
-    from sports_signal_bot.thresholds.registry import ThresholdStrategyRegistry
     from sports_signal_bot.thresholds.factory import ThresholdStrategyFactory
+    from sports_signal_bot.thresholds.registry import ThresholdStrategyRegistry
 
     strategies = ThresholdStrategyRegistry.list_strategies()
     typer.echo(f"Available Threshold Strategies ({len(strategies)}):")
     for name, strategy_class in strategies.items():
         typer.echo(f"  - {name} ({strategy_class.__name__})")
 
+
 @app.command()
 def optimize_thresholds(
     sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
     market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)"),
-    strategy: str = typer.Option("score_only", help="Optimization strategy")
+    strategy: str = typer.Option("score_only", help="Optimization strategy"),
 ):
     """Run threshold optimization and generate frontier"""
-    typer.echo(f"Running threshold optimization for {sport} - {market} using {strategy} strategy")
+    typer.echo(
+        f"Running threshold optimization for {sport} - {market} using {strategy} strategy"
+    )
 
-    import yaml
     import os
+
     import pandas as pd
+    import yaml
+
+    from sports_signal_bot.signal_scoring.contracts import (
+        SignalComponentRecord, SignalScoreRecord)
     from sports_signal_bot.thresholds.runner import ThresholdRunner
-    from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
 
     config_path = f"configs/thresholds/{sport}.yaml"
     if not os.path.exists(config_path):
@@ -467,7 +575,7 @@ def optimize_thresholds(
             "sweep_engine": {
                 "objective": {"objective_name": "precision_oriented"},
                 "constraints": {"minimum_accepted_count": 1},
-                "grid": {"score_threshold_bounds": [0.0, 1.0], "grid_steps": 10}
+                "grid": {"score_threshold_bounds": [0.0, 1.0], "grid_steps": 10},
             }
         }
 
@@ -479,16 +587,21 @@ def optimize_thresholds(
             market_type=market,
             selection="test",
             final_probability=0.6,
-            components=SignalComponentRecord(edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1),
+            components=SignalComponentRecord(
+                edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1
+            ),
             final_signal_score=0.5 + (i * 0.05),
-            strategy_name="test"
-        ) for i in range(10)
+            strategy_name="test",
+        )
+        for i in range(10)
     ]
 
-    labels_df = pd.DataFrame([
-        {"event_id": f"evt_{i}", "target_value": "test" if i % 2 == 0 else "other"}
-        for i in range(10)
-    ])
+    labels_df = pd.DataFrame(
+        [
+            {"event_id": f"evt_{i}", "target_value": "test" if i % 2 == 0 else "other"}
+            for i in range(10)
+        ]
+    )
 
     runner = ThresholdRunner(config)
     result = runner.optimize(strategy, signals, labels_df, sport, market)
@@ -498,7 +611,9 @@ def optimize_thresholds(
     if result.best_candidate:
         typer.echo(f"Best Candidate:")
         typer.echo(f"  Score Threshold: {result.best_candidate.score_threshold:.4f}")
-        typer.echo(f"  Objective ({result.objective_name}): {result.best_candidate.objective_value:.4f}")
+        typer.echo(
+            f"  Objective ({result.objective_name}): {result.best_candidate.objective_value:.4f}"
+        )
         typer.echo(f"  Accepted Count: {result.best_candidate.accepted_count}")
         typer.echo(f"  Coverage Rate: {result.best_candidate.coverage_rate:.2%}")
         for k, v in result.best_candidate.quality_metrics.items():
@@ -508,10 +623,11 @@ def optimize_thresholds(
         for w in result.warnings:
             typer.echo(f"  Warning: {w}")
 
+
 @app.command()
 def preview_threshold_frontier(
     sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
-    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)"),
 ):
     """Preview threshold tradeoff frontier"""
     typer.echo(f"Previewing threshold frontier for {sport} - {market}")
@@ -530,8 +646,9 @@ def preview_threshold_frontier(
             coverage_rate=1.0 - (i * 0.1),
             acceptance_rate=1.0 - (i * 0.1),
             objective_value=0.5 + (i * 0.02),
-            quality_metrics={"accuracy": 0.5 + (i * 0.02)}
-        ) for i in range(10)
+            quality_metrics={"accuracy": 0.5 + (i * 0.02)},
+        )
+        for i in range(10)
     ]
 
     builder = ThresholdFrontierBuilder(candidates, sport, market)
@@ -539,20 +656,23 @@ def preview_threshold_frontier(
     summary = builder.summarize_tradeoff_curve(frontier)
 
     import json
+
     typer.echo(json.dumps(frontier.model_dump(), indent=2))
     typer.echo(f"Summary: {summary}")
+
 
 @app.command()
 def preview_accepted_signals(
     sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
-    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)"),
 ):
     """Preview accepted signals using a test policy"""
     typer.echo(f"Previewing accepted signals for {sport} - {market}")
 
-    from sports_signal_bot.thresholds.runner import ThresholdRunner
+    from sports_signal_bot.signal_scoring.contracts import (
+        SignalComponentRecord, SignalScoreRecord)
     from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
-    from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
+    from sports_signal_bot.thresholds.runner import ThresholdRunner
 
     runner = ThresholdRunner({})
     policy = ThresholdPolicyRecord(
@@ -562,7 +682,7 @@ def preview_accepted_signals(
         signal_strategy="score_only",
         threshold_type="min_signal_score",
         selected_threshold=0.7,
-        optimization_objective="balanced"
+        optimization_objective="balanced",
     )
 
     signals = [
@@ -572,10 +692,13 @@ def preview_accepted_signals(
             market_type=market,
             selection="test",
             final_probability=0.6,
-            components=SignalComponentRecord(edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1),
+            components=SignalComponentRecord(
+                edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1
+            ),
             final_signal_score=0.5 + (i * 0.05),
-            strategy_name="test"
-        ) for i in range(10)
+            strategy_name="test",
+        )
+        for i in range(10)
     ]
 
     results = runner.apply_policy(policy, signals)
@@ -587,15 +710,17 @@ def preview_accepted_signals(
     typer.echo(f"Accepted Signals: {len(accepted)}")
     typer.echo(f"Rejected Signals: {len(rejected)}")
 
+
 @app.command()
 def preview_threshold_policy(
     sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
-    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)"),
 ):
     """Preview a generated threshold policy"""
     typer.echo(f"Previewing threshold policy for {sport} - {market}")
 
     from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
+
     policy = ThresholdPolicyRecord(
         policy_name=f"{sport}_{market}_policy",
         sport=sport,
@@ -606,18 +731,23 @@ def preview_threshold_policy(
         edge_threshold=0.02,
         optimization_objective="balanced",
         training_reference_window="last_30_days",
-        minimum_quality_constraints={"min_coverage": 0.1}
+        minimum_quality_constraints={"min_coverage": 0.1},
     )
 
     import json
+
     typer.echo(json.dumps(policy.model_dump(), indent=2, default=str))
+
 
 # --- POLICY COMMANDS ---
 from sports_signal_bot.policy.runner import PolicyRunner
-from sports_signal_bot.signal_scoring.contracts import SignalPolicyInputRecord, SignalStatus
+from sports_signal_bot.signal_scoring.contracts import (
+    SignalPolicyInputRecord, SignalStatus)
+
 
 def _build_policy_runner(sport: str, strategy: str) -> PolicyRunner:
     import yaml
+
     try:
         with open(f"configs/policy/{sport}.yaml") as f:
             config = yaml.safe_load(f)
@@ -633,16 +763,19 @@ def _build_policy_runner(sport: str, strategy: str) -> PolicyRunner:
                     "candidate": "candidate",
                     "watchlist": "watchlist",
                     "no_bet_zone": "no_action",
-                    "blocked": "blocked_candidate"
-                }
+                    "blocked": "blocked_candidate",
+                },
             }
     return PolicyRunner(config, strategy)
+
 
 @app.command()
 def apply_policy(
     sport: str = typer.Option(..., help="Sport type (football/basketball)"),
     market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
-    policy: str = typer.Option("balanced", help="Policy strategy (balanced/conservative/regime_aware)")
+    policy: str = typer.Option(
+        "balanced", help="Policy strategy (balanced/conservative/regime_aware)"
+    ),
 ):
     """Run the policy engine to assign signal lifecycles and action classes."""
     typer.echo(f"Running policy engine for {sport} - {market} using {policy} strategy")
@@ -664,26 +797,29 @@ def apply_policy(
                 "uncertainty_penalty": 0.05,
                 "disagreement_penalty": 0.1,
                 "data_quality_penalty": 0.0,
-                "market_implied_probability": 0.58
-            }
-        ) for i in range(8)
+                "market_implied_probability": 0.58,
+            },
+        )
+        for i in range(8)
     ]
 
     # Add a blocked signal
-    signals.append(SignalPolicyInputRecord(
-        event_id="evt_blocked",
-        sport=sport,
-        market_type=market,
-        selection="test",
-        final_probability=0.6,
-        final_signal_score=0.9,
-        edge_estimate=0.05,
-        status=SignalStatus.SCORED,
-        components_summary={
-            "data_quality_penalty": 0.8, # Low quality
-            "market_implied_probability": 0.58
-        }
-    ))
+    signals.append(
+        SignalPolicyInputRecord(
+            event_id="evt_blocked",
+            sport=sport,
+            market_type=market,
+            selection="test",
+            final_probability=0.6,
+            final_signal_score=0.9,
+            edge_estimate=0.05,
+            status=SignalStatus.SCORED,
+            components_summary={
+                "data_quality_penalty": 0.8,  # Low quality
+                "market_implied_probability": 0.58,
+            },
+        )
+    )
 
     manifest = runner.run(signals, sport, market)
 
@@ -695,25 +831,30 @@ def apply_policy(
     typer.echo(f"Blocked: {manifest.blocked_count}")
 
     typer.echo("\nTop Rationale Codes:")
-    for code, count in sorted(manifest.top_rationale_codes.items(), key=lambda x: x[1], reverse=True)[:3]:
+    for code, count in sorted(
+        manifest.top_rationale_codes.items(), key=lambda x: x[1], reverse=True
+    )[:3]:
         typer.echo(f"  - {code}: {count}")
 
     from sports_signal_bot.policy.manifests import export_policy_manifest
+
     export_policy_manifest(manifest, f"results/policy/{sport}/{market}")
     typer.echo(f"Saved artifacts to results/policy/{sport}/{market}")
+
 
 @app.command()
 def preview_policy_decisions(
     sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
 ):
     """Preview decision outputs from the default policy."""
     apply_policy(sport=sport, market=market, policy="balanced")
 
+
 @app.command()
 def preview_no_bet_zones(
     sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
 ):
     """Preview signals that fall into the no-bet zone."""
     typer.echo(f"Previewing no-bet zones for {sport} - {market}")
@@ -721,29 +862,42 @@ def preview_no_bet_zones(
 
     signals = [
         SignalPolicyInputRecord(
-            event_id=f"evt_{i}", sport=sport, market_type=market, selection="test",
-            final_probability=0.5, final_signal_score=0.5, edge_estimate=0.02, status=SignalStatus.SCORED,
-            components_summary={"uncertainty_penalty": 0.4, "market_implied_probability": 0.48}
-        ) for i in range(3)
+            event_id=f"evt_{i}",
+            sport=sport,
+            market_type=market,
+            selection="test",
+            final_probability=0.5,
+            final_signal_score=0.5,
+            edge_estimate=0.02,
+            status=SignalStatus.SCORED,
+            components_summary={
+                "uncertainty_penalty": 0.4,
+                "market_implied_probability": 0.48,
+            },
+        )
+        for i in range(3)
     ]
     manifest = runner.run(signals, sport, market)
     for d in manifest.decisions:
         if d.signal_status.value == "no_bet_zone":
             typer.echo(f"Event {d.event_id}: No Bet Zone. Reasons: {d.no_bet_reasons}")
 
+
 @app.command()
 def preview_policy_rationale(
     sport: str = typer.Option(..., help="Sport type (football/basketball)"),
-    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
 ):
     """Preview rationale codes for a mixed set of signals."""
     typer.echo("Previewing rationale codes...")
     apply_policy(sport=sport, market=market, policy="balanced")
 
+
 @app.command()
 def list_policy_strategies():
     """List available policy strategies."""
     from sports_signal_bot.policy.registry import PolicyStrategyRegistry
+
     strategies = PolicyStrategyRegistry._strategies.keys()
     typer.echo("Available Policy Strategies:")
     for s in strategies:

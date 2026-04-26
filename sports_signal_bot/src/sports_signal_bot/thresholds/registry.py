@@ -1,5 +1,7 @@
 from typing import Dict, Type
+
 from .strategies.base import BaseThresholdOptimizer
+
 
 class ThresholdStrategyRegistry:
     _strategies: Dict[str, Type[BaseThresholdOptimizer]] = {}

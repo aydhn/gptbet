@@ -26,7 +26,8 @@ def compute_top_class_gap(probabilities: Dict[str, float]) -> float:
 
 def compute_probability_flatness(probabilities: Dict[str, float]) -> float:
     """Measures how flat the distribution is relative to max entropy.
-    1.0 means perfectly flat (equal probs), 0.0 means completely sharp (one class=1.0)."""
+    1.0 means perfectly flat (equal probs), 0.0 means completely sharp (one class=1.0).
+    """
     if not probabilities or len(probabilities) < 2:
         return 0.0
 
@@ -49,14 +50,16 @@ def compute_confidence_score(
     max_probability: float,
     top_class_gap: float,
     entropy: float,
-    max_possible_entropy: float = 1.585  # e.g., for 3 classes
+    max_possible_entropy: float = 1.585,  # e.g., for 3 classes
 ) -> float:
     """Computes a unified confidence score."""
 
     # Simple heuristic: heavily weight the final probability and the gap,
     # with a penalty for high entropy.
 
-    sharpness = 1.0 - (entropy / max_possible_entropy) if max_possible_entropy > 0 else 0.0
+    sharpness = (
+        1.0 - (entropy / max_possible_entropy) if max_possible_entropy > 0 else 0.0
+    )
     sharpness = max(0.0, sharpness)
 
     # 50% from raw probability, 30% from the gap to the next best, 20% from overall sharpness

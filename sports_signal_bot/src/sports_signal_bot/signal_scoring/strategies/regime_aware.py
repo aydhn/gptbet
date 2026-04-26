@@ -1,12 +1,16 @@
 import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import (
-    SignalCandidateRecord, SignalScoreRecord, SignalComponentRecord, SignalStatus
-)
-from sports_signal_bot.signal_scoring.strategies.balanced import BalancedSignalScorer
+from sports_signal_bot.signal_scoring.combine import (
+    combine_signal_components, normalize_signal_score)
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalComponentRecord,
+                                                        SignalScoreRecord,
+                                                        SignalStatus)
 from sports_signal_bot.signal_scoring.regime import compute_regime_adjustment
-from sports_signal_bot.signal_scoring.combine import combine_signal_components, normalize_signal_score
+from sports_signal_bot.signal_scoring.strategies.balanced import \
+    BalancedSignalScorer
+
 
 class RegimeAwareSignalScorer(BalancedSignalScorer):
 
@@ -28,7 +32,9 @@ class RegimeAwareSignalScorer(BalancedSignalScorer):
             r.strategy_name = self.name()
 
             assignments = c.metadata.get("regime_assignments", [])
-            regime_adj = compute_regime_adjustment(assignments, self.policies.get("regime", {}))
+            regime_adj = compute_regime_adjustment(
+                assignments, self.policies.get("regime", {})
+            )
 
             # Update component
             r.components.regime_adjustment = regime_adj

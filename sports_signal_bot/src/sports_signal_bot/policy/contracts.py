@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
+
 class PolicySignalStatus(str, Enum):
     PENDING = "pending"
     SCORED = "scored"
@@ -18,6 +19,7 @@ class PolicySignalStatus(str, Enum):
     EXPIRED = "expired"
     OVERRIDDEN = "overridden"
 
+
 class ActionClass(str, Enum):
     NO_ACTION = "no_action"
     WATCHLIST = "watchlist"
@@ -25,21 +27,25 @@ class ActionClass(str, Enum):
     APPROVED_CANDIDATE = "approved_candidate"
     BLOCKED_CANDIDATE = "blocked_candidate"
 
+
 class OverrideReasonRecord(BaseModel):
     reason: str
     overridden_by: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     notes: Optional[str] = None
 
+
 class NoBetReasonRecord(BaseModel):
     reason_code: str
     description: str
     severity: str = "medium"
 
+
 class DecisionRationaleRecord(BaseModel):
     code: str
     description: str
     impact: str = "neutral"  # positive, negative, neutral, blocking
+
 
 class PolicyDecisionRecord(BaseModel):
     event_id: str
@@ -61,6 +67,7 @@ class PolicyDecisionRecord(BaseModel):
     override_record: Optional[OverrideReasonRecord] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
+
 class PolicyLifecycleRecord(BaseModel):
     event_id: str
     sport: str
@@ -72,6 +79,7 @@ class PolicyLifecycleRecord(BaseModel):
 
     transition_reason: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
 
 class PolicyDiagnosticsRecord(BaseModel):
     event_id: str
@@ -85,6 +93,7 @@ class PolicyDiagnosticsRecord(BaseModel):
     disagreement_band: str
     data_quality_band: str
     regime_risk_band: str
+
 
 class PolicyManifest(BaseModel):
     run_id: str
@@ -107,6 +116,7 @@ class PolicyManifest(BaseModel):
     decisions: List[PolicyDecisionRecord] = Field(default_factory=list)
     lifecycle_events: List[PolicyLifecycleRecord] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
+
 
 class ActionClassRecord(BaseModel):
     signal_status: PolicySignalStatus

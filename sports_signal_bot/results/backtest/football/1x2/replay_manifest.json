@@ -1,0 +1,76 @@
+{
+  "run_id": "34e2eb99-3e33-4b90-938a-6a57d0bf6986",
+  "generated_at_utc": "2026-04-26T10:26:16.164275",
+  "sport": "football",
+  "market_type": "1x2",
+  "execution_policy_name": "CandidateAndApprovedExecution",
+  "window": {
+    "start_time": null,
+    "end_time": null,
+    "window_type": "full-history"
+  },
+  "summary": {
+    "run_id": "34e2eb99-3e33-4b90-938a-6a57d0bf6986",
+    "sport": "football",
+    "market": "1x2",
+    "total_decisions": 2,
+    "executed_decisions": 2,
+    "skipped_decisions": 0,
+    "win_count": 0,
+    "loss_count": 0,
+    "void_count": 0,
+    "hit_rate": null,
+    "average_signal_score": null,
+    "average_edge_snapshot": null,
+    "action_class_distribution": {
+      "candidate": 1,
+      "approved_candidate": 1
+    },
+    "market_distribution": {},
+    "policy_distribution": {},
+    "replay_log_loss": null,
+    "replay_brier": null,
+    "average_final_probability": null
+  },
+  "action_subsets": [
+    {
+      "subset_name": "candidate",
+      "total_decisions": 1,
+      "executed_decisions": 1,
+      "skipped_decisions": 0,
+      "win_count": 0,
+      "loss_count": 0,
+      "void_count": 0,
+      "hit_rate": null,
+      "average_signal_score": null,
+      "average_edge_snapshot": null
+    },
+    {
+      "subset_name": "approved_candidate",
+      "total_decisions": 1,
+      "executed_decisions": 1,
+      "skipped_decisions": 0,
+      "win_count": 0,
+      "loss_count": 0,
+      "void_count": 0,
+      "hit_rate": null,
+      "average_signal_score": null,
+      "average_edge_snapshot": null
+    }
+  ],
+  "period_summaries": [
+    {
+      "period_label": "2026-04-26",
+      "start_date": "2026-04-26T08:26:16.163137",
+      "end_date": "2026-04-26T09:26:16.163137",
+      "executed_count": 2,
+      "hit_rate": null,
+      "avg_score": null,
+      "avg_edge": null,
+      "void_count": 0,
+      "warnings": []
+    }
+  ],
+  "ledger_artifact_path": "results/backtest/football/1x2/backtest_ledger.csv",
+  "warnings": []
+}

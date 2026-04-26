@@ -1,7 +1,9 @@
 import csv
 import json
 from pathlib import Path
+
 from .contracts import SourceSelectionManifest
+
 
 class SelectionReporter:
     def __init__(self, output_dir: Path):
@@ -16,18 +18,34 @@ class SelectionReporter:
         eligibility_path = run_dir / f"source_eligibility_{manifest.event_id}.csv"
         with open(eligibility_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["event_id", "source_name", "source_family", "is_eligible", "trust_score", "policy", "warnings"])
+            writer.writerow(
+                [
+                    "event_id",
+                    "source_name",
+                    "source_family",
+                    "is_eligible",
+                    "trust_score",
+                    "policy",
+                    "warnings",
+                ]
+            )
             for d in manifest.decisions:
-                ts = d.eligibility_record.trust_score.total_trust_score if d.eligibility_record.trust_score else 0.0
-                writer.writerow([
-                    manifest.event_id,
-                    d.source_name,
-                    d.eligibility_record.source_family,
-                    d.is_selected,
-                    f"{ts:.3f}",
-                    d.eligibility_record.policy_name,
-                    "|".join(d.eligibility_record.warnings)
-                ])
+                ts = (
+                    d.eligibility_record.trust_score.total_trust_score
+                    if d.eligibility_record.trust_score
+                    else 0.0
+                )
+                writer.writerow(
+                    [
+                        manifest.event_id,
+                        d.source_name,
+                        d.eligibility_record.source_family,
+                        d.is_selected,
+                        f"{ts:.3f}",
+                        d.eligibility_record.policy_name,
+                        "|".join(d.eligibility_record.warnings),
+                    ]
+                )
 
         # Trust Scores JSON
         trust_scores_path = run_dir / f"source_trust_scores_{manifest.event_id}.json"
@@ -46,4 +64,11 @@ class SelectionReporter:
             for d in manifest.decisions:
                 if not d.is_selected:
                     for ex in d.eligibility_record.exclusion_reasons:
-                        writer.writerow([manifest.event_id, d.source_name, ex.reason_code, ex.details])
+                        writer.writerow(
+                            [
+                                manifest.event_id,
+                                d.source_name,
+                                ex.reason_code,
+                                ex.details,
+                            ]
+                        )

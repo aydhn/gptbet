@@ -1,5 +1,8 @@
 from typing import List
-from sports_signal_bot.dynamic_weighting.contracts import WeightingDiagnosticsRecord, WeightingDecisionRecord
+
+from sports_signal_bot.dynamic_weighting.contracts import (
+    WeightingDecisionRecord, WeightingDiagnosticsRecord)
+
 
 def summarize_diagnostics(diagnostics: List[WeightingDiagnosticsRecord]) -> dict:
     total_events = len(diagnostics)
@@ -19,5 +22,7 @@ def summarize_diagnostics(diagnostics: List[WeightingDiagnosticsRecord]) -> dict
         "total_events": total_events,
         "fallback_rate": fallbacks / total_events,
         "average_trust": avg_trust,
-        "most_frequent_top_sources": dict(sorted(top_sources.items(), key=lambda item: item[1], reverse=True)[:5])
+        "most_frequent_top_sources": dict(
+            sorted(top_sources.items(), key=lambda item: item[1], reverse=True)[:5]
+        ),
     }

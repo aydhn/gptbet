@@ -1,9 +1,8 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def compute_data_quality_penalty(
-    data_quality_summaries: Dict[str, Any],
-    thresholds: Dict[str, float]
+    data_quality_summaries: Dict[str, Any], thresholds: Dict[str, float]
 ) -> float:
     """Computes a penalty based on missing features and sparse history."""
 
