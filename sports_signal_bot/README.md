@@ -259,3 +259,13 @@ Run it using:
 ```bash
 python -m sports_signal_bot.main run-backtest --sport football --market 1x2
 ```
+
+## Bankroll Overlay Engine (Phase 21)
+The bankroll overlay layer sits on top of backtest evaluation to translate decision quality into capital curves, using test overlays like flat staking or fixed fractions.
+
+It provides functionality for:
+- Tracking capital growth via `CapitalCurveBuilder`.
+- Evaluating peak-to-trough performance via `DrawdownAnalyzer`.
+- Exposing simple CLI commands (`run-bankroll`, `preview-capital-curve`) to review strategies.
+
+**Note:** This layer provides *research-grade* placeholders. Future phases will introduce concurrency handling and Kelly-optimized fractional betting.

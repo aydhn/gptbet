@@ -1,0 +1,10 @@
+initial_bankroll: 5000.0
+default_overlay_strategy: fixed_fraction
+flat_stake_units: 50.0
+bankroll_fraction: 0.015
+min_stake_units: 10.0
+max_stake_units: 500.0
+max_fraction_per_decision: 0.04
+missing_odds_policy: proxy
+bankroll_floor: 0.0
+enable_no_financial_shadow: false
