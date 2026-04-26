@@ -1,7 +1,8 @@
 import pytest
 
-from sports_signal_bot.probabilistic.basketball.registry import \
-    BASKETBALL_MODEL_REGISTRY
+from sports_signal_bot.probabilistic.basketball.registry import (
+    BASKETBALL_MODEL_REGISTRY,
+)
 
 
 def test_sample_preview_pipeline():

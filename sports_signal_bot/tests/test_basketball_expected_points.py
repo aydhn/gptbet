@@ -1,9 +1,11 @@
 import pytest
 
-from sports_signal_bot.probabilistic.basketball.contracts import \
-    BasketballDistributionConfig
-from sports_signal_bot.probabilistic.basketball.expected_points import \
-    ExpectedPointsBuilder
+from sports_signal_bot.probabilistic.basketball.contracts import (
+    BasketballDistributionConfig,
+)
+from sports_signal_bot.probabilistic.basketball.expected_points import (
+    ExpectedPointsBuilder,
+)
 
 
 def test_expected_points_builder_baseline():

@@ -1,5 +1,7 @@
-from sports_signal_bot.source_selection.metadata import (RegimeProfileMetadata,
-                                                         SourceMetadataRecord)
+from sports_signal_bot.source_selection.metadata import (
+    RegimeProfileMetadata,
+    SourceMetadataRecord,
+)
 from sports_signal_bot.source_selection.scoring import SourceTrustScorer
 
 

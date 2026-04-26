@@ -1,9 +1,12 @@
 import pytest
 
-from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
-                                                        SignalScoreRecord)
-from sports_signal_bot.thresholds.strategies.conservative_quality import \
-    ConservativeQualityOptimizer
+from sports_signal_bot.signal_scoring.contracts import (
+    SignalComponentRecord,
+    SignalScoreRecord,
+)
+from sports_signal_bot.thresholds.strategies.conservative_quality import (
+    ConservativeQualityOptimizer,
+)
 
 
 def test_conservative_quality_optimizer():

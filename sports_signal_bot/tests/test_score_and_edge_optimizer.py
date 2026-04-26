@@ -1,9 +1,12 @@
 import pytest
 
-from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
-                                                        SignalScoreRecord)
-from sports_signal_bot.thresholds.strategies.score_and_edge import \
-    ScoreAndEdgeThresholdOptimizer
+from sports_signal_bot.signal_scoring.contracts import (
+    SignalComponentRecord,
+    SignalScoreRecord,
+)
+from sports_signal_bot.thresholds.strategies.score_and_edge import (
+    ScoreAndEdgeThresholdOptimizer,
+)
 
 
 def test_score_and_edge_optimizer():

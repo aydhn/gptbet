@@ -1,5 +1,8 @@
 from sports_signal_bot.source_selection.contracts import (
-    SourceEligibilityRecord, SourcePolicyDefinition, SourceTrustScoreRecord)
+    SourceEligibilityRecord,
+    SourcePolicyDefinition,
+    SourceTrustScoreRecord,
+)
 from sports_signal_bot.source_selection.metadata import SourceMetadataRecord
 from sports_signal_bot.source_selection.policies import RegimeAwarePolicy
 

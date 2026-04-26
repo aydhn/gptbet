@@ -1,9 +1,10 @@
-from sports_signal_bot.source_selection.catalog import (SourceCatalog,
-                                                        SourceCatalogEntry)
+from sports_signal_bot.source_selection.catalog import SourceCatalog, SourceCatalogEntry
 from sports_signal_bot.source_selection.chain import SourcePolicyChain
 from sports_signal_bot.source_selection.contracts import SourcePolicyDefinition
-from sports_signal_bot.source_selection.metadata import (SourceMetadataLoader,
-                                                         SourceMetadataRecord)
+from sports_signal_bot.source_selection.metadata import (
+    SourceMetadataLoader,
+    SourceMetadataRecord,
+)
 from sports_signal_bot.source_selection.runner import SourceSelectionRunner
 from sports_signal_bot.source_selection.scoring import SourceTrustScorer
 

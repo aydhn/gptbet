@@ -3,8 +3,10 @@ import pytest
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.data.ingestion.orchestrator import IngestionOrchestrator
 from sports_signal_bot.data.providers.mock_provider import (
-    AdvancedMockFixtureProvider, AdvancedMockOddsProvider,
-    AdvancedMockStatsProvider)
+    AdvancedMockFixtureProvider,
+    AdvancedMockOddsProvider,
+    AdvancedMockStatsProvider,
+)
 
 
 def test_ingestion_orchestrator_mock():

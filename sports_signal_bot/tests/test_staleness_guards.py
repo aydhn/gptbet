@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta, timezone
 
-from sports_signal_bot.source_selection.metadata import (RefreshMetadata,
-                                                         SourceMetadataRecord)
+from sports_signal_bot.source_selection.metadata import (
+    RefreshMetadata,
+    SourceMetadataRecord,
+)
 
 
 def test_staleness_age_calculation():

@@ -1,5 +1,7 @@
 from sports_signal_bot.source_selection.contracts import (
-    SourceEligibilityRecord, SourceExclusionReasonRecord)
+    SourceEligibilityRecord,
+    SourceExclusionReasonRecord,
+)
 
 
 def test_exclusion_reason_record():

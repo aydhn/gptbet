@@ -1,9 +1,10 @@
 import numpy as np
 
-from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
-                                                  StandardizedPredictionRecord)
-from sports_signal_bot.ensemble.strategies.simple_average import \
-    SimpleAverageEnsembler
+from sports_signal_bot.ensemble.contracts import (
+    EnsembleInputRecord,
+    StandardizedPredictionRecord,
+)
+from sports_signal_bot.ensemble.strategies.simple_average import SimpleAverageEnsembler
 
 
 def test_simple_average_combine():

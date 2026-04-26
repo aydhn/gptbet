@@ -1,9 +1,0 @@
-event_id,sport,market_type,regime_family,regime_label,regime_value,assignment_method,assigned_at
-evt_123,football,1x2,data_quality,high_data_completeness,1.0,rule_based,2026-04-25 18:50:42.568095
-evt_123,football,1x2,form,mixed_form,,rule_based,2026-04-25 18:50:42.568307
-evt_123,football,1x2,market_disagreement,low_source_disagreement,0.04999999999999999,rule_based,2026-04-25 18:50:42.568603
-evt_123,football,1x2,market_disagreement,favorite_clear,0.7,rule_based,2026-04-25 18:50:42.568623
-evt_123,football,1x2,schedule,short_rest,2.0,rule_based,2026-04-25 18:50:42.568653
-evt_123,football,1x2,season,season_mid,0.5,rule_based,2026-04-25 18:50:42.568726
-evt_123,football,1x2,volatility,high_entropy_prediction,0.8812908963453026,rule_based,2026-04-25 18:50:42.568774
-evt_123,football,1x2,volatility,high_uncertainty,0.8812908963453026,rule_based,2026-04-25 18:50:42.568784

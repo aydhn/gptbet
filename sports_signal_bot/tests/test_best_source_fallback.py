@@ -1,7 +1,10 @@
-from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
-                                                  StandardizedPredictionRecord)
-from sports_signal_bot.ensemble.strategies.best_source_fallback import \
-    BestSourceFallbackEnsembler
+from sports_signal_bot.ensemble.contracts import (
+    EnsembleInputRecord,
+    StandardizedPredictionRecord,
+)
+from sports_signal_bot.ensemble.strategies.best_source_fallback import (
+    BestSourceFallbackEnsembler,
+)
 
 
 def test_best_source_fallback():

@@ -2,7 +2,9 @@ import pandas as pd
 import pytest
 
 from sports_signal_bot.evaluation.alignment import (
-    align_predictions_to_common_universe, get_common_universe)
+    align_predictions_to_common_universe,
+    get_common_universe,
+)
 
 
 def test_common_universe_alignment():

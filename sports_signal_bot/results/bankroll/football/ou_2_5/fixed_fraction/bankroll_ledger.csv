@@ -1,2 +1,0 @@
-event_id,market_type,sport,event_datetime_utc,action_class,executed_flag,stake_units,stake_fraction,bankroll_before,bankroll_after,pnl_units,pnl_pct_bankroll,cumulative_pnl_units,cumulative_return_pct,result_status,hit_flag,implied_odds,payout_multiple,overlay_strategy_name,warnings,run_id
-evt_1,ou_2_5,football,2026-04-26 11:19:24.496582,approved_candidate,True,200.0,0.02,10000.0,10180.0,180.0,0.018,180.0,0.018,settled_win,True,,0.9,FixedFractionOfBankrollOverlay,[],e0df2d68-cf36-44ee-930c-b309f926b490

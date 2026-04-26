@@ -1,6 +1,5 @@
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
-from sports_signal_bot.ensemble.policies import \
-    apply_calibrated_preference_policy
+from sports_signal_bot.ensemble.policies import apply_calibrated_preference_policy
 
 
 def test_apply_calibrated_preference_policy():

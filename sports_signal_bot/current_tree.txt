@@ -1,0 +1,880 @@
+.
+├── README.md
+├── configs
+│   ├── aliases
+│   │   └── team_aliases.sample.yaml
+│   ├── app.yaml
+│   ├── bankroll
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── calibration
+│   │   ├── binary.yaml
+│   │   ├── default.yaml
+│   │   └── multiclass.yaml
+│   ├── dynamic_weighting
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   ├── family_priors.yaml
+│   │   ├── football.yaml
+│   │   └── policies.yaml
+│   ├── ensemble_default.yaml
+│   ├── evaluation
+│   │   ├── default.yaml
+│   │   ├── leaderboard.yaml
+│   │   ├── metrics.yaml
+│   │   └── segments.yaml
+│   ├── experiments
+│   │   └── smoke.yaml
+│   ├── features
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── inference
+│   │   ├── artifact_resolution.yaml
+│   │   ├── default.yaml
+│   │   ├── modes.yaml
+│   │   ├── output_profiles.yaml
+│   │   └── slots.yaml
+│   ├── policy
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── probabilistic
+│   │   └── basketball.yaml
+│   ├── providers
+│   │   ├── file_provider.yaml
+│   │   └── mock_provider.yaml
+│   ├── ratings
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── regimes
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   ├── football.yaml
+│   │   ├── period_rules.yaml
+│   │   └── thresholds.yaml
+│   ├── research
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── signal_scoring
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   ├── sizing
+│   │   ├── conservative.yaml
+│   │   └── default.yaml
+│   ├── source_selection
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   ├── football.yaml
+│   │   ├── policies.yaml
+│   │   └── trust_weights.yaml
+│   ├── sports
+│   │   ├── basketball.yaml
+│   │   └── football.yaml
+│   ├── stacker
+│   │   └── default.yaml
+│   ├── thresholds
+│   │   ├── basketball.yaml
+│   │   ├── default.yaml
+│   │   └── football.yaml
+│   └── training
+│       ├── basketball.yaml
+│       ├── default.yaml
+│       ├── football.yaml
+│       ├── models.yaml
+│       └── splits.yaml
+├── current_tree.txt
+├── data
+│   ├── artifacts
+│   ├── cache
+│   ├── interim
+│   ├── logs
+│   ├── processed
+│   ├── raw
+│   └── sample_inputs
+│       ├── basketball
+│       │   ├── events_sample.csv
+│       │   ├── fixtures_sample.csv
+│       │   ├── odds_sample.csv
+│       │   ├── results_sample.csv
+│       │   └── team_stats_sample.csv
+│       └── football
+│           ├── events_sample.csv
+│           ├── fixtures_sample.csv
+│           ├── odds_sample.csv
+│           ├── results_sample.csv
+│           └── team_stats_sample.csv
+├── docs
+│   ├── advanced_sizing_architecture.md
+│   ├── architecture.md
+│   ├── backtest_core_architecture.md
+│   ├── bankroll_overlay_architecture.md
+│   ├── basketball_probabilistic_core.md
+│   ├── calibration_architecture.md
+│   ├── data_architecture.md
+│   ├── dynamic_weighting_architecture.md
+│   ├── ensemble_architecture.md
+│   ├── evaluation_architecture.md
+│   ├── feature_architecture.md
+│   ├── football_probabilistic_core.md
+│   ├── live_like_inference_architecture.md
+│   ├── market_and_label_architecture.md
+│   ├── policy_engine_architecture.md
+│   ├── portfolio_exposure_architecture.md
+│   ├── rating_architecture.md
+│   ├── regime_architecture.md
+│   ├── research_protocol_architecture.md
+│   ├── roadmap_notes.md
+│   ├── signal_scoring_architecture.md
+│   ├── source_selection_architecture.md
+│   ├── stacker_architecture.md
+│   ├── threshold_optimization_architecture.md
+│   └── training_architecture.md
+├── pyproject.toml
+├── results
+│   ├── backtest
+│   │   └── football
+│   │       └── 1x2
+│   │           ├── backtest_ledger.csv
+│   │           ├── backtest_ledger.json
+│   │           ├── backtest_summary.json
+│   │           └── replay_manifest.json
+│   ├── bankroll
+│   │   └── football
+│   │       └── ou_2_5
+│   │           └── fixed_fraction
+│   │               ├── bankroll_ledger.csv
+│   │               └── bankroll_manifest_e0df2d68-cf36-44ee-930c-b309f926b490.json
+│   ├── inference
+│   │   ├── inf_20260426212849
+│   │   │   ├── decisions.json
+│   │   │   └── manifest.json
+│   │   ├── inf_20260426213008
+│   │   │   ├── decisions.json
+│   │   │   └── manifest.json
+│   │   ├── inf_20260426213156
+│   │   │   ├── decisions.json
+│   │   │   └── manifest.json
+│   │   └── inf_20260426213209
+│   │       ├── decisions.json
+│   │       └── manifest.json
+│   ├── policy
+│   │   └── football
+│   │       └── 1x2
+│   │           ├── policy_decisions.json
+│   │           ├── policy_lifecycle.json
+│   │           └── policy_manifest.json
+│   ├── regimes
+│   │   ├── event_regimes.csv
+│   │   ├── period_regimes.csv
+│   │   └── regime_manifest.json
+│   ├── signal_scoring
+│   │   └── football
+│   │       └── 1x2
+│   │           └── sig_20260426_003618_6a9e2a
+│   │               ├── signal_manifest.json
+│   │               ├── signal_ranking.csv
+│   │               └── signal_scores.csv
+│   └── weighting
+│       └── weighting_manifest_test_run_1.json
+├── scripts
+│   └── run_smoke.py
+├── src
+│   └── sports_signal_bot
+│       ├── __init__.py
+│       ├── audit
+│       │   ├── __init__.py
+│       │   ├── integrity.py
+│       │   └── leakage.py
+│       ├── backtest
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── execution.py
+│       │   ├── inputs.py
+│       │   ├── ledger.py
+│       │   ├── periods.py
+│       │   ├── replay.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── settlement.py
+│       │   └── summaries.py
+│       ├── bankroll
+│       │   ├── __init__.py
+│       │   ├── capital_curve.py
+│       │   ├── config.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── drawdown.py
+│       │   ├── exposure.py
+│       │   ├── factory.py
+│       │   ├── inputs.py
+│       │   ├── manifests.py
+│       │   ├── overlays
+│       │   │   ├── __init__.py
+│       │   │   ├── advanced_sizing.py
+│       │   │   ├── base.py
+│       │   │   ├── conservative_capped_fraction.py
+│       │   │   ├── fixed_fraction.py
+│       │   │   ├── flat_stake.py
+│       │   │   ├── no_financial_shadow.py
+│       │   │   └── tiered_flat.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── streaks.py
+│       │   └── utils.py
+│       ├── benchmark
+│       │   ├── __init__.py
+│       │   ├── base.py
+│       │   ├── bookmaker_implied.py
+│       │   ├── factory.py
+│       │   ├── majority_benchmark.py
+│       │   ├── random_benchmark.py
+│       │   ├── rating_placeholder.py
+│       │   └── uniform_benchmark.py
+│       ├── calibration
+│       │   ├── __init__.py
+│       │   ├── base.py
+│       │   ├── binary
+│       │   │   ├── __init__.py
+│       │   │   ├── identity.py
+│       │   │   ├── isotonic.py
+│       │   │   └── sigmoid.py
+│       │   ├── comparison.py
+│       │   ├── contracts.py
+│       │   ├── dataset.py
+│       │   ├── factory.py
+│       │   ├── manifests.py
+│       │   ├── metrics.py
+│       │   ├── multiclass
+│       │   │   ├── __init__.py
+│       │   │   ├── identity.py
+│       │   │   ├── temperature_placeholder.py
+│       │   │   └── wrapper.py
+│       │   ├── registry.py
+│       │   ├── reliability.py
+│       │   ├── runner.py
+│       │   └── utils.py
+│       ├── config
+│       │   ├── __init__.py
+│       │   └── settings.py
+│       ├── core
+│       │   ├── __init__.py
+│       │   ├── constants.py
+│       │   ├── exceptions.py
+│       │   ├── logger.py
+│       │   ├── paths.py
+│       │   └── random.py
+│       ├── data
+│       │   ├── __init__.py
+│       │   ├── contracts
+│       │   │   ├── __init__.py
+│       │   │   ├── canonical.py
+│       │   │   ├── legacy.py
+│       │   │   └── manifests.py
+│       │   ├── ingestion
+│       │   │   ├── __init__.py
+│       │   │   └── orchestrator.py
+│       │   ├── interfaces.py
+│       │   ├── mock_providers.py
+│       │   ├── normalization
+│       │   │   ├── __init__.py
+│       │   │   ├── datetimes.py
+│       │   │   ├── markets.py
+│       │   │   └── names.py
+│       │   ├── providers
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   ├── file_provider.py
+│       │   │   └── mock_provider.py
+│       │   ├── resolution
+│       │   │   ├── __init__.py
+│       │   │   └── team_aliases.py
+│       │   ├── samples
+│       │   │   └── __init__.py
+│       │   ├── storage
+│       │   │   ├── __init__.py
+│       │   │   ├── paths.py
+│       │   │   ├── reader.py
+│       │   │   └── writer.py
+│       │   └── validators
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── odds_validator.py
+│       │       └── schema_validator.py
+│       ├── dynamic_weighting
+│       │   ├── __init__.py
+│       │   ├── components.py
+│       │   ├── contracts.py
+│       │   ├── disagreement.py
+│       │   ├── factory.py
+│       │   ├── manifests.py
+│       │   ├── normalization.py
+│       │   ├── priors.py
+│       │   ├── regime_fit.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   └── strategies
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── conservative_disagreement.py
+│       │       ├── dynamic_hybrid.py
+│       │       ├── regime_aware.py
+│       │       ├── single_best.py
+│       │       ├── static_policy.py
+│       │       └── trust_weighted.py
+│       ├── ensemble
+│       │   ├── __init__.py
+│       │   ├── alignment.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── factory.py
+│       │   ├── input_builder.py
+│       │   ├── manifests.py
+│       │   ├── policies.py
+│       │   ├── registry.py
+│       │   ├── runner.py
+│       │   ├── standardize.py
+│       │   ├── strategies
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   ├── best_source_fallback.py
+│       │   │   ├── dynamic_weighted_average.py
+│       │   │   ├── reliability_weighted.py
+│       │   │   ├── rule_based_hybrid.py
+│       │   │   ├── simple_average.py
+│       │   │   └── weighted_average.py
+│       │   └── weights.py
+│       ├── evaluation
+│       │   ├── __init__.py
+│       │   ├── alignment.py
+│       │   ├── comparison.py
+│       │   ├── confidence.py
+│       │   ├── contracts.py
+│       │   ├── leaderboard.py
+│       │   ├── loader.py
+│       │   ├── manifests.py
+│       │   ├── metrics.py
+│       │   ├── pairwise.py
+│       │   ├── registry.py
+│       │   ├── runner.py
+│       │   ├── segments.py
+│       │   ├── utils.py
+│       │   └── validator.py
+│       ├── features
+│       │   ├── __init__.py
+│       │   ├── assembler.py
+│       │   ├── availability.py
+│       │   ├── base.py
+│       │   ├── builders
+│       │   │   ├── __init__.py
+│       │   │   ├── basketball_spread_env.py
+│       │   │   ├── basketball_strength.py
+│       │   │   ├── basketball_tempo.py
+│       │   │   ├── context.py
+│       │   │   ├── football_btts_proxy.py
+│       │   │   ├── football_goal_env.py
+│       │   │   ├── football_strength.py
+│       │   │   ├── market_odds.py
+│       │   │   ├── missingness.py
+│       │   │   ├── rest.py
+│       │   │   └── rolling_form.py
+│       │   ├── contracts.py
+│       │   ├── factory.py
+│       │   ├── manifests.py
+│       │   ├── registry.py
+│       │   └── utils
+│       │       ├── __init__.py
+│       │       ├── joins.py
+│       │       ├── nulls.py
+│       │       ├── rolling.py
+│       │       └── snapshots.py
+│       ├── inference
+│       │   ├── __init__.py
+│       │   ├── artifacts.py
+│       │   ├── cli.py
+│       │   ├── context.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── features.py
+│       │   ├── manifests.py
+│       │   ├── modes.py
+│       │   ├── packets.py
+│       │   ├── pipeline.py
+│       │   ├── profiles.py
+│       │   ├── reporting.py
+│       │   ├── resolver.py
+│       │   ├── runner.py
+│       │   ├── slots.py
+│       │   ├── snapshots.py
+│       │   ├── universe.py
+│       │   └── utils.py
+│       ├── labels
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── generator.py
+│       │   ├── naming.py
+│       │   └── validity.py
+│       ├── main.py
+│       ├── main_cli.py
+│       ├── main_cli_backup.py
+│       ├── main_dynamic_weighting.py
+│       ├── markets
+│       │   ├── __init__.py
+│       │   ├── definitions.py
+│       │   ├── enums.py
+│       │   ├── mapping.py
+│       │   ├── registry.py
+│       │   └── selectors.py
+│       ├── models
+│       │   ├── __init__.py
+│       │   ├── dummy_predictor.py
+│       │   └── interfaces.py
+│       ├── notifications
+│       │   ├── __init__.py
+│       │   ├── interfaces.py
+│       │   └── telegram_stub.py
+│       ├── optimizer
+│       │   └── __init__.py
+│       ├── orchestration
+│       │   ├── __init__.py
+│       │   └── runner.py
+│       ├── policy
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── factory.py
+│       │   ├── lifecycle.py
+│       │   ├── manifests.py
+│       │   ├── overrides.py
+│       │   ├── rationale.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── rules
+│       │   │   ├── __init__.py
+│       │   │   ├── approval.py
+│       │   │   ├── base.py
+│       │   │   ├── candidate.py
+│       │   │   ├── hard_blocks.py
+│       │   │   ├── no_bet.py
+│       │   │   ├── regime_aware.py
+│       │   │   └── watchlist.py
+│       │   ├── runner.py
+│       │   └── zones.py
+│       ├── portfolio
+│       │   ├── __init__.py
+│       │   ├── buckets.py
+│       │   ├── budgets.py
+│       │   ├── cli
+│       │   │   └── commands.py
+│       │   ├── concentration.py
+│       │   ├── contracts.py
+│       │   ├── correlation.py
+│       │   ├── diagnostics.py
+│       │   ├── factory.py
+│       │   ├── integration.py
+│       │   ├── priorities.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   └── strategies
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── budget_reserve.py
+│       │       ├── conservative_exposure.py
+│       │       ├── proportional_priority.py
+│       │       ├── sequential_cap.py
+│       │       ├── shadow_no_allocation.py
+│       │       └── tiered_action_class.py
+│       ├── probabilistic
+│       │   ├── __init__.py
+│       │   ├── basketball
+│       │   │   ├── __init__.py
+│       │   │   ├── config.py
+│       │   │   ├── contracts.py
+│       │   │   ├── diagnostics.py
+│       │   │   ├── distribution.py
+│       │   │   ├── expected_points.py
+│       │   │   ├── markets.py
+│       │   │   ├── model.py
+│       │   │   ├── pace_mapper.py
+│       │   │   ├── registry.py
+│       │   │   └── team_totals_placeholder.py
+│       │   └── football
+│       │       ├── __init__.py
+│       │       ├── config.py
+│       │       ├── contracts.py
+│       │       ├── correct_score.py
+│       │       ├── diagnostics.py
+│       │       ├── dixon_coles_placeholder.py
+│       │       ├── lambda_builder.py
+│       │       ├── manifests.py
+│       │       ├── markets.py
+│       │       ├── model.py
+│       │       ├── registry.py
+│       │       ├── score_matrix.py
+│       │       └── strength_mapper.py
+│       ├── ratings
+│       │   ├── __init__.py
+│       │   ├── base.py
+│       │   ├── benchmark.py
+│       │   ├── config.py
+│       │   ├── contracts.py
+│       │   ├── draw_probability.py
+│       │   ├── elo.py
+│       │   ├── features.py
+│       │   ├── glicko_placeholder.py
+│       │   ├── manifests.py
+│       │   ├── margin.py
+│       │   ├── registry.py
+│       │   ├── snapshots.py
+│       │   ├── timeline.py
+│       │   ├── updates.py
+│       │   └── utils.py
+│       ├── regimes
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── coverage.py
+│       │   ├── definitions.py
+│       │   ├── evaluation_integration.py
+│       │   ├── event
+│       │   │   ├── __init__.py
+│       │   │   ├── data_quality.py
+│       │   │   ├── form.py
+│       │   │   ├── market.py
+│       │   │   ├── schedule.py
+│       │   │   ├── season.py
+│       │   │   └── volatility.py
+│       │   ├── factory.py
+│       │   ├── inputs.py
+│       │   ├── manifests.py
+│       │   ├── period
+│       │   │   ├── __init__.py
+│       │   │   ├── benchmark_relation.py
+│       │   │   ├── performance.py
+│       │   │   └── stability.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   └── thresholds.py
+│       ├── research
+│       │   ├── __init__.py
+│       │   ├── artifacts.py
+│       │   ├── contracts.py
+│       │   ├── manifests.py
+│       │   ├── period_runner.py
+│       │   ├── planner.py
+│       │   ├── policies.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── scenarios.py
+│       │   ├── stability.py
+│       │   ├── utils.py
+│       │   └── windows.py
+│       ├── results
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   └── resolvers.py
+│       ├── signal_scoring
+│       │   ├── __init__.py
+│       │   ├── combine.py
+│       │   ├── confidence.py
+│       │   ├── contracts.py
+│       │   ├── data_quality.py
+│       │   ├── diagnostics.py
+│       │   ├── disagreement.py
+│       │   ├── edge.py
+│       │   ├── factory.py
+│       │   ├── inputs.py
+│       │   ├── manifests.py
+│       │   ├── ranking.py
+│       │   ├── regime.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── source_health.py
+│       │   ├── strategies
+│       │   │   ├── __init__.py
+│       │   │   ├── balanced.py
+│       │   │   ├── base.py
+│       │   │   ├── conservative_quality.py
+│       │   │   ├── edge_focused.py
+│       │   │   ├── no_market_reference.py
+│       │   │   └── regime_aware.py
+│       │   └── uncertainty.py
+│       ├── signals
+│       │   └── __init__.py
+│       ├── sizing
+│       │   ├── __init__.py
+│       │   ├── adjustments.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── factory.py
+│       │   ├── inputs.py
+│       │   ├── kelly.py
+│       │   ├── manifests.py
+│       │   ├── odds.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── risk_limits.py
+│       │   ├── runner.py
+│       │   └── strategies
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── capped_fractional_kelly.py
+│       │       ├── confidence_adjusted_kelly.py
+│       │       ├── conservative_research.py
+│       │       ├── edge_band.py
+│       │       ├── fractional_kelly.py
+│       │       └── hybrid_kelly_flat_floor.py
+│       ├── source_selection
+│       │   ├── __init__.py
+│       │   ├── catalog.py
+│       │   ├── chain.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── manifests.py
+│       │   ├── metadata.py
+│       │   ├── policies.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── scoring.py
+│       │   └── utils.py
+│       ├── stacker
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── dataset.py
+│       │   ├── factory.py
+│       │   ├── registry.py
+│       │   ├── runner.py
+│       │   └── trainers
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── gradient_boosting.py
+│       │       ├── identity.py
+│       │       └── logistic.py
+│       ├── thresholds
+│       │   ├── __init__.py
+│       │   ├── constraints.py
+│       │   ├── contracts.py
+│       │   ├── diagnostics.py
+│       │   ├── factory.py
+│       │   ├── frontier.py
+│       │   ├── grid.py
+│       │   ├── manifests.py
+│       │   ├── objectives.py
+│       │   ├── registry.py
+│       │   ├── reporting.py
+│       │   ├── runner.py
+│       │   ├── selection.py
+│       │   ├── strategies
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   ├── conservative_quality.py
+│       │   │   ├── coverage_balanced.py
+│       │   │   ├── regime_placeholder.py
+│       │   │   ├── score_and_edge.py
+│       │   │   └── score_only.py
+│       │   └── sweep.py
+│       ├── training
+│       │   ├── __init__.py
+│       │   ├── contracts.py
+│       │   ├── dataset.py
+│       │   ├── factory.py
+│       │   ├── leakage.py
+│       │   ├── manifests.py
+│       │   ├── metrics.py
+│       │   ├── predictions.py
+│       │   ├── preprocessing.py
+│       │   ├── registry.py
+│       │   ├── runner.py
+│       │   ├── splits.py
+│       │   └── trainers
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       ├── dummy.py
+│       │       ├── gradient_boosting.py
+│       │       ├── logistic_regression.py
+│       │       ├── random_forest.py
+│       │       └── sklearn_trainer.py
+│       └── utils
+│           ├── __init__.py
+│           └── evaluation.py
+├── summary.md
+└── tests
+    ├── portfolio
+    │   ├── __init__.py
+    │   ├── test_budget_cascade.py
+    │   ├── test_concentration_penalties.py
+    │   ├── test_portfolio_runner.py
+    │   └── test_proportional_priority.py
+    ├── probabilistic
+    │   └── football
+    │       ├── test_correct_score_extractor.py
+    │       ├── test_lambda_builder.py
+    │       ├── test_poisson_markets.py
+    │       └── test_poisson_score_matrix.py
+    ├── regimes
+    │   ├── test_event_regime_assignment.py
+    │   ├── test_minimum_sample_guard.py
+    │   ├── test_multi_axis_assignment.py
+    │   ├── test_period_regime_assignment.py
+    │   ├── test_regime_coverage.py
+    │   ├── test_regime_evaluation_integration.py
+    │   ├── test_regime_input_builder.py
+    │   ├── test_regime_reporting.py
+    │   └── test_regime_thresholds.py
+    ├── research
+    │   ├── test_insufficient_data_guard.py
+    │   ├── test_period_metric_deltas.py
+    │   ├── test_period_runner.py
+    │   ├── test_refresh_policies.py
+    │   ├── test_research_manifest.py
+    │   ├── test_research_runner.py
+    │   ├── test_reuse_vs_retrain_logic.py
+    │   ├── test_time_slice_reporting.py
+    │   ├── test_walkforward_planner.py
+    │   └── test_window_generation.py
+    ├── signal_scoring
+    │   ├── test_confidence_component.py
+    │   ├── test_edge_component.py
+    │   ├── test_signal_runner.py
+    │   ├── test_signal_score_combination_and_ranking.py
+    │   └── test_uncertainty_disagreement_dq_sh.py
+    ├── sizing
+    │   ├── test_adjustments.py
+    │   ├── test_kelly_calculation.py
+    │   ├── test_risk_limit_engine.py
+    │   └── test_runner_and_strategies.py
+    ├── stacker
+    │   ├── test_dataset_builder.py
+    │   ├── test_gradient_boosting.py
+    │   └── test_runner.py
+    ├── test_accepted_rejected_exports.py
+    ├── test_artifact_chain_validation.py
+    ├── test_artifact_resolver.py
+    ├── test_audit.py
+    ├── test_backtest_ledger.py
+    ├── test_backtest_period_summaries.py
+    ├── test_backtest_runner.py
+    ├── test_bankroll_guards.py
+    ├── test_bankroll_manifest.py
+    ├── test_bankroll_runner.py
+    ├── test_basic_availability_policy.py
+    ├── test_basketball_distribution.py
+    ├── test_basketball_expected_points.py
+    ├── test_basketball_moneyline.py
+    ├── test_basketball_preview_pipeline.py
+    ├── test_basketball_probability_sanity.py
+    ├── test_basketball_spreads.py
+    ├── test_basketball_totals.py
+    ├── test_benchmark_market.py
+    ├── test_best_source_fallback.py
+    ├── test_binary_isotonic_calibration.py
+    ├── test_binary_sigmoid_calibration.py
+    ├── test_calibrated_preference_policy.py
+    ├── test_calibration_dataset.py
+    ├── test_calibration_metrics.py
+    ├── test_calibration_runner.py
+    ├── test_capital_curve.py
+    ├── test_class_alignment.py
+    ├── test_common_universe_alignment.py
+    ├── test_confidence_buckets.py
+    ├── test_conservative_quality_optimizer.py
+    ├── test_context_features.py
+    ├── test_decision_packets.py
+    ├── test_draw_probability.py
+    ├── test_drawdown_metrics.py
+    ├── test_dynamic_weighting.py
+    ├── test_elo_updates.py
+    ├── test_ensemble_diagnostics.py
+    ├── test_ensemble_integration.py
+    ├── test_evaluation_loader.py
+    ├── test_evaluation_runner.py
+    ├── test_event_universe_builder.py
+    ├── test_execution_policy.py
+    ├── test_fallback_safety_policy.py
+    ├── test_feature_leakage_guards.py
+    ├── test_feature_manifest.py
+    ├── test_feature_registry.py
+    ├── test_file_provider.py
+    ├── test_fixed_fraction_overlay.py
+    ├── test_flat_stake_overlay.py
+    ├── test_frontier_generation.py
+    ├── test_identity_calibration.py
+    ├── test_imports.py
+    ├── test_inference_feature_alignment.py
+    ├── test_inference_manifest.py
+    ├── test_inference_runner.py
+    ├── test_ingestion_pipeline.py
+    ├── test_labels.py
+    ├── test_leaderboard_builder.py
+    ├── test_line_market_settlement.py
+    ├── test_margin_weighting.py
+    ├── test_market_compatibility.py
+    ├── test_market_odds_features.py
+    ├── test_metric_consistency.py
+    ├── test_missing_odds_policy.py
+    ├── test_multiclass_calibration_wrapper.py
+    ├── test_normalization.py
+    ├── test_pairwise_comparison.py
+    ├── test_policy_runner.py
+    ├── test_prediction_fallback_chain.py
+    ├── test_prediction_standardization.py
+    ├── test_preferred_calibrated_policy.py
+    ├── test_probability_vector_validation.py
+    ├── test_quality_threshold_policy.py
+    ├── test_rating_benchmark.py
+    ├── test_rating_features.py
+    ├── test_rating_timeline.py
+    ├── test_raw_vs_calibrated_comparison.py
+    ├── test_regime_aware_policy.py
+    ├── test_regime_fit_damping.py
+    ├── test_reliability_bins.py
+    ├── test_reliability_weighting.py
+    ├── test_replay_ordering.py
+    ├── test_rest_features.py
+    ├── test_rolling_form_features.py
+    ├── test_rule_based_hybrid.py
+    ├── test_same_sample_policy.py
+    ├── test_score_and_edge_optimizer.py
+    ├── test_score_only_optimizer.py
+    ├── test_season_transition.py
+    ├── test_segment_evaluation.py
+    ├── test_settings.py
+    ├── test_settlement.py
+    ├── test_settlement_binary.py
+    ├── test_settlement_multiclass.py
+    ├── test_simple_average_ensemble.py
+    ├── test_slot_resolution.py
+    ├── test_smoke_pipeline.py
+    ├── test_snapshot_selection.py
+    ├── test_source_exclusion_reasons.py
+    ├── test_source_selection_runner.py
+    ├── test_source_trust_scoring.py
+    ├── test_sport_specific_builders.py
+    ├── test_staleness_guards.py
+    ├── test_streak_metrics.py
+    ├── test_threshold_constraints.py
+    ├── test_threshold_manifest.py
+    ├── test_threshold_runner.py
+    ├── test_tiered_flat_overlay.py
+    ├── test_validators.py
+    ├── test_void_handling.py
+    ├── test_weight_components.py
+    ├── test_weighted_average_ensemble.py
+    └── training
+        ├── test_benchmark_alignment.py
+        ├── test_dataset_assembly.py
+        ├── test_gradient_boosting_trainer.py
+        ├── test_logistic_trainer.py
+        ├── test_time_splits.py
+        ├── test_training_leakage_guards.py
+        ├── test_training_manifest.py
+        └── test_validation_predictions.py
+
+130 directories, 748 files

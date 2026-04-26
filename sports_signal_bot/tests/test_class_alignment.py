@@ -1,5 +1,7 @@
 from sports_signal_bot.ensemble.alignment import (
-    align_probability_vector, validate_market_compatibility)
+    align_probability_vector,
+    validate_market_compatibility,
+)
 
 
 def test_validate_market_compatibility():
