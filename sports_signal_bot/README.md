@@ -218,3 +218,6 @@ Key features:
 - **Reporting & Manifests:** Generates CSV and JSON artifacts detailing the selection decisions, trust scores, and exclusion reasons.
 
 Use `python -m sports_signal_bot.main list-source-policies` and `select-sources` commands to interact with this layer.
+
+## Phase 17: Signal Scoring Engine
+This phase transforms final probabilities from the ensemble/stacker layers into operational, risk-aware signal scores. It computes market edges and applies sophisticated penalties for uncertainty, source disagreement, and poor data quality to rank and tier signals for actionable use. Note that this phase focuses entirely on signal quality and does not involve staking or bankroll management.

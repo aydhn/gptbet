@@ -1,0 +1,11 @@
+rank,tier,event_id,selection,final_signal_score,status,edge_estimate,confidence_score
+1,S,event_2,home,0.3735,scored,0.0700,0.4035
+2,S,event_1,away,0.3535,scored,0.0600,0.3935
+3,S,event_8,home,0.3435,scored,0.1300,0.4635
+4,S,event_7,away,0.3235,scored,0.1200,0.4535
+5,S,event_5,away,0.2835,scored,0.1000,0.4335
+6,D,event_0,home,0.2835,no_market_reference,0.0000,0.3835
+7,A,event_4,home,0.2635,scored,0.0900,0.4235
+8,D,event_9,away,0.2235,no_market_reference,0.0000,0.4735
+9,D,event_6,home,0.1935,no_market_reference,0.0000,0.4435
+10,D,event_3,away,0.1635,no_market_reference,0.0000,0.4135
