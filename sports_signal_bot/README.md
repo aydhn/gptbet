@@ -221,3 +221,25 @@ Use `python -m sports_signal_bot.main list-source-policies` and `select-sources`
 
 ## Phase 17: Signal Scoring Engine
 This phase transforms final probabilities from the ensemble/stacker layers into operational, risk-aware signal scores. It computes market edges and applies sophisticated penalties for uncertainty, source disagreement, and poor data quality to rank and tier signals for actionable use. Note that this phase focuses entirely on signal quality and does not involve staking or bankroll management.
+
+## Phase 18: Threshold Optimization
+
+This phase elevates the system from producing continuous signal scores to making discrete, operationally-viable selection decisions via selective prediction.
+
+**Purpose**: To systematically optimize the trade-off between coverage (quantity) and signal quality (precision, edge, log loss). It establishes out-of-sample data-driven boundaries to determine which signals are truly actionable.
+**Architecture**:
+- Implements a Sweep Engine that iterates over a threshold grid.
+- Uses `ObjectiveEvaluator` and `ConstraintEvaluator` to balance metrics like log loss, precision, and edge.
+- Supports multiple strategies: `score_only`, `score_and_edge`, `conservative_quality`, `coverage_balanced`.
+- Exports a `ThresholdFrontierRecord` to visualize trade-offs and selecting the best point matching the constraints.
+- Generates accepted vs. rejected signal sets with explicit rejection reasons.
+- **Note**: This phase intentionally avoids stake sizing or bankroll management, deferring those strictly to the bankroll layer.
+
+**Usage**:
+- `python -m sports_signal_bot.main list-threshold-strategies`
+- `python -m sports_signal_bot.main optimize-thresholds --sport football --market 1x2`
+- `python -m sports_signal_bot.main preview-threshold-frontier --sport football --market 1x2`
+- `python -m sports_signal_bot.main preview-accepted-signals --sport football --market ou_2_5`
+- `python -m sports_signal_bot.main preview-threshold-policy --sport basketball --market moneyline`
+
+See `docs/threshold_optimization_architecture.md` for architectural details.

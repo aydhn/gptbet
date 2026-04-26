@@ -1,0 +1,1 @@
+"""Diagnostics and warning hooks."""
