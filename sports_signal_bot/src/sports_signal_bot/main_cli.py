@@ -911,3 +911,5 @@ def list_policy_strategies():
     typer.echo("Available Policy Strategies:")
     for s in strategies:
         typer.echo(f"  - {s}")
+from sports_signal_bot.portfolio import portfolio_app
+app.add_typer(portfolio_app, name="portfolio", help="Portfolio management commands")

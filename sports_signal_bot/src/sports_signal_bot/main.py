@@ -2612,3 +2612,5 @@ def list_bankroll_overlays():
     typer.echo("Available Bankroll Overlay Strategies:")
     for s in strategies:
         typer.echo(f"  - {s.value}")
+from sports_signal_bot.portfolio import portfolio_app
+app.add_typer(portfolio_app, name="portfolio", help="Portfolio management commands")

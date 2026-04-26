@@ -270,3 +270,11 @@ It provides functionality for:
 
 **Note:** This layer provides *research-grade* placeholders. Future phases will introduce concurrency handling and Kelly-optimized fractional betting.
 \n## Phase 22: Advanced Sizing Engine\nBuilt an advanced, risk-aware stake sizing engine supporting Kelly variants, confidence dampening, and drawdown throttles. See `docs/advanced_sizing_architecture.md`.
+
+## Phase 23: Portfolio Allocation & Exposure Management
+This system incorporates a robust portfolio layer acting **after** the event-level sizing engine.
+While the sizing engine finds the optimal stake for a single decision, the portfolio layer ensures safety across *many* decisions.
+
+- **Daily Risk Budget**: Limits the absolute percentage of the bankroll exposed in a single day.
+- **Run Portfolio**: Use `python -m sports_signal_bot.main portfolio run-portfolio --sport football --market 1x2` to see it in action.
+- **Concentration & Correlation Guardrails**: Employs placeholders to cap heavy exposure in a single sport/market, and prevents double-dipping on highly correlated markets within the exact same event.
