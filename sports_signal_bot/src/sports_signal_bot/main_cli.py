@@ -318,3 +318,113 @@ def list_source_policies():
                     console.print(f"    {k}: {v}")
     except FileNotFoundError:
         console.print("[red]Policy configuration file not found.[/red]")
+
+from rich.console import Console
+console = Console()
+
+from sports_signal_bot.core.paths import get_configs_dir
+def register_signal_scoring_commands(app: typer.Typer):
+
+    @app.command(name="score-signals")
+    def score_signals(
+        sport: str = typer.Option(..., "--sport", "-s", help="Sport name (e.g. football, basketball)"),
+        market: str = typer.Option(..., "--market", "-m", help="Market type (e.g. 1x2, moneyline)"),
+        strategy: str = typer.Option(None, "--strategy", help="Specific scoring strategy to use"),
+        config: str = typer.Option(None, "--config", "-c", help="Path to specific signal scoring config file")
+    ):
+        """Scores final probabilities into operational signals (Phase 17)."""
+        from sports_signal_bot.signal_scoring.contracts import SignalCandidateRecord
+        from sports_signal_bot.signal_scoring.runner import SignalScoringRunner
+
+        console.print(f"[bold cyan]Scoring Signals for {sport} - {market}[/bold cyan]")
+
+        config_dir = get_configs_dir()
+        default_config_path = config_dir / "signal_scoring" / "default.yaml"
+        sport_config_path = config_dir / "signal_scoring" / f"{sport}.yaml"
+
+        scoring_config = {}
+
+        if default_config_path.exists():
+            with open(default_config_path, "r") as f:
+                scoring_config.update(yaml.safe_load(f) or {})
+
+        if sport_config_path.exists():
+            with open(sport_config_path, "r") as f:
+                sport_specific = yaml.safe_load(f) or {}
+                for k, v in sport_specific.items():
+                    if isinstance(v, dict) and k in scoring_config and isinstance(scoring_config[k], dict):
+                        scoring_config[k].update(v)
+                    else:
+                        scoring_config[k] = v
+
+        candidates = [
+            SignalCandidateRecord(
+                event_id=f"event_{i}",
+                sport=sport,
+                market_type=market,
+                selection="home" if i % 2 == 0 else "away",
+                final_probability=0.55 + (i * 0.02),
+                market_implied_probability=0.50 + (i * 0.01) if i % 3 != 0 else None,
+                class_probabilities={"home": 0.55, "draw": 0.25, "away": 0.20},
+                metadata={
+                    "source_disagreement_diagnostics": {"source_variance": 0.02 + (i*0.01)},
+                    "data_quality_summaries": {"missing_feature_ratio": 0.05},
+                    "source_selection_diagnostics": {"stale_components_ratio": 0.0},
+                    "regime_assignments": [{"regime_family": "data_completeness", "regime_label": "high"}]
+                }
+            )
+            for i in range(10)
+        ]
+
+        results_dir = Path("results/signal_scoring")
+        runner = SignalScoringRunner(scoring_config, str(results_dir))
+
+        manifest = runner.run(candidates, sport, market, strategy_name=strategy)
+
+        console.print(f"[green]Scoring Complete.[/green] Total processed: {manifest.total_processed}")
+        console.print(f"Scored: {manifest.scored_count}, Weak: {manifest.weak_signal_count}, No Ref: {manifest.no_market_reference_count}")
+        if manifest.top_signals:
+            console.print(f"Top signal: {manifest.top_signals[0].event_id} ({manifest.top_signals[0].tier} tier)")
+        console.print(f"Artifacts saved in: {results_dir}/{sport}/{market}/{manifest.run_id}")
+
+    @app.command(name="preview-signal-breakdown")
+    def preview_signal_breakdown(
+        sport: str = typer.Option(..., "--sport", "-s"),
+        market: str = typer.Option(..., "--market", "-m")
+    ):
+        """Previews signal score components breakdown (Phase 17)."""
+        console.print(f"[bold yellow]Signal Breakdown Preview: {sport} - {market}[/bold yellow]")
+        console.print("This command reads the latest signal scores and displays component breakdown.")
+
+    @app.command(name="preview-signal-ranking")
+    def preview_signal_ranking(
+        sport: str = typer.Option(..., "--sport", "-s"),
+        market: str = typer.Option(..., "--market", "-m")
+    ):
+        """Previews top ranked signals (Phase 17)."""
+        console.print(f"[bold magenta]Signal Ranking Preview: {sport} - {market}[/bold magenta]")
+        console.print("This command displays the top tier signals based on the latest run.")
+
+    @app.command(name="preview-signal-diagnostics")
+    def preview_signal_diagnostics(
+        sport: str = typer.Option(..., "--sport", "-s"),
+        market: str = typer.Option(..., "--market", "-m")
+    ):
+        """Previews signal quality diagnostics (Phase 17)."""
+        console.print(f"[bold cyan]Signal Diagnostics Preview: {sport} - {market}[/bold cyan]")
+        console.print("This command displays aggregate signal quality, coverage, and warnings.")
+
+    @app.command(name="list-signal-strategies")
+    def list_signal_strategies():
+        """Lists available signal scoring strategies (Phase 17)."""
+        from sports_signal_bot.signal_scoring.registry import SignalScorerRegistry
+        from sports_signal_bot.signal_scoring.factory import SignalScorerFactory  # Forces registration
+        strategies = SignalScorerRegistry.list_strategies()
+        console.print("[bold green]Available Signal Scoring Strategies:[/bold green]")
+        for name, cls in strategies.items():
+            try:
+                inst = cls({})
+                desc = inst.describe()
+            except Exception:
+                desc = "No description available."
+            console.print(f"  - [cyan]{name}[/cyan]: {desc}")

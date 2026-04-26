@@ -1,0 +1,32 @@
+default_signal_strategy: "balanced"
+weights:
+  edge_weight: 1.0
+  confidence_weight: 1.0
+  uncertainty_penalty_weight: 1.0
+  disagreement_penalty_weight: 1.0
+  data_quality_penalty_weight: 1.0
+  source_health_penalty_weight: 1.0
+  regime_adjustment_weight: 1.0
+
+thresholds:
+  minimum_quality_for_scored_status: 40.0
+  conservative_weak_threshold: 50.0
+  entropy:
+    high: 1.5
+    critical: 1.8
+  disagreement:
+    high_variance: 0.05
+    medium_variance: 0.02
+  data_quality:
+    high_missing_ratio: 0.2
+    medium_missing_ratio: 0.1
+  source_health:
+    high_stale_ratio: 0.2
+
+policies:
+  regime:
+    max_boost: 0.2
+    max_penalty: -0.3
+    low_sample: -0.1
+    high_uncertainty: -0.2
+    high_data_completeness: 0.1

@@ -1,0 +1,15 @@
+default_signal_strategy: "balanced"
+weights:
+  edge_weight: 1.5
+  confidence_weight: 0.8
+  uncertainty_penalty_weight: 1.2
+  disagreement_penalty_weight: 1.0
+  data_quality_penalty_weight: 1.0
+  source_health_penalty_weight: 1.0
+  regime_adjustment_weight: 1.0
+
+thresholds:
+  minimum_quality_for_scored_status: 35.0
+  entropy:
+    high: 1.55 # Slightly higher tolerance for 1x2 markets
+    critical: 1.85

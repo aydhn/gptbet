@@ -33,6 +33,8 @@ from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
 
 app = typer.Typer(help="Sports Signal Bot CLI")
 from sports_signal_bot.main_cli import *
+from sports_signal_bot.main_cli import register_signal_scoring_commands
+register_signal_scoring_commands(app)
 
 console = Console()
 

@@ -1,0 +1,15 @@
+default_signal_strategy: "balanced"
+weights:
+  edge_weight: 1.0
+  confidence_weight: 1.2
+  uncertainty_penalty_weight: 1.0
+  disagreement_penalty_weight: 1.5 # Basketball is sensitive to source dispersion
+  data_quality_penalty_weight: 1.0
+  source_health_penalty_weight: 1.0
+  regime_adjustment_weight: 1.0
+
+thresholds:
+  minimum_quality_for_scored_status: 45.0
+  entropy:
+    high: 0.95 # Binary markets are sharper
+    critical: 1.0
