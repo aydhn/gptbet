@@ -1978,3 +1978,139 @@ def list_source_policies():
                     console.print(f"    {k}: {v}")
     except FileNotFoundError:
         console.print("[red]Policy configuration file not found.[/red]")
+
+# --- POLICY COMMANDS ---
+from sports_signal_bot.policy.runner import PolicyRunner
+from sports_signal_bot.signal_scoring.contracts import SignalPolicyInputRecord, SignalStatus
+
+def _build_policy_runner(sport: str, strategy: str) -> PolicyRunner:
+    try:
+        with open(f"configs/policy/{sport}.yaml") as f:
+            config = yaml.safe_load(f)
+    except FileNotFoundError:
+        try:
+            with open("configs/policy/default.yaml") as f:
+                config = yaml.safe_load(f)
+        except FileNotFoundError:
+            config = {
+                "score_bands": {"no_bet": 0.4, "watchlist": 0.6, "candidate": 0.8},
+                "action_class_mapping": {
+                    "approved": "approved_candidate",
+                    "candidate": "candidate",
+                    "watchlist": "watchlist",
+                    "no_bet_zone": "no_action",
+                    "blocked": "blocked_candidate"
+                }
+            }
+    return PolicyRunner(config, strategy)
+
+@app.command()
+def apply_policy(
+    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)"),
+    policy: str = typer.Option("balanced", help="Policy strategy (balanced/conservative/regime_aware)")
+):
+    """Run the policy engine to assign signal lifecycles and action classes."""
+    typer.echo(f"Running policy engine for {sport} - {market} using {policy} strategy")
+
+    runner = _build_policy_runner(sport, policy)
+
+    # Mock data
+    signals = [
+        SignalPolicyInputRecord(
+            event_id=f"evt_{i}",
+            sport=sport,
+            market_type=market,
+            selection="test",
+            final_probability=0.6,
+            final_signal_score=0.3 + (i * 0.1),
+            edge_estimate=0.02 + (i * 0.01),
+            status=SignalStatus.SCORED,
+            components_summary={
+                "uncertainty_penalty": 0.05,
+                "disagreement_penalty": 0.1,
+                "data_quality_penalty": 0.0,
+                "market_implied_probability": 0.58
+            }
+        ) for i in range(8)
+    ]
+
+    # Add a blocked signal
+    signals.append(SignalPolicyInputRecord(
+        event_id="evt_blocked",
+        sport=sport,
+        market_type=market,
+        selection="test",
+        final_probability=0.6,
+        final_signal_score=0.9,
+        edge_estimate=0.05,
+        status=SignalStatus.SCORED,
+        components_summary={
+            "data_quality_penalty": 0.8, # Low quality
+            "market_implied_probability": 0.58
+        }
+    ))
+
+    manifest = runner.run(signals, sport, market)
+
+    typer.echo(f"Total Signals Evaluated: {manifest.total_evaluated}")
+    typer.echo(f"Approved: {manifest.approved_count}")
+    typer.echo(f"Candidate: {manifest.candidate_count}")
+    typer.echo(f"Watchlist: {manifest.watchlist_count}")
+    typer.echo(f"No Action / No Bet Zone: {manifest.no_action_count}")
+    typer.echo(f"Blocked: {manifest.blocked_count}")
+
+    typer.echo("\nTop Rationale Codes:")
+    for code, count in sorted(manifest.top_rationale_codes.items(), key=lambda x: x[1], reverse=True)[:3]:
+        typer.echo(f"  - {code}: {count}")
+
+    from sports_signal_bot.policy.manifests import export_policy_manifest
+    export_policy_manifest(manifest, f"results/policy/{sport}/{market}")
+    typer.echo(f"Saved artifacts to results/policy/{sport}/{market}")
+
+@app.command()
+def preview_policy_decisions(
+    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+):
+    """Preview decision outputs from the default policy."""
+    apply_policy(sport=sport, market=market, policy="balanced")
+
+@app.command()
+def preview_no_bet_zones(
+    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+):
+    """Preview signals that fall into the no-bet zone."""
+    typer.echo(f"Previewing no-bet zones for {sport} - {market}")
+    runner = _build_policy_runner(sport, "balanced")
+
+    signals = [
+        SignalPolicyInputRecord(
+            event_id=f"evt_{i}", sport=sport, market_type=market, selection="test",
+            final_probability=0.5, final_signal_score=0.5, edge_estimate=0.02, status=SignalStatus.SCORED,
+            components_summary={"uncertainty_penalty": 0.4, "market_implied_probability": 0.48}
+        ) for i in range(3)
+    ]
+    manifest = runner.run(signals, sport, market)
+    for d in manifest.decisions:
+        if d.signal_status.value == "no_bet_zone":
+            typer.echo(f"Event {d.event_id}: No Bet Zone. Reasons: {d.no_bet_reasons}")
+
+@app.command()
+def preview_policy_rationale(
+    sport: str = typer.Option(..., help="Sport type (football/basketball)"),
+    market: str = typer.Option(..., help="Market type (1x2/moneyline/ou_2_5)")
+):
+    """Preview rationale codes for a mixed set of signals."""
+    typer.echo("Previewing rationale codes...")
+    apply_policy(sport=sport, market=market, policy="balanced")
+
+@app.command()
+def list_policy_strategies():
+    """List available policy strategies."""
+    from sports_signal_bot.policy.registry import PolicyStrategyRegistry
+    strategies = PolicyStrategyRegistry._strategies.keys()
+    typer.echo("Available Policy Strategies:")
+    for s in strategies:
+        typer.echo(f"  - {s}")

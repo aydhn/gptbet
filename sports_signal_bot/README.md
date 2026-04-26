@@ -243,3 +243,12 @@ This phase elevates the system from producing continuous signal scores to making
 - `python -m sports_signal_bot.main preview-threshold-policy --sport basketball --market moneyline`
 
 See `docs/threshold_optimization_architecture.md` for architectural details.
+
+## Phase 19: Policy Engine & No-Bet Zone
+The system incorporates a robust Policy Engine layer.
+
+- **Purpose**: Act as a quantitative decision gate between signal scoring/thresholding and actual bet sizing/dispatching.
+- **Signal Status Lifecycle**: Defines a strict state machine (`scored` -> `candidate` -> `approved` or `no_bet_zone`).
+- **No-Bet Zone**: A core philosophy. The system explicitly tags signals that are decent but have high uncertainty, disagreement, or borderline edge as `no_bet_zone`.
+- **Action Classes**: Maps signal statuses to final action categories like `approved_candidate`, `watchlist`, and `no_action`.
+- **Apply Policy**: `python -m sports_signal_bot.main apply-policy --sport football --market 1x2`
