@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
+
 from sports_signal_bot.policy.contracts import PolicyManifest
+
 
 def export_policy_manifest(manifest: PolicyManifest, output_dir: str):
     path = Path(output_dir)

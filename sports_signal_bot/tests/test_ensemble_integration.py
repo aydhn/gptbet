@@ -1,16 +1,14 @@
 import pytest
-from sports_signal_bot.ensemble.contracts import EnsembleInputRecord, StandardizedPredictionRecord
+
+from sports_signal_bot.ensemble.contracts import (EnsembleInputRecord,
+                                                  StandardizedPredictionRecord)
 from sports_signal_bot.ensemble.runner import EnsembleRunner
+
 
 def test_dynamic_weighted_average_ensembler():
     config = {
         "strategy": "dynamic_weighted_average",
-        "strategy_config": {
-            "dynamic_weights": {
-                "s1": 0.8,
-                "s2": 0.2
-            }
-        }
+        "strategy_config": {"dynamic_weights": {"s1": 0.8, "s2": 0.2}},
     }
 
     runner = EnsembleRunner(config)
@@ -25,7 +23,7 @@ def test_dynamic_weighted_average_ensembler():
         class_labels=["A", "B"],
         probabilities={"A": 0.9, "B": 0.1},
         predicted_class="A",
-        metadata={"dynamic_weight": 0.7}
+        metadata={"dynamic_weight": 0.7},
     )
 
     pred2 = StandardizedPredictionRecord(
@@ -37,14 +35,11 @@ def test_dynamic_weighted_average_ensembler():
         class_labels=["A", "B"],
         probabilities={"A": 0.2, "B": 0.8},
         predicted_class="B",
-        metadata={"dynamic_weight": 0.3}
+        metadata={"dynamic_weight": 0.3},
     )
 
     input_rec = EnsembleInputRecord(
-        event_id="e1",
-        sport="s",
-        market_type="m",
-        predictions=[pred1, pred2]
+        event_id="e1", sport="s", market_type="m", predictions=[pred1, pred2]
     )
 
     res = runner.run([input_rec])
@@ -58,27 +53,35 @@ def test_dynamic_weighted_average_ensembler():
     assert abs(out.final_probabilities["A"] - 0.69) < 1e-5
     assert out.final_predicted_class == "A"
 
+
 def test_dynamic_weighted_fallback_to_config():
     config = {
         "strategy": "dynamic_weighted_average",
-        "strategy_config": {
-            "dynamic_weights": {
-                "s1": 0.9,
-                "s2": 0.1
-            }
-        }
+        "strategy_config": {"dynamic_weights": {"s1": 0.9, "s2": 0.1}},
     }
 
     runner = EnsembleRunner(config)
 
     pred1 = StandardizedPredictionRecord(
-        event_id="e1", sport="s", market_type="m", source_name="s1", source_family="f1",
-        class_labels=["A", "B"], probabilities={"A": 1.0, "B": 0.0}, predicted_class="A"
+        event_id="e1",
+        sport="s",
+        market_type="m",
+        source_name="s1",
+        source_family="f1",
+        class_labels=["A", "B"],
+        probabilities={"A": 1.0, "B": 0.0},
+        predicted_class="A",
     )
 
     pred2 = StandardizedPredictionRecord(
-        event_id="e1", sport="s", market_type="m", source_name="s2", source_family="f2",
-        class_labels=["A", "B"], probabilities={"A": 0.0, "B": 1.0}, predicted_class="B"
+        event_id="e1",
+        sport="s",
+        market_type="m",
+        source_name="s2",
+        source_family="f2",
+        class_labels=["A", "B"],
+        probabilities={"A": 0.0, "B": 1.0},
+        predicted_class="B",
     )
 
     input_rec = EnsembleInputRecord(

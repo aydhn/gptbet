@@ -1,8 +1,12 @@
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
+
 import numpy as np
-from .base import BaseThresholdOptimizer
-from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
 from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord
+from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
+from .base import BaseThresholdOptimizer
+
 
 class ConservativeQualityOptimizer(BaseThresholdOptimizer):
     def generate_grid(self) -> List[Dict[str, float]]:
@@ -18,7 +22,9 @@ class ConservativeQualityOptimizer(BaseThresholdOptimizer):
 
         return grid
 
-    def apply_threshold(self, signals: List[SignalScoreRecord], params: Dict[str, float]) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
+    def apply_threshold(
+        self, signals: List[SignalScoreRecord], params: Dict[str, float]
+    ) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
         score_threshold = params.get("score_threshold", 0.0)
 
         # Conservative guards
@@ -29,9 +35,11 @@ class ConservativeQualityOptimizer(BaseThresholdOptimizer):
         rejected = []
 
         for sig in signals:
-            if (sig.final_signal_score >= score_threshold and
-                sig.components.uncertainty_penalty <= max_uncertainty and
-                sig.components.data_quality_penalty <= max_data_quality_penalty):
+            if (
+                sig.final_signal_score >= score_threshold
+                and sig.components.uncertainty_penalty <= max_uncertainty
+                and sig.components.data_quality_penalty <= max_data_quality_penalty
+            ):
                 accepted.append(sig)
             else:
                 rejected.append(sig)

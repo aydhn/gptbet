@@ -1,10 +1,11 @@
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 
 def compute_uncertainty_penalty(
     entropy: float,
     entropy_thresholds: Dict[str, float],
     unstable_source_set: bool = False,
-    flat_probability_vector: bool = False
+    flat_probability_vector: bool = False,
 ) -> float:
     """Computes penalty based on entropy thresholds and instability flags."""
     penalty = 0.0
@@ -26,4 +27,4 @@ def compute_uncertainty_penalty(
     if unstable_source_set:
         penalty += 0.2
 
-    return min(penalty, 1.0) # Cap at 1.0
+    return min(penalty, 1.0)  # Cap at 1.0

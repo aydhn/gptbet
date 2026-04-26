@@ -1,11 +1,15 @@
 import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import (
-    SignalCandidateRecord, SignalScoreRecord, SignalComponentRecord, SignalStatus
-)
-from sports_signal_bot.signal_scoring.strategies.balanced import BalancedSignalScorer
-from sports_signal_bot.signal_scoring.combine import combine_signal_components, normalize_signal_score
+from sports_signal_bot.signal_scoring.combine import (
+    combine_signal_components, normalize_signal_score)
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalComponentRecord,
+                                                        SignalScoreRecord,
+                                                        SignalStatus)
+from sports_signal_bot.signal_scoring.strategies.balanced import \
+    BalancedSignalScorer
+
 
 class ConservativeQualityScorer(BalancedSignalScorer):
 
@@ -22,12 +26,14 @@ class ConservativeQualityScorer(BalancedSignalScorer):
         # We can inherit the logic from Balanced but inject harsher weights
         original_weights = self.weights.copy()
 
-        self.weights.update({
-            "uncertainty_penalty_weight": 2.5,
-            "disagreement_penalty_weight": 2.5,
-            "data_quality_penalty_weight": 3.0,
-            "source_health_penalty_weight": 2.0
-        })
+        self.weights.update(
+            {
+                "uncertainty_penalty_weight": 2.5,
+                "disagreement_penalty_weight": 2.5,
+                "data_quality_penalty_weight": 3.0,
+                "source_health_penalty_weight": 2.0,
+            }
+        )
 
         results = super().score_signals(candidates)
 
@@ -37,7 +43,11 @@ class ConservativeQualityScorer(BalancedSignalScorer):
         for r in results:
             r.strategy_name = self.name()
             # Be harsher on status
-            if r.normalized_score is not None and r.normalized_score < self.thresholds.get("conservative_weak_threshold", 50.0):
+            if (
+                r.normalized_score is not None
+                and r.normalized_score
+                < self.thresholds.get("conservative_weak_threshold", 50.0)
+            ):
                 if r.status == SignalStatus.SCORED:
                     r.status = SignalStatus.INSUFFICIENT_QUALITY
 

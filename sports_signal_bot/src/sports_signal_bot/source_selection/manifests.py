@@ -1,5 +1,7 @@
 from pathlib import Path
+
 from .contracts import SourceSelectionManifest
+
 
 class ManifestWriter:
     def __init__(self, base_dir: Path):

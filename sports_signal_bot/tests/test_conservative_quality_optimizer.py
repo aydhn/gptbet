@@ -1,14 +1,20 @@
 import pytest
-from sports_signal_bot.thresholds.strategies.conservative_quality import ConservativeQualityOptimizer
-from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
+
+from sports_signal_bot.signal_scoring.contracts import (SignalComponentRecord,
+                                                        SignalScoreRecord)
+from sports_signal_bot.thresholds.strategies.conservative_quality import \
+    ConservativeQualityOptimizer
+
 
 def test_conservative_quality_optimizer():
-    optimizer = ConservativeQualityOptimizer({
-        "score_threshold_bounds": [0.4, 0.6],
-        "grid_steps": 2,
-        "hard_max_uncertainty": 0.3,
-        "hard_max_dq_penalty": 0.2
-    })
+    optimizer = ConservativeQualityOptimizer(
+        {
+            "score_threshold_bounds": [0.4, 0.6],
+            "grid_steps": 2,
+            "hard_max_uncertainty": 0.3,
+            "hard_max_dq_penalty": 0.2,
+        }
+    )
 
     signals = [
         SignalScoreRecord(
@@ -17,9 +23,11 @@ def test_conservative_quality_optimizer():
             market_type="1x2",
             selection="home",
             final_probability=0.6,
-            components=SignalComponentRecord(uncertainty_penalty=0.1, data_quality_penalty=0.1),
+            components=SignalComponentRecord(
+                uncertainty_penalty=0.1, data_quality_penalty=0.1
+            ),
             final_signal_score=0.5,
-            strategy_name="test"
+            strategy_name="test",
         ),
         SignalScoreRecord(
             event_id="e_1",
@@ -27,10 +35,12 @@ def test_conservative_quality_optimizer():
             market_type="1x2",
             selection="home",
             final_probability=0.6,
-            components=SignalComponentRecord(uncertainty_penalty=0.4, data_quality_penalty=0.1),
+            components=SignalComponentRecord(
+                uncertainty_penalty=0.4, data_quality_penalty=0.1
+            ),
             final_signal_score=0.5,
-            strategy_name="test"
-        )
+            strategy_name="test",
+        ),
     ]
 
     acc, rej = optimizer.apply_threshold(signals, {"score_threshold": 0.4})

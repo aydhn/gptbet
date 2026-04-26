@@ -1,17 +1,25 @@
 import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import (
-    SignalCandidateRecord, SignalScoreRecord, SignalComponentRecord, SignalStatus
-)
-from sports_signal_bot.signal_scoring.strategies.base import BaseSignalScorer
+from sports_signal_bot.signal_scoring.combine import (
+    combine_signal_components, normalize_signal_score)
+from sports_signal_bot.signal_scoring.confidence import (
+    compute_confidence_score, compute_entropy, compute_top_class_gap)
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalComponentRecord,
+                                                        SignalScoreRecord,
+                                                        SignalStatus)
+from sports_signal_bot.signal_scoring.data_quality import \
+    compute_data_quality_penalty
+from sports_signal_bot.signal_scoring.disagreement import \
+    compute_disagreement_penalty
 from sports_signal_bot.signal_scoring.edge import compute_edge
-from sports_signal_bot.signal_scoring.confidence import compute_confidence_score, compute_top_class_gap, compute_entropy
-from sports_signal_bot.signal_scoring.uncertainty import compute_uncertainty_penalty
-from sports_signal_bot.signal_scoring.disagreement import compute_disagreement_penalty
-from sports_signal_bot.signal_scoring.data_quality import compute_data_quality_penalty
-from sports_signal_bot.signal_scoring.source_health import compute_source_health_penalty
-from sports_signal_bot.signal_scoring.combine import combine_signal_components, normalize_signal_score
+from sports_signal_bot.signal_scoring.source_health import \
+    compute_source_health_penalty
+from sports_signal_bot.signal_scoring.strategies.base import BaseSignalScorer
+from sports_signal_bot.signal_scoring.uncertainty import \
+    compute_uncertainty_penalty
+
 
 class BalancedSignalScorer(BaseSignalScorer):
 
@@ -35,7 +43,9 @@ class BalancedSignalScorer(BaseSignalScorer):
             sh_thresholds = self.thresholds.get("source_health", {})
 
             # Context
-            disagreement_diags = cand.metadata.get("source_disagreement_diagnostics", {})
+            disagreement_diags = cand.metadata.get(
+                "source_disagreement_diagnostics", {}
+            )
             dq_diags = cand.metadata.get("data_quality_summaries", {})
             selection_diags = cand.metadata.get("source_selection_diagnostics", {})
 
@@ -47,11 +57,14 @@ class BalancedSignalScorer(BaseSignalScorer):
             conf = compute_confidence_score(cand.final_probability, top_gap, entropy)
 
             uncert = compute_uncertainty_penalty(
-                entropy, entropy_thresholds,
-                unstable_source_set=cand.metadata.get("unstable_source_set", False)
+                entropy,
+                entropy_thresholds,
+                unstable_source_set=cand.metadata.get("unstable_source_set", False),
             )
 
-            disagree = compute_disagreement_penalty(disagreement_diags, disagreement_thresholds)
+            disagree = compute_disagreement_penalty(
+                disagreement_diags, disagreement_thresholds
+            )
             dq_penalty = compute_data_quality_penalty(dq_diags, dq_thresholds)
             sh_penalty = compute_source_health_penalty(selection_diags, sh_thresholds)
 
@@ -61,7 +74,7 @@ class BalancedSignalScorer(BaseSignalScorer):
                 uncertainty_penalty=uncert,
                 disagreement_penalty=disagree,
                 data_quality_penalty=dq_penalty,
-                source_health_penalty=sh_penalty
+                source_health_penalty=sh_penalty,
             )
 
             raw_score = combine_signal_components(comps, self.weights)
@@ -70,7 +83,9 @@ class BalancedSignalScorer(BaseSignalScorer):
             status = SignalStatus.SCORED
             if cand.market_implied_probability is None:
                 status = SignalStatus.NO_MARKET_REFERENCE
-            elif norm_score < self.thresholds.get("minimum_quality_for_scored_status", 30.0):
+            elif norm_score < self.thresholds.get(
+                "minimum_quality_for_scored_status", 30.0
+            ):
                 status = SignalStatus.WEAK_SIGNAL
 
             record = SignalScoreRecord(
@@ -85,7 +100,7 @@ class BalancedSignalScorer(BaseSignalScorer):
                 normalized_score=norm_score,
                 strategy_name=self.name(),
                 status=status,
-                created_at_utc=datetime.datetime.utcnow()
+                created_at_utc=datetime.datetime.utcnow(),
             )
             results.append(record)
 

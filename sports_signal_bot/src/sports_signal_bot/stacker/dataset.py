@@ -5,8 +5,7 @@ import numpy as np
 
 from sports_signal_bot.ensemble.contracts import StandardizedPredictionRecord
 
-from .contracts import (MetaFeatureRecord,
-                        MetaTrainingDataset)
+from .contracts import MetaFeatureRecord, MetaTrainingDataset
 
 
 class MetaDatasetBuilder:

@@ -2,7 +2,6 @@ import logging
 import uuid
 from datetime import datetime, timezone
 
-
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.data.contracts.canonical import (
     CanonicalEventRecord, CanonicalOddsRecord, CanonicalTeamStatsRecord)

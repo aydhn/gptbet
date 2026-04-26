@@ -1,12 +1,15 @@
 import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from sports_signal_bot.signal_scoring.contracts import (
-    SignalCandidateRecord, SignalScoreRecord, SignalComponentRecord, SignalStatus
-)
-from sports_signal_bot.signal_scoring.strategies.base import BaseSignalScorer
+from sports_signal_bot.signal_scoring.combine import (
+    combine_signal_components, normalize_signal_score)
+from sports_signal_bot.signal_scoring.contracts import (SignalCandidateRecord,
+                                                        SignalComponentRecord,
+                                                        SignalScoreRecord,
+                                                        SignalStatus)
 from sports_signal_bot.signal_scoring.edge import compute_edge
-from sports_signal_bot.signal_scoring.combine import combine_signal_components, normalize_signal_score
+from sports_signal_bot.signal_scoring.strategies.base import BaseSignalScorer
+
 
 class EdgeFocusedScorer(BaseSignalScorer):
 
@@ -30,7 +33,7 @@ class EdgeFocusedScorer(BaseSignalScorer):
             "disagreement_penalty_weight": 0.5,
             "data_quality_penalty_weight": 0.5,
             "source_health_penalty_weight": 0.5,
-            "regime_adjustment_weight": 0.0
+            "regime_adjustment_weight": 0.0,
         }
 
         for cand in candidates:
@@ -40,10 +43,7 @@ class EdgeFocusedScorer(BaseSignalScorer):
             # Simple confidence
             conf = cand.final_probability if cand.final_probability > 0 else 0.0
 
-            comps = SignalComponentRecord(
-                edge_estimate=edge,
-                confidence_score=conf
-            )
+            comps = SignalComponentRecord(edge_estimate=edge, confidence_score=conf)
 
             # Combine
             raw_score = combine_signal_components(comps, weights)
@@ -65,7 +65,7 @@ class EdgeFocusedScorer(BaseSignalScorer):
                 normalized_score=norm_score,
                 strategy_name=self.name(),
                 status=status,
-                created_at_utc=datetime.datetime.utcnow()
+                created_at_utc=datetime.datetime.utcnow(),
             )
             results.append(record)
 

@@ -1,8 +1,9 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 def compute_disagreement_penalty(
     source_disagreement_diagnostics: Dict[str, Any],
-    disagreement_thresholds: Dict[str, float]
+    disagreement_thresholds: Dict[str, float],
 ) -> float:
     """Computes a penalty derived from source disagreement."""
 
@@ -10,7 +11,9 @@ def compute_disagreement_penalty(
         return 0.0
 
     source_variance = source_disagreement_diagnostics.get("source_variance", 0.0)
-    top_class_disagreement = source_disagreement_diagnostics.get("top_class_disagreement", False)
+    top_class_disagreement = source_disagreement_diagnostics.get(
+        "top_class_disagreement", False
+    )
 
     penalty = 0.0
 

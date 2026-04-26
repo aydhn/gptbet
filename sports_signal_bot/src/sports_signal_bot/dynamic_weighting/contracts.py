@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
 from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class WeightComponentRecord(BaseModel):
     trust_score: float = Field(default=0.0, ge=0.0, le=1.0)
@@ -12,6 +14,7 @@ class WeightComponentRecord(BaseModel):
     calibration_bonus: float = Field(default=0.0)
     combined_score: float = Field(default=0.0)
     explanation: str = Field(default="")
+
 
 class DynamicWeightRecord(BaseModel):
     event_id: str
@@ -27,9 +30,11 @@ class DynamicWeightRecord(BaseModel):
     warnings: List[str] = Field(default_factory=list)
     explanation_summary: str = Field(default="")
 
+
 class SourceWeightBreakdown(BaseModel):
     event_id: str
     weights: List[DynamicWeightRecord]
+
 
 class WeightingPolicyDefinition(BaseModel):
     name: str
@@ -46,12 +51,14 @@ class WeightingPolicyDefinition(BaseModel):
     health_component_weight: float = 1.0
     calibrated_bonus: float = 0.0
 
+
 class WeightingDecisionRecord(BaseModel):
     event_id: str
     sport: str
     market_type: str
     policy: str
     decisions: List[DynamicWeightRecord]
+
 
 class WeightingDiagnosticsRecord(BaseModel):
     event_id: str
@@ -62,6 +69,7 @@ class WeightingDiagnosticsRecord(BaseModel):
     fallback_used: bool = False
     average_trust: float = 0.0
     top_source: Optional[str] = None
+
 
 class WeightingManifest(BaseModel):
     run_id: str

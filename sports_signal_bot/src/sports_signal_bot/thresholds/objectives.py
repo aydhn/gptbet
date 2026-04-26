@@ -1,12 +1,16 @@
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 from .contracts import ThresholdCandidateRecord
+
 
 class ObjectiveEvaluator:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.objective_name = config.get("objective_name", "precision_oriented")
 
-    def evaluate(self, candidate: ThresholdCandidateRecord, metrics: Dict[str, float]) -> float:
+    def evaluate(
+        self, candidate: ThresholdCandidateRecord, metrics: Dict[str, float]
+    ) -> float:
         # Lower objective value is typically better, or we can maximize. Let's maximize.
 
         if self.objective_name == "precision_oriented":
@@ -14,8 +18,8 @@ class ObjectiveEvaluator:
 
         elif self.objective_name == "probabilistic_quality":
             # Maximize negative log loss (or minimize log loss)
-            log_loss = metrics.get("log_loss", float('inf'))
-            return -log_loss if log_loss != float('inf') else -999.0
+            log_loss = metrics.get("log_loss", float("inf"))
+            return -log_loss if log_loss != float("inf") else -999.0
 
         elif self.objective_name == "balanced":
             weight_quality = self.config.get("weight_quality", 0.7)

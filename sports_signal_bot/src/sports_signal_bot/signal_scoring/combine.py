@@ -1,10 +1,10 @@
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 from .contracts import SignalComponentRecord
 
+
 def combine_signal_components(
-    components: SignalComponentRecord,
-    weights: Dict[str, float]
+    components: SignalComponentRecord, weights: Dict[str, float]
 ) -> float:
     """Combine signal components into a single raw score."""
 
@@ -15,21 +15,30 @@ def combine_signal_components(
     score += components.confidence_score * weights.get("confidence_weight", 1.0)
 
     # Penalties
-    score -= components.uncertainty_penalty * weights.get("uncertainty_penalty_weight", 1.0)
-    score -= components.disagreement_penalty * weights.get("disagreement_penalty_weight", 1.0)
-    score -= components.data_quality_penalty * weights.get("data_quality_penalty_weight", 1.0)
-    score -= components.source_health_penalty * weights.get("source_health_penalty_weight", 1.0)
+    score -= components.uncertainty_penalty * weights.get(
+        "uncertainty_penalty_weight", 1.0
+    )
+    score -= components.disagreement_penalty * weights.get(
+        "disagreement_penalty_weight", 1.0
+    )
+    score -= components.data_quality_penalty * weights.get(
+        "data_quality_penalty_weight", 1.0
+    )
+    score -= components.source_health_penalty * weights.get(
+        "source_health_penalty_weight", 1.0
+    )
 
     # Regime adjustment
     score += components.regime_adjustment * weights.get("regime_adjustment_weight", 1.0)
 
     return score
 
+
 def normalize_signal_score(
     raw_score: float,
     mode: str = "0_to_100",
     min_expected: float = -2.0,
-    max_expected: float = 3.0
+    max_expected: float = 3.0,
 ) -> float:
     """Normalize the raw signal score to a standard range."""
 

@@ -1,5 +1,7 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from sports_signal_bot.policy.registry import PolicyStrategyRegistry
+
 
 class PolicyStrategyFactory:
     @staticmethod
@@ -40,6 +42,6 @@ class PolicyStrategyFactory:
             "candidate": strategy_setup["candidate"](config),
             "approval": strategy_setup["approval"](config),
             "extras": [cls(config) for cls in strategy_setup.get("extras", [])],
-            "config": config
+            "config": config,
         }
         return built

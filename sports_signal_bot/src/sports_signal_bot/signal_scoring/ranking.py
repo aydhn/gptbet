@@ -1,10 +1,10 @@
-from typing import List, Dict
+from typing import Dict, List
 
 from .contracts import SignalRankingRecord, SignalScoreRecord, SignalStatus
 
+
 def rank_signals(
-    scored_signals: List[SignalScoreRecord],
-    limit: int = -1
+    scored_signals: List[SignalScoreRecord], limit: int = -1
 ) -> List[SignalRankingRecord]:
     """Sorts and ranks signals based on final score and tie-breakers."""
 
@@ -22,9 +22,9 @@ def rank_signals(
             s.final_signal_score,
             s.components.edge_estimate,
             s.components.confidence_score,
-            -s.components.uncertainty_penalty
+            -s.components.uncertainty_penalty,
         ),
-        reverse=True
+        reverse=True,
     )
 
     ranked_records = []
@@ -56,7 +56,7 @@ def rank_signals(
             status=s.status,
             edge_estimate=s.components.edge_estimate,
             confidence_score=s.components.confidence_score,
-            uncertainty_penalty=s.components.uncertainty_penalty
+            uncertainty_penalty=s.components.uncertainty_penalty,
         )
         ranked_records.append(record)
 

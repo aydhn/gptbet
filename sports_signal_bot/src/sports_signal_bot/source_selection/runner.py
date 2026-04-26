@@ -1,31 +1,30 @@
-import uuid
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 
-from .contracts import (
-    SourceEligibilityRecord,
-    SourceSelectionDecision,
-    SourceSelectionManifest,
-    SourceSelectionDiagnostics
-)
 from .catalog import SourceCatalog
-from .metadata import SourceMetadataLoader
-from .scoring import SourceTrustScorer
 from .chain import SourcePolicyChain
-from .manifests import ManifestWriter
+from .contracts import (SourceEligibilityRecord, SourceSelectionDecision,
+                        SourceSelectionDiagnostics, SourceSelectionManifest)
 from .diagnostics import DiagnosticsBuilder
+from .manifests import ManifestWriter
+from .metadata import SourceMetadataLoader
 from .reporting import SelectionReporter
+from .scoring import SourceTrustScorer
+
 
 class SourceSelectionRunner:
-    def __init__(self,
-                 catalog: SourceCatalog,
-                 metadata_loader: SourceMetadataLoader,
-                 scorer: SourceTrustScorer,
-                 policy_chain: SourcePolicyChain,
-                 manifest_dir: Path,
-                 report_dir: Path):
+    def __init__(
+        self,
+        catalog: SourceCatalog,
+        metadata_loader: SourceMetadataLoader,
+        scorer: SourceTrustScorer,
+        policy_chain: SourcePolicyChain,
+        manifest_dir: Path,
+        report_dir: Path,
+    ):
         self.catalog = catalog
         self.metadata_loader = metadata_loader
         self.scorer = scorer
@@ -34,11 +33,13 @@ class SourceSelectionRunner:
         self.reporter = SelectionReporter(report_dir)
         self.diagnostics_builder = DiagnosticsBuilder()
 
-    def run_selection(self,
-                      event_id: str,
-                      sport: str,
-                      market_type: str,
-                      active_regimes: Optional[List[str]] = None) -> SourceSelectionManifest:
+    def run_selection(
+        self,
+        event_id: str,
+        sport: str,
+        market_type: str,
+        active_regimes: Optional[List[str]] = None,
+    ) -> SourceSelectionManifest:
 
         start_time = time.time()
         run_id = f"sel_{uuid.uuid4().hex[:8]}"
@@ -51,7 +52,9 @@ class SourceSelectionRunner:
         eligibility_records = []
 
         for cand in candidates:
-            meta = self.metadata_loader.load_metadata(cand.source_name, event_id, sport, market_type)
+            meta = self.metadata_loader.load_metadata(
+                cand.source_name, event_id, sport, market_type
+            )
             metadata_map[cand.source_name] = meta
 
             record = SourceEligibilityRecord(
@@ -60,8 +63,8 @@ class SourceSelectionRunner:
                 market_type=market_type,
                 source_name=cand.source_name,
                 source_family=cand.source_family,
-                is_available=True, # Start optimistic
-                is_eligible=True
+                is_available=True,  # Start optimistic
+                is_eligible=True,
             )
 
             # 3. Score
@@ -72,7 +75,7 @@ class SourceSelectionRunner:
             eligibility_records.append(record)
 
         # 4. Apply Policy Chain
-        context = {'fallback_used': False, 'active_regimes': active_regimes}
+        context = {"fallback_used": False, "active_regimes": active_regimes}
         self.policy_chain.run_chain(metadata_map, eligibility_records, context)
 
         # 5. Build Decisions
@@ -82,8 +85,12 @@ class SourceSelectionRunner:
             d = SourceSelectionDecision(
                 source_name=r.source_name,
                 is_selected=r.is_eligible,
-                reasoning="Eligible" if r.is_eligible else f"Excluded: {', '.join([ex.reason_code for ex in r.exclusion_reasons])}",
-                eligibility_record=r
+                reasoning=(
+                    "Eligible"
+                    if r.is_eligible
+                    else f"Excluded: {', '.join([ex.reason_code for ex in r.exclusion_reasons])}"
+                ),
+                eligibility_record=r,
             )
             decisions.append(d)
             if r.is_eligible:
@@ -93,7 +100,9 @@ class SourceSelectionRunner:
         summary = self.diagnostics_builder.build_summary(decisions, context)
         diag = SourceSelectionDiagnostics(
             execution_time_ms=(time.time() - start_time) * 1000.0,
-            fallback_decisions=["Fallback was triggered."] if context.get('fallback_used') else []
+            fallback_decisions=(
+                ["Fallback was triggered."] if context.get("fallback_used") else []
+            ),
         )
 
         # 7. Manifest
@@ -106,7 +115,7 @@ class SourceSelectionRunner:
             selected_sources=selected_sources,
             decisions=decisions,
             summary=summary,
-            diagnostics=diag
+            diagnostics=diag,
         )
 
         self.manifest_writer.write_manifest(manifest)

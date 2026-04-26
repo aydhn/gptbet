@@ -1,8 +1,12 @@
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from .contracts import ThresholdCandidateRecord, ThresholdFrontierRecord
 
+
 class ThresholdFrontierBuilder:
-    def __init__(self, candidates: List[ThresholdCandidateRecord], sport: str, market_type: str):
+    def __init__(
+        self, candidates: List[ThresholdCandidateRecord], sport: str, market_type: str
+    ):
         self.candidates = sorted(candidates, key=lambda c: c.score_threshold)
         self.sport = sport
         self.market_type = market_type
@@ -14,7 +18,7 @@ class ThresholdFrontierBuilder:
                 "score_threshold": c.score_threshold,
                 "coverage_rate": c.coverage_rate,
                 "accepted_count": float(c.accepted_count),
-                "objective_value": c.objective_value
+                "objective_value": c.objective_value,
             }
             if c.edge_threshold is not None:
                 pt["edge_threshold"] = c.edge_threshold
@@ -25,12 +29,12 @@ class ThresholdFrontierBuilder:
             curve.append(pt)
 
         return ThresholdFrontierRecord(
-            sport=self.sport,
-            market_type=self.market_type,
-            tradeoff_curve=curve
+            sport=self.sport, market_type=self.market_type, tradeoff_curve=curve
         )
 
-    def summarize_tradeoff_curve(self, record: ThresholdFrontierRecord) -> Dict[str, Any]:
+    def summarize_tradeoff_curve(
+        self, record: ThresholdFrontierRecord
+    ) -> Dict[str, Any]:
         if not record.tradeoff_curve:
             return {}
 
@@ -40,5 +44,5 @@ class ThresholdFrontierBuilder:
         return {
             "max_coverage": max_cov,
             "max_objective": max_obj,
-            "num_points": len(record.tradeoff_curve)
+            "num_points": len(record.tradeoff_curve),
         }

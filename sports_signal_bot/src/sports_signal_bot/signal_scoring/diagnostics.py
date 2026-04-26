@@ -1,16 +1,19 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from .contracts import SignalDiagnosticsRecord, SignalScoreRecord, SignalStatus
 
+
 def build_signal_diagnostics(
-    signals: List[SignalScoreRecord],
-    strategy_name: str
+    signals: List[SignalScoreRecord], strategy_name: str
 ) -> SignalDiagnosticsRecord:
     """Builds a diagnostic record summarizing the scoring process for a batch."""
 
     if not signals:
         return SignalDiagnosticsRecord(
-            event_id="batch", sport="unknown", market_type="unknown", strategy_used=strategy_name
+            event_id="batch",
+            sport="unknown",
+            market_type="unknown",
+            strategy_used=strategy_name,
         )
 
     # Summarize across the batch
@@ -26,5 +29,5 @@ def build_signal_diagnostics(
         entropy=0.0,
         max_disagreement=0.0,
         missing_features_ratio=0.0,
-        stale_components_ratio=0.0
+        stale_components_ratio=0.0,
     )

@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Tuple
-from sports_signal_bot.signal_scoring.contracts import SignalPolicyInputRecord
+from typing import Any, Dict, List, Tuple
+
 from sports_signal_bot.policy.contracts import DecisionRationaleRecord
+from sports_signal_bot.signal_scoring.contracts import SignalPolicyInputRecord
+
 
 class BasePolicyRule(ABC):
 
@@ -9,7 +11,9 @@ class BasePolicyRule(ABC):
         self.config = config
 
     @abstractmethod
-    def evaluate(self, signal: SignalPolicyInputRecord) -> Tuple[bool, List[DecisionRationaleRecord]]:
+    def evaluate(
+        self, signal: SignalPolicyInputRecord
+    ) -> Tuple[bool, List[DecisionRationaleRecord]]:
         """
         Evaluate the rule against a signal.
         Returns a tuple of (rule_matched, list of rationale records).

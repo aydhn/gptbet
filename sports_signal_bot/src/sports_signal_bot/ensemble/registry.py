@@ -2,11 +2,12 @@ from typing import Dict, Type
 
 from .strategies.base import BaseEnsembler
 from .strategies.best_source_fallback import BestSourceFallbackEnsembler
+from .strategies.dynamic_weighted_average import \
+    DynamicWeightedAverageEnsembler
 from .strategies.reliability_weighted import ReliabilityWeightedEnsembler
 from .strategies.rule_based_hybrid import RuleBasedHybridEnsembler
 from .strategies.simple_average import SimpleAverageEnsembler
 from .strategies.weighted_average import WeightedAverageEnsembler
-from .strategies.dynamic_weighted_average import DynamicWeightedAverageEnsembler
 
 
 class EnsembleRegistry:

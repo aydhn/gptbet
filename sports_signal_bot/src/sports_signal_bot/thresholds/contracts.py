@@ -4,12 +4,14 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
+
 class ThresholdStrategyType(str, Enum):
     SCORE_ONLY = "score_only"
     SCORE_AND_EDGE = "score_and_edge"
     CONSERVATIVE_QUALITY = "conservative_quality"
     COVERAGE_BALANCED = "coverage_balanced"
     REGIME_AWARE_PLACEHOLDER = "regime_aware_placeholder"
+
 
 class ThresholdCandidateRecord(BaseModel):
     market_type: str
@@ -33,6 +35,7 @@ class ThresholdCandidateRecord(BaseModel):
     warnings: List[str] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
+
 class ThresholdOptimizationResult(BaseModel):
     sport: str
     market_type: str
@@ -46,6 +49,7 @@ class ThresholdOptimizationResult(BaseModel):
 
     total_evaluated: int = 0
     warnings: List[str] = Field(default_factory=list)
+
 
 class ThresholdPolicyRecord(BaseModel):
     policy_name: str
@@ -63,10 +67,12 @@ class ThresholdPolicyRecord(BaseModel):
     fallback_rules: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
+
 class ThresholdSweepRecord(BaseModel):
     sport: str
     market_type: str
     candidates: List[ThresholdCandidateRecord] = Field(default_factory=list)
+
 
 class SelectivePredictionRecord(BaseModel):
     event_id: str
@@ -84,10 +90,12 @@ class SelectivePredictionRecord(BaseModel):
     threshold_values: Dict[str, float] = Field(default_factory=dict)
     component_snapshots: Dict[str, float] = Field(default_factory=dict)
 
+
 class ThresholdFrontierRecord(BaseModel):
     sport: str
     market_type: str
     tradeoff_curve: List[Dict[str, float]] = Field(default_factory=list)
+
 
 class ThresholdManifest(BaseModel):
     run_id: str

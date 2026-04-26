@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
 
 
-
 def validate_market_compatibility(
     source_classes: List[str], target_classes: List[str]
 ) -> bool:

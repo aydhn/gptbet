@@ -1,18 +1,19 @@
-from typing import List, Dict
+from typing import Dict, List
+
 import numpy as np
 
+
 def apply_weight_caps_and_floors(
-    weights: List[float],
-    min_floor: float = 0.0,
-    max_cap: float = 1.0
+    weights: List[float], min_floor: float = 0.0, max_cap: float = 1.0
 ) -> List[float]:
     return [max(min_floor, min(max_cap, w)) for w in weights]
+
 
 def normalize_weights(
     weights: List[float],
     temperature: float = 1.0,
     min_floor: float = 0.0,
-    max_cap: float = 1.0
+    max_cap: float = 1.0,
 ) -> List[float]:
     if not weights:
         return []
@@ -24,7 +25,7 @@ def normalize_weights(
 
     # Apply temperature
     if temperature != 1.0 and temperature > 0:
-        powered = [pow(w, 1.0/temperature) for w in weights]
+        powered = [pow(w, 1.0 / temperature) for w in weights]
         sum_powered = sum(powered)
         if sum_powered > 0:
             weights = [w / sum_powered for w in powered]
@@ -43,7 +44,10 @@ def normalize_weights(
 
     return [1.0 / len(weights)] * len(weights)
 
-def explain_weighting_decision(source_name: str, final_weight: float, components: 'WeightComponentRecord') -> str:
+
+def explain_weighting_decision(
+    source_name: str, final_weight: float, components: "WeightComponentRecord"
+) -> str:
     parts = []
     parts.append(f"{source_name}: Final={final_weight:.3f}")
     parts.append(f"Trust={components.trust_score:.2f}")

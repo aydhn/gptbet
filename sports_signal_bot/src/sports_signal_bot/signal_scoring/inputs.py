@@ -8,6 +8,7 @@ from sports_signal_bot.stacker.contracts import MetaPredictionRecord
 
 class SignalInputBuilderContext(BaseModel):
     """Context required to build signal candidates."""
+
     # From phase 10/11
     ensemble_output: Optional[EnsembleOutputRecord] = None
     stacker_output: Optional[MetaPredictionRecord] = None
@@ -32,7 +33,9 @@ class SignalInputBuilder:
     """Helper to construct SignalCandidateRecord from various phase outputs."""
 
     @staticmethod
-    def extract_final_probabilities(context: SignalInputBuilderContext) -> Dict[str, float]:
+    def extract_final_probabilities(
+        context: SignalInputBuilderContext,
+    ) -> Dict[str, float]:
         if context.stacker_output:
             return context.stacker_output.final_probabilities
         elif context.ensemble_output:
@@ -53,12 +56,12 @@ class SignalInputBuilder:
             return {
                 "event_id": context.stacker_output.event_id,
                 "sport": context.stacker_output.sport,
-                "market_type": context.stacker_output.market_type
+                "market_type": context.stacker_output.market_type,
             }
         elif context.ensemble_output:
             return {
                 "event_id": context.ensemble_output.event_id,
                 "sport": context.ensemble_output.sport,
-                "market_type": context.ensemble_output.market_type
+                "market_type": context.ensemble_output.market_type,
             }
         return {"event_id": "unknown", "sport": "unknown", "market_type": "unknown"}

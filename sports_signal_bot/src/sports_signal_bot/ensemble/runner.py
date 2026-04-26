@@ -1,7 +1,7 @@
 import uuid
 from typing import Any, Dict, List
 
-from .contracts import (EnsembleInputRecord, EnsembleOutputRecord)
+from .contracts import EnsembleInputRecord, EnsembleOutputRecord
 from .factory import EnsembleFactory
 from .manifests import EnsembleRunManifest
 from .policies import apply_calibrated_preference_policy

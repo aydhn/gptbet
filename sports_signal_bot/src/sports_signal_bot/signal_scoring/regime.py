@@ -1,8 +1,8 @@
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 
 def compute_regime_adjustment(
-    regime_assignments: List[Dict[str, Any]],
-    policies: Dict[str, Any]
+    regime_assignments: List[Dict[str, Any]], policies: Dict[str, Any]
 ) -> float:
     """Computes an adjustment based on assigned regimes."""
 

@@ -3,11 +3,13 @@ import pytest
 from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.labels.contracts import LabelValidityStatus
 from sports_signal_bot.results.contracts import EventResultRecord
-from sports_signal_bot.results.resolvers import (resolve_1x2,
-                                                 resolve_basketball_moneyline,
-                                                 resolve_basketball_totals,
-                                                 resolve_btts,
-                                                 resolve_over_under)
+from sports_signal_bot.results.resolvers import (
+    resolve_1x2,
+    resolve_basketball_moneyline,
+    resolve_basketball_totals,
+    resolve_btts,
+    resolve_over_under,
+)
 
 
 def test_resolve_1x2():

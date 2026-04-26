@@ -1,8 +1,12 @@
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
+
 import numpy as np
-from .base import BaseThresholdOptimizer
-from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
 from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord
+from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+
+from .base import BaseThresholdOptimizer
+
 
 class ScoreOnlyThresholdOptimizer(BaseThresholdOptimizer):
     def generate_grid(self) -> List[Dict[str, float]]:
@@ -11,7 +15,7 @@ class ScoreOnlyThresholdOptimizer(BaseThresholdOptimizer):
 
         # Guard for potentially missing values
         if not bounds or len(bounds) < 2:
-             bounds = [0.0, 1.0]
+            bounds = [0.0, 1.0]
 
         grid = []
         for val in np.linspace(bounds[0], bounds[1], steps):
@@ -19,7 +23,9 @@ class ScoreOnlyThresholdOptimizer(BaseThresholdOptimizer):
 
         return grid
 
-    def apply_threshold(self, signals: List[SignalScoreRecord], params: Dict[str, float]) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
+    def apply_threshold(
+        self, signals: List[SignalScoreRecord], params: Dict[str, float]
+    ) -> Tuple[List[SignalScoreRecord], List[SignalScoreRecord]]:
         score_threshold = params.get("score_threshold", 0.0)
 
         accepted = []
