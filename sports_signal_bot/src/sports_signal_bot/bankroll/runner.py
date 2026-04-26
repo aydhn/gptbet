@@ -63,6 +63,11 @@ class BankrollRunner:
                  stake_warnings = ["No financial shadow active"]
                  warnings.extend(stake_warnings)
             else:
+                # Inject dynamic state for advanced sizing
+                if hasattr(self.strategy, 'sizing_runner'):
+                    decision.current_drawdown_pct = self.drawdown_analyzer.max_drawdown_pct # simplistic, ideally current
+                    decision.current_loss_streak = self.streak_analyzer.longest_loss_streak # simplistic, ideally current
+
                 raw_stake, stake_warnings = self.strategy.compute_stake(decision, current_bankroll)
                 warnings.extend(stake_warnings)
 

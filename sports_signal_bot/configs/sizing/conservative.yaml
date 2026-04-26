@@ -1,0 +1,27 @@
+default_sizing_strategy: "conservative_research"
+
+fractional_kelly_default: 0.125
+fractional_kelly_by_market: {}
+
+max_fraction_per_decision: 0.02
+min_stake_units: 1.0
+max_stake_units: 100.0
+
+confidence_multiplier_bounds: [0.2, 1.0] # No boosting
+uncertainty_penalty_bounds: [0.0, 0.8]
+disagreement_penalty_bounds: [0.0, 0.8]
+
+drawdown_throttle_bands:
+  0.05: 0.5
+  0.10: 0.2
+
+losing_streak_throttle_bands:
+  3: 0.5
+  5: 0.2
+
+action_class_fraction_caps:
+  approved_candidate: 0.02
+  candidate: 0.01
+
+bankroll_floor_buffer: 500.0
+missing_odds_policy: "skip"

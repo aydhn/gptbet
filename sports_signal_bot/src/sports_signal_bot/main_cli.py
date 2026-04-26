@@ -165,6 +165,15 @@ def preview_period_regimes(
     typer.echo("Saved to results/regimes/period_regimes.csv")
 
 
+
+@app.command()
+def list_sizing_strategies():
+    """List all available advanced sizing strategies."""
+    from sports_signal_bot.sizing.registry import SizingRegistry
+    print("Available Advanced Sizing Strategies:")
+    for s in SizingRegistry.list_available():
+        print(f"  - {s}")
+
 if __name__ == "__main__":
     app()
 

@@ -1,0 +1,31 @@
+default_sizing_strategy: "fractional_kelly"
+
+fractional_kelly_default: 0.25
+fractional_kelly_by_market:
+  1x2: 0.25
+  ou_2_5: 0.25
+
+max_fraction_per_decision: 0.05
+min_stake_units: 1.0
+max_stake_units: 500.0
+
+confidence_multiplier_bounds: [0.5, 1.2]
+uncertainty_penalty_bounds: [0.0, 0.5]
+disagreement_penalty_bounds: [0.0, 0.5]
+
+drawdown_throttle_bands:
+  0.10: 0.8  # 10% DD -> multiply size by 0.8
+  0.20: 0.5  # 20% DD -> multiply size by 0.5
+  0.30: 0.2
+
+losing_streak_throttle_bands:
+  5: 0.8
+  10: 0.5
+
+action_class_fraction_caps:
+  approved_candidate: 0.05
+  candidate: 0.02
+  watchlist: 0.0
+
+bankroll_floor_buffer: 100.0
+missing_odds_policy: "skip"
