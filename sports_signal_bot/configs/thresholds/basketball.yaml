@@ -1,0 +1,11 @@
+sweep_engine:
+  objective:
+    objective_name: "balanced"
+    weight_quality: 0.6
+    weight_coverage: 0.4
+  constraints:
+    minimum_accepted_count: 5
+    minimum_coverage_rate: 0.15
+  grid:
+    score_threshold_bounds: [0.4, 0.85]
+    grid_steps: 10

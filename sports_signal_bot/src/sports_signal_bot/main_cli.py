@@ -428,3 +428,186 @@ def register_signal_scoring_commands(app: typer.Typer):
             except Exception:
                 desc = "No description available."
             console.print(f"  - [cyan]{name}[/cyan]: {desc}")
+
+@app.command()
+def list_threshold_strategies():
+    """Lists available threshold optimization strategies"""
+    from sports_signal_bot.thresholds.registry import ThresholdStrategyRegistry
+    from sports_signal_bot.thresholds.factory import ThresholdStrategyFactory
+
+    strategies = ThresholdStrategyRegistry.list_strategies()
+    typer.echo(f"Available Threshold Strategies ({len(strategies)}):")
+    for name, strategy_class in strategies.items():
+        typer.echo(f"  - {name} ({strategy_class.__name__})")
+
+@app.command()
+def optimize_thresholds(
+    sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)"),
+    strategy: str = typer.Option("score_only", help="Optimization strategy")
+):
+    """Run threshold optimization and generate frontier"""
+    typer.echo(f"Running threshold optimization for {sport} - {market} using {strategy} strategy")
+
+    import yaml
+    import os
+    import pandas as pd
+    from sports_signal_bot.thresholds.runner import ThresholdRunner
+    from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
+
+    config_path = f"configs/thresholds/{sport}.yaml"
+    if not os.path.exists(config_path):
+        config_path = "configs/thresholds/default.yaml"
+
+    try:
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+    except FileNotFoundError:
+        config = {
+            "sweep_engine": {
+                "objective": {"objective_name": "precision_oriented"},
+                "constraints": {"minimum_accepted_count": 1},
+                "grid": {"score_threshold_bounds": [0.0, 1.0], "grid_steps": 10}
+            }
+        }
+
+    # Mock data
+    signals = [
+        SignalScoreRecord(
+            event_id=f"evt_{i}",
+            sport=sport,
+            market_type=market,
+            selection="test",
+            final_probability=0.6,
+            components=SignalComponentRecord(edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1),
+            final_signal_score=0.5 + (i * 0.05),
+            strategy_name="test"
+        ) for i in range(10)
+    ]
+
+    labels_df = pd.DataFrame([
+        {"event_id": f"evt_{i}", "target_value": "test" if i % 2 == 0 else "other"}
+        for i in range(10)
+    ])
+
+    runner = ThresholdRunner(config)
+    result = runner.optimize(strategy, signals, labels_df, sport, market)
+
+    typer.echo(f"Evaluated {result.total_evaluated} threshold candidates.")
+
+    if result.best_candidate:
+        typer.echo(f"Best Candidate:")
+        typer.echo(f"  Score Threshold: {result.best_candidate.score_threshold:.4f}")
+        typer.echo(f"  Objective ({result.objective_name}): {result.best_candidate.objective_value:.4f}")
+        typer.echo(f"  Accepted Count: {result.best_candidate.accepted_count}")
+        typer.echo(f"  Coverage Rate: {result.best_candidate.coverage_rate:.2%}")
+        for k, v in result.best_candidate.quality_metrics.items():
+            typer.echo(f"  {k}: {v:.4f}")
+    else:
+        typer.echo("No valid threshold found that satisfies constraints.")
+        for w in result.warnings:
+            typer.echo(f"  Warning: {w}")
+
+@app.command()
+def preview_threshold_frontier(
+    sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+):
+    """Preview threshold tradeoff frontier"""
+    typer.echo(f"Previewing threshold frontier for {sport} - {market}")
+    typer.echo("Generating dummy candidates and building frontier...")
+
+    from sports_signal_bot.thresholds.contracts import ThresholdCandidateRecord
+    from sports_signal_bot.thresholds.frontier import ThresholdFrontierBuilder
+
+    candidates = [
+        ThresholdCandidateRecord(
+            market_type=market,
+            sport=sport,
+            score_threshold=0.5 + (i * 0.05),
+            accepted_count=100 - (i * 10),
+            rejected_count=i * 10,
+            coverage_rate=1.0 - (i * 0.1),
+            acceptance_rate=1.0 - (i * 0.1),
+            objective_value=0.5 + (i * 0.02),
+            quality_metrics={"accuracy": 0.5 + (i * 0.02)}
+        ) for i in range(10)
+    ]
+
+    builder = ThresholdFrontierBuilder(candidates, sport, market)
+    frontier = builder.build()
+    summary = builder.summarize_tradeoff_curve(frontier)
+
+    import json
+    typer.echo(json.dumps(frontier.model_dump(), indent=2))
+    typer.echo(f"Summary: {summary}")
+
+@app.command()
+def preview_accepted_signals(
+    sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+):
+    """Preview accepted signals using a test policy"""
+    typer.echo(f"Previewing accepted signals for {sport} - {market}")
+
+    from sports_signal_bot.thresholds.runner import ThresholdRunner
+    from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
+    from sports_signal_bot.signal_scoring.contracts import SignalScoreRecord, SignalComponentRecord
+
+    runner = ThresholdRunner({})
+    policy = ThresholdPolicyRecord(
+        policy_name="test_policy",
+        sport=sport,
+        market_type=market,
+        signal_strategy="score_only",
+        threshold_type="min_signal_score",
+        selected_threshold=0.7,
+        optimization_objective="balanced"
+    )
+
+    signals = [
+        SignalScoreRecord(
+            event_id=f"evt_{i}",
+            sport=sport,
+            market_type=market,
+            selection="test",
+            final_probability=0.6,
+            components=SignalComponentRecord(edge_estimate=0.05, confidence_score=0.8, uncertainty_penalty=0.1),
+            final_signal_score=0.5 + (i * 0.05),
+            strategy_name="test"
+        ) for i in range(10)
+    ]
+
+    results = runner.apply_policy(policy, signals)
+
+    accepted = [r for r in results if r.is_accepted]
+    rejected = [r for r in results if not r.is_accepted]
+
+    typer.echo(f"Total Signals: {len(results)}")
+    typer.echo(f"Accepted Signals: {len(accepted)}")
+    typer.echo(f"Rejected Signals: {len(rejected)}")
+
+@app.command()
+def preview_threshold_policy(
+    sport: str = typer.Option(..., help="Sport (e.g., football, basketball)"),
+    market: str = typer.Option(..., help="Market type (e.g., 1x2, moneyline)")
+):
+    """Preview a generated threshold policy"""
+    typer.echo(f"Previewing threshold policy for {sport} - {market}")
+
+    from sports_signal_bot.thresholds.contracts import ThresholdPolicyRecord
+    policy = ThresholdPolicyRecord(
+        policy_name=f"{sport}_{market}_policy",
+        sport=sport,
+        market_type=market,
+        signal_strategy="score_and_edge",
+        threshold_type="min_score_and_edge",
+        selected_threshold=0.65,
+        edge_threshold=0.02,
+        optimization_objective="balanced",
+        training_reference_window="last_30_days",
+        minimum_quality_constraints={"min_coverage": 0.1}
+    )
+
+    import json
+    typer.echo(json.dumps(policy.model_dump(), indent=2, default=str))

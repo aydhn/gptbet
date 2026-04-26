@@ -1,0 +1,16 @@
+# Default configuration for Threshold Optimization
+
+sweep_engine:
+  objective:
+    objective_name: "balanced"
+    weight_quality: 0.7
+    weight_coverage: 0.3
+  constraints:
+    minimum_accepted_count: 5
+    minimum_coverage_rate: 0.05
+    maximum_average_uncertainty: 0.4
+    minimum_average_edge: 0.0
+    maximum_log_loss: 1.0
+  grid:
+    score_threshold_bounds: [0.3, 0.9]
+    grid_steps: 15
