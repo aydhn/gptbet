@@ -1,0 +1,70 @@
+{
+  "scenario_id": "test",
+  "period_performances": [
+    {
+      "period_id": 1,
+      "metrics_by_source": {
+        "ensemble": {
+          "log_loss": 0.63,
+          "accuracy": 0.57
+        }
+      },
+      "best_source": "ensemble",
+      "ensemble_lift": 0.0,
+      "stacker_lift": 0.0,
+      "calibration_gain": 0.0,
+      "num_events_evaluated": 30
+    },
+    {
+      "period_id": 2,
+      "metrics_by_source": {
+        "ensemble": {
+          "log_loss": 0.63,
+          "accuracy": 0.57
+        }
+      },
+      "best_source": "ensemble",
+      "ensemble_lift": 0.0,
+      "stacker_lift": 0.0,
+      "calibration_gain": 0.0,
+      "num_events_evaluated": 30
+    },
+    {
+      "period_id": 3,
+      "metrics_by_source": {
+        "ensemble": {
+          "log_loss": 0.63,
+          "accuracy": 0.57
+        }
+      },
+      "best_source": "ensemble",
+      "ensemble_lift": 0.0,
+      "stacker_lift": 0.0,
+      "calibration_gain": 0.0,
+      "num_events_evaluated": 30
+    }
+  ],
+  "log_loss_trend": {
+    "ensemble": [
+      0.63,
+      0.63,
+      0.63
+    ]
+  },
+  "accuracy_trend": {
+    "ensemble": [
+      0.57,
+      0.57,
+      0.57
+    ]
+  },
+  "brier_trend": {},
+  "coverage_trend": {},
+  "cumulative_leaderboard": {
+    "ensemble": {
+      "log_loss": 0.63,
+      "accuracy": 0.57
+    }
+  },
+  "warnings": []
+}

@@ -2,6 +2,7 @@ import os
 import uuid
 
 import typer
+from sports_signal_bot.main_cli_refresh import app as refresh_app
 import yaml
 
 # Dummy imports to simulate classifiers registration
@@ -173,6 +174,8 @@ def list_sizing_strategies():
     print("Available Advanced Sizing Strategies:")
     for s in SizingRegistry.list_available():
         print(f"  - {s}")
+
+app.add_typer(refresh_app, name="refresh")
 
 if __name__ == "__main__":
     app()

@@ -290,3 +290,30 @@ The Telegram Dispatch layer acts as the operator-facing interface, translating i
 - Safe dry-run previews without active Telegram sending
 - Retries on transient delivery failures
 - Config-driven (channels, noise limits, routing rules)
+
+## Phase 27: Refresh Controller
+
+The Refresh Controller acts as the operational brain that responds to monitoring anomalies. When the global health score drops or artifacts become stale, the refresh controller classifies the problem, builds a safe remediation plan, and executes low-risk actions automatically.
+
+Key concepts:
+- **Low-Risk Auto-Refresh**: Safe operations like reloading the artifact catalog, resolving fallback chains, or invalidating caches. These run automatically to restore system health without requiring retraining.
+- **Manual Review Required**: High-risk actions like model retraining or threshold recalibration are explicitly blocked from automatic execution and require operator approval.
+- **Freeze Mode vs Degrade Mode**:
+  - *Freeze* halts critical operations (like signal dispatch) when the system is in an unsafe state.
+  - *Degrade* allows operations to continue but falls back to safer, simpler mechanisms (e.g., using default ensembles instead of complex stackers).
+
+**Example CLI Commands:**
+```bash
+# Run refresh controller normally
+python -m sports_signal_bot.main_cli_refresh run-refresh-controller --sport football --market 1x2
+
+# Dry run to see what would happen without executing
+python -m sports_signal_bot.main_cli_refresh run-refresh-controller --sport football --market ou_2_5 --dry-run
+
+# Run in conservative mode
+python -m sports_signal_bot.main_cli_refresh run-refresh-controller --sport basketball --market moneyline --mode conservative_ops
+
+# Preview a freeze or degrade state
+python -m sports_signal_bot.main_cli_refresh preview-freeze-state --sport football --market ou_2_5
+python -m sports_signal_bot.main_cli_refresh preview-degrade-state --sport basketball --market moneyline
+```
