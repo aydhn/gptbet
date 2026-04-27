@@ -1,0 +1,44 @@
+{
+  "run_id": "calib_5aa91337",
+  "source_model_run_id": null,
+  "sport": "football",
+  "market_type": "ou_2_5",
+  "label_name": "football_ou_2_5",
+  "calibration_method": "binary_identity",
+  "class_labels": [
+    "0",
+    "1"
+  ],
+  "calibration_dataset_size": 10,
+  "raw_metrics": {
+    "log_loss": 0.7803238741323343,
+    "brier_score": 0.2899999999999999,
+    "ece": 0.19999999999999996
+  },
+  "calibrated_metrics": {
+    "log_loss": 0.7803238741323343,
+    "brier_score": 0.2899999999999999,
+    "ece": 0.19999999999999996
+  },
+  "delta_metrics": {
+    "log_loss": 0.0,
+    "brier_score": 0.0,
+    "ece": 0.0
+  },
+  "calibrator_artifact_path": "/app/sports_signal_bot/data/processed/calibration/football/ou_2_5/calib_5aa91337/calibrator.joblib",
+  "reliability_summary_path": "/app/sports_signal_bot/data/processed/calibration/football/ou_2_5/calib_5aa91337/reliability_bins.json",
+  "warnings": [
+    "Calibration did not improve log loss or ECE significantly."
+  ],
+  "config_snapshot": {
+    "sport": "football",
+    "market_type": "ou_2_5",
+    "label_name": "football_ou_2_5",
+    "method": "binary_identity",
+    "class_labels": [
+      "0",
+      "1"
+    ]
+  },
+  "timestamp_utc": "2026-04-27T21:32:43.666201+00:00"
+}

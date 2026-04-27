@@ -1,0 +1,34 @@
+{
+  "period_id": 3,
+  "scenario_id": "test",
+  "window": {
+    "period_id": 3,
+    "train_start": "2023-01-01",
+    "train_end": "2023-01-30",
+    "calibration_start": null,
+    "calibration_end": null,
+    "forward_start": "2023-01-31",
+    "forward_end": "2023-02-01",
+    "should_retrain": true,
+    "should_recalibrate": true,
+    "should_reensemble": true,
+    "should_refresh_stacker": false
+  },
+  "status": "success",
+  "retrained_model_names": [],
+  "reused_model_names": [],
+  "calibrator_refresh_status": "refreshed",
+  "ensemble_refresh_status": "refreshed",
+  "stacker_refresh_status": "reused",
+  "evaluation_summary": {
+    "num_events_evaluated": 30,
+    "metrics_by_source": {
+      "ensemble": {
+        "log_loss": 0.63,
+        "accuracy": 0.57
+      }
+    }
+  },
+  "warnings": [],
+  "output_artifact_paths": {}
+}
