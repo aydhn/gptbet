@@ -1,0 +1,7 @@
+duplicate_suppression_window_minutes: 60
+max_messages_per_slot: 100
+bundle_low_priority_messages: true
+include_review_queue: true
+quiet_mode_rules:
+  enabled: false
+critical_alarm_bypass: true

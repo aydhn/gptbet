@@ -1,0 +1,6 @@
+severity_to_channel:
+  silent: debug_channel
+  info: summaries_channel
+  warning: warnings_channel
+  error: alarms_channel
+  critical: alarms_channel

@@ -278,3 +278,15 @@ While the sizing engine finds the optimal stake for a single decision, the portf
 - **Daily Risk Budget**: Limits the absolute percentage of the bankroll exposed in a single day.
 - **Run Portfolio**: Use `python -m sports_signal_bot.main portfolio run-portfolio --sport football --market 1x2` to see it in action.
 - **Concentration & Correlation Guardrails**: Employs placeholders to cap heavy exposure in a single sport/market, and prevents double-dipping on highly correlated markets within the exact same event.
+
+## Phase 25: Telegram Dispatch Layer
+
+The Telegram Dispatch layer acts as the operator-facing interface, translating inference output (decision and review packets) into operator-friendly messages.
+
+**Key features:**
+- Separates messages logically into routing channels (decisions, review queue, summaries, warnings, alarms)
+- Prevents spam via noise control and duplicate suppression window
+- Enables operator review queue workflow for uncertain but high-potential bets
+- Safe dry-run previews without active Telegram sending
+- Retries on transient delivery failures
+- Config-driven (channels, noise limits, routing rules)

@@ -1,0 +1,4 @@
+dispatch_profiles:
+  short: true
+  standard: true
+  verbose: false
