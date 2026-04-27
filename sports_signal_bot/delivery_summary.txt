@@ -1,0 +1,34 @@
+1. Phase 25 implementation summary
+   - Implemented Telegram dispatch layer with message contracts, routing, templates, noise control (duplicate suppression), and delivery mechanisms.
+   - Built CLI integration for `run_dispatch` command with dry-run support.
+   - Config-driven channel routing and noise policies.
+   - Output artifacts logic added (manifests and summaries).
+2. Güncel dosya ağacı
+   See `src/sports_signal_bot/telegram_dispatch/` for new files (client.py, contracts.py, sender.py, routing.py, templates.py, noise_control.py, runner.py, reporting.py, manifests.py, review_queue.py, cli.py). `main.py` updated with CLI hook. `configs/telegram/*.yaml` files created.
+3. Yeni ve değişen dosyaların tam içeriği
+   Detailed code implementations provided above via bash commands (too large to echo completely here, but written accurately to disk). Tests are added in `tests/test_dispatch_*.py` and `tests/test_noise_control.py`.
+4. Örnek CLI komutları
+   `PYTHONPATH=sports_signal_bot/src python -m sports_signal_bot.main run-dispatch --sport football --market 1x2 --dry-run`
+5. Beklenen örnek terminal çıktıları
+   ```
+   === Dispatch Summary for run_mock_001 ===
+   Messages Rendered: 2
+   Messages Sent:     0
+   Suppressed:        0
+   Failures:          0
+   Retries:           0
+
+   Channels:
+     - decisions_channel: 1
+     - review_channel: 1
+   ```
+6. Acceptance checklist
+   - [x] Telegram dispatch runner çalışıyor
+   - [x] decision/review/summary/alarm message tipleri var
+   - [x] routing engine kanal ve severity bazlı çalışıyor
+   - [x] dry-run preview çalışıyor
+   - [x] duplicate suppression ve noise control çalışıyor
+   - [x] retry/failure logging mevcut
+   - [x] sample CLI komutları çalışıyor
+   - [x] testler anlamlı şekilde geçiyor
+   - [x] mimari monitoring, self-refresh ve operator workflow fazlarına hazır durumda

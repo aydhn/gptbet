@@ -1,0 +1,5 @@
+enabled: true
+dry_run_default: true
+parse_mode: MarkdownV2
+retry_count: 3
+timeout_seconds: 10

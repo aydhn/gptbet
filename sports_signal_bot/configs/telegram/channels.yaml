@@ -1,0 +1,7 @@
+channel_aliases:
+  decisions_channel: TELEGRAM_DECISIONS_CHAT_ID
+  review_channel: TELEGRAM_REVIEW_CHAT_ID
+  summaries_channel: TELEGRAM_SUMMARIES_CHAT_ID
+  warnings_channel: TELEGRAM_WARNINGS_CHAT_ID
+  alarms_channel: TELEGRAM_ALARMS_CHAT_ID
+  debug_channel: TELEGRAM_DEBUG_CHAT_ID
