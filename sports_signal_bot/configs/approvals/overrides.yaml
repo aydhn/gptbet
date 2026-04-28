@@ -1,0 +1,12 @@
+override_default_expiry_hours: 24
+allow_single_use_overrides: true
+
+override_precedence:
+  force_freeze: 100
+  force_degrade: 90
+  block_market_temporarily: 80
+  force_stable_only_mode: 70
+  force_review_only_dispatch: 60
+  force_debug_dispatch: 50
+  allow_slot_run_once: 40
+  suppress_noncritical_alerts: 30

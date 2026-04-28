@@ -1,0 +1,16 @@
+review_priority_rules:
+  critical:
+    - severity == 'critical'
+    - request_type == 'approve_freeze_release'
+  high:
+    - severity == 'high'
+    - request_type == 'approve_refresh_plan'
+  low:
+    - severity == 'low'
+  medium:
+    - default
+
+review_queue_escalation_thresholds:
+  critical_hours: 1
+  high_hours: 4
+  medium_hours: 24

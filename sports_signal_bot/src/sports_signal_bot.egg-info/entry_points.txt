@@ -1,0 +1,2 @@
+[console_scripts]
+sports-bot = sports_signal_bot.main:app

@@ -1,9 +1,31 @@
+Metadata-Version: 2.4
+Name: sports_signal_bot
+Version: 0.1.0
+Summary: Sports forecasting and signal bot
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pyyaml>=6.0.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: joblib>=1.3.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: typer>=0.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+
 # Sports Signal Bot
 
 A modular, extensible, and scalable sports forecasting and signal bot built in Python. Designed to be a foundation for building complex, predictive models for football and basketball, with strong emphasis on local execution, open-source tools, and solid software engineering practices.
 
-n## Operator Approval Workflow
-This project includes a fully auditable operator approval workflow. It implements a human-in-the-loop mechanism for high-risk actions. The review queue handles interventions like freeze releases and manual overrides, recording decisions in an append-friendly ledger. For details, see `docs/operator_approval_workflow_architecture.md`.
 ## Project Scope (Phase 1)
 This repository represents Phase 1 of the development.
 

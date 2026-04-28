@@ -1,0 +1,23 @@
+[
+  {
+    "event_id": "evt_1",
+    "sport": "football",
+    "market_type": "1x2",
+    "teams": "Team A vs Team B",
+    "final_probabilities": {
+      "home": 0.46287878787878795,
+      "draw": 0.26856060606060606,
+      "away": 0.26856060606060606
+    },
+    "selected_side": "home",
+    "signal_score": 0.46287878787878795,
+    "threshold_status": "failed",
+    "policy_action_class": "rejected_candidate",
+    "final_allocated_stake": 0.0,
+    "rationale_summary": "Score 0.46 below threshold",
+    "key_warnings": [],
+    "artifact_chain_summary": {
+      "source": "stacker"
+    }
+  }
+]

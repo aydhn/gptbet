@@ -32,6 +32,8 @@ from sports_signal_bot.regimes import (RegimeConfig, RegimeFactory,
                                        generate_regime_summary)
 
 app = typer.Typer(help="Sports Signal Bot CLI")
+from sports_signal_bot.main_approvals_cli import app as approvals_app
+app.add_typer(approvals_app, name="approvals", help="Operator approvals and governance commands")
 from sports_signal_bot.main_cli import *
 from sports_signal_bot.main_cli import register_signal_scoring_commands
 
@@ -2533,6 +2535,8 @@ from pathlib import Path
 # Instead, we define the commands we want to add and let them be imported
 
 app = typer.Typer()
+from sports_signal_bot.main_approvals_cli import app as approvals_app
+app.add_typer(approvals_app, name="approvals", help="Operator approvals and governance commands")
 
 @app.command()
 def run_dispatch(

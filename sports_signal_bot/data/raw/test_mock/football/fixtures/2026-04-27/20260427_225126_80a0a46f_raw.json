@@ -1,0 +1,35 @@
+[
+  {
+    "source_event_id": "mock_football_1",
+    "sport": "football",
+    "league": "mock_league",
+    "season": "2023",
+    "event_datetime_utc": "2026-04-28T22:51:26.713316Z",
+    "home_team": "Home_1",
+    "away_team": "Away_1",
+    "status": "UPCOMING",
+    "venue": "Stadium_1"
+  },
+  {
+    "source_event_id": "mock_football_2",
+    "sport": "football",
+    "league": "mock_league",
+    "season": "2023",
+    "event_datetime_utc": "2026-04-29T22:51:26.713316Z",
+    "home_team": "Home_2",
+    "away_team": "Away_2",
+    "status": "UPCOMING",
+    "venue": "Stadium_2"
+  },
+  {
+    "source_event_id": "mock_football_3",
+    "sport": "football",
+    "league": "mock_league",
+    "season": "2023",
+    "event_datetime_utc": "2026-04-30T22:51:26.713316Z",
+    "home_team": "Home_3",
+    "away_team": "Away_3",
+    "status": "UPCOMING",
+    "venue": "Stadium_3"
+  }
+]

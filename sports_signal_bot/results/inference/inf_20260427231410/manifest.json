@@ -1,0 +1,38 @@
+{
+  "run_context": {
+    "run_id": "inf_20260427231410",
+    "run_timestamp_utc": "2026-04-27 23:14:10.652121+00:00",
+    "slot_id": "midday",
+    "target_date": "2026-04-27",
+    "inference_mode": "research_live_like_mode",
+    "artifact_snapshot_policy": "latest_stable",
+    "event_selection_policy": "slot_window",
+    "data_freshness_summary": {},
+    "warnings": []
+  },
+  "universe_size": 1,
+  "resolved_artifact_chains": {
+    "primary": {
+      "sport": "football",
+      "market_type": "1x2",
+      "feature_config_id": "feat_football_1x2_v1.0",
+      "model_artifact_id": "mod_football_1x2_v1.0",
+      "calibrator_artifact_id": "calib_football_1x2_v1.0",
+      "ensemble_artifact_id": "ens_football_1x2_v1.0",
+      "stacker_artifact_id": "stack_football_1x2_v1.0",
+      "threshold_policy_id": "thresh_football_1x2_v1.0",
+      "policy_artifact_id": "exec_football_1x2_v1.0",
+      "sizing_strategy_id": "size_football_1x2_v1.0",
+      "portfolio_strategy_id": "port_football_1x2_v1.0",
+      "warnings": [],
+      "is_valid": true
+    }
+  },
+  "fallback_counts": {
+    "calibrator_fallback": 0
+  },
+  "final_action_class_distribution": {
+    "rejected_candidate": 1
+  },
+  "warnings": []
+}
