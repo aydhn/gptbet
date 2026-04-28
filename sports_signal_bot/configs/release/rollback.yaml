@@ -1,0 +1,5 @@
+rollback_policies:
+  allow_rollback: true
+  require_previous_stable: true
+emergency_rollback_rules:
+  auto_approve: true

@@ -1,0 +1,4 @@
+default_release_strategy: conservative_promotion
+direct_promotion_allowed: false
+frozen_channel_behavior: fallback_to_stable
+stable_fallback_policy: previous_stable

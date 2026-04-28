@@ -1,0 +1,5 @@
+quarantine_rules:
+  block_quarantined_promotion: true
+  exclude_quarantined_resolver: true
+approval_requirements:
+  high_risk_requires_approval: true

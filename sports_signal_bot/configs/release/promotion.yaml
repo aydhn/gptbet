@@ -1,0 +1,12 @@
+candidate_to_canary_requirements:
+  - evaluation_pass
+  - valid_chain
+canary_to_stable_requirements:
+  - canary_validation_pass
+  - health_score_ok
+promotion_cooldown_rules:
+  minimum_stable_time_hours: 24
+  retry_after_failure_hours: 2
+approval_required_actions:
+  - canary_to_stable
+  - emergency_rollback

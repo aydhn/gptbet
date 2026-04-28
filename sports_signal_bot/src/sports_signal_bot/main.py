@@ -2698,5 +2698,8 @@ def list_health_checks():
 from sports_signal_bot.scheduler.cli import app as scheduler_app
 app.add_typer(scheduler_app, name="scheduler", help="Scheduled orchestration engine")
 
+from sports_signal_bot.release_management.cli import app as release_app
+app.add_typer(release_app, name="release", help="Release and promotion governance commands")
+
 if __name__ == "__main__":
     app()

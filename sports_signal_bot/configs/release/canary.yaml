@@ -1,0 +1,6 @@
+canary_scope_rules:
+  slots_enabled: true
+  percentage_enabled: false
+validation:
+  health_score_threshold: 80.0
+  max_anomalies: 0

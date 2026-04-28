@@ -1,0 +1,30 @@
+{
+  "football_1x2": {
+    "sport": "football",
+    "market_type": "1x2",
+    "active_stable_chain_id": null,
+    "active_canary_chain_id": null,
+    "last_known_good_chain_id": null,
+    "previous_stable_chain_id": null,
+    "active_candidate_chains": [],
+    "frozen_channel_flags": {},
+    "quarantined_artifacts": [
+      "mod_football_1x2_stable_v1.0"
+    ],
+    "updated_at": "2026-04-28T09:45:41.808985Z"
+  },
+  "basketball_moneyline": {
+    "sport": "basketball",
+    "market_type": "moneyline",
+    "active_stable_chain_id": null,
+    "active_canary_chain_id": null,
+    "last_known_good_chain_id": null,
+    "previous_stable_chain_id": null,
+    "active_candidate_chains": [],
+    "frozen_channel_flags": {
+      "system": true
+    },
+    "quarantined_artifacts": [],
+    "updated_at": "2026-04-28T09:53:21.239951Z"
+  }
+}
