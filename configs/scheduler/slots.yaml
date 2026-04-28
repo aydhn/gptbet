@@ -1,0 +1,9 @@
+slots:
+  morning:
+    start_time: "08:00"
+    end_time: "10:00"
+    allowed_job_families: ["ingest", "inference", "dispatch"]
+  evening:
+    start_time: "18:00"
+    end_time: "20:00"
+    allowed_job_families: ["all"]

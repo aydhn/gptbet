@@ -1,0 +1,3 @@
+catchup_policies:
+  no_catchup:
+    relevance_window_hours: 0

@@ -1,0 +1,5 @@
+dependencies:
+  - job: "inference"
+    requires: ["ingest"]
+  - job: "dispatch"
+    requires: ["inference"]

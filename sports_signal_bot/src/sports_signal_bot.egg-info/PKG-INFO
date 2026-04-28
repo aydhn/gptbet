@@ -26,6 +26,8 @@ Requires-Dist: flake8>=6.0.0; extra == "dev"
 
 A modular, extensible, and scalable sports forecasting and signal bot built in Python. Designed to be a foundation for building complex, predictive models for football and basketball, with strong emphasis on local execution, open-source tools, and solid software engineering practices.
 
+n## Operator Approval Workflow
+This project includes a fully auditable operator approval workflow. It implements a human-in-the-loop mechanism for high-risk actions. The review queue handles interventions like freeze releases and manual overrides, recording decisions in an append-friendly ledger. For details, see `docs/operator_approval_workflow_architecture.md`.
 ## Project Scope (Phase 1)
 This repository represents Phase 1 of the development.
 

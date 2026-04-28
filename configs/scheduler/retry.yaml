@@ -1,0 +1,5 @@
+retry_profiles:
+  no_retry:
+    type: "no_retry"
+  immediate:
+    type: "immediate_retry_once"
