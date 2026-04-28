@@ -1,0 +1,9 @@
+channel_definitions:
+  - draft
+  - candidate
+  - canary
+  - stable
+  - frozen
+  - quarantined
+  - rolled_back
+  - archived

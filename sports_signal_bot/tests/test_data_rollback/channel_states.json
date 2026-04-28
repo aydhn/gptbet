@@ -1,0 +1,14 @@
+{
+  "football_1x2": {
+    "sport": "football",
+    "market_type": "1x2",
+    "active_stable_chain_id": "chain_v1",
+    "active_canary_chain_id": null,
+    "last_known_good_chain_id": "chain_v2",
+    "previous_stable_chain_id": "chain_v1",
+    "active_candidate_chains": [],
+    "frozen_channel_flags": {},
+    "quarantined_artifacts": [],
+    "updated_at": "2026-04-28T09:53:21.246348Z"
+  }
+}
