@@ -1,0 +1,9 @@
+scopes:
+  - single_event
+  - single_request
+  - single_run
+  - sport_market_window
+  - freeze_release_once
+  - slot_once
+  - temporary_override_window
+  - system_wide_freeze

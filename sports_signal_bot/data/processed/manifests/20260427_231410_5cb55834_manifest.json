@@ -1,0 +1,15 @@
+{
+  "ingest_id": "20260427_231410_5cb55834",
+  "run_timestamp_utc": "2026-04-27T23:14:10.658029Z",
+  "provider": "test_mock",
+  "sport": "football",
+  "dataset_type": "fixtures",
+  "source_path": "/app/sports_signal_bot/data/raw/test_mock/football/fixtures/2026-04-27",
+  "output_path": "/app/sports_signal_bot/data/processed/fixtures/football",
+  "record_count": 3,
+  "valid_count": 3,
+  "invalid_count": 0,
+  "duplicate_count": 0,
+  "warning_count": 0,
+  "issues": []
+}

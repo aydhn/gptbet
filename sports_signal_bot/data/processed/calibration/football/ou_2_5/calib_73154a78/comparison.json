@@ -1,0 +1,14 @@
+{
+  "run_id": "calib_73154a78",
+  "raw_log_loss": 0.7803238741323343,
+  "calibrated_log_loss": 0.7803238741323343,
+  "delta_log_loss": 0.0,
+  "raw_brier_score": 0.2899999999999999,
+  "calibrated_brier_score": 0.2899999999999999,
+  "delta_brier_score": 0.0,
+  "raw_ece": 0.19999999999999996,
+  "calibrated_ece": 0.19999999999999996,
+  "delta_ece": 0.0,
+  "calibration_improvement": false,
+  "possible_overfit_warning": false
+}

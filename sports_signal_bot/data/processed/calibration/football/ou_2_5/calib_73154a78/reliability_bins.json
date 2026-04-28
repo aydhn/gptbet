@@ -1,0 +1,92 @@
+[
+  {
+    "bin_index": 0,
+    "lower_bound": 0.0,
+    "upper_bound": 0.1,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 1,
+    "lower_bound": 0.1,
+    "upper_bound": 0.2,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 2,
+    "lower_bound": 0.2,
+    "upper_bound": 0.30000000000000004,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 3,
+    "lower_bound": 0.30000000000000004,
+    "upper_bound": 0.4,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 4,
+    "lower_bound": 0.4,
+    "upper_bound": 0.5,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 5,
+    "lower_bound": 0.5,
+    "upper_bound": 0.6000000000000001,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 6,
+    "lower_bound": 0.6000000000000001,
+    "upper_bound": 0.7000000000000001,
+    "count": 10,
+    "mean_predicted_probability": 0.7,
+    "empirical_frequency": 0.5,
+    "calibration_gap": 0.19999999999999996
+  },
+  {
+    "bin_index": 7,
+    "lower_bound": 0.7000000000000001,
+    "upper_bound": 0.8,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 8,
+    "lower_bound": 0.8,
+    "upper_bound": 0.9,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  },
+  {
+    "bin_index": 9,
+    "lower_bound": 0.9,
+    "upper_bound": 1.0,
+    "count": 0,
+    "mean_predicted_probability": 0.0,
+    "empirical_frequency": 0.0,
+    "calibration_gap": 0.0
+  }
+]

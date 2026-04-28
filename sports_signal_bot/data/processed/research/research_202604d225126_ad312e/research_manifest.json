@@ -1,0 +1,55 @@
+{
+  "run_id": "research_202604d225126_ad312e",
+  "run_timestamp": "2026-04-27T22:51:26.116878+00:00",
+  "scenario": {
+    "scenario_id": "test",
+    "sport": "test",
+    "market_type": "test",
+    "start_date": "2023-01-01",
+    "end_date": "2023-02-01",
+    "planning_mode": "expanding",
+    "initial_train_window_days": 10,
+    "calibration_window_days": 0,
+    "forward_test_window_days": 10,
+    "retrain_frequency": 1,
+    "recalibration_frequency": 1,
+    "reensemble_frequency": 1,
+    "stacker_refresh_frequency": null,
+    "minimum_rows_guard": 100,
+    "skip_period_if_insufficient_data": true,
+    "enabled_sources": [],
+    "enabled_models": [],
+    "monthly_reporting_enabled": true
+  },
+  "total_periods": 3,
+  "completed_periods": 3,
+  "skipped_periods": 0,
+  "source_families_involved": [
+    "ensemble",
+    "stacker"
+  ],
+  "aggregate_summary_paths": {
+    "time_slice_summary": "/app/sports_signal_bot/data/processed/research/research_202604d225126_ad312e/time_slice_summary.json"
+  },
+  "warnings": [],
+  "config_snapshot": {
+    "scenario_id": "test",
+    "sport": "test",
+    "market_type": "test",
+    "start_date": "2023-01-01",
+    "end_date": "2023-02-01",
+    "planning_mode": "expanding",
+    "initial_train_window_days": 10,
+    "calibration_window_days": 0,
+    "forward_test_window_days": 10,
+    "retrain_frequency": 1,
+    "recalibration_frequency": 1,
+    "reensemble_frequency": 1,
+    "stacker_refresh_frequency": null,
+    "minimum_rows_guard": 100,
+    "skip_period_if_insufficient_data": true,
+    "enabled_sources": [],
+    "enabled_models": [],
+    "monthly_reporting_enabled": true
+  }
+}

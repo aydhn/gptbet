@@ -1,0 +1,24 @@
+operator_roles:
+  - operator
+  - senior_operator
+  - reviewer
+  - admin
+
+role_permissions:
+  admin:
+    - all
+  senior_operator:
+    - approve_high_risk_decision
+    - approve_refresh_plan
+    - approve_freeze_release
+    - approve_dispatch_override
+    - approve_mode_switch
+    - acknowledge_alarm
+    - defer_manual_review
+    - create_manual_override
+    - revoke_override
+  operator:
+    - acknowledge_alarm
+    - defer_manual_review
+  reviewer:
+    - defer_manual_review

@@ -1,0 +1,4 @@
+freeze_release_requirements:
+  no_active_critical_unresolved_anomaly: true
+  post_refresh_validation_passed: true
+  cooldown_hours: 1
