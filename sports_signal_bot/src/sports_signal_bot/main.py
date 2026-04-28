@@ -2695,5 +2695,8 @@ def list_health_checks():
         for check in checks:
             typer.echo(f"  - {check.__name__}")
 
+from sports_signal_bot.scheduler.cli import app as scheduler_app
+app.add_typer(scheduler_app, name="scheduler", help="Scheduled orchestration engine")
+
 if __name__ == "__main__":
     app()

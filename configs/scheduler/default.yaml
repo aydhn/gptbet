@@ -1,0 +1,3 @@
+enabled: true
+timezone: "UTC"
+default_scheduler_strategy: "strict_sequential"

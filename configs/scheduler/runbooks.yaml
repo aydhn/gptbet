@@ -1,0 +1,4 @@
+runbooks:
+  daily_live_like_pipeline:
+    purpose: "Full daily suite"
+    steps: ["ingest", "inference", "dispatch", "monitoring"]

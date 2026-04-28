@@ -1,0 +1,7 @@
+jobs:
+  - job_name: "ingest"
+    job_family: "ingest"
+    dependency_names: []
+  - job_name: "inference"
+    job_family: "inference"
+    dependency_names: ["ingest"]
