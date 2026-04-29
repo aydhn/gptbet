@@ -2710,5 +2710,8 @@ app.add_typer(performance_app, name='perf', help='Performance and Runtime Optimi
 
 from sports_signal_bot.main_quality_cli import app as quality_app
 app.add_typer(quality_app, name="quality", help="Quality Engineering & Testing commands")
+from sports_signal_bot.main_security_cli import app as security_app
+app.add_typer(security_app, name="security", help="Security and Config Governance Commands")
+
 if __name__ == "__main__":
     app()

@@ -1,0 +1,4 @@
+audit_redaction_policies:
+  - "mask_secrets"
+git_hygiene_patterns:
+  - ".env.local"

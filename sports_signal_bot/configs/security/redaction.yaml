@@ -1,0 +1,12 @@
+redaction_rules:
+  telegram_token:
+    pattern: "TELEGRAM_BOT_TOKEN"
+    action: "full_mask"
+sensitive_field_inventory:
+  - TELEGRAM_BOT_TOKEN
+  - TELEGRAM_DECISIONS_CHAT_ID
+  - TELEGRAM_REVIEW_CHAT_ID
+  - TELEGRAM_SUMMARIES_CHAT_ID
+  - TELEGRAM_WARNINGS_CHAT_ID
+  - TELEGRAM_ALARMS_CHAT_ID
+  - TELEGRAM_DEBUG_CHAT_ID

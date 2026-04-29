@@ -11,6 +11,7 @@ src/sports_signal_bot/main_performance_cli.py
 src/sports_signal_bot/main_quality_cli.py
 src/sports_signal_bot/main_schema_cli.py
 src/sports_signal_bot/main_schema_governance_cli.py
+src/sports_signal_bot/main_security_cli.py
 src/sports_signal_bot.egg-info/PKG-INFO
 src/sports_signal_bot.egg-info/SOURCES.txt
 src/sports_signal_bot.egg-info/dependency_links.txt
@@ -518,6 +519,12 @@ src/sports_signal_bot/schema_governance/serialization.py
 src/sports_signal_bot/schema_governance/utils.py
 src/sports_signal_bot/schema_governance/validation.py
 src/sports_signal_bot/schema_governance/versions.py
+src/sports_signal_bot/security/__init__.py
+src/sports_signal_bot/security/audits.py
+src/sports_signal_bot/security/command_gates.py
+src/sports_signal_bot/security/contracts.py
+src/sports_signal_bot/security/redaction.py
+src/sports_signal_bot/security/secrets.py
 src/sports_signal_bot/signal_scoring/__init__.py
 src/sports_signal_bot/signal_scoring/combine.py
 src/sports_signal_bot/signal_scoring/confidence.py

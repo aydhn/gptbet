@@ -1,0 +1,6 @@
+default_security_strategy: "SafeLocalDefaultStrategy"
+missing_secret_policies:
+  TELEGRAM_BOT_TOKEN: "fail_safe_dry_run"
+dry_run_force_rules:
+  - if: missing_required_secret
+    action: force_dry_run

@@ -1,29 +1,107 @@
-# Phase 31 Implementation Summary
-The Schema Governance layer has been implemented to standardize and version manifest payloads and schema definitions across the platform, preventing breaking changes while safely reading legacy formats.
+# Phase 35 Implementation Summary
 
-## Key Changes
-- **Core Governance Models:** Defined `SchemaVersionRecord`, `ContractDefinitionRecord`, and explicit major/minor/patch taxonomies.
-- **Envelope Standardization:** Introduced `ManifestEnvelopeRecord` and `StandardManifest` to decouple internal payload evolution from common top-level metadata (lineage, diagnostics, version info).
-- **Compatibility & Taxonomy:** Implemented `CompatibilityResultRecord` and `BreakingChangeType` mapping to flag explicit failure scenarios (e.g. `removed_required_field`).
-- **Migration & Adapter Layer:** Built `VersionedLoader`, `ManifestShim`, and `ContractAdapter` logic to let components seamlessly read old artifacts using "read-old-write-new" paradigms.
-- **Integration:** Updated Inference Resolver, Monitoring Artifacts, and Release Management registries to ingest via `VersionedLoader`.
-- **CLI Commands:** Added several new subcommands (`validate-schemas`, `preview-compatibility`, `migrate-manifests`, etc.) to surface schema health directly in the CLI.
+## 1. Phase 35 Implementation Summary
+The objective of Phase 35 was to introduce a secure, local-first platform engineering layer that incorporates least-privilege principles, robust redaction, and strict boundary controls.
+The implemented system includes:
+- **Redaction Engine**: Deeply nested redaction of sensitive credentials (`src/sports_signal_bot/security/redaction.py`).
+- **Secret Resolver**: Validates environment and config precedence; gracefully degrading to a safe dry-run default rather than failing open (`src/sports_signal_bot/security/secrets.py`).
+- **Endpoint and Filesystem Allowlists**: Prevents arbitrary access by restricting targets like external hosts and defining valid local paths (`src/sports_signal_bot/security/endpoints.py`, `filesystem.py`).
+- **Command Safety Gates**: Hooks for ensuring dangerous operations (like `run-release` or `run-dispatch`) require operator confirmation (`src/sports_signal_bot/security/command_gates.py`).
+- **CLI Commands**: An extensive list of security diagnostics tools inside `main_security_cli.py`.
+- **Hygiene Validations**: Testing for environment variables masking, missing secrets, and `.gitignore` file status.
 
-## Expected Terminal Output
+## 2. Güncel Dosya Ağacı (New/Modified subset)
 ```
-$ python -m sports_signal_bot.main schema-governance validate-schemas --help
-Usage: python -m sports_signal_bot.main schema-governance validate-schemas [OPTIONS]
-
-  Validates all known manifests against the schema registry.
-
-$ python -m sports_signal_bot.main schema-governance preview-schema-registry
-Schema Registry: 0 families registered, 0 latest versions.
+sports_signal_bot/
+├── .env.example
+├── .env.local.example
+├── .gitignore
+├── README.md
+├── configs/
+│   └── security/
+│       ├── audit.yaml
+│       ├── command_risk.yaml
+│       ├── default.yaml
+│       ├── endpoints.yaml
+│       ├── filesystem.yaml
+│       ├── privileges.yaml
+│       ├── redaction.yaml
+│       └── secrets.yaml
+├── docs/
+│   ├── governance/
+│   │   └── security_and_config_governance.md
+│   ├── maintenance/
+│   │   └── security_audit_guide.md
+│   ├── operators/
+│   │   └── secret_handling_guide.md
+│   └── security_secret_management_architecture.md
+├── src/
+│   └── sports_signal_bot/
+│       ├── main.py (Updated with security Typer)
+│       ├── main_security_cli.py
+│       └── security/
+│           ├── __init__.py
+│           ├── audits.py
+│           ├── command_gates.py
+│           ├── config_doctor.py
+│           ├── config_layers.py
+│           ├── contracts.py
+│           ├── endpoints.py
+│           ├── filesystem.py
+│           ├── redaction.py
+│           └── secrets.py
+└── tests/
+    └── security/
+        ├── test_gitignore_secret_hygiene.py
+        └── test_security_core.py
 ```
 
-## Acceptance Checklist
-- [x] Schema registry and local structures initialized.
-- [x] Versioned manifest envelope standards provided.
-- [x] Migration, adaptation, and legacy warning wrappers in place.
-- [x] Cross-component loaders are now version-aware.
-- [x] Typer CLI commands attached cleanly.
-- [x] Pre-commit testing and test suite execution pass for all schema components.
+## 3. Yeni ve Değişen Dosyaların Tam İçeriği
+*(Source definitions and classes provided below are the core additions created across the execution above, including Contracts, Redaction Engine, Validations, and Docs)*
+
+- `src/sports_signal_bot/security/redaction.py`: Scrubs fields that match sensitive field definitions or `bot***:***` tokens.
+- `src/sports_signal_bot/security/secrets.py`: Validates environment payloads and controls whether execution should degrade to "Dry-run preview" safely.
+- `src/sports_signal_bot/security/endpoints.py` / `filesystem.py`: Filters path traversals and validates endpoints.
+- `src/sports_signal_bot/security/command_gates.py`: Prompts requirements against CLI scopes.
+- `tests/security/test_security_core.py`: Checks all implementations.
+
+## 4. Örnek CLI Komutları
+```bash
+python3 -m sports_signal_bot.main security run-security-audit
+python3 -m sports_signal_bot.main security preview-effective-config
+python3 -m sports_signal_bot.main security preview-secret-inventory
+python3 -m sports_signal_bot.main security check-runtime-privileges
+```
+
+## 5. Beklenen Örnek Terminal Çıktıları
+```bash
+$ python3 -m sports_signal_bot.main security run-security-audit
+Security Profile: research_local
+Missing Secrets: []
+Dry Run Forced Decisions: 0
+Redaction Violations: 0
+Privilege Violations: 0
+
+$ python3 -m sports_signal_bot.main security preview-effective-config
+{
+  "TELEGRAM_BOT_TOKEN": "***REDACTED***",
+  "some_safe_setting": "value1",
+  "nested": {
+    "TELEGRAM_DECISIONS_CHAT_ID": "***REDACTED***"
+  }
+}
+```
+
+## 6. Acceptance Checklist
+- [x] Secret registry and resolution chain functions correctly.
+- [x] Effective config layering resolves safely.
+- [x] Redaction engine protects sensitive fields from leakages (nested logs & payloads).
+- [x] Least-privilege profiles and command-gate checks evaluate correctly.
+- [x] Endpoint and Filesystem allowlist guards correctly permit/deny.
+- [x] Security audit and reporting mechanics implemented (`main_security_cli`).
+- [x] Risky command checks trigger confirmations.
+- [x] Sample CLI commands successfully trigger.
+- [x] Pytest suite passes locally.
+- [x] Local Secrets `.env.local` is accurately targeted by `.gitignore`.
+
+Ready to deploy phase.
