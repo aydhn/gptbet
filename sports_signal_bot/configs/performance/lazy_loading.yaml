@@ -1,0 +1,6 @@
+lazy_load_enabled_families:
+  - artifact_manifests
+  - large_prediction_tables
+  - monitoring_history
+metadata_only_default_families:
+  - artifact_manifests

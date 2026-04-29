@@ -1,0 +1,3 @@
+profiling_enabled: true
+record_row_counts: true
+record_byte_size: true

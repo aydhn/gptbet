@@ -1,0 +1,14 @@
+enabled_cache_families:
+  - data_cache
+  - normalized_data_cache
+  - feature_cache
+  - model_artifact_load_cache
+  - manifest_catalog_cache
+  - inference_intermediate_cache
+  - release_compatibility_lookup_cache
+  - summary_report_cache
+cache_root: "data/cache"
+cache_ttl_hours: 24
+max_cache_size_mb_by_family:
+  feature_cache: 1024
+  data_cache: 2048

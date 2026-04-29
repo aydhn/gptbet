@@ -3,6 +3,7 @@ import uuid
 from pathlib import Path
 
 import typer
+from sports_signal_bot.main_performance_cli import app as performance_app
 import yaml
 from rich.console import Console
 
@@ -2528,6 +2529,7 @@ from sports_signal_bot.inference.cli import app as inference_app
 app.add_typer(inference_app, name="inference", help="Live-like inference execution")
 
 import typer
+from sports_signal_bot.main_performance_cli import app as performance_app
 from typing import Optional
 from pathlib import Path
 
@@ -2702,6 +2704,8 @@ from sports_signal_bot.release_management.cli import app as release_app
 from sports_signal_bot.main_schema_cli import app as schema_app
 app.add_typer(release_app, name="release", help="Release and promotion governance commands")
 app.add_typer(schema_app, name="schema-governance", help="Schema Governance and Artifact Validation Layer")
+
+app.add_typer(performance_app, name='perf', help='Performance and Runtime Optimization Commands')
 
 if __name__ == "__main__":
     app()

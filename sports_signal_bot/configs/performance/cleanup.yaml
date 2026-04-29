@@ -1,0 +1,4 @@
+cache_cleanup_policies:
+  - ttl_cleanup
+  - size_based_pruning
+  - stale_only_cleanup

@@ -1,0 +1,3 @@
+
+class PerformanceRegistry:
+    pass
