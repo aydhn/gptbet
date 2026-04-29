@@ -1,0 +1,10 @@
+freshness_windows_by_family:
+  overview: 90
+  operator: 30
+  runbook: 30
+  incident_playbook: 30
+  developer: 60
+  reference: 60
+  governance: 90
+  onboarding: 60
+  maintenance: 90

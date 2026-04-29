@@ -1,0 +1,31 @@
+{
+  "total_docs_count": 22,
+  "docs_by_family": {
+    "overview": 5,
+    "operator": 2,
+    "runbook": 2,
+    "incident_playbook": 4,
+    "developer": 0,
+    "reference": 3,
+    "governance": 1,
+    "onboarding": 2,
+    "maintenance": 3
+  },
+  "stale_docs_count": 22,
+  "missing_coverage_components": [
+    "inference",
+    "monitoring",
+    "refresh_controller",
+    "approvals",
+    "scheduler",
+    "release",
+    "schema_governance",
+    "performance",
+    "quality_gates",
+    "telegram_dispatch"
+  ],
+  "total_lint_issues": 2,
+  "critical_runbooks_count": 2,
+  "incident_playbooks_count": 4,
+  "generated_at": "2026-04-29T10:38:49.061963Z"
+}

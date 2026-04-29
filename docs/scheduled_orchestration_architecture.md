@@ -1,3 +1,11 @@
+---
+title: "Scheduled Orchestration Architecture"
+doc_family: "overview"
+owner_role: "engineering_team"
+owner_component: "general"
+status: "active"
+---
+
 # Scheduled Orchestration Architecture
 
 This document describes the orchestration architecture built for the sports signal bot, bringing together CLI commands, inference, dispatch, and monitoring into scheduled, dependency-aware pipelines.
