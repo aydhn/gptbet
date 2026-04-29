@@ -1,3 +1,11 @@
+---
+title: "Release Promotion Architecture"
+doc_family: "overview"
+owner_role: "engineering_team"
+owner_component: "general"
+status: "active"
+---
+
 # Release & Promotion Architecture
 
 The Release Management module governs the movement of artifacts (models, calibrators, thresholds, policies) from testing environments into live production (stable) usage. It enforces strict quality gates, supports incremental canary rollouts, and ensures immediate rollback capabilities.

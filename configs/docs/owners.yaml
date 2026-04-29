@@ -1,0 +1,11 @@
+owners:
+  inference: "core_ml"
+  monitoring: "ops"
+  refresh_controller: "data_eng"
+  approvals: "governance"
+  scheduler: "ops"
+  release: "platform"
+  schema_governance: "data_eng"
+  performance: "platform"
+  quality_gates: "qa"
+  telegram_dispatch: "ops"

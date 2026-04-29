@@ -1,0 +1,13 @@
+required_doc_families:
+  - overview
+  - operator
+  - runbook
+  - incident_playbook
+  - developer
+  - reference
+  - governance
+  - onboarding
+  - maintenance
+doc_owner_defaults:
+  operator: "operations_team"
+  developer: "engineering_team"

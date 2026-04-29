@@ -1,0 +1,134 @@
+[
+  {
+    "doc_id": "README_INDEX.md",
+    "path": "docs/README_INDEX.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "scheduled_orchestration_architecture.md",
+    "path": "docs/scheduled_orchestration_architecture.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "operations_handbook_overview.md",
+    "path": "docs/operations_handbook_overview.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "release_promotion_architecture.md",
+    "path": "docs/release_promotion_architecture.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "maintenance/doc_owners.md",
+    "path": "docs/maintenance/doc_owners.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "maintenance/freshness_policy.md",
+    "path": "docs/maintenance/freshness_policy.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "maintenance/decision_log.md",
+    "path": "docs/maintenance/decision_log.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "reference/cli_reference.md",
+    "path": "docs/reference/cli_reference.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "reference/glossary.md",
+    "path": "docs/reference/glossary.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "reference/faq.md",
+    "path": "docs/reference/faq.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "governance/release_governance.md",
+    "path": "docs/governance/release_governance.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "operators/operator_handbook.md",
+    "path": "docs/operators/operator_handbook.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "operators/freeze_degrade_guide.md",
+    "path": "docs/operators/freeze_degrade_guide.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "incidents/empty_universe.md",
+    "path": "docs/incidents/empty_universe.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "incidents/monitoring_health_drop.md",
+    "path": "docs/incidents/monitoring_health_drop.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "incidents/stale_artifacts.md",
+    "path": "docs/incidents/stale_artifacts.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "incidents/schema_incompatibility.md",
+    "path": "docs/incidents/schema_incompatibility.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "architecture/system_overview.md",
+    "path": "docs/architecture/system_overview.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "onboarding/day1_checklist.md",
+    "path": "docs/onboarding/day1_checklist.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "onboarding/getting_started.md",
+    "path": "docs/onboarding/getting_started.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "runbooks/routine/morning_slot_live_like.md",
+    "path": "docs/runbooks/routine/morning_slot_live_like.md",
+    "issues": [],
+    "passed": true
+  },
+  {
+    "doc_id": "runbooks/release/canary_validation.md",
+    "path": "docs/runbooks/release/canary_validation.md",
+    "issues": [],
+    "passed": true
+  }
+]

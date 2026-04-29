@@ -1,0 +1,11 @@
+critical_component_doc_coverage_rules:
+  - inference
+  - monitoring
+  - refresh_controller
+  - approvals
+  - scheduler
+  - release
+  - schema_governance
+  - performance
+  - quality_gates
+  - telegram_dispatch

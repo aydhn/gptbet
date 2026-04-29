@@ -1,0 +1,178 @@
+[
+  {
+    "doc_id": "README_INDEX.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "scheduled_orchestration_architecture.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "engineering_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "operations_handbook_overview.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "release_promotion_architecture.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "engineering_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "maintenance/doc_owners.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "maintenance/freshness_policy.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "maintenance/decision_log.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "engineering_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "reference/cli_reference.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "engineering_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "reference/glossary.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "reference/faq.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "governance/release_governance.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "platform",
+    "owner_component": "release"
+  },
+  {
+    "doc_id": "operators/operator_handbook.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "operators/freeze_degrade_guide.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "incidents/empty_universe.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "inference"
+  },
+  {
+    "doc_id": "incidents/monitoring_health_drop.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "monitoring"
+  },
+  {
+    "doc_id": "incidents/stale_artifacts.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "monitoring"
+  },
+  {
+    "doc_id": "incidents/schema_incompatibility.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "data_eng",
+    "owner_component": "schema_governance"
+  },
+  {
+    "doc_id": "architecture/system_overview.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "engineering_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "onboarding/day1_checklist.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "onboarding/getting_started.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "general"
+  },
+  {
+    "doc_id": "runbooks/routine/morning_slot_live_like.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "operations_team",
+    "owner_component": "scheduler"
+  },
+  {
+    "doc_id": "runbooks/release/canary_validation.md",
+    "is_stale": true,
+    "days_since_review": null,
+    "days_overdue": null,
+    "owner_role": "platform",
+    "owner_component": "release"
+  }
+]
