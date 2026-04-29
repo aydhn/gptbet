@@ -1,3 +1,5 @@
+from sports_signal_bot.schema_governance.adapters import VersionedLoader, ContractAdapter
+from sports_signal_bot.schema_governance.registry import SchemaRegistry
 from typing import Any, Dict, List, Optional
 
 from sports_signal_bot.core.logger import get_logger

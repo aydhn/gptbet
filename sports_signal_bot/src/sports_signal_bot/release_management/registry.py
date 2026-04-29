@@ -1,3 +1,5 @@
+from sports_signal_bot.schema_governance.adapters import VersionedLoader, ContractAdapter
+from sports_signal_bot.schema_governance.registry import SchemaRegistry
 from typing import Dict, Type
 
 from sports_signal_bot.release_management.strategies.base import ReleaseStrategy

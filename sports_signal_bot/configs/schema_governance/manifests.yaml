@@ -1,0 +1,4 @@
+manifest_envelope_required_families:
+  - "inference_manifest"
+  - "release_manifest"
+  - "calibration_manifest"

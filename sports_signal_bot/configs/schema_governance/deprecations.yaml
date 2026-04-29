@@ -1,0 +1,6 @@
+deprecated_field_rules:
+  - family: "monitoring_manifest"
+    field: "legacy_status"
+    action: "warn"
+validation_warning_thresholds:
+  max_warnings: 10

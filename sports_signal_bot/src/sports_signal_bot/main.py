@@ -2699,7 +2699,9 @@ from sports_signal_bot.scheduler.cli import app as scheduler_app
 app.add_typer(scheduler_app, name="scheduler", help="Scheduled orchestration engine")
 
 from sports_signal_bot.release_management.cli import app as release_app
+from sports_signal_bot.main_schema_cli import app as schema_app
 app.add_typer(release_app, name="release", help="Release and promotion governance commands")
+app.add_typer(schema_app, name="schema-governance", help="Schema Governance and Artifact Validation Layer")
 
 if __name__ == "__main__":
     app()

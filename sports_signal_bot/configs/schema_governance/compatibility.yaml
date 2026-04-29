@@ -1,0 +1,6 @@
+strict_mode_families:
+  - "inference_manifest"
+  - "release_manifest"
+allowed_forward_compatibility: true
+compatibility_report_profiles:
+  - "verbose"

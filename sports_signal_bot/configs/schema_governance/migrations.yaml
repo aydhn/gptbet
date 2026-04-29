@@ -1,0 +1,3 @@
+migration_auto_apply_families:
+  - "calibration_manifest"
+  - "monitoring_manifest"

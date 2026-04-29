@@ -319,3 +319,15 @@ python -m sports_signal_bot.main_cli_refresh run-refresh-controller --sport bask
 python -m sports_signal_bot.main_cli_refresh preview-freeze-state --sport football --market ou_2_5
 python -m sports_signal_bot.main_cli_refresh preview-degrade-state --sport basketball --market moneyline
 ```
+
+## Schema Governance
+The Schema Governance layer ensures that all data contracts, feature manifests, and runtime artifacts can evolve safely across versions. It introduces:
+- **Versioning Model**: A SemVer-inspired model (major, minor, patch) for all manifests.
+- **Compatibility & Migration**: Tooling to check for backward compatibility and to migrate older artifact payloads to current formats using `VersionedLoader` and adapter layers.
+
+You can interact with the schema governance layer via CLI:
+```bash
+python -m sports_signal_bot.main validate-schemas
+python -m sports_signal_bot.main preview-compatibility --family inference_manifest
+```
+For architecture details, refer to `docs/schema_governance_architecture.md`.
