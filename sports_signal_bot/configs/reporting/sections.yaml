@@ -1,0 +1,45 @@
+sections:
+  - id: executive_overall_status
+    type: executive
+    order: 1
+    description: "Overall system status"
+  - id: top_kpis
+    type: executive
+    order: 2
+    description: "Top Key Performance Indicators"
+  - id: key_wins
+    type: executive
+    order: 3
+    description: "Key Wins"
+  - id: key_risks
+    type: executive
+    order: 4
+    description: "Key Risks"
+  - id: ops_health_summary
+    type: operator
+    order: 1
+    description: "Operational Health Summary"
+  - id: daily_metrics
+    type: operator
+    order: 2
+    description: "Daily Execution Metrics"
+  - id: current_incidents
+    type: operator
+    order: 3
+    description: "Current Incidents"
+  - id: technical_full_summary
+    type: maintainer
+    order: 1
+    description: "Technical Full Summary"
+  - id: performance_diagnostics
+    type: maintainer
+    order: 2
+    description: "Performance Diagnostics"
+  - id: schema_health
+    type: maintainer
+    order: 3
+    description: "Schema Health"
+  - id: governance_details
+    type: maintainer
+    order: 4
+    description: "Governance Details"

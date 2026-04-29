@@ -1,0 +1,4 @@
+kpi_id,value,unit
+slot_health_score,95.0,percentage
+dispatch_delivery_success_rate,95.0,percentage
+recovery_success_rate,95.0,percentage

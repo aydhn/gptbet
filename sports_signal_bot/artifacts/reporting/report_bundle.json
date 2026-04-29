@@ -1,0 +1,77 @@
+{
+  "reporting_period": "daily",
+  "time_range_start": "2026-04-28T21:01:42.456367",
+  "time_range_end": "2026-04-29T21:01:42.456367",
+  "included_sports_markets": [
+    "ALL"
+  ],
+  "included_runs_artifacts": [],
+  "sample_universe_summary": {
+    "universe_id": "univ_4716458662035136855",
+    "description": "Resolved reporting universe based on active filters.",
+    "filters": {
+      "period": "daily"
+    },
+    "event_count": 0
+  },
+  "audience_profile": "operator",
+  "sections": [
+    {
+      "section_name": "ops_health_summary",
+      "audience": "operator",
+      "primary_metrics": [],
+      "supporting_metrics": [],
+      "narrative_summary": "Ops Health: tracking 0 primary metrics.",
+      "caveats": [],
+      "referenced_artifacts": [],
+      "warnings": [],
+      "links_to_deeper_docs": null
+    },
+    {
+      "section_name": "daily_metrics",
+      "audience": "operator",
+      "primary_metrics": [],
+      "supporting_metrics": [],
+      "narrative_summary": "No data available.",
+      "caveats": [],
+      "referenced_artifacts": [],
+      "warnings": [],
+      "links_to_deeper_docs": null
+    },
+    {
+      "section_name": "current_incidents",
+      "audience": "operator",
+      "primary_metrics": [],
+      "supporting_metrics": [],
+      "narrative_summary": "No data available.",
+      "caveats": [],
+      "referenced_artifacts": [],
+      "warnings": [],
+      "links_to_deeper_docs": null
+    }
+  ],
+  "kpi_bundle": {
+    "kpis": [
+      {
+        "kpi_id": "slot_health_score",
+        "value": 95.0,
+        "unit": "percentage",
+        "lineage": null
+      },
+      {
+        "kpi_id": "dispatch_delivery_success_rate",
+        "value": 95.0,
+        "unit": "percentage",
+        "lineage": null
+      },
+      {
+        "kpi_id": "recovery_success_rate",
+        "value": 95.0,
+        "unit": "percentage",
+        "lineage": null
+      }
+    ]
+  },
+  "notable_events": [],
+  "warnings_caveats": []
+}

@@ -1,0 +1,48 @@
+profiles:
+  executive:
+    name: Executive
+    description: High-level overview of system health, risks, and performance.
+    sections:
+      - executive_overall_status
+      - top_kpis
+      - key_wins
+      - key_risks
+    detail_level: low
+    include_diagnostics: false
+    focus_kpis:
+      - selected_subset_quality_index
+      - bankroll_return_pct
+      - release_promotion_stability
+      - slot_health_score
+    tone: concise
+
+  operator:
+    name: Operator
+    description: Daily operational summary of system health and execution.
+    sections:
+      - ops_health_summary
+      - daily_metrics
+      - current_incidents
+    detail_level: medium
+    include_diagnostics: true
+    focus_kpis:
+      - slot_health_score
+      - dispatch_delivery_success_rate
+      - recovery_success_rate
+    tone: operational
+
+  maintainer:
+    name: Maintainer
+    description: Deep technical summary including lineage, caveats, and diagnostics.
+    sections:
+      - technical_full_summary
+      - performance_diagnostics
+      - schema_health
+      - governance_details
+    detail_level: high
+    include_diagnostics: true
+    focus_kpis:
+      - quality_gate_pass_rate
+      - schema_compatibility_health
+      - release_promotion_stability
+    tone: technical

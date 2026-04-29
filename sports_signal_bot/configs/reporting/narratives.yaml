@@ -1,0 +1,14 @@
+templates:
+  improved: "The metric {metric_name} improved by {delta_abs}{unit} ({delta_pct}%), moving from {prev_val} to {curr_val}. This indicates positive momentum."
+  stable: "The metric {metric_name} remained stable at {curr_val}{unit} (change: {delta_pct}%)."
+  degraded: "ATTENTION: The metric {metric_name} degraded by {delta_abs}{unit} ({delta_pct}%), dropping to {curr_val}. This requires investigation."
+  volatile: "The metric {metric_name} showed significant volatility, ending at {curr_val}{unit}."
+  insufficient_evidence: "Insufficient data to determine a trend for {metric_name}."
+
+highlight_rules:
+  max_highlights: 5
+  priority:
+    degraded: 1
+    improved: 2
+    volatile: 3
+    stable: 4

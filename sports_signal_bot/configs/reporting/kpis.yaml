@@ -1,0 +1,113 @@
+enabled_metric_families:
+  - predictive_quality_metrics
+  - calibration_metrics
+  - decision_quality_metrics
+  - operational_health_metrics
+  - release_governance_metrics
+  - execution_reliability_metrics
+  - bankroll_risk_metrics
+  - portfolio_risk_metrics
+  - approval_governance_metrics
+  - quality_gate_metrics
+  - deployment_readiness_metrics
+
+kpi_definitions:
+  - id: slot_health_score
+    name: "Slot Health Score"
+    family: operational_health_metrics
+    description: "Composite score evaluating the end-to-end success of a processing slot."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: average
+    source_components: ["inference_success", "refresh_success", "scheduler_success"]
+    caveats: ["Excludes slots explicitly marked for maintenance."]
+
+  - id: dispatch_delivery_success_rate
+    name: "Dispatch Delivery Success Rate"
+    family: execution_reliability_metrics
+    description: "Percentage of signals successfully dispatched to downstream sinks."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: mean
+    source_components: ["successful_dispatches", "total_dispatches"]
+    caveats: []
+
+  - id: release_promotion_stability
+    name: "Release Promotion Stability"
+    family: release_governance_metrics
+    description: "Percentage of releases promoted without incident or rollback."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: mean
+    source_components: ["successful_promotions", "total_promotions"]
+    caveats: ["Requires sufficient soak time to be meaningful."]
+
+  - id: candidate_to_approved_conversion_rate
+    name: "Candidate to Approved Conversion Rate"
+    family: decision_quality_metrics
+    description: "Ratio of approved signals vs generated candidate signals."
+    unit: ratio
+    directionality: neutral
+    aggregation_method: mean
+    source_components: ["approved_count", "candidate_count"]
+    caveats: ["Too high might indicate loose thresholds; too low might indicate overly strict policies."]
+
+  - id: selected_subset_quality_index
+    name: "Selected Subset Quality Index"
+    family: predictive_quality_metrics
+    description: "Lift of log-loss/brier score on the approved subset versus the global dataset."
+    unit: relative_lift
+    directionality: higher_is_better
+    aggregation_method: difference
+    source_components: ["subset_log_loss", "global_log_loss"]
+    caveats: ["Only applies to out-of-sample evaluated events."]
+
+  - id: bankroll_return_pct
+    name: "Bankroll Return %"
+    family: bankroll_risk_metrics
+    description: "Percentage return on initial bankroll for the period."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: sum
+    source_components: ["pnl", "starting_bankroll"]
+    caveats: ["Highly sensitive to sizing strategy."]
+
+  - id: max_drawdown_pct
+    name: "Max Drawdown %"
+    family: bankroll_risk_metrics
+    description: "Maximum peak-to-trough drop in portfolio value during the period."
+    unit: percentage
+    directionality: lower_is_better
+    aggregation_method: max
+    source_components: ["peak_value", "trough_value"]
+    caveats: ["Intra-day drawdowns might not be captured depending on frequency."]
+
+  - id: quality_gate_pass_rate
+    name: "Quality Gate Pass Rate"
+    family: quality_gate_metrics
+    description: "Percentage of system runs passing all quality gates."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: mean
+    source_components: ["passed_gates", "total_gates"]
+    caveats: []
+
+  - id: schema_compatibility_health
+    name: "Schema Compatibility Health"
+    family: deployment_readiness_metrics
+    description: "Score representing the absence of breaking schema changes across integrations."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: boolean_and
+    source_components: ["schema_tests_passed"]
+    caveats: []
+
+  - id: recovery_success_rate
+    name: "Recovery Success Rate"
+    family: operational_health_metrics
+    description: "Percentage of automated recoveries successful without manual intervention."
+    unit: percentage
+    directionality: higher_is_better
+    aggregation_method: mean
+    source_components: ["successful_recoveries", "total_incidents"]
+    caveats: ["Only tracks incidents that trigger auto-recovery hooks."]
