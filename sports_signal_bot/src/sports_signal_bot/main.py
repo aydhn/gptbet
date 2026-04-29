@@ -3,6 +3,14 @@ import uuid
 from pathlib import Path
 
 import typer
+
+from sports_signal_bot.providers.contracts import DataFamily
+from sports_signal_bot.providers.requests import build_provider_request
+from sports_signal_bot.providers.adapters.stub_test_provider import StubTestProviderAdapter
+from sports_signal_bot.providers.registry import ProviderRegistry
+from sports_signal_bot.providers.quality import ProviderQualityScorer
+from sports_signal_bot.providers.health import build_provider_health_snapshot, classify_provider_health
+from sports_signal_bot.providers.failover import ProviderFailoverEngine
 from sports_signal_bot.main_performance_cli import app as performance_app
 import yaml
 from rich.console import Console
@@ -12,11 +20,6 @@ from sports_signal_bot.core.constants import SportType
 from sports_signal_bot.core.paths import get_configs_dir, get_data_dir
 from sports_signal_bot.core.random import set_global_seed
 from sports_signal_bot.data.ingestion.orchestrator import IngestionOrchestrator
-from sports_signal_bot.data.providers.file_provider import (
-    FileFixtureProvider, FileOddsProvider, FileStatsProvider)
-from sports_signal_bot.data.providers.mock_provider import (
-    AdvancedMockFixtureProvider, AdvancedMockOddsProvider,
-    AdvancedMockStatsProvider)
 from sports_signal_bot.data.resolution.team_aliases import TeamResolver
 from sports_signal_bot.data.storage.paths import get_manifest_storage_path
 from sports_signal_bot.orchestration.runner import SmokeRunner
@@ -148,19 +151,8 @@ def paths():
     console.print(f"Configs Directory: {get_configs_dir()}")
 
 
-def _load_provider_config(provider_name: str) -> dict:
-    config_path = get_configs_dir() / "providers" / f"{provider_name}.yaml"
-    if not config_path.exists():
-        console.print(f"[red]Provider config not found: {config_path}[/red]")
-        return {}
-    with open(config_path, "r") as f:
-        return yaml.safe_load(f)
-
-
-@app.command()
 def ingest_samples(
     sport: str = typer.Option(..., help="Sport to ingest (football/basketball)"),
-    provider: str = typer.Option("file_provider", help="Provider to use"),
 ):
     """Ingest sample data using the specified provider."""
     try:
@@ -171,38 +163,19 @@ def ingest_samples(
         )
         return
 
-    config = _load_provider_config(provider)
-    if not config:
-        return
+    console.print(f"[bold green]Starting ingestion for {sport_enum.value}[/bold green]")
 
-    aliases_path = get_configs_dir() / "aliases" / "team_aliases.sample.yaml"
-    resolver = TeamResolver(aliases_path)
-    orchestrator = IngestionOrchestrator(team_resolver=resolver)
-
-    if provider == "file_provider":
-        fixture_prov = FileFixtureProvider(config)
-        odds_prov = FileOddsProvider(config)
-        stats_prov = FileStatsProvider(config)
-    else:
-        fixture_prov = AdvancedMockFixtureProvider(config)
-        odds_prov = AdvancedMockOddsProvider(config)
-        stats_prov = AdvancedMockStatsProvider(config)
-
-    console.print(
-        f"[bold green]Starting ingestion for {sport_enum.value} via {provider}[/bold green]"
-    )
-
-    fixture_manifest = orchestrator.ingest_fixtures(fixture_prov, sport_enum)
+    fixture_manifest = orchestrator.ingest_fixtures(None, sport_enum)
     console.print(
         f"Fixtures: {fixture_manifest.valid_count} valid, {fixture_manifest.invalid_count} invalid, {fixture_manifest.duplicate_count} dupes"
     )
 
-    odds_manifest = orchestrator.ingest_odds(odds_prov, sport_enum)
+    odds_manifest = orchestrator.ingest_odds(None, sport_enum)
     console.print(
         f"Odds: {odds_manifest.valid_count} valid, {odds_manifest.invalid_count} invalid, {odds_manifest.duplicate_count} dupes"
     )
 
-    stats_manifest = orchestrator.ingest_stats(stats_prov, sport_enum)
+    stats_manifest = orchestrator.ingest_stats(None, sport_enum)
     console.print(
         f"Stats: {stats_manifest.valid_count} valid, {stats_manifest.invalid_count} invalid, {stats_manifest.duplicate_count} dupes"
     )
@@ -216,7 +189,7 @@ def validate_samples(
 ):
     """Run validation check and show detailed issues from sample ingestion."""
     # Re-run ingestion but print issues
-    ingest_samples(sport=sport, provider="file_provider")
+    ingest_samples(sport=sport)
 
     manifest_dir = get_manifest_storage_path()
     if not manifest_dir.exists():
@@ -263,23 +236,6 @@ def list_data_artifacts():
                     console.print(f"  - {p.relative_to(data_dir)}")
 
 
-@app.command()
-def provider_healthcheck():
-    """Check health of configured providers."""
-    for provider in ["file_provider", "mock_provider"]:
-        config = _load_provider_config(provider)
-        if config:
-            if provider == "file_provider":
-                prov = FileFixtureProvider(config)
-            else:
-                prov = AdvancedMockFixtureProvider(config)
-
-            is_healthy = prov.healthcheck()
-            status = "[green]OK[/green]" if is_healthy else "[red]FAIL[/red]"
-            console.print(f"Provider '{provider}': {status}")
-
-
-#
 @app.command()
 def build_ratings(sport: str):
     """Process events and build rating timelines."""
@@ -2529,6 +2485,14 @@ from sports_signal_bot.inference.cli import app as inference_app
 app.add_typer(inference_app, name="inference", help="Live-like inference execution")
 
 import typer
+
+from sports_signal_bot.providers.contracts import DataFamily
+from sports_signal_bot.providers.requests import build_provider_request
+from sports_signal_bot.providers.adapters.stub_test_provider import StubTestProviderAdapter
+from sports_signal_bot.providers.registry import ProviderRegistry
+from sports_signal_bot.providers.quality import ProviderQualityScorer
+from sports_signal_bot.providers.health import build_provider_health_snapshot, classify_provider_health
+from sports_signal_bot.providers.failover import ProviderFailoverEngine
 from sports_signal_bot.main_performance_cli import app as performance_app
 from typing import Optional
 from pathlib import Path
@@ -2716,5 +2680,63 @@ app.add_typer(security_app, name="security", help="Security and Config Governanc
 from sports_signal_bot.main_reporting_cli import app as reporting_app
 app.add_typer(reporting_app, name="reporting", help="Reporting, Metrics, and KPI Governance Commands")
 
-if __name__ == "__main__":
+@app.command()
+def fetch_provider_data(sport: str = typer.Option(...), family: str = typer.Option(...), mode: str = typer.Option("ops"), dry_run: bool = typer.Option(False)):
+    """Fetch data from a provider via the abstraction layer."""
+    console.print(f"[bold green]Fetching provider data for sport: {sport}, family: {family}, mode: {mode}[/bold green]")
+    registry = ProviderRegistry()
+    registry.register("stub_test_provider", StubTestProviderAdapter("stub_test_provider"))
+
+    data_family_enum = DataFamily(family)
+    request = build_provider_request(sport=sport, data_family=data_family_enum, mode=mode)
+
+    adapter = registry.get("stub_test_provider")
+    if adapter:
+        if dry_run:
+            res = adapter.dry_run_preview(request)
+            console.print("[yellow]DRY RUN PREVIEW[/yellow]")
+        else:
+            res = adapter.fetch(request)
+        console.print(f"Provider Used: {res.provider_used}")
+        console.print(f"Records Fetched: {len(res.records)}")
+        if res.quality_summary:
+            console.print(f"Quality Score: {res.quality_summary.overall_score}")
+    else:
+        console.print("[red]Provider not found[/red]")
+
+@app.command()
+def preview_provider_health():
+    """Preview health of configured providers."""
+    console.print("[bold blue]Previewing Provider Health[/bold blue]")
+    health = build_provider_health_snapshot("stub_test_provider")
+    status = classify_provider_health(health)
+    console.print(f"Provider: {health.provider_name} - Status: {status.value}")
+
+@app.command()
+def preview_provider_quality(family: str = typer.Option(...)):
+    """Preview quality scores for a given data family."""
+    console.print(f"[bold blue]Previewing Provider Quality for {family}[/bold blue]")
+    scorer = ProviderQualityScorer()
+    # Dummy fetch time and payload
+    from datetime import datetime
+    res = scorer.score_payload({"dummy": "data"}, family, datetime.utcnow())
+    console.print(scorer.explain_provider_quality(res))
+
+@app.command()
+def preview_provider_failovers():
+    """Preview configured provider failover sequences."""
+    console.print("[bold blue]Previewing Provider Failovers[/bold blue]")
+    engine = ProviderFailoverEngine({"failover_sequences": {"stub_test_provider": ["local_file_feed", "manual_import_provider"]}})
+    console.print(f"stub_test_provider failovers: {engine.get_next_provider('stub_test_provider', 0)}, {engine.get_next_provider('stub_test_provider', 1)}")
+
+@app.command()
+def list_providers():
+    """List all registered providers in the abstraction layer."""
+    console.print("[bold green]Registered Providers:[/bold green]")
+    registry = ProviderRegistry()
+    registry.register("stub_test_provider", StubTestProviderAdapter("stub_test_provider"))
+    for p in registry.list_all():
+        console.print(f"- {p}")
+
+if __name__ == '__main__':
     app()

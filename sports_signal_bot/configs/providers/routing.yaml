@@ -1,0 +1,4 @@
+routing_strategy_by_mode:
+  preview: cached_first
+  ops: conservative_ops
+  research: primary_then_fallback

@@ -1,0 +1,10 @@
+quality_thresholds_by_family:
+  fixtures:
+    overall: 0.8
+    freshness: 0.5
+  odds:
+    overall: 0.9
+    freshness: 0.9
+  results:
+    overall: 0.95
+    freshness: 0.1

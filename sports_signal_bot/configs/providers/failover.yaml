@@ -1,0 +1,4 @@
+failover_sequences:
+  stub_test_provider:
+    - local_file_feed
+    - manual_import_provider
