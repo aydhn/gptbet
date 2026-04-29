@@ -1,0 +1,2 @@
+default_schema_versioning_policy: "strict"
+unknown_version_policy: "warning"

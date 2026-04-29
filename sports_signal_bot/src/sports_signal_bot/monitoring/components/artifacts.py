@@ -1,3 +1,5 @@
+from sports_signal_bot.schema_governance.adapters import VersionedLoader, ContractAdapter
+from sports_signal_bot.schema_governance.registry import SchemaRegistry
 from typing import List, Dict, Any
 from sports_signal_bot.monitoring.registry import HealthCheckRegistry
 from sports_signal_bot.monitoring.checks import build_check_record

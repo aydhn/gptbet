@@ -7,6 +7,8 @@ src/sports_signal_bot/main_cli.py
 src/sports_signal_bot/main_cli_backup.py
 src/sports_signal_bot/main_cli_refresh.py
 src/sports_signal_bot/main_dynamic_weighting.py
+src/sports_signal_bot/main_schema_cli.py
+src/sports_signal_bot/main_schema_governance_cli.py
 src/sports_signal_bot.egg-info/PKG-INFO
 src/sports_signal_bot.egg-info/SOURCES.txt
 src/sports_signal_bot.egg-info/dependency_links.txt
@@ -459,6 +461,23 @@ src/sports_signal_bot/scheduler/strategies/dependency_batch.py
 src/sports_signal_bot/scheduler/strategies/recovery_runbook.py
 src/sports_signal_bot/scheduler/strategies/strict_sequential.py
 src/sports_signal_bot/scheduler/strategies/summary_only.py
+src/sports_signal_bot/schema_governance/__init__.py
+src/sports_signal_bot/schema_governance/adapters.py
+src/sports_signal_bot/schema_governance/catalog.py
+src/sports_signal_bot/schema_governance/compatibility.py
+src/sports_signal_bot/schema_governance/contracts.py
+src/sports_signal_bot/schema_governance/deprecations.py
+src/sports_signal_bot/schema_governance/diagnostics.py
+src/sports_signal_bot/schema_governance/envelopes.py
+src/sports_signal_bot/schema_governance/lineage.py
+src/sports_signal_bot/schema_governance/manifests.py
+src/sports_signal_bot/schema_governance/migrations.py
+src/sports_signal_bot/schema_governance/registry.py
+src/sports_signal_bot/schema_governance/reporting.py
+src/sports_signal_bot/schema_governance/serialization.py
+src/sports_signal_bot/schema_governance/utils.py
+src/sports_signal_bot/schema_governance/validation.py
+src/sports_signal_bot/schema_governance/versions.py
 src/sports_signal_bot/signal_scoring/__init__.py
 src/sports_signal_bot/signal_scoring/combine.py
 src/sports_signal_bot/signal_scoring/confidence.py
@@ -598,6 +617,7 @@ tests/test_audit.py
 tests/test_backtest_ledger.py
 tests/test_backtest_period_summaries.py
 tests/test_backtest_runner.py
+tests/test_backward_compatibility.py
 tests/test_bankroll_guards.py
 tests/test_bankroll_manifest.py
 tests/test_bankroll_runner.py
@@ -613,6 +633,7 @@ tests/test_benchmark_market.py
 tests/test_best_source_fallback.py
 tests/test_binary_isotonic_calibration.py
 tests/test_binary_sigmoid_calibration.py
+tests/test_breaking_change_classification.py
 tests/test_calibrated_preference_policy.py
 tests/test_calibration_dataset.py
 tests/test_calibration_metrics.py
@@ -625,6 +646,7 @@ tests/test_conservative_quality_optimizer.py
 tests/test_context_features.py
 tests/test_decision_packets.py
 tests/test_delivery_retry_logic.py
+tests/test_deprecation_warnings.py
 tests/test_dispatch_dry_run.py
 tests/test_dispatch_manifest.py
 tests/test_dispatch_routing.py
@@ -646,6 +668,7 @@ tests/test_feature_registry.py
 tests/test_file_provider.py
 tests/test_fixed_fraction_overlay.py
 tests/test_flat_stake_overlay.py
+tests/test_forward_compatibility.py
 tests/test_frontier_generation.py
 tests/test_identity_calibration.py
 tests/test_imports.py
@@ -656,6 +679,8 @@ tests/test_ingestion_pipeline.py
 tests/test_labels.py
 tests/test_leaderboard_builder.py
 tests/test_line_market_settlement.py
+tests/test_loader_with_old_versions.py
+tests/test_manifest_envelope_standardization.py
 tests/test_margin_weighting.py
 tests/test_market_compatibility.py
 tests/test_market_odds_features.py
@@ -665,6 +690,7 @@ tests/test_multiclass_calibration_wrapper.py
 tests/test_noise_control.py
 tests/test_normalization.py
 tests/test_pairwise_comparison.py
+tests/test_payload_migration.py
 tests/test_policy_runner.py
 tests/test_prediction_fallback_chain.py
 tests/test_prediction_standardization.py
@@ -684,10 +710,14 @@ tests/test_rest_features.py
 tests/test_rolling_form_features.py
 tests/test_rule_based_hybrid.py
 tests/test_same_sample_policy.py
+tests/test_schema_manifest_hashing_placeholder.py
+tests/test_schema_registry.py
+tests/test_schema_validation_runner.py
 tests/test_score_and_edge_optimizer.py
 tests/test_score_only_optimizer.py
 tests/test_season_transition.py
 tests/test_segment_evaluation.py
+tests/test_semver_resolution.py
 tests/test_settings.py
 tests/test_settlement.py
 tests/test_settlement_binary.py
