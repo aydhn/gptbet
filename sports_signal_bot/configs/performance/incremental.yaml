@@ -1,0 +1,4 @@
+incremental_recompute_thresholds:
+  max_changeset_size: 1000
+full_rebuild_fallback_thresholds:
+  stale_range_width_days: 30

@@ -1,0 +1,4 @@
+default_performance_mode: "safe_default"
+slow_step_warning_ms: 1000
+performance_summary_top_n: 10
+maintenance_cleanup_enabled: true
