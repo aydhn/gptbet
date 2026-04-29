@@ -1,0 +1,4 @@
+deployment:
+  default_install_profile: "research_local"
+  workspace_layout_version: "1.0.0"
+  lock_timeout_seconds: 3600

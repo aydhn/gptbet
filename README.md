@@ -16,3 +16,26 @@ Quick links:
 
 ## Development
 See the documentation for architecture and guidelines. Run `python -m sports_signal_bot.main --help` for available commands.
+
+# Phase 36: Platform Packaging & Portable Local Deployment
+
+This phase implements the platform packaging and local deployment automation for the Sports Signal Bot. The focus is on predictability, deterministic bootstrapping, robust environment checking, and safe backup/restore capabilities. It aims to transform the system from a repository into a safely bootstrappable local application.
+
+Key features added:
+- **Workspace Layout Standard**: Hard-coded paths are avoided. Roots (config, data, artifacts, logs, etc.) are deterministically generated and centrally managed via `DeploymentLayoutRecord`.
+- **Bootstrapping**: `deploy bootstrap` initializes the directory structure and templates missing env/config files based on customizable install profiles (`research_local`, `conservative_ops`).
+- **Environment Doctor**: `deploy run-doctor` performs critical readiness checks for Python runtime version, required directories, schemas, and configurations. It reports blocking issues versus warnings and ensures dispatch readiness.
+- **First-Class Backup & Restore**: Safe mechanisms to archive configurations, state, and specific metadata while adhering to basic locks and overwrite safety measures to ensure local reproducibility.
+- **Upgrade Preflight**: `deploy run-upgrade-preflight-command` to report layout and schema version changes before executing risky structural upgrades.
+
+All implementation details live under `src/sports_signal_bot/deployment` and have corresponding entry points via the `sports_signal_bot.main` Typer app under the `deploy` sub-command.
+
+## Örnek CLI Komutları
+```bash
+python -m sports_signal_bot.main deploy bootstrap --profile research_local
+python -m sports_signal_bot.main deploy run-doctor
+python -m sports_signal_bot.main deploy preview-layout
+python -m sports_signal_bot.main deploy create-backup-cmd --btype config_and_state_backup
+python -m sports_signal_bot.main deploy restore-backup <BACKUP_ID> --dry-run
+python -m sports_signal_bot.main deploy run-upgrade-preflight-command
+```

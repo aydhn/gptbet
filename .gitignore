@@ -1,0 +1,18 @@
+# Exclude backups and temporary files
+/backups/
+/artifacts/
+/state/
+/cache/
+/data/
+/logs/
+/reports/
+/temp/
+/secrets/
+.env.local.example
+results/
+tests/deployment/__pycache__/
+src/sports_signal_bot/__pycache__/
+src/sports_signal_bot/deployment/__pycache__/
+src/sports_signal_bot/docs_ops/__pycache__/
+*.zip
+*_manifest.json
