@@ -2707,5 +2707,8 @@ app.add_typer(schema_app, name="schema-governance", help="Schema Governance and 
 
 app.add_typer(performance_app, name='perf', help='Performance and Runtime Optimization Commands')
 
+
+from sports_signal_bot.main_quality_cli import app as quality_app
+app.add_typer(quality_app, name="quality", help="Quality Engineering & Testing commands")
 if __name__ == "__main__":
     app()
