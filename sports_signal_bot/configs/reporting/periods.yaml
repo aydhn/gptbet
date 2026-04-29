@@ -1,0 +1,7 @@
+periods:
+  - id: daily
+    duration_hours: 24
+  - id: weekly
+    duration_hours: 168
+  - id: slot
+    duration_hours: 4

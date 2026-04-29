@@ -2713,5 +2713,8 @@ app.add_typer(quality_app, name="quality", help="Quality Engineering & Testing c
 from sports_signal_bot.main_security_cli import app as security_app
 app.add_typer(security_app, name="security", help="Security and Config Governance Commands")
 
+from sports_signal_bot.main_reporting_cli import app as reporting_app
+app.add_typer(reporting_app, name="reporting", help="Reporting, Metrics, and KPI Governance Commands")
+
 if __name__ == "__main__":
     app()

@@ -522,7 +522,11 @@ src/sports_signal_bot/schema_governance/versions.py
 src/sports_signal_bot/security/__init__.py
 src/sports_signal_bot/security/audits.py
 src/sports_signal_bot/security/command_gates.py
+src/sports_signal_bot/security/config_doctor.py
+src/sports_signal_bot/security/config_layers.py
 src/sports_signal_bot/security/contracts.py
+src/sports_signal_bot/security/endpoints.py
+src/sports_signal_bot/security/filesystem.py
 src/sports_signal_bot/security/redaction.py
 src/sports_signal_bot/security/secrets.py
 src/sports_signal_bot/signal_scoring/__init__.py
