@@ -8,6 +8,7 @@ src/sports_signal_bot/main_cli_backup.py
 src/sports_signal_bot/main_cli_refresh.py
 src/sports_signal_bot/main_dynamic_weighting.py
 src/sports_signal_bot/main_performance_cli.py
+src/sports_signal_bot/main_quality_cli.py
 src/sports_signal_bot/main_schema_cli.py
 src/sports_signal_bot/main_schema_governance_cli.py
 src/sports_signal_bot.egg-info/PKG-INFO
@@ -372,6 +373,18 @@ src/sports_signal_bot/probabilistic/football/model.py
 src/sports_signal_bot/probabilistic/football/registry.py
 src/sports_signal_bot/probabilistic/football/score_matrix.py
 src/sports_signal_bot/probabilistic/football/strength_mapper.py
+src/sports_signal_bot/quality/__init__.py
+src/sports_signal_bot/quality/contracts.py
+src/sports_signal_bot/quality/gates.py
+src/sports_signal_bot/quality/golden.py
+src/sports_signal_bot/quality/registry.py
+src/sports_signal_bot/quality/regression.py
+src/sports_signal_bot/quality/reporting.py
+src/sports_signal_bot/quality/runner.py
+src/sports_signal_bot/quality/scenarios.py
+src/sports_signal_bot/quality/smoke.py
+src/sports_signal_bot/quality/synthetic.py
+src/sports_signal_bot/quality/utils.py
 src/sports_signal_bot/ratings/__init__.py
 src/sports_signal_bot/ratings/base.py
 src/sports_signal_bot/ratings/benchmark.py

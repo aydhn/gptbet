@@ -1,0 +1,15 @@
+gates:
+  dev_local:
+    description: "Local development gate"
+    blocking: true
+    policies:
+      - policy_id: "smoke_check"
+        required_suites: ["smoke_suite"]
+        blocking: true
+  pre_release:
+    description: "Pre-release quality gate"
+    blocking: true
+    policies:
+      - policy_id: "full_regression"
+        required_suites: ["smoke_suite", "regression_suite", "contract_suite"]
+        blocking: true
