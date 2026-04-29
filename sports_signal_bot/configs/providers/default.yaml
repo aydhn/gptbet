@@ -1,0 +1,7 @@
+enabled_providers:
+  - stub_test_provider
+  - local_file_feed
+  - manual_import_provider
+provider_priorities:
+  stub_test_provider: 1
+  local_file_feed: 2

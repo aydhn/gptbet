@@ -356,6 +356,25 @@ python -m sports_signal_bot.main preview-compatibility --family inference_manife
 ```
 For architecture details, refer to `docs/schema_governance_architecture.md`.
 
+## Phase 37: Central Reporting and Metrics Platform
+
+This system implements a unified reporting and metrics backbone designed to consolidate fragmented artifacts from evaluation, inference, backtesting, and deployment into a single coherent narrative.
+
+Key features:
+- **Metric & KPI Governance**: Centralized registry for defining KPIs with strict directionality, aggregation methods, and warning caveats.
+- **Audience-Aware Reporting**: Automatically shapes report bundles for `executive`, `operator`, or `maintainer` personas, adjusting the level of technical detail and narrative tone.
+- **Report Bundles**: Generates a composite snapshot including sample universe definitions, highlights, and computed KPI metrics (in JSON, Markdown, and CSV).
+- **Metric Lineage**: Every computed metric carries lineage metadata explaining exactly what artifacts were used to compute it, preventing misleading cross-universe comparisons.
+
+You can interact with the reporting layer via CLI:
+```bash
+python -m sports_signal_bot.main reporting list-kpis
+python -m sports_signal_bot.main reporting preview-report-bundle --audience operator --period daily
+python -m sports_signal_bot.main reporting run-reporting --audience executive --period weekly
+```
+
+See `docs/reporting_kpi_architecture.md` for architectural details.
+
 ## Performance & Runtime Optimization
 This project includes a performance layer to optimize data ingestion, feature building, and inference pipelines through strict caching, incremental recompute, and lazy loading strategies. It ensures correctness-first optimizations, provides bottleneck reporting, and supports multiple performance modes.
 Use `python -m sports_signal_bot.main run-performance-pass` to execute performance tests.

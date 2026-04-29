@@ -1,15 +1,9 @@
-Phase 35 (Security & Config Governance) is complete.
-
-Changes Made:
-1. Implemented `RedactionEngine` in `src/sports_signal_bot/security/redaction.py` to recursively mask sensitive config properties.
-2. Implemented `SecretResolver` in `src/sports_signal_bot/security/secrets.py` that fails safely (forcing dry-run mode when required secrets are missing/mocked).
-3. Created security governance configurations (`configs/security/default.yaml`, `secrets.yaml`, `redaction.yaml`, `privileges.yaml`, `endpoints.yaml`, `filesystem.yaml`, `command_risk.yaml`, `audit.yaml`).
-4. Developed `SecurityAuditRunner` (`src/sports_signal_bot/security/audits.py`) for health checks.
-5. Added `EndpointAllowlist` and `FilesystemAllowlist` components for restricting network scopes and local disk paths (`src/sports_signal_bot/security/endpoints.py`, `src/sports_signal_bot/security/filesystem.py`).
-6. Built the `CommandSafetyGate` to validate commands against risky actions (`src/sports_signal_bot/security/command_gates.py`).
-7. Linked security components via Typer in `main_security_cli.py`, exposing validation commands (`run-security-audit`, `preview-effective-config`, `preview-secret-inventory`, `preview-redaction-rules`, `check-runtime-privileges`, `preview-trust-boundaries`, `list-security-strategies`).
-8. Configured `.env.example` to document correct properties without values, setup `.env.local.example` for testing local deployments, and verified `.env.local` is present in `.gitignore`.
-9. Added tests to evaluate the Redaction Engine, Failure Modes, Scope Policies, Command Validations, and Gitignore checks (`tests/security/test_security_core.py`, `tests/security/test_gitignore_secret_hygiene.py`).
-10. Added comprehensive internal documentation in `docs/security_secret_management_architecture.md`, `docs/operators/secret_handling_guide.md`, `docs/governance/security_and_config_governance.md`, and `docs/maintenance/security_audit_guide.md`.
-
-Execution outputs verify functionality and tests pass successfully.
+# Phase 38 implementation summary
+Implemented Provider Abstraction Layer:
+- Created provider registry and unified adapters.
+- Established unified request/response contracts for all data families (fixtures, odds, results, team_metadata).
+- Developed provider quality scoring (freshness, completeness, consistency, schema_validity) and health monitoring systems.
+- Built a provider failover engine and routing resolver.
+- Implemented data normalization, identity alias resolution, and lineage/diagnostics utilities.
+- Updated documentation and CLI tools to interact with the abstraction layer.
+- Ensure successful test execution.

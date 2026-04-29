@@ -1,0 +1,2 @@
+freshness_thresholds:
+  stale_after_hours: 24

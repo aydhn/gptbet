@@ -1,3 +1,4 @@
+from typing import Any
 import logging
 import uuid
 from datetime import datetime, timezone
@@ -11,9 +12,9 @@ from sports_signal_bot.data.normalization.datetimes import \
     parse_datetime_to_utc
 from sports_signal_bot.data.normalization.markets import normalize_market_name
 from sports_signal_bot.data.normalization.names import normalize_league_name
-from sports_signal_bot.data.providers.base import (BaseFixtureProvider,
-                                                   BaseOddsProvider,
-                                                   BaseStatsProvider)
+#
+
+
 from sports_signal_bot.data.storage.paths import (get_manifest_storage_path,
                                                   get_processed_storage_path,
                                                   get_raw_storage_path)
@@ -39,7 +40,7 @@ class IngestionOrchestrator:
         return name
 
     def ingest_fixtures(
-        self, provider: BaseFixtureProvider, sport: SportType
+        self, provider: Any, sport: SportType
     ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
         logger.info(
@@ -143,7 +144,7 @@ class IngestionOrchestrator:
         return manifest
 
     def ingest_odds(
-        self, provider: BaseOddsProvider, sport: SportType
+ sport: SportType
     ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
         logger.info(
@@ -244,7 +245,7 @@ class IngestionOrchestrator:
         return manifest
 
     def ingest_stats(
-        self, provider: BaseStatsProvider, sport: SportType
+        self, provider: Any, sport: SportType
     ) -> IngestManifestRecord:
         ingest_id = self._generate_ingest_id()
         logger.info(
