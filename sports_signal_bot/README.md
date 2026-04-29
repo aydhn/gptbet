@@ -335,3 +335,9 @@ For architecture details, refer to `docs/schema_governance_architecture.md`.
 ## Performance & Runtime Optimization
 This project includes a performance layer to optimize data ingestion, feature building, and inference pipelines through strict caching, incremental recompute, and lazy loading strategies. It ensures correctness-first optimizations, provides bottleneck reporting, and supports multiple performance modes.
 Use `python -m sports_signal_bot.main run-performance-pass` to execute performance tests.
+
+## Security and Secret Management
+The security layer isolates secret resolution, enforces redaction for sensitive payloads, and restricts access via least-privilege profiles.
+- Never commit real tokens to `.env` or `.yaml` files.
+- Use `.env.local` for local secrets.
+- Redaction and config hygiene can be validated using the `security run-security-audit` CLI command.

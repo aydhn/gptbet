@@ -1,0 +1,5 @@
+risky_commands:
+  - "run-dispatch"
+  - "run-release"
+confirmation_required_commands:
+  - "run-dispatch"

@@ -1,0 +1,9 @@
+privilege_profiles:
+  research_local:
+    allowed_commands: ["preview-*", "run-inference"]
+  conservative_ops:
+    allowed_commands: ["run-dispatch", "run-monitoring"]
+  maintenance_admin:
+    allowed_commands: ["*"]
+  dry_run_preview:
+    allowed_commands: ["preview-*"]

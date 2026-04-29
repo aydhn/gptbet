@@ -1,0 +1,9 @@
+allowed_read_roots:
+  - "data/"
+  - "configs/"
+  - "src/"
+allowed_write_roots:
+  - "data/processed/"
+  - "data/artifacts/"
+  - "data/cache/"
+  - "results/"
