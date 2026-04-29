@@ -106,5 +106,8 @@ def list_glossary_terms():
     """List glossary terms."""
     typer.echo("Glossary terms parsed: Not fully implemented in this phase.")
 
+from sports_signal_bot.deployment.cli import app as deploy_app
+app.add_typer(deploy_app, name='deploy')
+
 if __name__ == "__main__":
     app()

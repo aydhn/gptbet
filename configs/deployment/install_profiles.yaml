@@ -1,0 +1,7 @@
+profiles:
+  research_local:
+    allowed_commands: ["bootstrap", "doctor", "backup", "restore"]
+    required_directories: ["data", "models", "artifacts"]
+  conservative_ops:
+    allowed_commands: ["doctor", "backup", "restore"]
+    backup_default_excludes: ["cache", "temp"]
