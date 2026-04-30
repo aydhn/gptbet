@@ -82,6 +82,8 @@ app.add_typer(evidence_app, name="evidence")
 
 from sports_signal_bot.adjudication.cli import app as adjudication_app
 app.add_typer(adjudication_app, name="adjudication")
+from sports_signal_bot.learning.cli import learning_app
+app.add_typer(learning_app, name="learning")
 
 if __name__ == "__main__":
     app()

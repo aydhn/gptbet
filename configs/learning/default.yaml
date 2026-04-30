@@ -1,0 +1,27 @@
+learning:
+  default_learning_strategy: "BalancedAssimilationStrategy"
+  minimum_support_by_family:
+    provider_trust: 3
+    threshold: 5
+    alias_resolution: 2
+  minimum_distinct_cases: 2
+  contradiction_burden_limits:
+    weak_threshold: 0.3
+    strong_threshold: 0.1
+  scope_safety_rules:
+    prohibited_scopes: ["prohibited_global_change"]
+  advisory_vs_candidate_patch_rules:
+    require_approval_for_high_risk: true
+  suggestion_risk_thresholds:
+    high_blast_radius: "wide"
+    critical_blast_radius: "global"
+  high_risk_requires_approval: true
+  simulation_required_families:
+    - "threshold"
+    - "policy"
+  memory_to_rule_promotion_rules:
+    min_usage_count: 5
+  alias_auto_apply_safety_limits:
+    max_entities_per_bundle: 10
+  stale_precedent_exclusion_days: 90
+  rule_bundle_expiry_defaults: "30_days"
