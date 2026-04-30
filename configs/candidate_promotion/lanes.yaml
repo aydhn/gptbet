@@ -1,0 +1,15 @@
+lane_rules:
+  fast_safe_candidate_lane:
+    max_risk: medium
+    require_approval: false
+    min_confidence: high
+  standard_candidate_lane:
+    max_risk: high
+    require_approval: true
+    min_confidence: medium
+  high_risk_review_lane:
+    max_risk: critical
+    require_approval: true
+    min_confidence: any
+fast_lane_scope_limits:
+  max_scope_keys: 1

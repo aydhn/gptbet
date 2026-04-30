@@ -1,0 +1,9 @@
+readiness_thresholds:
+  not_ready:
+    missing_stages: any
+  conditionally_ready:
+    missing_stages: none
+    missing_approvals: true
+  release_candidate_ready:
+    missing_stages: none
+    missing_approvals: false

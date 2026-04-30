@@ -1,0 +1,6 @@
+default_candidate_promotion_strategy: "balanced"
+candidate_expiry_windows:
+  fast_lane: "24h"
+  standard: "7d"
+  review_heavy: "14d"
+stale_simulation_block_hours: 48

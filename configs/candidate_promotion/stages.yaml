@@ -1,0 +1,22 @@
+stage_order:
+  - integrity_validation
+  - safety_validation
+  - simulation_validation
+  - quality_gates_validation
+  - review_readiness_validation
+  - release_readiness_validation
+
+required_stage_matrix_by_family:
+  threshold:
+    - integrity_validation
+    - safety_validation
+    - simulation_validation
+    - quality_gates_validation
+    - release_readiness_validation
+  policy:
+    - integrity_validation
+    - safety_validation
+    - simulation_validation
+    - quality_gates_validation
+    - review_readiness_validation
+    - release_readiness_validation
