@@ -1,0 +1,9 @@
+default_consensus_strategy_by_family:
+  fixtures: balanced_consensus
+  odds: freshness_weighted_odds
+  results: conservative_truth
+  metadata: stable_source_bias
+ops_mode_confidence_requirements:
+  min_confidence: high
+preview_mode_relaxations:
+  allow_medium: true

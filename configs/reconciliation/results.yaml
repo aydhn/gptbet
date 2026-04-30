@@ -1,0 +1,2 @@
+field_resolution_policies:
+  final_score: highest_trust_consistency_check

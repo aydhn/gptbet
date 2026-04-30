@@ -1,0 +1,2 @@
+field_resolution_policies:
+  line_values: freshest_trusted_outlier_guard
