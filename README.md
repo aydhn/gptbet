@@ -1,59 +1,31 @@
 # Sports Signal Bot
-## Phase 42: Feedback Assimilation & Learning Architecture
 
-This architecture introduces a controlled, scoped, and human-in-the-loop learning layer on top of the adjudication memory. It avoids silent, black-box auto-modifications in favor of explicit, evidence-backed tuning suggestions.
+...
 
-### Precedent to Suggestion Flow
-1. **Feedback Aggregation**: Adjudication records, precedents, and corrections are aggregated by target component (e.g. `provider_trust`, `threshold`).
-2. **Pattern Mining**: Common elements across feedback signals are mined to create `PatternCandidateRecord`s.
-3. **Structured Suggestion**: Candidates are mapped into a structured DSL containing condition/action blocks.
-4. **Scoring & Safety**:
-    - **Support**: Evaluated based on case counts and contradiction burdens.
-    - **Confidence**: Scored into bands (e.g., `high`, `medium`, `unsafe_to_apply`).
-    - **Risk**: Classified (e.g., `low`, `critical`) based on downstream blast radius and component criticality.
-    - **Scope**: Evaluated for safety; overly broad changes are narrowed or prohibited.
-5. **Assimilation Decision**: Based on the scores, the system assigns a recommendation mode:
-    - `advisory_only`
-    - `candidate_patch`
-    - `manual_review_required`
-    - `blocked`
+## Staged Candidate Channels (Phase 46)
 
-### Why Not Automatic Self-Modification?
-The system adheres to the principle "No Silent Self-Modification". Direct rule rewrites based on limited feedback carry significant risk (e.g., threshold drifts causing large-scale failures). Instead, we generate *advisory* or *test-gated candidate patches* that require manual review or automated simulation quality gates before being deployed.
+The Staged Candidate Channels layer provides a progressive, multi-stage evaluation pipeline for candidate packages before they reach active deployment.
 
-### Learning Passes
-Run the assimilation engine via:
-`python -m sports_signal_bot.main learning run-learning-pass`
-`python -m sports_signal_bot.main learning preview-pattern-candidates`
-`python -m sports_signal_bot.main learning preview-tuning-suggestions`
-`python -m sports_signal_bot.main learning list-learning-strategies`
+### Purpose
 
-For more details, see the documentation in `docs/`.
+It is not enough for a package to be "candidate-ready". It must be safely proven in progressively stricter environments:
+- **Shadow**: Runs side-by-side with production but makes no active changes. Used for comparing decisions without cost.
+- **Candidate Eval**: Stricter evaluation looking at fleet conflicts, monitoring burden, and review history.
+- **Live-like Safe**: The final evaluation step representing an ops-ready simulation, comparing directly against the stable-reference channel but preserving the current stable pointer.
 
-## Phase 43: Suggestion Sandbox Architecture
-The Suggestion Sandbox provides an isolated, highly-controlled laboratory to safely evaluate candidate patch suggestions before they impact the active system state.
+### Fleet & Capacity
 
-- **Candidate Patches**: Suggestions are converted into scoped, transient configuration overrides.
-- **Before-After Simulations**: Enforces a strict same-universe comparison between the baseline and the proposed variant.
-- **Commands**: Use `python -m sports_signal_bot.main simulate-suggestion --suggestion-id <id>` to run a simulation and `python -m sports_signal_bot.main list-simulation-strategies` to view available simulation methodologies.
-- **Safety**: Simulations are deterministic, strictly isolated from production data stores, and generate automated risk recommendations for operators and reviewers.
+We simulate multiple simultaneous candidate patches as a "Fleet". Candidates are subject to capacity limits per-channel and conflict-detection (e.g., mutually exclusive candidates targeting the same component). Candidates can be held, or queued into later rollout "Waves" based on channel capacity.
 
-## Phase 44: Batch Candidate Tournaments
-The Batch Candidate Tournament architecture provides a multi-objective ranking system to safely compare multiple patches within the same comparison universe. It introduces pareto-front analysis, safety lanes, and shortlist recommendations without auto-promoting patches.
+### Rollback to Shadow & Retiring
+- **Rollback to shadow**: A candidate exhibiting regression is not immediately killed. It can be bumped back to the shadow channel for safer observation and evidence gathering.
+- **Supersession & Retirement**: A candidate can be retired if a newer, narrower/safer candidate replaces it, or if it has an excessively high error rate.
 
-- **Commands**:
-  - `python -m sports_signal_bot.main tournaments run-tournament --family threshold_tournament`
-  - `python -m sports_signal_bot.main tournaments preview-shortlist --tournament-id <id>`
-- **Safety**: Generates explicit lanes (safe, advisory, exploratory) and prevents auto-deployments. It acts as a decision-support layer for human reviewers.
-- **Documentation**: See `docs/candidate_tournament_architecture.md` for more details.
+### Run commands
+```bash
+python -m sports_signal_bot.main preview-channel-state
+python -m sports_signal_bot.main run-staged-rollout
+python -m sports_signal_bot.main list-staged-channel-strategies
+```
 
-### Controlled Candidate Promotion (Phase 45)
-The candidate promotion layer takes output from tournaments and applies rigorous, staged validation to produce a promote-or-kill decision.
-**A tournament shortlist is not a release ticket.** Candidates must pass Integrity, Safety, Simulation, and Quality Gate stages before they are deemed `release_candidate_ready`.
-
-- **Lanes:** Candidates are routed through Fast Safe, Standard, or High-Risk lanes based on their scope and simulation confidence.
-- **State Machine:** Candidates traverse an explicit state machine, ensuring no candidate is lost or mutated blindly.
-- **Promote-or-Kill:** Outputs a clear decision (Promote, Hold, Revise, Kill) without mutating active stable/canary pointers. Produces a `CandidateReleasePackage` for later consumption.
-
-Use the `candidate-promotion` CLI namespace to run pipelines:
-`python -m sports_signal_bot.main candidate-promotion run-candidate-promotion`
+This phase focuses on the candidate evaluation lifecycle, deferring active percentage traffic splitting and autonomous promotions to later phases.

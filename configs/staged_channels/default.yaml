@@ -1,0 +1,72 @@
+default_channel_strategy: BalancedPhasedRolloutStrategy
+
+channel_definitions:
+  - id: shadow_candidate_channel
+    family: shadow_candidate_channel
+    safety_level: low
+    comparison_mode: same-universe
+    progression_policy: default
+    capacity_limits:
+      max_active: 20
+
+  - id: candidate_eval_channel
+    family: candidate_eval_channel
+    safety_level: medium
+    comparison_mode: comparative
+    progression_policy: default
+    capacity_limits:
+      max_active: 10
+
+  - id: live_like_safe_channel
+    family: live_like_safe_channel
+    safety_level: high
+    comparison_mode: stable-reference
+    progression_policy: default
+    capacity_limits:
+      max_active: 5
+
+stage_order:
+  - candidate_queued_for_shadow
+  - running_in_shadow
+  - shadow_verified
+  - pending_candidate_eval
+  - running_candidate_eval
+  - candidate_eval_verified
+  - pending_live_like_safe
+  - running_live_like_safe
+  - live_like_safe_verified
+  - rollout_ready_for_next_promotion_step
+
+fleet_conflict_rules:
+  max_high_risk_per_wave: 2
+  capacity_limits_by_channel:
+    shadow_candidate_channel: 20
+    candidate_eval_channel: 10
+    live_like_safe_channel: 5
+
+progression_requirements:
+  shadow_verified:
+    - no_critical_regression
+    - evidence_complete
+  candidate_eval_verified:
+    - required_gates_valid
+    - no_blocking_conflict
+  live_like_safe_verified:
+    - ops_risk_acceptable
+
+rollback_to_shadow_rules:
+  max_rollbacks: 2
+  conditions:
+    - regression_detected
+
+retire_rules:
+  conditions:
+    - error_rate_above_threshold
+    - stronger_successor_exists
+
+supersession_rules:
+  conditions:
+    - newer_patch_replaces_older
+
+next_step_readiness_rules:
+  generate_readiness_on_stage_exit: true
