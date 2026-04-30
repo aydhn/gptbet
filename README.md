@@ -46,3 +46,14 @@ The Batch Candidate Tournament architecture provides a multi-objective ranking s
   - `python -m sports_signal_bot.main tournaments preview-shortlist --tournament-id <id>`
 - **Safety**: Generates explicit lanes (safe, advisory, exploratory) and prevents auto-deployments. It acts as a decision-support layer for human reviewers.
 - **Documentation**: See `docs/candidate_tournament_architecture.md` for more details.
+
+### Controlled Candidate Promotion (Phase 45)
+The candidate promotion layer takes output from tournaments and applies rigorous, staged validation to produce a promote-or-kill decision.
+**A tournament shortlist is not a release ticket.** Candidates must pass Integrity, Safety, Simulation, and Quality Gate stages before they are deemed `release_candidate_ready`.
+
+- **Lanes:** Candidates are routed through Fast Safe, Standard, or High-Risk lanes based on their scope and simulation confidence.
+- **State Machine:** Candidates traverse an explicit state machine, ensuring no candidate is lost or mutated blindly.
+- **Promote-or-Kill:** Outputs a clear decision (Promote, Hold, Revise, Kill) without mutating active stable/canary pointers. Produces a `CandidateReleasePackage` for later consumption.
+
+Use the `candidate-promotion` CLI namespace to run pipelines:
+`python -m sports_signal_bot.main candidate-promotion run-candidate-promotion`

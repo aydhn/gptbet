@@ -1,0 +1,15 @@
+kill_vs_hold_rules:
+  kill:
+    - safety_validation_failed
+    - better_successor_exists
+    - inconclusive_simulation_for_high_risk
+  hold:
+    - missing_approval
+    - missing_gates
+
+revise_rules:
+  - scope_too_broad
+  - low_support_but_good_simulation
+
+supersession_rules:
+  - narrower_scope_wins_if_equal_benefit

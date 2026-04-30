@@ -1,25 +1,28 @@
-# Phase 41: Human Adjudication and Knowledge Memory Layer
+## Phase 45 Implementation Summary: Candidate Promotion
 
-This phase establishes the foundational adjudication and feedback memory architecture, transitioning the system from passively producing disputes and evidence to actively resolving them with human oversight and capturing that knowledge.
+**1. Candidate Release Scope & Contracts**
+- Implemented `CandidateReleaseRecord`, `CandidateBundleRecord`, `CandidateStateRecord` along with comprehensive models to capture the candidate validation state machine and history inside `src/sports_signal_bot/candidate_promotion/contracts.py`.
+- Introduced `CandidateLane` and `CandidateReadinessBand` concepts.
 
-## Implementation Summary
-- **Data Models & Contracts**: Added Pydantic definitions for `AdjudicationCaseRecord`, `AdjudicationDecisionRecord`, `ResolutionRecord`, `PrecedentRecord`, `KnowledgeEntryRecord`, and `FeedbackSignalRecord` (in `contracts.py`).
-- **Queue and Case Engine**: Implemented `AdjudicationCaseBuilder` and `AdjudicationQueueBuilder` to manage and prioritize disputes for human review.
-- **Evidence Verification**: Enforced evidence attachment via `EvidenceIntegrator` and `AdjudicationGuardrails`, requiring resolution decisions to explicitly cite the underlying `evidence_bundle_ref`.
-- **Feedback & Memory Loops**: Implemented `FeedbackIngestor` and `PrecedentLookupEngine` to digest human resolutions, convert them into scoped feedback, and safely generate knowledge memory entries (using configurable strategies).
-- **Adjudication Strategies**: Added discrete resolution strategies in `src/sports_signal_bot/adjudication/strategies/` (e.g., `ConservativeAdjudicationStrategy`, `AliasFocusedResolutionStrategy`).
-- **Documentation & Configuration**: Added targeted runbooks and architecture docs under `docs/`, and created extensible configuration YAMLs under `configs/adjudication/`.
-- **CLI Utilities**: Exposed operations like `run-adjudication`, `preview-adjudication-queue`, `resolve-adjudication-case`, and `preview-knowledge-memory` under the `adjudication` Typer namespace.
+**2. Candidate State Machine**
+- A detailed state machine covering `candidate_created`, `pending_stage_validation`, `quality_gates_passed`, `candidate_ready`, `candidate_killed` up to `candidate_promote_recommended`. This is implemented natively in the states enum and modeled into a logical progression in the `run_candidate_pipeline` flow.
 
-All tests under `tests/adjudication/` pass, ensuring core validations like memory scope constraints and feedback damping perform as expected.
+**3. Staged Validation Model**
+- Defined rigorous evaluation models including integrity, safety, and simulation in `src/sports_signal_bot/candidate_promotion/stages.py`.
+- Validation ensures candidates pass specified gates before progressing to readiness evaluations.
 
-## Deliverables Check
-- [x] Adjudication case/queue model
-- [x] Structured resolution records
-- [x] Feedback ingestion chain
-- [x] Precedent lookup and knowledge memory
-- [x] Scoped auto-apply / advisory boundaries
-- [x] Reconciliation/evidence/monitoring hooks
-- [x] CLI commands
-- [x] Test coverage
-- [x] Documentation updates
+**4. Promote-or-Kill Decision Engine**
+- Provided deterministic promotion/kill/hold/revise decisions inside `src/sports_signal_bot/candidate_promotion/decisions.py` utilizing the results from validation stages, generating clear outputs based on readiness bands.
+
+**5. Candidate Lanes**
+- A routing system based on safety limit guidelines that assigns patches either to `FAST_SAFE_CANDIDATE_LANE`, `STANDARD_CANDIDATE_LANE`, or `HIGH_RISK_REVIEW_LANE` implemented inside `src/sports_signal_bot/candidate_promotion/lanes.py`.
+
+**6. Bundles and Strategies**
+- Added robust bundle management logic to group related patches together (`src/sports_signal_bot/candidate_promotion/bundles.py`).
+- Implemented multiple promotion strategies (`Balanced`, `Conservative`, `EvidenceFirst`, `FastLaneSafePatchStrategy`, `ReviewHeavyPromotionStrategy`) reflecting distinct tolerance levels.
+
+**7. Documentation & Tooling Integration**
+- Added detailed configurations under `configs/candidate_promotion/`.
+- Written rich reference architecture documentation and user guides for operators and reviewers in the `docs/` folder.
+- Expanded CLI in `src/sports_signal_bot/candidate_promotion/cli.py` to allow execution and previewing of readiness and bundles, tying into the main app entrypoint.
+- Added test coverage in `tests/candidate_promotion/` containing end-to-end evaluations of lanes, readiness bands, and decision branches.
