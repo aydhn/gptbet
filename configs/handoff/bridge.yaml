@@ -1,0 +1,3 @@
+bridge_constraints_by_family:
+  nfl_totals: ["percentage_rollout_required"]
+  mlb_moneyline: []

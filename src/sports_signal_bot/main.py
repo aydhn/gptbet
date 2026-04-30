@@ -3,6 +3,8 @@ import typer
 from .tournaments.cli import app as tournaments_app
 from .candidate_promotion.cli import app as candidate_promotion_app
 from .auto_promotion.cli import app as auto_promotion_app
+from .deployment.cli import app as deployment_app
+from .handoff.cli import app as handoff_app
 import json
 from datetime import datetime
 
@@ -60,6 +62,8 @@ def list_simulation_strategies():
 app.add_typer(tournaments_app, name="tournaments", help="Phase 44 Candidate Tournaments")
 app.add_typer(candidate_promotion_app, name="candidate-promotion", help="Phase 45 Candidate Promotion")
 app.add_typer(auto_promotion_app, name="auto-promotion", help="Phase 47 Constrained Auto Promotion")
+app.add_typer(handoff_app, name="handoff", help="Phase 48 Candidate-to-Release Handoff")
+app.add_typer(deployment_app, name="deploy", help="Deployment Operations")
 
 if __name__ == "__main__":
     app()

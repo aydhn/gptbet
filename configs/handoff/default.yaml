@@ -1,0 +1,5 @@
+default_handoff_strategy: "balanced_readiness_council"
+stale_handoff_candidate_hours: 48
+approval_required_families:
+  - "nfl_totals"
+  - "nba_spread"

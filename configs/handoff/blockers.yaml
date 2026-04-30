@@ -1,0 +1,7 @@
+blocker_severity_rules:
+  missing_approval: "high"
+  unresolved_disputes: "critical"
+  stale_gates: "medium"
+kill_before_handoff_rules:
+  max_critical_blockers: 0
+  max_stale_hours: 72

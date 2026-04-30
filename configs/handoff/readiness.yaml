@@ -1,0 +1,5 @@
+final_readiness_thresholds:
+  simulation_min_score: 0.8
+  evidence_min_score: 0.75
+adoption_readiness_rules:
+  require_monitoring: true

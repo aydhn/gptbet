@@ -49,3 +49,9 @@ python -m sports_signal_bot.main auto-promotion list-auto-promotion-strategies
 ```
 
 For more detail, refer to `docs/constrained_auto_promotion_architecture.md`.
+
+### Phase 48: Candidate-to-Release Handoff
+The handoff layer ensures that candidates from the constrained auto-promotion and staged channels are formally evaluated by a `Final Readiness Council`. This deterministic evaluation uses various lenses (safety, evidence, governance) to produce a Readiness Matrix.
+Crucially, **this phase does not mutate the active stable pointer**. Instead, approved candidates are transitioned into an `Activation Bridge`, yielding an `ActivationBridgePackageRecord`. This differentiates `bridge_ready` from actual `activation_ready`, ensuring strict governance and enabling kill-before-handoff disciplines.
+Commands:
+- `python -m sports_signal_bot.main handoff run-handoff-pass`
