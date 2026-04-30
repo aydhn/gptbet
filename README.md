@@ -67,3 +67,6 @@ The handoff layer ensures that candidates from the constrained auto-promotion an
 Crucially, **this phase does not mutate the active stable pointer**. Instead, approved candidates are transitioned into an `Activation Bridge`, yielding an `ActivationBridgePackageRecord`. This differentiates `bridge_ready` from actual `activation_ready`, ensuring strict governance and enabling kill-before-handoff disciplines.
 Commands:
 - `python -m sports_signal_bot.main handoff run-handoff-pass`
+
+### Phase 51: Expansion Governance
+Introduces a global control plane for coordinating multiple rollout waves and cohorts. It implements global risk budgets, pressure scoring, cross-family conflict detection, and emergency circuit breakers (Global Pauses and Family Freezes) to safely manage large-scale expansion. Run `python -m sports_signal_bot.main expansion-governance run-expansion-governance` to execute a cycle.
