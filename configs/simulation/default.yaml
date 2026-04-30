@@ -1,0 +1,10 @@
+default_simulation_strategy: "balanced_comparative"
+sandbox_namespace_root: "data/sandbox"
+same_universe_strict: true
+minimum_sample_requirements:
+  predictive: 100
+  quality: 50
+  provider: 50
+simulation_cleanup_policy: "keep_manifests_only"
+preview_only_modes:
+  - dry_run_patch_render

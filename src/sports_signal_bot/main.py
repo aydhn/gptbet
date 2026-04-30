@@ -1,89 +1,56 @@
 import typer
-from pathlib import Path
 import json
+from datetime import datetime
 
-from sports_signal_bot.docs_ops.registry import DocRegistry
-from sports_signal_bot.docs_ops.freshness import FreshnessReporter
-from sports_signal_bot.docs_ops.lint import DocLintRunner
-from sports_signal_bot.docs_ops.coverage import DocCoverageChecker
-from sports_signal_bot.docs_ops.manifests import ManifestGenerator
-from sports_signal_bot.docs_ops.contracts import DocFamily
+# Import simulation components
+from .simulation.contracts import SimulationRequestRecord, SimulationMode
+from .simulation.patches import build_candidate_patch
+from .simulation.strategies.balanced_comparative import BalancedComparativeStrategy
 
 app = typer.Typer(help="Sports Signal Bot CLI")
 
-docs_app = typer.Typer(help="Documentation Operations")
-app.add_typer(docs_app, name="docs")
+@app.command()
+def simulate_suggestion(suggestion_id: str):
+    """Run a sandbox simulation for a candidate patch suggestion."""
+    typer.echo(f"Starting simulation for suggestion: {suggestion_id}")
 
-@docs_app.command("preview-index")
-def preview_index():
-    """Preview the documentation index and generate manifest."""
-    registry = DocRegistry("docs")
-    registry.scan()
-    generator = ManifestGenerator(registry)
-    manifest = generator.generate()
-    typer.echo(manifest.model_dump_json(indent=2))
+    # Mock suggestion
+    mock_suggestion = {
+        "suggestion_id": suggestion_id,
+        "target_component_family": "provider_priority",
+        "patch_payload": {"priority": "high"},
+        "scope": {"sport": "football"}
+    }
 
-    Path("results").mkdir(exist_ok=True)
-    with open("results/docs_ops_manifest.json", "w") as f:
-        f.write(manifest.model_dump_json(indent=2))
+    patch = build_candidate_patch(mock_suggestion)
+    request = SimulationRequestRecord(
+        request_id=f"req_{datetime.utcnow().timestamp()}",
+        suggestion_ids=[suggestion_id],
+        simulation_mode=SimulationMode.COMPARATIVE_SLOT_REPLAY,
+        audience_profile="operator",
+        replay_window={"start": datetime.utcnow(), "end": datetime.utcnow()}
+    )
 
-@docs_app.command("lint")
-def lint_docs():
-    """Run lint checks on all documentation."""
-    registry = DocRegistry("docs")
-    registry.scan()
-    linter = DocLintRunner(registry)
-    results = linter.lint_all()
+    strategy = BalancedComparativeStrategy()
+    run_record = strategy.run_simulation(request, patch)
 
-    failed = [r for r in results if not r.passed]
-    if failed:
-        typer.echo(f"Found {len(failed)} documents with lint issues:")
-        for r in failed:
-            typer.echo(f"  {r.path}: {r.issues}")
-    else:
-        typer.echo("All documents passed linting.")
+    typer.echo(f"\n--- Simulation Result ---")
+    typer.echo(f"Run ID: {run_record.run_id}")
+    typer.echo(f"Status: {run_record.status}")
+    if run_record.comparison:
+        typer.echo(f"Comparison Status: {run_record.comparison.status.value}")
+        typer.echo(f"Materiality Band: {run_record.comparison.materiality_band.value}")
+    if run_record.recommendation:
+        typer.echo(f"Recommendation: {run_record.recommendation.recommendation.value}")
+        typer.echo(f"Rationale: {run_record.recommendation.rationale}")
 
-@docs_app.command("preview-freshness")
-def preview_freshness():
-    """Check documentation freshness."""
-    registry = DocRegistry("docs")
-    registry.scan()
-    reporter = FreshnessReporter(registry)
-    results = reporter.check_all()
-
-    stale = [r for r in results if r.is_stale]
-    if stale:
-        typer.echo(f"Found {len(stale)} stale documents:")
-    else:
-        typer.echo("All documents are fresh.")
-
-@docs_app.command("preview-coverage")
-def preview_coverage():
-    """Check documentation coverage for critical components."""
-    registry = DocRegistry("docs")
-    registry.scan()
-    checker = DocCoverageChecker(registry)
-    results = checker.check_coverage()
-    typer.echo("Coverage Report generated.")
-
-from sports_signal_bot.deployment.cli import app as deploy_app
-app.add_typer(deploy_app, name='deploy')
-
-reconcile_app = typer.Typer(help="Reconciliation and arbitration commands")
-app.add_typer(reconcile_app, name="reconciliation")
-
-@reconcile_app.command("run")
-def run_reconciliation_cmd(sport: str, family: str, mode: str = "balanced_consensus"):
-    typer.echo(f"Running reconciliation for sport={sport}, family={family}, mode={mode}")
-
-from sports_signal_bot.evidence.cli import app as evidence_app
-app.add_typer(evidence_app, name="evidence")
-
-
-from sports_signal_bot.adjudication.cli import app as adjudication_app
-app.add_typer(adjudication_app, name="adjudication")
-from sports_signal_bot.learning.cli import learning_app
-app.add_typer(learning_app, name="learning")
+@app.command()
+def list_simulation_strategies():
+    """List available simulation strategies."""
+    typer.echo("Available Strategies:")
+    typer.echo("- ConservativeSandboxStrategy")
+    typer.echo("- BalancedComparativeStrategy")
+    typer.echo("- AdvisoryExplorationStrategy")
 
 if __name__ == "__main__":
     app()

@@ -29,3 +29,11 @@ Run the assimilation engine via:
 `python -m sports_signal_bot.main learning list-learning-strategies`
 
 For more details, see the documentation in `docs/`.
+
+## Phase 43: Suggestion Sandbox Architecture
+The Suggestion Sandbox provides an isolated, highly-controlled laboratory to safely evaluate candidate patch suggestions before they impact the active system state.
+
+- **Candidate Patches**: Suggestions are converted into scoped, transient configuration overrides.
+- **Before-After Simulations**: Enforces a strict same-universe comparison between the baseline and the proposed variant.
+- **Commands**: Use `python -m sports_signal_bot.main simulate-suggestion --suggestion-id <id>` to run a simulation and `python -m sports_signal_bot.main list-simulation-strategies` to view available simulation methodologies.
+- **Safety**: Simulations are deterministic, strictly isolated from production data stores, and generate automated risk recommendations for operators and reviewers.

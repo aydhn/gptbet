@@ -1,0 +1,12 @@
+allowed_patch_families:
+  - provider_priority
+  - reconciliation_conflict
+  - alias_memory
+  - threshold_band
+  - no_bet_policy
+  - source_penalty
+  - dynamic_weighting
+  - monitoring_threshold
+high_risk_scope_limits:
+  max_sport_count: 1
+  max_provider_count: 1

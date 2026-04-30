@@ -1,0 +1,10 @@
+required_gate_profiles_by_suggestion_family:
+  provider_priority:
+    - regression
+    - provider_smoke
+  threshold_band:
+    - policy_scenario
+    - bankroll_proxy
+  source_penalty:
+    - regression
+    - quality_proxy
