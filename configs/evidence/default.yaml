@@ -1,0 +1,5 @@
+default_explainability_strategy: balanced_review
+critical_decision_requires_evidence: true
+claim_support_minimums:
+  critical: medium
+  standard: low
