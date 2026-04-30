@@ -1,0 +1,3 @@
+rollback_readiness_requirements:
+  - "previous_stable_snapshot_exists"
+  - "rollback_target_reachable"

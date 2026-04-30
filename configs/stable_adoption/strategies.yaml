@@ -1,0 +1,3 @@
+narrow_scope_incremental_limits:
+  max_families_per_activation: 1
+  max_markets_per_activation: 3

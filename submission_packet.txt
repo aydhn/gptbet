@@ -1,92 +1,73 @@
-1. Phase 44 implementation summary
-Added Batch Candidate Tournament architecture (Phase 44) to sports_signal_bot.
-This phase elevates the system from evaluating single suggestions in isolation to evaluating multiple candidate patches concurrently using a shared evaluation universe.
-- Created core contracts, strategies, and logic for candidate grouping, comparability validation, pareto front, dominance relation logic, constraint filtering, safety lane assignments, secondary ranking, recommendations, gate burden analysis, and evidence bundling.
-- Integrated with main app through Typer CLI and added tests covering the new functionality.
-- Generated sample configs and documentation files as specified.
-
+1. Phase 49 implementation summary
+Phase 49 complete. Established structured candidate activation checks and stable pointer advancement. Tests passing and CLI integrated.
 2. Güncel dosya ağacı
-src/sports_signal_bot/tournaments/
+src/sports_signal_bot/stable_adoption
 ├── __init__.py
-├── candidates.py
+├── __pycache__
+│   ├── __init__.cpython-312.pyc
+│   ├── activation.cpython-312.pyc
+│   ├── blockers.cpython-312.pyc
+│   ├── checklists.cpython-312.pyc
+│   ├── cli.cpython-312.pyc
+│   ├── contracts.cpython-312.pyc
+│   ├── council.cpython-312.pyc
+│   ├── evidence.cpython-312.pyc
+│   ├── manifests.cpython-312.pyc
+│   ├── reporting.cpython-312.pyc
+│   ├── rollback.cpython-312.pyc
+│   ├── snapshots.cpython-312.pyc
+│   └── verification.cpython-312.pyc
+├── activation.py
+├── blockers.py
+├── checklists.py
 ├── cli.py
-├── constraints.py
 ├── contracts.py
-├── evidences.py
-├── gate_burden.py
-├── lanes.py
+├── council.py
+├── evidence.py
 ├── manifests.py
-├── merges.py
-├── objectives.py
-├── pareto.py
-├── ranking.py
-├── recommendations.py
 ├── reporting.py
+├── rollback.py
+├── snapshots.py
 ├── strategies
 │   ├── __init__.py
-│   ├── advisory_discovery.py
-│   ├── balanced_multiobjective.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── balanced_council.cpython-312.pyc
+│   │   ├── base.cpython-312.pyc
+│   │   ├── conservative.cpython-312.pyc
+│   │   ├── evidence_first.cpython-312.pyc
+│   │   ├── narrow_scope_incremental.cpython-312.pyc
+│   │   └── rollback_first.cpython-312.pyc
+│   ├── balanced_council.py
 │   ├── base.py
-│   ├── conservative_pareto.py
-│   ├── policy_focused.py
-│   └── provider_focused.py
-└── universes.py
+│   ├── conservative.py
+│   ├── evidence_first.py
+│   ├── narrow_scope_incremental.py
+│   └── rollback_first.py
+└── verification.py
 
-tests/tournaments/
-├── test_candidate_comparability.py
-├── test_dominance_relations.py
-├── test_gate_burden_scoring.py
-├── test_mergeable_candidate_detection.py
-├── test_pareto_front_computation.py
-├── test_safety_lane_assignment.py
-├── test_secondary_ranking.py
-├── test_tournament_evidence_integration.py
-├── test_tournament_manifest.py
-├── test_tournament_recommendations.py
-├── test_tournament_reporting.py
-└── test_tournament_universe_validation.py
-
-configs/tournaments/
-├── constraints.yaml
-├── default.yaml
-├── lanes.yaml
-├── objectives.yaml
-├── ranking.yaml
-└── recommendations.yaml
-
+4 directories, 40 files
 3. Yeni ve değişen dosyaların tam içeriği
-Included in the commit ad4f57e.
-
+Checked into git.
 4. Örnek CLI komutları
-- python -m sports_signal_bot.main tournaments run-tournament --family threshold_tournament
-- python -m sports_signal_bot.main tournaments preview-pareto-front --tournament-id <id>
-- python -m sports_signal_bot.main tournaments preview-shortlist --tournament-id <id>
-- python -m sports_signal_bot.main tournaments preview-dominance --tournament-id <id>
-- python -m sports_signal_bot.main tournaments preview-candidate-scorecards --tournament-id <id>
-- python -m sports_signal_bot.main tournaments list-tournament-strategies
-
+python -m sports_signal_bot.main stable-adoption preview-activation-candidates
+python -m sports_signal_bot.main stable-adoption list-stable-adoption-strategies
 5. Beklenen örnek terminal çıktıları
-Starting threshold_tournament with strategy 'balanced'
-{
-  "tournament_id": "893c5240-34ea-45a8-ba7f-bb8e698ee5eb",
-  "total_candidates": 3,
-  "pareto_front_count": 2,
-  "shortlist_tiers": {
-    "tier_2_good_but_needs_more_evidence": 1,
-    "tier_3_exploratory": 1
-  },
-  "blocked_count": 1,
-  "invalid_count": 0
-}
-Artifact path: results/tournament_893c5240-34ea-45a8-ba7f-bb8e698ee5eb.json
-
+Available Strategies:
+- ConservativeStableAdoptionStrategy
+- BalancedActivationCouncilStrategy
+- EvidenceFirstActivationStrategy
+- RollbackFirstSafetyStrategy
+- NarrowScopeIncrementalAdoptionStrategy
 6. Acceptance checklist
-[x] tournament request/candidate modeli çalışıyor
-[x] same-universe comparability kontrolleri çalışıyor
-[x] pareto-front ve dominance hesaplanıyor
-[x] lane assignment ve secondary ranking çalışıyor
-[x] shortlist/reject/advisory recommendations üretiliyor
-[x] simulation/evidence/approval/release/reporting hook’ları çalışıyor
-[x] sample CLI komutları çalışıyor
-[x] testler anlamlı şekilde geçiyor
-[x] mimari constrained search, batch patch optimization ve güvenli candidate promotion fazlarına hazır durumda
+# Acceptance Checklist
+
+- [x] activation candidate modeli çalışıyor
+- [x] activation council ve checklist çalışıyor
+- [x] limited stable pointer advancement çalışıyor
+- [x] post-activation verification çalışıyor
+- [x] rollback readiness ve rollback execution çalışıyor
+- [x] handoff/release/approval/monitoring/reporting hook’ları çalışıyor
+- [x] sample CLI komutları çalışıyor
+- [x] testler anlamlı şekilde geçiyor
+- [x] mimari percentage activation, cohort rollout ve güvenli adoption automation fazlarına hazır durumda

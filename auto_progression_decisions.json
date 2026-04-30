@@ -1,0 +1,51 @@
+[
+  {
+    "auto_progression_id": "ap-36f43b6d",
+    "candidate_release_id": "cr-101",
+    "current_stage": "shadow_verified",
+    "proposed_next_stage": "pending_candidate_eval",
+    "decision_type": "auto_progress",
+    "eligibility_status": "eligible_for_auto_progress",
+    "heuristic_score": {
+      "composite_score": 100.0,
+      "components": {
+        "base_readiness": 38.0,
+        "base_evidence": 27.0,
+        "base_gates": 30.0,
+        "low_risk_bonus": 10.0
+      }
+    },
+    "safety_clearance_status": true,
+    "approval_requirement_status": "none",
+    "blockers": [],
+    "evidence_refs": [],
+    "created_at": "2026-04-30 21:42:03.144074+00:00",
+    "warnings": []
+  },
+  {
+    "auto_progression_id": "ap-99549050",
+    "candidate_release_id": "cr-102",
+    "current_stage": "shortlisted",
+    "proposed_next_stage": null,
+    "decision_type": "blocked_by_safety",
+    "eligibility_status": "blocked",
+    "heuristic_score": null,
+    "safety_clearance_status": false,
+    "approval_requirement_status": "none",
+    "blockers": [
+      {
+        "blocker_type": "stale_simulation",
+        "reason": "Simulation is 48.0h old (max 24h)",
+        "severity": "high"
+      },
+      {
+        "blocker_type": "failed_gates",
+        "reason": "Quality gates not fully clean.",
+        "severity": "high"
+      }
+    ],
+    "evidence_refs": [],
+    "created_at": "2026-04-30 21:42:03.144133+00:00",
+    "warnings": []
+  }
+]
