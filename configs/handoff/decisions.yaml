@@ -1,0 +1,4 @@
+supersession_rules:
+  tiebreaker: "narrower_scope"
+docs_and_runbook_requirements:
+  require_rollback_notes: true

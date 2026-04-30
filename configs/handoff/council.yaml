@@ -1,0 +1,6 @@
+council_dimension_weights:
+  safety: 1.5
+  evidence: 1.2
+  simulation: 1.0
+  governance: 1.0
+  rollout_history: 0.8
