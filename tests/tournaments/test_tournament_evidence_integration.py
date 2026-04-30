@@ -1,6 +1,6 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
-from src.sports_signal_bot.tournaments.evidences import attach_evidence_to_tournament_candidate, build_tournament_claims, explain_dominance_with_citations
+from sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
+from sports_signal_bot.tournaments.evidences import attach_evidence_to_tournament_candidate, build_tournament_claims, explain_dominance_with_citations
 
 def test_evidence_integration():
     ev = attach_evidence_to_tournament_candidate("c1", "sim_run_123", ["cit_1", "cit_2"])

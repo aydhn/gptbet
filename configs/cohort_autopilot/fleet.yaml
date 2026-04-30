@@ -1,0 +1,3 @@
+fleet_risk_budget: 100.0
+max_growing_cohorts: 5
+pressure_suppression_threshold: 80.0

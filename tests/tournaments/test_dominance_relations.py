@@ -1,6 +1,6 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
-from src.sports_signal_bot.tournaments.pareto import dominates
+from sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
+from sports_signal_bot.tournaments.pareto import dominates
 
 def test_dominates():
     c1 = CandidateComparisonRecord(

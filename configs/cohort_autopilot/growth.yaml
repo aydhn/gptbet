@@ -1,0 +1,11 @@
+growth_window_requirements:
+  level_1_narrow_activation: 2 # clean short windows
+  level_2_small_cohort: 3 # clean medium windows
+  level_3_medium_cohort: 5 # clean stability windows
+family_risk_growth_limits:
+  high_risk_families:
+    - provider_priority
+    - line_movement
+  max_growth_per_cycle: 1
+growth_requires_approval_conditions:
+  - medium_cohort_transition

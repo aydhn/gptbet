@@ -1,0 +1,13 @@
+windows:
+  immediate_window:
+    duration_hours: 1
+    regression_tolerance: 0.0
+  short_window:
+    duration_hours: 24
+    regression_tolerance: 0.01
+  medium_window:
+    duration_hours: 72
+    regression_tolerance: 0.02
+  stability_window:
+    duration_hours: 168 # 1 week
+    regression_tolerance: 0.05

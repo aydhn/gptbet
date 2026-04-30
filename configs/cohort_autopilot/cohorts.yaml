@@ -1,0 +1,9 @@
+activation_level_limits:
+  level_1_narrow_activation: 10
+  level_2_small_cohort: 5
+  level_3_medium_cohort: 2
+max_active_cohorts_per_family: 3
+allowed_cohort_scopes:
+  - sport
+  - market
+  - family

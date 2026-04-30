@@ -1,10 +1,10 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import (
+from sports_signal_bot.tournaments.contracts import (
     TournamentRequestRecord, TournamentBatchRecord, TournamentUniverseRecord, TournamentFamily,
     ParetoFrontRecord, TournamentRankingRecord, CandidateScorecardRecord, TournamentRecommendationRecord,
     RecommendationAction, ShortlistTier, SafetyLane
 )
-from src.sports_signal_bot.tournaments.manifests import build_tournament_manifest
+from sports_signal_bot.tournaments.manifests import build_tournament_manifest
 
 def test_manifest_building():
     universe = TournamentUniverseRecord(

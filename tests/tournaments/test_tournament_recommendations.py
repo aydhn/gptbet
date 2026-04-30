@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, TournamentRankingRecord, SafetyLane, RecommendationAction, ShortlistTier
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.recommendations import build_tournament_recommendation
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, TournamentRankingRecord, SafetyLane, RecommendationAction, ShortlistTier
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.recommendations import build_tournament_recommendation
 
 def test_recommendation_building():
     c1 = TournamentCandidateRecord(

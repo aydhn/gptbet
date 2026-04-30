@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, GateBurdenBand
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.gate_burden import compute_gate_burden
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, GateBurdenBand
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.gate_burden import compute_gate_burden
 
 def test_gate_burden():
     c1 = TournamentCandidateRecord(

@@ -1,0 +1,4 @@
+default_cohort_autopilot_strategy: balanced
+fleet_budget_strategy: conservative
+manual_override_precedence: true
+stale_verification_block_hours: 24

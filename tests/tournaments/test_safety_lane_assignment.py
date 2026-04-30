@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, CandidateComparisonRecord, SafetyLane
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.lanes import classify_candidate_safety_lane
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, CandidateComparisonRecord, SafetyLane
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.lanes import classify_candidate_safety_lane
 
 def test_lane_assignment():
     cand = TournamentCandidateRecord(

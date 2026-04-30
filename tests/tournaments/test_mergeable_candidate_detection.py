@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.merges import propose_candidate_merge
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.merges import propose_candidate_merge
 
 def test_merge_detection():
     c1 = TournamentCandidateRecord(
