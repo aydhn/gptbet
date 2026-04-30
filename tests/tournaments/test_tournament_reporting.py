@@ -1,10 +1,10 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import (
+from sports_signal_bot.tournaments.contracts import (
     TournamentCandidateRecord, CandidateComparisonRecord, TournamentGateRequirementRecord,
     TournamentEvidenceRecord, TournamentMetricRecord, ObjectiveDirection, GateBurdenBand, SafetyLane
 )
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.reporting import generate_candidate_scorecard
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.reporting import generate_candidate_scorecard
 
 def test_generate_scorecard():
     cand = TournamentCandidateRecord(

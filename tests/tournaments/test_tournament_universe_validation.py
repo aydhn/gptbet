@@ -1,8 +1,8 @@
 import pytest
 from datetime import datetime
-from src.sports_signal_bot.tournaments.contracts import TournamentUniverseRecord, TournamentCandidateRecord
-from src.sports_signal_bot.tournaments.universes import validate_candidate_comparability, detect_unfair_candidate_mix
-from src.sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.contracts import TournamentUniverseRecord, TournamentCandidateRecord
+from sports_signal_bot.tournaments.universes import validate_candidate_comparability, detect_unfair_candidate_mix
+from sports_signal_bot.simulation.contracts import RiskLevel
 
 def test_universe_validation():
     universe = TournamentUniverseRecord(

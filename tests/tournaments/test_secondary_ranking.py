@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, CandidateComparisonRecord, ParetoFrontRecord
-from src.sports_signal_bot.simulation.contracts import RiskLevel
-from src.sports_signal_bot.tournaments.ranking import rank_within_front
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord, CandidateComparisonRecord, ParetoFrontRecord
+from sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.ranking import rank_within_front
 
 def test_secondary_ranking():
     c1 = TournamentCandidateRecord(

@@ -1,6 +1,6 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
-from src.sports_signal_bot.tournaments.pareto import compute_pareto_fronts
+from sports_signal_bot.tournaments.contracts import CandidateComparisonRecord, TournamentMetricRecord, ObjectiveDirection
+from sports_signal_bot.tournaments.pareto import compute_pareto_fronts
 
 def test_pareto_fronts():
     # c1 is strictly better than c2

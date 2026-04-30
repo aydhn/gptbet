@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.tournaments.contracts import TournamentCandidateRecord
-from src.sports_signal_bot.tournaments.candidates import block_incomparable_candidates, detect_scope_mismatch
-from src.sports_signal_bot.simulation.contracts import RiskLevel
+from sports_signal_bot.tournaments.contracts import TournamentCandidateRecord
+from sports_signal_bot.tournaments.candidates import block_incomparable_candidates, detect_scope_mismatch
+from sports_signal_bot.simulation.contracts import RiskLevel
 
 def test_comparability():
     cand1 = TournamentCandidateRecord(

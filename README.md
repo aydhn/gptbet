@@ -50,6 +50,18 @@ python -m sports_signal_bot.main auto-promotion list-auto-promotion-strategies
 
 For more detail, refer to `docs/constrained_auto_promotion_architecture.md`.
 
+## Cohort Autopilot (Phase 50)
+
+The Cohort Autopilot layer introduces safe, segment-based adoption control. It upgrades the system from single stable adoption to cohort-based, percentage-like rollout simulation. It features autonomous post-activation verification, automated growth, pause, shrink, and rollback decisions based on continuous health assessments.
+
+### Run commands
+```bash
+python -m sports_signal_bot.main cohort-autopilot run-cohort-autopilot
+python -m sports_signal_bot.main cohort-autopilot preview-adoption-cohorts
+```
+
+For more detail, refer to `docs/cohort_autopilot_architecture.md`.
+
 ### Phase 48: Candidate-to-Release Handoff
 The handoff layer ensures that candidates from the constrained auto-promotion and staged channels are formally evaluated by a `Final Readiness Council`. This deterministic evaluation uses various lenses (safety, evidence, governance) to produce a Readiness Matrix.
 Crucially, **this phase does not mutate the active stable pointer**. Instead, approved candidates are transitioned into an `Activation Bridge`, yielding an `ActivationBridgePackageRecord`. This differentiates `bridge_ready` from actual `activation_ready`, ensuring strict governance and enabling kill-before-handoff disciplines.

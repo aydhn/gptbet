@@ -1,0 +1,8 @@
+rollback_regression_thresholds:
+  critical_error_rate: 0.05
+  dispute_increase_rate: 0.10
+pause_rules:
+  consecutive_warnings: 2
+  stale_window_hours: 48
+shrink_scope_rules:
+  isolated_segment_regression: true
