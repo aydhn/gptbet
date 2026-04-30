@@ -1,0 +1,3 @@
+blocker_severity_thresholds:
+  unresolved_dispute: "critical"
+  stale_gates: "high"

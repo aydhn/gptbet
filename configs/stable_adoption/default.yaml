@@ -1,0 +1,9 @@
+default_stable_adoption_strategy: "ConservativeStableAdoptionStrategy"
+allowed_activation_scopes:
+  - "narrow_family"
+  - "specific_market"
+required_activation_checklist_items:
+  - "handoff_evidence_present"
+  - "approvals_complete"
+  - "rollback_target_known"
+  - "docs_linked"

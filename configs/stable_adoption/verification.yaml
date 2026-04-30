@@ -1,0 +1,8 @@
+verification_windows:
+  immediate_verification:
+    duration_minutes: 15
+  early_window_verification:
+    duration_minutes: 120
+post_activation_regression_thresholds:
+  latency_ms: 100
+  error_rate: 0.01

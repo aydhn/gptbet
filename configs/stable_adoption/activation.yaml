@@ -1,0 +1,5 @@
+required_approvals_by_family:
+  provider_priority: ["lead_engineer", "product_owner"]
+  reconciliation: ["lead_engineer"]
+supersession_rules: "strict_newest_wins"
+family_freeze_block_rules: "block_on_conflict"
