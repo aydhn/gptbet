@@ -1,3 +1,4 @@
+from .staged_channels.cli import app as staged_channels_app
 import typer
 from .tournaments.cli import app as tournaments_app
 from .candidate_promotion.cli import app as candidate_promotion_app
@@ -10,6 +11,7 @@ from .simulation.patches import build_candidate_patch
 from .simulation.strategies.balanced_comparative import BalancedComparativeStrategy
 
 app = typer.Typer(help="Sports Signal Bot CLI")
+app.add_typer(staged_channels_app, name="staged-channels", help="Phase 46 Staged Channels")
 
 @app.command()
 def simulate_suggestion(suggestion_id: str):
