@@ -29,3 +29,23 @@ python -m sports_signal_bot.main list-staged-channel-strategies
 ```
 
 This phase focuses on the candidate evaluation lifecycle, deferring active percentage traffic splitting and autonomous promotions to later phases.
+
+## Constrained Auto-Promotion (Phase 47)
+
+The Constrained Auto-Promotion layer introduces semi-autonomous progression on top of Staged Channels. It evaluates candidates to auto-progress low-risk clean candidates, or auto-hold / auto-kill candidates that violate hard safety boundaries (stale simulations, unresolved disputes, missing approvals). It works under quota limits and features fleet-aware suppression (superseding weak candidates with stronger ones).
+
+Auto-progressions, holds, and kills are only executed if they do not violate explicitly set hard safety boundaries or manual overrides. It explicitly avoids mutating active stable or canary product pointers.
+
+### Run commands
+```bash
+# Run the auto-promotion heuristic engine over active candidates
+python -m sports_signal_bot.main auto-promotion run-auto-promotion-pass
+
+# Preview eligible progressions without state mutation (dry-run)
+python -m sports_signal_bot.main auto-promotion preview-auto-progression
+
+# List available auto-promotion strategies
+python -m sports_signal_bot.main auto-promotion list-auto-promotion-strategies
+```
+
+For more detail, refer to `docs/constrained_auto_promotion_architecture.md`.

@@ -1,0 +1,13 @@
+{
+  "total_evaluated": 4,
+  "eligible_for_auto_progress_count": 1,
+  "auto_progress_count": 1,
+  "auto_hold_count": 0,
+  "auto_kill_count": 0,
+  "review_required_count": 1,
+  "safety_boundary_block_count": 1,
+  "quota_block_count": 0,
+  "fleet_suppression_count": 1,
+  "future_release_step_ready_count": 0,
+  "created_at": "2026-04-30T15:51:17.782220Z"
+}

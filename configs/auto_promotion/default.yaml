@@ -1,0 +1,14 @@
+strategy: balanced
+quotas:
+  max_auto_progressions_per_run: 10
+  max_auto_kills_per_run: 5
+  max_per_channel: 3
+boundaries:
+  stale_simulation_block_hours: 24
+  stale_evidence_block_hours: 48
+  minimum_evidence_for_kill: 0.8
+heuristics:
+  minimum_progression_score: 75.0
+  high_readiness_threshold: 85.0
+  low_risk_bonus: 10.0
+  conflict_penalty: -20.0
