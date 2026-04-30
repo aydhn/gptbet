@@ -1,9 +1,0 @@
-feat: Implement local-first security governance layer (Phase 35)
-
-- Implemented RedactionEngine for nested payload scrubbing
-- Implemented SecretResolver with dry-run fail-safe fallback
-- Added Endpoint and Filesystem Allowlists
-- Implemented CommandSafetyGates for risky CLI operations
-- Integrated comprehensive Security CLI utilities
-- Added security configuration YAMLs
-- Included full pytest coverage

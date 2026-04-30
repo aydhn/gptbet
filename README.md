@@ -50,3 +50,13 @@ Key features added:
 - **Failover Engine**: Configurable fallback strategies (e.g., if a remote API fails, fall back to a local mirror or manual dropzone) ensure continuous operation.
 - **Quality Scoring**: Responses are no longer just accepted; they are scored based on freshness, completeness, schema validity, and consistency, determining whether a payload is acceptable or if a failover is required.
 - **Identity Normalization**: Resolves aliases and normalizes event IDs internally to ensure consistency regardless of the source.
+
+## Reconciliation & Arbiter Layer (Phase 39)
+The `reconciliation` module builds on top of the provider abstraction layer to provide a multi-source reconciliation, consensus and arbitration engine. It groups conflicting data across different sources, assigns dynamic trust values, resolves fields via customizable strategies (e.g. `balanced_consensus`, `conservative_truth`), and returns a `TrustedUnifiedRecord`. Unresolvable anomalies escalate via `DisputeRecord`.
+
+Key concepts:
+- **Grouping**: Observations are grouped by `entity_key` and normalized.
+- **Conflicts**: Field-level contradictions are identified, grouped and graded by severity (e.g. `low`, `critical`).
+- **Trust & Confidence**: The output is not a blind average but a strategy-derived consensus alongside a calculated `confidence_score`.
+- **Lineage**: Full decision lineage explains how each field's final value was chosen.
+- **Commands**: Run reconciliation via CLI (e.g. `python -m sports_signal_bot.main reconciliation run --sport football --family fixtures`).

@@ -1,0 +1,3 @@
+dispute_thresholds:
+  critical_severity_auto_dispute: true
+  min_trust_diff_for_override: 0.2

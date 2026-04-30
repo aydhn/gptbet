@@ -1,0 +1,5 @@
+field_resolution_policies:
+  kickoff_time: freshest_trusted
+  home_team: identity_consistency_first
+  away_team: identity_consistency_first
+  status: safest_status_precedence

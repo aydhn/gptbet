@@ -16,3 +16,7 @@ src/sports_signal_bot/deployment/__pycache__/
 src/sports_signal_bot/docs_ops/__pycache__/
 *.zip
 *_manifest.json
+
+__pycache__/
+*.pyc
+*.pyo

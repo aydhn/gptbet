@@ -1,0 +1,5 @@
+trust_weight_components:
+  quality: 0.4
+  health: 0.2
+  freshness: 0.2
+  historical_accuracy: 0.2
