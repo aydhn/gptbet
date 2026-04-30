@@ -1,0 +1,7 @@
+resolution_type_policies:
+  accept_source_a_over_b:
+    requires_evidence: true
+    default_scope: single_entity
+  resolve_team_alias:
+    requires_evidence: false
+    default_scope: sport_specific

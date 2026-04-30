@@ -79,5 +79,9 @@ def run_reconciliation_cmd(sport: str, family: str, mode: str = "balanced_consen
 from sports_signal_bot.evidence.cli import app as evidence_app
 app.add_typer(evidence_app, name="evidence")
 
+
+from sports_signal_bot.adjudication.cli import app as adjudication_app
+app.add_typer(adjudication_app, name="adjudication")
+
 if __name__ == "__main__":
     app()

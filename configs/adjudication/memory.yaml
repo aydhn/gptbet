@@ -1,0 +1,10 @@
+memory_write_rules:
+  min_confidence: 0.8
+  allowed_scopes:
+    - single_entity
+    - single_provider_family
+    - sport_specific
+memory_expiry_rules:
+  alias_resolution_memory: 365d
+  provider_conflict_memory: 30d
+  review_pattern_memory: 90d

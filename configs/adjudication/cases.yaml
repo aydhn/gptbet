@@ -1,0 +1,5 @@
+case_priority_rules:
+  critical: urgent
+  high: high
+  medium: normal
+  low: low
