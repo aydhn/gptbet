@@ -1,0 +1,8 @@
+# Objectives Space Mapping
+objective_sets_by_family:
+  threshold_tournament:
+    decision_quality_delta: "maximize"
+    no_bet_burden_delta: "minimize"
+  provider_routing_tournament:
+    provider_failover_burden: "minimize"
+    support_strength: "maximize"

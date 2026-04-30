@@ -1,0 +1,7 @@
+# Constraint Filters
+pareto_pre_filters:
+  max_blast_radius: 0.5
+  min_support_strength: 0.3
+  strict_blast_radius: true
+incomparable_candidate_policies:
+  block_mismatched_target: true

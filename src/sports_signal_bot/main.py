@@ -1,4 +1,5 @@
 import typer
+from .tournaments.cli import app as tournaments_app
 import json
 from datetime import datetime
 
@@ -51,6 +52,8 @@ def list_simulation_strategies():
     typer.echo("- ConservativeSandboxStrategy")
     typer.echo("- BalancedComparativeStrategy")
     typer.echo("- AdvisoryExplorationStrategy")
+
+app.add_typer(tournaments_app, name="tournaments", help="Phase 44 Candidate Tournaments")
 
 if __name__ == "__main__":
     app()
