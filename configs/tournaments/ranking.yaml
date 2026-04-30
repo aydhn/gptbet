@@ -1,0 +1,7 @@
+# Secondary Ranking
+secondary_ranking_rules:
+  blast_radius_penalty_weight: 10.0
+  support_weight: 5.0
+  gate_burden_penalties:
+    high_burden: 5.0
+    very_high_burden: 10.0

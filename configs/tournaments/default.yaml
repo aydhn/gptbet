@@ -1,0 +1,2 @@
+# Default Tournament Strategy Config
+default_tournament_strategy: "balanced"

@@ -1,0 +1,7 @@
+# Recommendation Logic
+shortlist_limits:
+  tier_1_max: 5
+  tier_2_max: 10
+merge_detection_rules:
+  require_same_target: true
+  require_same_scope_keys: true

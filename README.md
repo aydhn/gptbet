@@ -37,3 +37,12 @@ The Suggestion Sandbox provides an isolated, highly-controlled laboratory to saf
 - **Before-After Simulations**: Enforces a strict same-universe comparison between the baseline and the proposed variant.
 - **Commands**: Use `python -m sports_signal_bot.main simulate-suggestion --suggestion-id <id>` to run a simulation and `python -m sports_signal_bot.main list-simulation-strategies` to view available simulation methodologies.
 - **Safety**: Simulations are deterministic, strictly isolated from production data stores, and generate automated risk recommendations for operators and reviewers.
+
+## Phase 44: Batch Candidate Tournaments
+The Batch Candidate Tournament architecture provides a multi-objective ranking system to safely compare multiple patches within the same comparison universe. It introduces pareto-front analysis, safety lanes, and shortlist recommendations without auto-promoting patches.
+
+- **Commands**:
+  - `python -m sports_signal_bot.main tournaments run-tournament --family threshold_tournament`
+  - `python -m sports_signal_bot.main tournaments preview-shortlist --tournament-id <id>`
+- **Safety**: Generates explicit lanes (safe, advisory, exploratory) and prevents auto-deployments. It acts as a decision-support layer for human reviewers.
+- **Documentation**: See `docs/candidate_tournament_architecture.md` for more details.

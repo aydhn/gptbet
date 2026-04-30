@@ -1,0 +1,8 @@
+# Safety Lane Rules
+risk_lane_rules:
+  high_risk_blast_threshold: 0.3
+required_support_by_lane:
+  safe_support_threshold: 0.6
+  advisory_support_threshold: 0.5
+exploratory_lane_thresholds:
+  min_support: 0.1
