@@ -10,6 +10,8 @@ The system includes a dedicated layer to translate actions (approvals, blocks, s
 - **Counterfactual Hints**: Provides non-executable suggestions on what would have changed a decision (e.g., lower threshold).
 - **Lineage Tracing**: Follow a decision back to its raw provider data.
 
+- **Adjudication & Knowledge Memory**: A human-in-the-loop layer converting disputes to structured resolutions and precedent memory.
+
 ## Useful Commands
 - `python -m sports_signal_bot.main evidence build-evidence-bundles`
 - `python -m sports_signal_bot.main evidence explain-decision <event_id>`

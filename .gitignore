@@ -20,3 +20,4 @@ src/sports_signal_bot/docs_ops/__pycache__/
 __pycache__/
 *.pyc
 *.pyo
+myenv/

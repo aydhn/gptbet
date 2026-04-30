@@ -1,21 +1,25 @@
+# Phase 41: Human Adjudication and Knowledge Memory Layer
 
-# Phase 39 Implementation Summary
+This phase establishes the foundational adjudication and feedback memory architecture, transitioning the system from passively producing disputes and evidence to actively resolving them with human oversight and capturing that knowledge.
 
-Successfully implemented the Principal Data Reliability / Arbitration Engineer phase. This adds a comprehensive reconciliation layer on top of the provider abstraction.
+## Implementation Summary
+- **Data Models & Contracts**: Added Pydantic definitions for `AdjudicationCaseRecord`, `AdjudicationDecisionRecord`, `ResolutionRecord`, `PrecedentRecord`, `KnowledgeEntryRecord`, and `FeedbackSignalRecord` (in `contracts.py`).
+- **Queue and Case Engine**: Implemented `AdjudicationCaseBuilder` and `AdjudicationQueueBuilder` to manage and prioritize disputes for human review.
+- **Evidence Verification**: Enforced evidence attachment via `EvidenceIntegrator` and `AdjudicationGuardrails`, requiring resolution decisions to explicitly cite the underlying `evidence_bundle_ref`.
+- **Feedback & Memory Loops**: Implemented `FeedbackIngestor` and `PrecedentLookupEngine` to digest human resolutions, convert them into scoped feedback, and safely generate knowledge memory entries (using configurable strategies).
+- **Adjudication Strategies**: Added discrete resolution strategies in `src/sports_signal_bot/adjudication/strategies/` (e.g., `ConservativeAdjudicationStrategy`, `AliasFocusedResolutionStrategy`).
+- **Documentation & Configuration**: Added targeted runbooks and architecture docs under `docs/`, and created extensible configuration YAMLs under `configs/adjudication/`.
+- **CLI Utilities**: Exposed operations like `run-adjudication`, `preview-adjudication-queue`, `resolve-adjudication-case`, and `preview-knowledge-memory` under the `adjudication` Typer namespace.
 
-## Highlights
-- **Grouping & Normalization**: Collects observations by `entity_key` to normalize and detect conflicts.
-- **Taxonomy & Conflict Detection**: Evaluates field-level differences and classifies severity (low to critical). Fixed naive detection to correctly spot any divergent values.
-- **Consensus Strategies**: Implemented customizable `ArbitrationStrategy` classes:
-  - `BalancedConsensusStrategy`: Selects the majority value.
-  - `ConservativeTruthStrategy`: Selects the highest trust value.
-  - `FreshnessWeightedOddsStrategy`: Selects the most recent value that passes a trust threshold.
-  - `StableSourceBiasStrategy`: Looks for values from configured stable/primary sources, then falls back to trust logic.
-  - `ReviewHeavyConflictStrategy`: Defers directly to review queues.
-- **Trust & Confidence**: Every record generated has a calculated confidence score based on severity penalties. Unresolved/Critical issues trigger explicit `DisputeRecord`s. Corrected wiring so that all strategies can be dynamically chosen. Added missing Pydantic models (e.g. `DisputeResolutionCandidate`, `ArbitrationReviewQueueRecord`, `SourceTrustProfileRecord`, `ConsensusConfidenceModel`).
-- **Lineage**: Outputs `ConsensusLineageRecord` detailing every candidate value, strategy, and reason per field.
-- **CLI Commands**: Registered under `sports_signal_bot.main reconciliation` (e.g. `reconciliation run --sport football --family fixtures`). Made sure the command behaves sensibly with mock data demonstrating the features.
-- **Type Safety**: Type hinting for the Arbitration run output was corrected to allow returning `Optional` for the unified record on dispute.
-- **Cleaned Up**: Removed empty test files and __pycache__/__pyc__ to prevent PR pollution. Ensured that meaningful tests remain that test the correct logic. `.gitignore` was updated to ignore pyc files natively.
+All tests under `tests/adjudication/` pass, ensuring core validations like memory scope constraints and feedback damping perform as expected.
 
-Tests confirm basic functionality for building groups, detecting conflicts, confidence scoring, and running strategy resolution.
+## Deliverables Check
+- [x] Adjudication case/queue model
+- [x] Structured resolution records
+- [x] Feedback ingestion chain
+- [x] Precedent lookup and knowledge memory
+- [x] Scoped auto-apply / advisory boundaries
+- [x] Reconciliation/evidence/monitoring hooks
+- [x] CLI commands
+- [x] Test coverage
+- [x] Documentation updates

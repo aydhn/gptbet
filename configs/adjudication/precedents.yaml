@@ -1,0 +1,3 @@
+precedent_match_thresholds:
+  exact_signature_match: 1.0
+  family_match_only: 0.5

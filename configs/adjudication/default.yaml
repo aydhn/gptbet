@@ -1,0 +1,10 @@
+default_adjudication_strategy: "BalancedKnowledgeCaptureStrategy"
+secondary_review_required_cases:
+  - critical_result_correction
+  - broad_provider_distrust
+  - global_precedent_creation
+urgent_case_escalation_rules:
+  timeout_minutes: 60
+adjudication_backlog_thresholds:
+  warning: 100
+  critical: 500

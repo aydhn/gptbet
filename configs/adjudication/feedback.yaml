@@ -1,0 +1,8 @@
+advisory_vs_auto_apply_rules:
+  provider_distrust: advisory_only
+  alias_resolution: scoped_auto_apply
+provider_feedback_dampers:
+  min_cases_before_action: 5
+  max_penalty_per_case: 0.1
+alias_auto_apply_scope_limits:
+  max_entities: 100
