@@ -1,0 +1,12 @@
+default_expansion_governance_strategy: "BalancedControlTowerStrategy"
+global_risk_budgets:
+  adoption_risk_budget: 100.0
+  family_scope_budget: 50.0
+pressure_thresholds:
+  critical: 0.85
+  severe: 0.70
+  high: 0.50
+auto_unpause_allowed: false
+manual_ack_required_breakers:
+  - "critical_verification_regression_cluster"
+  - "dispute_burden_spike_across_families"
