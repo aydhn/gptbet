@@ -1,0 +1,4 @@
+recommendation_rules:
+  auto_promote_allowed: false
+  require_material_improvement: true
+  block_degraded: true
