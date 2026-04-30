@@ -2,6 +2,7 @@ from .staged_channels.cli import app as staged_channels_app
 import typer
 from .tournaments.cli import app as tournaments_app
 from .candidate_promotion.cli import app as candidate_promotion_app
+from .auto_promotion.cli import app as auto_promotion_app
 import json
 from datetime import datetime
 
@@ -58,6 +59,7 @@ def list_simulation_strategies():
 
 app.add_typer(tournaments_app, name="tournaments", help="Phase 44 Candidate Tournaments")
 app.add_typer(candidate_promotion_app, name="candidate-promotion", help="Phase 45 Candidate Promotion")
+app.add_typer(auto_promotion_app, name="auto-promotion", help="Phase 47 Constrained Auto Promotion")
 
 if __name__ == "__main__":
     app()
