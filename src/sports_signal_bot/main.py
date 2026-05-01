@@ -1,3 +1,4 @@
+from .governance_integrity.cli import app as governance_integrity_app
 from .policy_as_code.cli import app as policy_as_code_app
 from .cohort_autopilot.cli import app as cohort_autopilot_app
 from .expansion_governance.cli import app as expansion_governance_app
@@ -78,6 +79,8 @@ app.add_typer(policy_as_code_app, name="policy-as-code", help="Phase 53 Policy a
 
 
 app.add_typer(deployment_app, name="deploy", help="Deployment Operations")
+
+app.add_typer(governance_integrity_app, name="governance-integrity", help="Phase 54 Governance Integrity")
 
 if __name__ == "__main__":
     app()

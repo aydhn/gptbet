@@ -1,0 +1,4 @@
+signer_definitions:
+  - id: "local_dev_signer"
+    family: "development"
+    trust: "dev"

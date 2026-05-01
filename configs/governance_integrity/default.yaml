@@ -1,0 +1,6 @@
+default_integrity_strategy: "ConservativeSignedGovernanceStrategy"
+unsigned_dev_mode_rules:
+  enabled: true
+  warning_level: "loud"
+strict_active_mode_rules:
+  require_signatures_for: ["critical_rules", "growth_rules"]

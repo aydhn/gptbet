@@ -1,0 +1,5 @@
+trust_levels:
+  dev: 1
+  review: 2
+  active: 3
+  emergency: 4
