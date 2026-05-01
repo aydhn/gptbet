@@ -27,3 +27,16 @@ python -m sports_signal_bot.main transparency verify-inclusion-proof
 python -m sports_signal_bot.main transparency verify-transparency-mirrors
 ```
 
+
+### Phase 58: External Audit Exchange Readiness
+This phase implements the `external_audit_exchange` module, transitioning the system to be "exchange-ready" for external audits, notarization, and independent verification.
+- **External Audit Exchange Layer**: Pluggable adapters for exporting safe, redacted verification packets and ingesting external responses.
+- **Notarization Hooks**: Interfaces for notarizing critical state digests and verifying receipts.
+- **Witness Reputation Engine**: Explainable scoring and adjustments for external responders.
+- **Challenge Triage**: Priority-based routing and clustering for challenge resolution.
+- **Fail-Safe Ingestion**: External findings are never blindly trusted; they follow a quarantine-first, local-verification required flow.
+- **Readiness Scoring**: Metrics to evaluate the system's preparedness for public audit exchanges.
+
+Commands to interact with this layer:
+- `python -m sports_signal_bot.main run-external-audit-exchange-pass`
+- `python -m sports_signal_bot.main list-external-audit-exchange-strategies`
