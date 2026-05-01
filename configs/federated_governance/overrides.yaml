@@ -1,0 +1,3 @@
+emergency_override_rules:
+  max_duration_hours: 24
+  requires_manual_ack_for_global: true

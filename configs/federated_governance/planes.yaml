@@ -1,0 +1,10 @@
+plane_definitions:
+  - plane_id: "global_root"
+    plane_family: "global"
+    precedence_rank: 10
+  - plane_id: "sec_cross_cut"
+    plane_family: "security"
+    precedence_rank: 30
+  - plane_id: "provider_family"
+    plane_family: "provider"
+    precedence_rank: 40

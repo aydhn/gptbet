@@ -1,0 +1,4 @@
+escalation_thresholds:
+  conflict_severity_to_escalate: "high"
+  budget_usage_warning_threshold: 0.8
+  unstable_health_auto_escalate: true

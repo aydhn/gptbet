@@ -1,0 +1,3 @@
+mesh_breaker_correlation_rules:
+  family_escalation_spike_threshold: 5
+  global_correlation_threshold: 0.6
