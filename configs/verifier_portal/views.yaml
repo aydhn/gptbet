@@ -1,0 +1,8 @@
+allowed_view_families_by_profile:
+  public_viewer:
+    - publication_index_view
+    - checkpoint_summary_view
+    - proof_summary_view
+    - readiness_dashboard_view
+proof_depth_by_view:
+  publication_index_view: minimal

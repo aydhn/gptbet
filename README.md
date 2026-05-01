@@ -46,3 +46,20 @@ Phase 59 adds a controlled external gateway for securely publishing governance a
 - **Why publication is redaction-governed**: It ensures verifiability without overexposure of sensitive internals.
 - **Why challenge intake is review-only**: It prevents external state mutation while still accepting valuable public scrutiny.
 Use `python -m sports_signal_bot.main run-public-verification-gateway-pass` to run the lifecycle.
+
+### Verifier Portal Experience (Phase 60)
+The **Verifier Portal Experience** introduces a structured, read-only experience layer designed to safely expose governance, adjudication, and decision traces to third-party consumers.
+- **Why Read-Only**: The portal prevents state mutation from external actors. All active inputs must flow through strict Challenge Intake APIs to ensure proper validation and adjudication.
+- **Packets & Profiles**: Artifacts are scoped to specific audience profiles (e.g., `public`, `verifier`, `auditor`). A single raw record is rendered differently for each audience:
+    - **Public Packets**: Stripped of internal details, heavily redacted, only surfacing the minimal safe summary.
+    - **Verifier Packets**: Includes deeper proof references, notarization receipts, and detailed caveats.
+    - **Auditor Packets**: Full summary transparency to support rigorous oversight.
+- **Challenge APIs**: A quarantine-first strategy controls the intake of external claims or issues.
+
+#### Example Commands
+```bash
+python -m sports_signal_bot.main verifier-portal run-verifier-portal-pass
+python -m sports_signal_bot.main verifier-portal preview-verifier-views
+python -m sports_signal_bot.main verifier-portal preview-verification-packets
+python -m sports_signal_bot.main verifier-portal preview-challenge-api-submissions
+```

@@ -1,0 +1,5 @@
+feed_families:
+  - publication_health_feed
+  - checkpoint_freshness_feed
+feed_freshness_thresholds:
+  publication_health_feed: 60

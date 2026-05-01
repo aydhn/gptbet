@@ -1,0 +1,7 @@
+portal_profiles:
+  - public_viewer
+  - registered_verifier
+  - trusted_external_verifier
+  - external_auditor
+  - quarantine_reviewer
+  - internal_preview_viewer

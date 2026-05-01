@@ -1,0 +1,6 @@
+portal_readiness_dimension_weights:
+  portal_view_readiness: 0.2
+  packet_render_readiness: 0.2
+  challenge_api_readiness: 0.2
+  feed_readiness: 0.2
+  access_control_readiness: 0.2
