@@ -1,9 +1,10 @@
-- [x] Publication profile ve disclosure bundle modeli çalışıyor.
-- [x] Redaction-aware publishability engine çalışıyor.
-- [x] Public verification gateway index üretiliyor.
-- [x] External challenge intake validation/quarantine/triage çalışıyor.
-- [x] Public readiness ve coverage scoring çalışıyor.
-- [x] Transparency/witness/external-audit/governance-integrity/reporting hook'ları çalışıyor.
-- [x] Sample CLI komutları çalışıyor.
-- [x] Testler anlamlı şekilde geçiyor.
-- [x] Mimari public verifier portals, external challenge APIs ve daha geniş disclosure governance fazlarına hazır durumda.
+- [x] Governance spec registry operates (`GovernanceSpecRecord`, `SpecAssertionRecord`, `GovernanceSpecRegistry`, etc.).
+- [x] Conformance suites operate (`ConformanceSuiteRecord`, `ConformanceSuiteRegistry`, `run_suite`).
+- [x] Policy linting operates (`LintRunner`, `lint_policy_bundle`).
+- [x] Drift attestations are generated (`DriftAttestationRunner`, `DriftAttestationRecord`).
+- [x] Continuous verification compliance pipeline operates (`ContinuousVerificationRunner`, `VerificationPipelineRunRecord`).
+- [x] Compliance gates and exceptions operate (`ComplianceGateEvaluator`, `ExceptionManager`).
+- [x] Policy/integrity/transparency/witness/publication/portal hooks are present (via assertions and suites).
+- [x] Sample CLI commands work (e.g., `run-conformance-pass`, `preview-policy-lint`).
+- [x] Tests pass successfully.
+- [x] Architecture is ready for stronger formal methods, proof-carrying governance, and continuous assurance attestation.

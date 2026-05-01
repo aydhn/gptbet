@@ -1,0 +1,3 @@
+default_conformance_strategy: conservative
+continuous_verification_schedules:
+  - nightly_audit

@@ -1,0 +1,3 @@
+lint_rules_enabled:
+  - ambiguous_precedence_lint
+  - unsafe_overlay_scope_lint

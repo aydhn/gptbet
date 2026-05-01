@@ -1,0 +1,3 @@
+drift_tolerance_rules:
+  policy_version: critical
+  public_index_stale: blocking

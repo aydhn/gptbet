@@ -1,4 +1,5 @@
 import typer
+from .conformance.cli import app as conformance_app
 from .transparency.cli import app as transparency_app
 from .witness_mesh.cli import app as witness_mesh_app
 from .governance_integrity.cli import app as governance_integrity_app
@@ -18,6 +19,7 @@ from .deployment.cli import app as deployment_app
 from .handoff.cli import app as handoff_app
 from .stable_adoption.cli import app as stable_adoption_app
 import json
+
 from datetime import datetime
 
 # Import simulation components
@@ -26,6 +28,7 @@ from .simulation.patches import build_candidate_patch
 from .simulation.strategies.balanced_comparative import BalancedComparativeStrategy
 
 app = typer.Typer(help="Sports Signal Bot CLI")
+app.add_typer(conformance_app, name="conformance", help="Phase 61 Formal Conformance")
 app.add_typer(staged_channels_app, name="staged-channels", help="Phase 46 Staged Channels")
 
 @app.command()
@@ -97,6 +100,7 @@ app.add_typer(witness_mesh_app, name="witness-mesh", help="Phase 57 Witness Mesh
 def run_external_audit_exchange_pass():
     """Runs the external audit exchange pass, processing requests, responses, notarizations, and updating readiness."""
     import json
+
     import os
     from sports_signal_bot.external_audit_exchange.manifests import generate_external_audit_manifest
 

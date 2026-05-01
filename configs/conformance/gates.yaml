@@ -1,0 +1,3 @@
+gate_policies_by_mode:
+  pre_merge:
+    policy_gate: strict
