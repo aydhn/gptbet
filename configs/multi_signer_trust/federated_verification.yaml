@@ -1,0 +1,2 @@
+import_verification_requirements:
+  require_federated: false

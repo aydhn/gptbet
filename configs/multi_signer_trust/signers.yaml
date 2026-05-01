@@ -1,0 +1,6 @@
+signer_groups:
+  governance_core_signers:
+    base_weight: 1.0
+    max_weight_cap: 2.0
+    allowed_target_families: ["all"]
+    is_active_signing: true

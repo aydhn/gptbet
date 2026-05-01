@@ -1,0 +1,5 @@
+trusted_attestation_scopes:
+  - "policy_promotion"
+attestation_provider_rules:
+  local_review:
+    trust_weight_boost_cap: 0.5
