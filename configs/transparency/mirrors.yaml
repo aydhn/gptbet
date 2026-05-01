@@ -1,0 +1,6 @@
+mirror_policies:
+  strict_mode: false
+  allow_stale_hours: 24
+quarantine_on_failure_rules:
+  divergence: true
+  unsigned_critical: true
