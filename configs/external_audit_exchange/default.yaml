@@ -1,0 +1,10 @@
+default_external_audit_strategy: "ConservativeExternalAuditStrategy"
+enabled_exchange_adapters:
+  - "file_packet_exchange_adapter"
+  - "notarization_hook_adapter"
+packet_redaction_profiles:
+  - "strict"
+  - "relaxed"
+external_response_trust_bounds:
+  minimum_reputation_for_trust: 80.0
+  quarantine_threshold: 30.0

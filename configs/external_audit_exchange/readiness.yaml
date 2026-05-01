@@ -1,0 +1,4 @@
+readiness_dimension_weights:
+  packet_completeness: 0.4
+  responder_diversity: 0.3
+  notarization_coverage: 0.3

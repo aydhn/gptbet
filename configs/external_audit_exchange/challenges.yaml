@@ -1,0 +1,3 @@
+challenge_triage_rules:
+  critical_severity_priority: "high"
+  low_reputation_routing: "internal_review"

@@ -1,0 +1,4 @@
+notarization_required_families:
+  - "critical_decision_proof"
+  - "transparency_checkpoint"
+default_notary_provider: "internal_test_notary"

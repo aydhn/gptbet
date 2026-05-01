@@ -1,0 +1,4 @@
+reputation_signal_weights:
+  correct_confirmation: 10.0
+  false_alarm: -20.0
+  timely_response: 5.0

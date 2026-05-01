@@ -1,11 +1,9 @@
-# Acceptance Checklist
-
-- [x] activation candidate modeli çalışıyor
-- [x] activation council ve checklist çalışıyor
-- [x] limited stable pointer advancement çalışıyor
-- [x] post-activation verification çalışıyor
-- [x] rollback readiness ve rollback execution çalışıyor
-- [x] handoff/release/approval/monitoring/reporting hook’ları çalışıyor
-- [x] sample CLI komutları çalışıyor
-- [x] testler anlamlı şekilde geçiyor
-- [x] mimari percentage activation, cohort rollout ve güvenli adoption automation fazlarına hazır durumda
+- [x] External audit exchange adapter modeli çalışıyor (adapters, safe packets vs).
+- [x] Notarization hooks çalışıyor (digest, request, verify).
+- [x] Witness reputation scoring çalışıyor (signals, computation, damping adjustments).
+- [x] Challenge triage/routing çalışıyor (priority, responder classes, clusters).
+- [x] External findings quarantine/review/verified-supporting yollarına gidiyor (ingestion flow).
+- [x] Transparency/witness mesh/governance integrity/policy/reporting hook'ları çalışıyor (readiness, diagnostics, evidence, manifest generation).
+- [x] Sample CLI komutları çalışıyor (`run-external-audit-exchange-pass`, `preview-*`).
+- [x] Testler anlamlı şekilde geçiyor (`pytest tests/external_audit_exchange/`).
+- [x] Mimari public audit exchanges, notarized disclosures ve stronger external verification ecosystems fazlarına hazır durumda.
