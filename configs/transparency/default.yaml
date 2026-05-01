@@ -1,0 +1,8 @@
+default_transparency_strategy: "balanced_verification_mesh"
+critical_log_families:
+  - governance_decision_log
+  - override_transparency_log
+checkpoint_seal_frequency: "hourly"
+signed_checkpoint_required_families:
+  - governance_decision_log
+  - activation_rollback_log
