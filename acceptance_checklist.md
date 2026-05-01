@@ -1,9 +1,9 @@
-- [x] External audit exchange adapter modeli çalışıyor (adapters, safe packets vs).
-- [x] Notarization hooks çalışıyor (digest, request, verify).
-- [x] Witness reputation scoring çalışıyor (signals, computation, damping adjustments).
-- [x] Challenge triage/routing çalışıyor (priority, responder classes, clusters).
-- [x] External findings quarantine/review/verified-supporting yollarına gidiyor (ingestion flow).
-- [x] Transparency/witness mesh/governance integrity/policy/reporting hook'ları çalışıyor (readiness, diagnostics, evidence, manifest generation).
-- [x] Sample CLI komutları çalışıyor (`run-external-audit-exchange-pass`, `preview-*`).
-- [x] Testler anlamlı şekilde geçiyor (`pytest tests/external_audit_exchange/`).
-- [x] Mimari public audit exchanges, notarized disclosures ve stronger external verification ecosystems fazlarına hazır durumda.
+- [x] Publication profile ve disclosure bundle modeli çalışıyor.
+- [x] Redaction-aware publishability engine çalışıyor.
+- [x] Public verification gateway index üretiliyor.
+- [x] External challenge intake validation/quarantine/triage çalışıyor.
+- [x] Public readiness ve coverage scoring çalışıyor.
+- [x] Transparency/witness/external-audit/governance-integrity/reporting hook'ları çalışıyor.
+- [x] Sample CLI komutları çalışıyor.
+- [x] Testler anlamlı şekilde geçiyor.
+- [x] Mimari public verifier portals, external challenge APIs ve daha geniş disclosure governance fazlarına hazır durumda.

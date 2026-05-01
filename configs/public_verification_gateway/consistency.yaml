@@ -1,0 +1,8 @@
+freshness_thresholds:
+  transparency_checkpoint_disclosure: 24h
+  readiness_summary_disclosure: 12h
+  policy_bundle_disclosure: 72h
+
+supersession_visibility_rules:
+  show_superseded: false
+  keep_superseded_in_index: true

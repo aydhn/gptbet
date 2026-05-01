@@ -1,0 +1,9 @@
+publishability_requirements:
+  minimum_proofs: 1
+  leak_check_must_pass: true
+
+readiness_dimension_weights:
+  packet_safety: 0.3
+  proof_visibility: 0.2
+  quarantine_rigor: 0.2
+  consistency_discipline: 0.3

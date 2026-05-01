@@ -40,3 +40,9 @@ This phase implements the `external_audit_exchange` module, transitioning the sy
 Commands to interact with this layer:
 - `python -m sports_signal_bot.main run-external-audit-exchange-pass`
 - `python -m sports_signal_bot.main list-external-audit-exchange-strategies`
+
+## Phase 59: Public Verification Gateway
+Phase 59 adds a controlled external gateway for securely publishing governance artifacts and intaking external challenges.
+- **Why publication is redaction-governed**: It ensures verifiability without overexposure of sensitive internals.
+- **Why challenge intake is review-only**: It prevents external state mutation while still accepting valuable public scrutiny.
+Use `python -m sports_signal_bot.main run-public-verification-gateway-pass` to run the lifecycle.

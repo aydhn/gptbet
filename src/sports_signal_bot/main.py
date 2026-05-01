@@ -6,6 +6,7 @@ from .policy_as_code.cli import app as policy_as_code_app
 from .cohort_autopilot.cli import app as cohort_autopilot_app
 from .expansion_governance.cli import app as expansion_governance_app
 from .federated_governance.cli import app as federated_governance_app
+from .public_verification_gateway.cli import app as public_verification_gateway_app
 
 
 from .staged_channels.cli import app as staged_channels_app
@@ -78,6 +79,7 @@ app.add_typer(stable_adoption_app, name="stable-adoption", help="Phase 49 Staged
 app.add_typer(cohort_autopilot_app, name="cohort-autopilot", help="Phase 50 Cohort Autopilot")
 app.add_typer(expansion_governance_app, name="expansion-governance", help="Phase 51 Expansion Governance")
 app.add_typer(federated_governance_app, name="federated-governance", help="Phase 52 Federated Governance")
+app.add_typer(public_verification_gateway_app, name="public-verification-gateway", help="Phase 59 Public Verification Gateway")
 app.add_typer(policy_as_code_app, name="policy-as-code", help="Phase 53 Policy as Code Engine")
 
 

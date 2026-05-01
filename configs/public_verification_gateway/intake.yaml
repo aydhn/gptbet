@@ -1,0 +1,17 @@
+challenge_intake_rate_limits:
+  anonymous_low_trust: 5
+  known_responder_unverified: 20
+  trusted_exchange_partner: 100
+
+intake_trust_classes:
+  anonymous_low_trust:
+    action_level: review_only
+  known_responder_unverified:
+    action_level: review_prioritized
+  trusted_exchange_partner:
+    action_level: anomaly_escalation_eligible
+
+quarantine_rules:
+  - rule: "Missing mandatory schema fields -> Quarantine"
+  - rule: "Payload over size limits -> Quarantine"
+  - rule: "Spam heuristics match -> Quarantine"
