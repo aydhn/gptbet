@@ -1,0 +1,4 @@
+pipeline_stages:
+  - lint
+  - conformance
+  - drift

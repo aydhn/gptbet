@@ -1,0 +1,5 @@
+required_specs_by_family:
+  policy_spec:
+    - spec_policy_01
+  integrity_spec:
+    - spec_integrity_01
