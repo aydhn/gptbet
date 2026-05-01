@@ -1,0 +1,7 @@
+threshold_policies_by_family:
+  policy_promotion:
+    min_signer_count: 2
+    min_weighted_trust: 1.5
+    mandatory_signer_groups:
+      - required_group: "governance_core_signers"
+        min_count: 1

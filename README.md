@@ -87,3 +87,20 @@ The Policy as Code layer upgrades the system's governance capabilities to use ma
 - `python -m sports_signal_bot.main policy-as-code preview-policy-diffs`
 
 Why critical governance should not stay buried in code: Policy change requests, diff reviews, and risk scoring guarantee a safe promotion and deployment model through documented evaluation, preventing unintended behaviors.
+
+## Phase 55: Multi-Signer Trust Architecture
+The Multi-Signer Trust Architecture layer introduces a robust, policy-driven trust multiplexing system built upon the Phase 54 governance integrity infrastructure. Rather than relying on single signatures or simple threshold logic, it implements comprehensive threshold trust policies evaluating not just signer counts but weighted trust levels based on dynamic scope and membership capabilities.
+Critical actions, emergency overrides, and governance policy promotions now adhere to these robust rules.
+
+### Key concepts:
+- **Quorum & Threshold Trust:** Not just N signers, but cumulative trust weights dynamically scoped.
+- **External Attestation:** Bounded, non-authoritative signal hooks that augment base trust.
+- **Federated Verification Mesh:** Distributed bundle verification between planes (local/global).
+- **Mandatory Countersigns & Vetoes:** Specific review groups must explicitly sign or can block an action.
+
+### Run commands:
+```bash
+python -m sports_signal_bot.main multi-signer-trust run-multi-signer-trust-pass
+python -m sports_signal_bot.main multi-signer-trust list-multi-signer-trust-strategies
+```
+Why critical governance needs stronger trust: Because in an automated, highly-scaled environment, relying strictly on single-owner approval chains creates unmitigable single-points-of-failure and potential compliance vulnerabilities. Multi-signer, dynamic trust ensures fail-safe progression.
