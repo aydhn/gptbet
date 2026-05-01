@@ -73,3 +73,17 @@ Introduces a global control plane for coordinating multiple rollout waves and co
 
 ## Phase 52: Federated Governance
 A robust federated governance and control plane architecture that scales predictive deployments via delegated authority and mesh-based policy routing.
+
+## Phase 53: Policy as Code
+The Policy as Code layer upgrades the system's governance capabilities to use machine-checkable rule bundles. This provides a formal, versioned, diff-friendly, and immutable evaluation framework for safety, progression, override, and expansion decisions across the predictive pipeline control plane. Critical governance decisions do not stay buried in code but are evaluated formally through this engine.
+
+### Concepts
+- **Policy Bundle**: Versioned set of governance rules targeting specific operations.
+- **Overlays**: Layered augmentations that apply scoped exceptions or emergency rule changes without altering base bundles.
+- **Precedence**: Clearly defined ranking for competing rules to resolve conflicts deterministically.
+
+### Commands
+- `python -m sports_signal_bot.main policy-as-code run-policy-evaluation`
+- `python -m sports_signal_bot.main policy-as-code preview-policy-diffs`
+
+Why critical governance should not stay buried in code: Policy change requests, diff reviews, and risk scoring guarantee a safe promotion and deployment model through documented evaluation, preventing unintended behaviors.
