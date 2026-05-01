@@ -1,0 +1,16 @@
+publication_profiles:
+  public_minimal:
+    audience_family: public
+    redaction_level: strict
+    proof_depth: shallow
+    challenge_intake_allowed: false
+  public_verifier:
+    audience_family: public
+    redaction_level: moderate
+    proof_depth: moderate
+    challenge_intake_allowed: true
+  external_auditor:
+    audience_family: auditor
+    redaction_level: relaxed
+    proof_depth: deep
+    challenge_intake_allowed: true

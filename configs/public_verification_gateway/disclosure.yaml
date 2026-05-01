@@ -1,0 +1,26 @@
+allowed_disclosure_families:
+  - policy_bundle_disclosure
+  - transparency_checkpoint_disclosure
+  - decision_proof_disclosure
+  - witness_consensus_disclosure
+  - anomaly_summary_disclosure
+  - notarization_summary_disclosure
+  - external_exchange_summary_disclosure
+  - readiness_summary_disclosure
+  - governance_health_summary_disclosure
+
+forbidden_field_families_by_profile:
+  public_minimal:
+    - signer_metadata
+    - internal_paths
+    - operator_notes
+    - secret
+    - trust_private
+  public_verifier:
+    - internal_paths
+    - operator_notes
+    - secret
+    - trust_private
+  external_auditor:
+    - secret
+    - operator_notes

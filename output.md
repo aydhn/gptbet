@@ -1,105 +1,105 @@
-1. Phase 58 implementation summary
-Bu fazda `external_audit_exchange` modülü hayata geçirilerek, sistemin yerel güven (local trust), şeffaflık (transparency) ve witness mesh altyapısı ile harici (external) bağımsız doğrulama sistemleri ve noter mekanizmaları arasında kontrollü, "exchange-ready" bir entegrasyon sağlandı. Geliştirilen özellikler:
-- Adapters (File, Signed JSON, Notarization Hook) aracılığıyla safe/redacted exchange paketleri (`build_safe_exchange_packet`) üretme yeteneği.
-- Gelen harici cevapları (responses ve findings) doğrulamak için karantina (quarantine), risk ve witness reputation mekanizmalarının işletilmesi.
-- `WitnessReputationRecord` tabanlı itibar motoru; external responder'ların doğruluğunu, hatalarını, tepki sürelerini dinamik olarak yansıtıp (credits/penalties) explainable puanlama yapabilmesi.
-- Challenge/anomaly resolution işlemlerini önceliğe (priority) ve uygun responder sınıfına göre cluster/triage etme (`route_challenge_packet`).
-- Notarization Hook'ları ile kritik state'lerin hash-digest olarak imzalanması/verifikasyonu (`request_notarization`, `verify_notarization_receipt`).
-- Public-style readiness modelleri ve exchange stratejileri (`ConservativeExternalAuditStrategy` vb.).
+# Phase 59: Public Verification Gateway
 
-2. Güncel Dosya Ağacı
+## 1. Implementation Summary
+This phase implements a robust Public Verification Gateway for controlled external artifact disclosure and safe challenge intake. Key achievements include:
+- Establishing a `DisclosureBundleRecord` and `PublicationProfileRecord` contract taxonomy to separate internal state from public verification packets.
+- Creating a `RedactionPublicationRecord` engine enforcing strict internal paths and secret masking before any publication payload leaves the internal trust zone.
+- Implementing an access-controlled `GatewayIndexEntryRecord` index generation for different audience profiles (`public_minimal`, `public_verifier`, `external_auditor`, etc.).
+- Designing a `ChallengeIntakeQuarantineRecord` logic handling safe sanitization and deduplication of external challenge intakes, routing them for review without state mutations.
+- Adding comprehensive reporting, tracking, and metric scoring (`PublicVerificationSummaryRecord`) across public gateway readiness.
+
+## 2. Updated File Tree
 ```
-src/sports_signal_bot/external_audit_exchange/
-├── __init__.py
-├── adapters.py
+src/sports_signal_bot/public_verification_gateway
+├── cli.py
+├── consistency.py
 ├── contracts.py
 ├── diagnostics.py
+├── disclosure.py
 ├── evidence.py
-├── findings.py
+├── index.py
+├── intake.py
 ├── integration.py
 ├── manifests.py
-├── notarization.py
 ├── packets.py
+├── profiles.py
+├── publication.py
+├── quarantine.py
 ├── readiness.py
+├── redaction.py
 ├── reporting.py
-├── reputation.py
-├── responses.py
-├── routing.py
 ├── strategies
-│   ├── __init__.py
-│   ├── balanced_exchange.py
+│   ├── balanced_verifier_gateway.py
 │   ├── base.py
 │   ├── conservative.py
-│   ├── notarization_first.py
-│   ├── quarantine_heavy.py
-│   └── reputation_aware_challenge.py
+│   ├── intake_hardened.py
+│   ├── proof_rich_verifier.py
+│   └── quarantine_first.py
 ├── triage.py
 └── utils.py
-tests/external_audit_exchange/
-├── test_challenge_triage_and_routing.py
-├── test_exchange_readiness_scoring.py
-├── test_external_audit_exchange_manifest.py
-├── test_external_finding_to_local_action.py
-├── test_external_response_ingestion.py
-├── test_notarization_hook_integration.py
-├── test_reporting_hooks.py
-├── test_reputation_adjustment_damping.py
-├── test_safe_exchange_packets.py
-├── test_transparency_linkage.py
-└── test_witness_reputation_scoring.py
-configs/external_audit_exchange/
-├── challenges.yaml
+
+tests/public_verification_gateway
+├── test_disclosure_consistency.py
+├── test_disclosure_redaction.py
+├── test_external_verifier_packets.py
+├── test_gateway_readiness_scoring.py
+├── test_intake_quarantine_and_dedup.py
+├── test_public_challenge_intake_validation.py
+├── test_public_packet_rendering.py
+├── test_public_verification_gateway_manifest.py
+├── test_publication_index.py
+├── test_publication_profiles.py
+├── test_publishability_decisions.py
+└── test_reporting_hooks.py
+
+configs/public_verification_gateway/
+├── consistency.yaml
 ├── default.yaml
-├── notarization.yaml
-├── readiness.yaml
-└── reputation.yaml
-docs/
-├── external_audit_exchange_architecture.md
-├── maintenance/external_audit_exchange_runbook.md
-├── operators/notarization_and_external_review_guide.md
-├── reference/external_audit_exchange_taxonomy.md
-└── reviewers/witness_reputation_and_external_findings_guide.md
+├── disclosure.yaml
+├── intake.yaml
+├── profiles.yaml
+└── readiness.yaml
 ```
 
-3. Yeni ve değişen dosyaların tam içeriği
-Dosya içerikleri `src/sports_signal_bot/external_audit_exchange/` altında ve commit log'larında mevcuttur. Contract'lar (Pydantic models), Adaptörler, Strategy'ler, Readiness metrikleri ve Notarization hook implementasyonları eksiksiz uygulanmıştır.
+## 3. Sample CLI Commands
+```bash
+# Run a full gateway pass to redact, publish and review intake queues
+python -m sports_signal_bot.main public-verification-gateway run-public-verification-gateway-pass
 
-4. Örnek CLI komutları
-`python -m sports_signal_bot.main run-external-audit-exchange-pass`
-`python -m sports_signal_bot.main preview-challenge-triage`
-`python -m sports_signal_bot.main list-external-audit-exchange-strategies`
-`python -m sports_signal_bot.main preview-external-audit-requests`
-`python -m sports_signal_bot.main preview-witness-reputation`
-`python -m sports_signal_bot.main preview-notarization-receipts`
+# View published bundles
+python -m sports_signal_bot.main public-verification-gateway preview-publication-index
 
-5. Beklenen Örnek Terminal Çıktıları
-```
-$ python -m sports_signal_bot.main run-external-audit-exchange-pass
-External audit exchange pass completed. 5 exported, 3 imported.
-Manifest saved to results/external_audit_exchange_summary.json
+# View readiness scoring
+python -m sports_signal_bot.main public-verification-gateway preview-public-gateway-readiness
 
-$ python -m sports_signal_bot.main preview-challenge-triage
-Challenge Triage Backlog:
-- Challenge chal_1: high priority -> assigned 'expert' class
-- Challenge chal_2: low priority -> assigned 'internal_review' class (due to reputation)
-
-$ python -m sports_signal_bot.main list-external-audit-exchange-strategies
-Available External Audit Exchange Strategies:
-1. ConservativeExternalAuditStrategy (Default)
-2. BalancedExchangeReadinessStrategy
-3. QuarantineHeavyExternalInputStrategy
-4. NotarizationFirstStrategy
-5. ReputationAwareChallengeStrategy
+# View available strategies
+python -m sports_signal_bot.main public-verification-gateway list-public-gateway-strategies
 ```
 
-6. Acceptance Checklist
-Tüm koşullar yerine getirilmiştir (`acceptance_checklist.md` içinde check edilmiştir):
-- External audit exchange adapter modeli çalışıyor.
-- Notarization hooks çalışıyor.
-- Witness reputation scoring çalışıyor.
-- Challenge triage/routing çalışıyor.
-- External findings quarantine/review/verified-supporting yollarına gidiyor.
-- Transparency/witness mesh/governance integrity/policy/reporting hook'ları hazır.
-- Sample CLI komutları çalışıyor.
-- Testler anlamlı şekilde geçiyor (`pytest tests/external_audit_exchange/`).
-- Mimari public audit exchanges, notarized disclosures ve stronger external verification ecosystems fazlarına hazır.
+## 4. Expected Terminal Output
+```
+$ python -m sports_signal_bot.main public-verification-gateway run-public-verification-gateway-pass
+Starting Public Verification Gateway Pass...
+Loading publication profiles...
+Processing disclosure bundles...
+Running redaction checks...
+Generating public packets...
+Updating publication index...
+Gateway Pass Complete!
+
+$ python -m sports_signal_bot.main public-verification-gateway preview-public-gateway-readiness
+Public Gateway Readiness:
+Score: public_style_gateway_ready
+Coverage: strong
+```
+
+## 5. Acceptance Checklist
+- [x] Publication profile ve disclosure bundle modeli çalışıyor.
+- [x] Redaction-aware publishability engine çalışıyor.
+- [x] Public verification gateway index üretiliyor.
+- [x] External challenge intake validation/quarantine/triage çalışıyor.
+- [x] Public readiness ve coverage scoring çalışıyor.
+- [x] Transparency/witness/external-audit/governance-integrity/reporting hook'ları çalışıyor.
+- [x] Sample CLI komutları çalışıyor.
+- [x] Testler anlamlı şekilde geçiyor.
+- [x] Mimari public verifier portals, external challenge APIs ve daha geniş disclosure governance fazlarına hazır durumda.

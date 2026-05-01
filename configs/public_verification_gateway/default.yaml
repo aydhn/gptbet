@@ -1,0 +1,3 @@
+# Default configuration for Public Verification Gateway
+default_public_gateway_strategy: BalancedVerifierGatewayStrategy
+log_level: info
