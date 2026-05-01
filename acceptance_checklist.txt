@@ -1,0 +1,9 @@
+- [x] witness mesh model and types correctly established
+- [x] witness statement handling built and tests implemented
+- [x] consensus/disagreement aggregation logic defined
+- [x] challenge-response flow designed
+- [x] anomaly adjudication processing defined
+- [x] public-style readiness scoring system implemented
+- [x] example commands correctly invoke the new logic module
+- [x] docs added for the newly minted components and runbooks
+- [x] tests passing gracefully

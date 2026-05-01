@@ -1,4 +1,5 @@
 from .transparency.cli import app as transparency_app
+from .witness_mesh.cli import app as witness_mesh_app
 from .governance_integrity.cli import app as governance_integrity_app
 from .multi_signer_trust.cli import app as multi_signer_trust_app
 from .policy_as_code.cli import app as policy_as_code_app
@@ -85,6 +86,7 @@ app.add_typer(deployment_app, name="deploy", help="Deployment Operations")
 app.add_typer(governance_integrity_app, name="governance-integrity", help="Phase 54 Governance Integrity")
 app.add_typer(multi_signer_trust_app, name="multi-signer-trust", help="Phase 55 Multi-Signer Trust")
 app.add_typer(transparency_app, name="transparency", help="Phase 56 Governance Transparency")
+app.add_typer(witness_mesh_app, name="witness-mesh", help="Phase 57 Witness Mesh")
 
 if __name__ == "__main__":
     app()
