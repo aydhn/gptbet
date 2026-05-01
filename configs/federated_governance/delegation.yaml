@@ -1,0 +1,6 @@
+delegation_modes_by_plane:
+  provider_family: "bounded_execution"
+  sec_cross_cut: "escalation_only"
+
+parent_child_precedence_rules:
+  allow_local_override_if_budget_available: false

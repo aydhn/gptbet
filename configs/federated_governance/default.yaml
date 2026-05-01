@@ -1,0 +1,3 @@
+default_federated_governance_strategy: "balanced_mesh"
+enable_mesh_telemetry: true
+max_global_pressure_threshold: 0.85

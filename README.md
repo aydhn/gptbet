@@ -70,3 +70,6 @@ Commands:
 
 ### Phase 51: Expansion Governance
 Introduces a global control plane for coordinating multiple rollout waves and cohorts. It implements global risk budgets, pressure scoring, cross-family conflict detection, and emergency circuit breakers (Global Pauses and Family Freezes) to safely manage large-scale expansion. Run `python -m sports_signal_bot.main expansion-governance run-expansion-governance` to execute a cycle.
+
+## Phase 52: Federated Governance
+A robust federated governance and control plane architecture that scales predictive deployments via delegated authority and mesh-based policy routing.
