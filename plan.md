@@ -1,14 +1,11 @@
-1. **Create Contracts**: Define the Pydantic models for ExternalAuditRequestRecord, ExternalAuditResponseRecord, WitnessReputationRecord, etc.
-2. **Implement Adapters**: Create abstract and concrete adapters for `file_packet_exchange_adapter`, `signed_json_exchange_adapter`, `audit_snapshot_exchange_adapter`, `notarization_hook_adapter`, `external_verifier_placeholder_adapter`, `witness_statement_exchange_adapter`.
-3. **Implement Packets**: Safe packet building (`build_safe_exchange_packet`, `redact_exchange_payload`, etc.).
-4. **Implement Response Ingestion**: Verification, schema validation, quarantine logic.
-5. **Implement Notarization Hook**: NotaryProviderRecord, NotarizationDigestRecord, and helper functions to request/verify notarization.
-6. **Implement Witness Reputation Model**: Scoring, adjustment, signal tracking.
-7. **Implement Challenge Triage/Routing**: Priority scoring, responder suggesting, marketplace-like setup.
-8. **Implement Findings Mapping**: Convert external findings to local decisions.
-9. **Implement Exchange Readiness**: Public-style readiness scoring.
-10. **Implement Strategies**: Base, Conservative, Balanced, QuarantineHeavy, NotarizationFirst, ReputationAware.
-11. **Update Configs & Tests**: Add `configs/external_audit_exchange/*.yaml` and `tests/external_audit_exchange/test_*.py`.
-12. **Add CLI Commands**: Add commands to `src/sports_signal_bot/main.py`.
-13. **Update Docs**: Add `docs/external_audit_exchange_architecture.md`, `docs/operators/notarization_and_external_review_guide.md`, etc.
-14. **Pre-commit Checks**: Run pre_commit_instructions to ensure all checks pass.
+1. **Define Core Contracts (`contracts.py`)**: Create the required pydantic models (`VerifierPortalRecord`, `VerificationViewPacketRecord`, `DashboardFeedRecord`, `ChallengeSubmissionRecord`, `PortalAccessDecisionRecord`, etc.) as specified in the instructions.
+2. **Implement Profile Taxonomy (`profiles.py`)**: Implement profile definitions and default configurations mapping audiences (`public_viewer`, `external_auditor`, etc.) to allowed view families, proof depths, and capabilities.
+3. **Implement Access & Query Safety (`access.py`, `queries.py`)**: Implement the logical read-only boundary constraints. Ensure queries that attempt raw internal state traversal are blocked, and profile-based redaction (`signer_metadata_masking_level`) is enforced.
+4. **Implement Packet Construction (`packets.py`)**: Generate profile-specific view packets dynamically linking proof levels and checking for profile mismatch leaks.
+5. **Implement Challenge Intake & Governance (`intake_api.py`, `triage.py`)**: Handle challenge ingestion. Separate read vs write constraints. Validate against the allowed issue taxonomy. Automatically quarantine unknown challenge payloads. Add clustering capabilities.
+6. **Implement Dashboard Feeds & Consistency (`feeds.py`, `consistency.py`)**: Build external observability feeds. Establish and test freshness detection. Add warning caveats when attempting to construct a stale packet or feed.
+7. **Define Portal Strategies (`strategies/`)**: Set up the `VerifierPortalStrategy` base class and various concrete implementations (`ConservativeVerifierPortalStrategy`, `QuarantineFirstPortalStrategy`, etc.).
+8. **Add CLI Commands (`cli.py`, `main.py`)**: Register Typer commands under the `verifier-portal` namespace to preview views, packets, API submissions, and display available strategies.
+9. **Add Tests (`tests/verifier_portal/`)**: Write robust `pytest` suites ensuring correctness for profile selection, access policies, query redaction, feed generation, freshness evaluation, challenge sanitization, and portal readiness.
+10. **Add Documentation (`docs/`)**: Document the architecture, operator runbooks, and reviewer packet differences. Add a section to `README.md`.
+11. **Review and Submit**: Run tests, check coverage, and output the required implementation summary.

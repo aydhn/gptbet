@@ -1,105 +1,107 @@
-# Phase 59: Public Verification Gateway
+# Phase 60 Implementation Summary
 
-## 1. Implementation Summary
-This phase implements a robust Public Verification Gateway for controlled external artifact disclosure and safe challenge intake. Key achievements include:
-- Establishing a `DisclosureBundleRecord` and `PublicationProfileRecord` contract taxonomy to separate internal state from public verification packets.
-- Creating a `RedactionPublicationRecord` engine enforcing strict internal paths and secret masking before any publication payload leaves the internal trust zone.
-- Implementing an access-controlled `GatewayIndexEntryRecord` index generation for different audience profiles (`public_minimal`, `public_verifier`, `external_auditor`, etc.).
-- Designing a `ChallengeIntakeQuarantineRecord` logic handling safe sanitization and deduplication of external challenge intakes, routing them for review without state mutations.
-- Adding comprehensive reporting, tracking, and metric scoring (`PublicVerificationSummaryRecord`) across public gateway readiness.
+## Overview
+Phase 60 successfully introduces the Verifier Portal Experience layer. This phase transitions the system from generating raw verification bundles to serving them through a safe, profile-aware, and structured portal interface designed for external verifiers and auditors. It establishes a "read-only" boundary to protect system integrity while facilitating transparency through notarized disclosure delivery, challenge APIs, and external dashboard feeds.
 
-## 2. Updated File Tree
-```
-src/sports_signal_bot/public_verification_gateway
-├── cli.py
-├── consistency.py
-├── contracts.py
-├── diagnostics.py
-├── disclosure.py
-├── evidence.py
-├── index.py
-├── intake.py
-├── integration.py
-├── manifests.py
-├── packets.py
-├── profiles.py
-├── publication.py
-├── quarantine.py
-├── readiness.py
-├── redaction.py
-├── reporting.py
-├── strategies
-│   ├── balanced_verifier_gateway.py
-│   ├── base.py
-│   ├── conservative.py
-│   ├── intake_hardened.py
-│   ├── proof_rich_verifier.py
-│   └── quarantine_first.py
-├── triage.py
-└── utils.py
+## Key Accomplishments
 
-tests/public_verification_gateway
-├── test_disclosure_consistency.py
-├── test_disclosure_redaction.py
-├── test_external_verifier_packets.py
-├── test_gateway_readiness_scoring.py
-├── test_intake_quarantine_and_dedup.py
-├── test_public_challenge_intake_validation.py
-├── test_public_packet_rendering.py
-├── test_public_verification_gateway_manifest.py
-├── test_publication_index.py
-├── test_publication_profiles.py
-├── test_publishability_decisions.py
-└── test_reporting_hooks.py
+### 1. Profile-Aware View Taxonomy
+Implemented a robust classification system (`src/sports_signal_bot/verifier_portal/profiles.py`) for audience profiles, such as `public_viewer`, `registered_verifier`, `trusted_external_verifier`, and `external_auditor`. Each profile governs access to specific view families, proof depths, challenge submission rights, and redaction levels.
 
-configs/public_verification_gateway/
-├── consistency.yaml
-├── default.yaml
-├── disclosure.yaml
-├── intake.yaml
-├── profiles.yaml
-└── readiness.yaml
-```
+### 2. Read-Only Verification Packets
+Developed the packet rendering logic (`src/sports_signal_bot/verifier_portal/packets.py`). The system now constructs `VerificationViewPacketRecord` artifacts, heavily leveraging the profile configuration to safely redact or enrich data. For instance, a `public_viewer` sees minimal proof references and redacted metadata, while an `external_auditor` views the complete trace.
 
-## 3. Sample CLI Commands
+### 3. Safe Query & Access Model
+Built strict access enforcement mechanisms (`access.py` and `queries.py`). Queries are sanitized to prevent direct internal key lookups or arbitrary raw searches. The logic blocks any query attempting to bypass the predefined view boundaries, emitting `PortalAccessDecisionRecord` results indicating allowances or blocks.
+
+### 4. Controlled Challenge APIs
+Introduced a structured intake governance model (`intake_api.py` and `triage.py`). Challenge submissions must adhere to an approved taxonomy (e.g., `proof_reference_mismatch`, `redaction_leak_claim`). The API strictly separates reading state from submitting challenges, employs a "quarantine-first" triage logic for unknown trust classes, and executes basic clustering and rate-limiting.
+
+### 5. Freshness & Consistency Discipline
+Implemented mechanisms (`consistency.py`) to actively detect stale feeds or packets. The system flags misleading "current" labels and attaches specific warning caveats if verification information is out-of-date or superseded, preventing external confusion.
+
+### 6. External Dashboard Feeds
+Added structured export endpoints (`feeds.py`) that generate `DashboardFeedRecord` objects. These feeds are designed as external observability layers (e.g., publication health, checkpoint freshness) and are subject to the same profile-based redaction as the packet views.
+
+### 7. Verifier Portal Strategies
+Provided a suite of strategy classes (`strategies/`) such as `ConservativeVerifierPortalStrategy` (strict intake, public minimal), `BalancedThirdPartyVerificationStrategy`, and `QuarantineFirstPortalStrategy` to define the default posture of the portal environment.
+
+## File Tree Updates
+
+### `src/sports_signal_bot/verifier_portal/`
+- `__init__.py`
+- `contracts.py`: Defines core data models using `pydantic` (`VerifierPortalRecord`, `VerificationViewPacketRecord`, etc.).
+- `profiles.py`: Audience taxonomy and configuration definitions.
+- `views.py`: Supported view definitions.
+- `queries.py`: Safe query handling and redaction execution.
+- `packets.py`: Profile-aware packet construction.
+- `feeds.py`: Dashboard feed generation and eligibility.
+- `publication.py`: Supersession and retraction logic.
+- `intake_api.py`: Challenge submission schema enforcement and routing.
+- `triage.py`: Submission state classification.
+- `readiness.py`: Maturity modeling for the portal layer.
+- `consistency.py`: Freshness enforcement.
+- `access.py`: Access decision logic.
+- `integration.py`, `evidence.py`, `reporting.py`, `manifests.py`, `diagnostics.py`, `utils.py`: Hook placements for future phases.
+- `strategies/`: Contains various deployment strategy files (`base.py`, `conservative.py`, etc.).
+- `cli.py`: Typer CLI command interface for the `verifier-portal` namespace.
+
+### `tests/verifier_portal/`
+Created extensive unit tests covering the new functionality:
+- `test_portal_profiles_and_access.py`
+- `test_view_packet_rendering.py`
+- `test_profile_aware_queries.py`
+- `test_dashboard_feeds.py`
+- `test_feed_freshness_and_consistency.py`
+- `test_challenge_api_submission_validation.py`
+- `test_challenge_api_quarantine_and_dedup.py`
+- `test_publication_supersession_and_retraction.py`
+- `test_verifier_experience_readiness.py`
+
+### `docs/`
+Added new runbooks and reference guides:
+- `verifier_portal_architecture.md`
+- `operators/portal_views_and_challenge_api_guide.md`
+- `reviewers/public_vs_verifier_vs_auditor_packets_guide.md`
+- `reference/verifier_portal_taxonomy.md`
+- `maintenance/verifier_portal_runbook.md`
+
+### `configs/verifier_portal/`
+- `default.yaml`, `profiles.yaml`, `views.yaml`, `feeds.yaml`, `challenge_api.yaml`, `readiness.yaml`
+
+## Example CLI Commands & Expected Outputs
+
+### Command
 ```bash
-# Run a full gateway pass to redact, publish and review intake queues
-python -m sports_signal_bot.main public-verification-gateway run-public-verification-gateway-pass
-
-# View published bundles
-python -m sports_signal_bot.main public-verification-gateway preview-publication-index
-
-# View readiness scoring
-python -m sports_signal_bot.main public-verification-gateway preview-public-gateway-readiness
-
-# View available strategies
-python -m sports_signal_bot.main public-verification-gateway list-public-gateway-strategies
+python -m sports_signal_bot.main verifier-portal run-verifier-portal-pass
+```
+### Expected Output
+```text
+Running verifier portal pass...
+Status: Success
 ```
 
-## 4. Expected Terminal Output
+### Command
+```bash
+python -m sports_signal_bot.main verifier-portal list-verifier-portal-strategies
 ```
-$ python -m sports_signal_bot.main public-verification-gateway run-public-verification-gateway-pass
-Starting Public Verification Gateway Pass...
-Loading publication profiles...
-Processing disclosure bundles...
-Running redaction checks...
-Generating public packets...
-Updating publication index...
-Gateway Pass Complete!
-
-$ python -m sports_signal_bot.main public-verification-gateway preview-public-gateway-readiness
-Public Gateway Readiness:
-Score: public_style_gateway_ready
-Coverage: strong
+### Expected Output
+```text
+Available Verifier Portal Strategies:
+ - ConservativeVerifierPortalStrategy
+ - BalancedThirdPartyVerificationStrategy
+ - QuarantineFirstPortalStrategy
+ - ProofRichTrustedVerifierStrategy
+ - IntakeHardenedVerifierAPI
 ```
 
-## 5. Acceptance Checklist
-- [x] Publication profile ve disclosure bundle modeli çalışıyor.
-- [x] Redaction-aware publishability engine çalışıyor.
-- [x] Public verification gateway index üretiliyor.
-- [x] External challenge intake validation/quarantine/triage çalışıyor.
-- [x] Public readiness ve coverage scoring çalışıyor.
-- [x] Transparency/witness/external-audit/governance-integrity/reporting hook'ları çalışıyor.
-- [x] Sample CLI komutları çalışıyor.
-- [x] Testler anlamlı şekilde geçiyor.
-- [x] Mimari public verifier portals, external challenge APIs ve daha geniş disclosure governance fazlarına hazır durumda.
+## Acceptance Checklist
+- [x] Verifier portal profile/view model is functional.
+- [x] Proof-aware profile-specific packet rendering works.
+- [x] External dashboard feed rendering and redaction works.
+- [x] Challenge API validation, deduplication, and quarantine logic works.
+- [x] Publication lifecycle (supersession tracking) is supported.
+- [x] Hook placements (readiness, diagnostics, integration) are in place.
+- [x] All Typer CLI commands execute successfully.
+- [x] All Pytest tests pass cleanly.
+- [x] Architecture accommodates future hosted solutions and rate-shaped ecosystems.

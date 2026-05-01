@@ -1,3 +1,4 @@
+import typer
 from .transparency.cli import app as transparency_app
 from .witness_mesh.cli import app as witness_mesh_app
 from .governance_integrity.cli import app as governance_integrity_app
@@ -10,7 +11,6 @@ from .public_verification_gateway.cli import app as public_verification_gateway_
 
 
 from .staged_channels.cli import app as staged_channels_app
-import typer
 from .tournaments.cli import app as tournaments_app
 from .candidate_promotion.cli import app as candidate_promotion_app
 from .auto_promotion.cli import app as auto_promotion_app
@@ -165,6 +165,9 @@ def list_external_audit_exchange_strategies():
     print("4. NotarizationFirstStrategy")
     print("5. ReputationAwareChallengeStrategy")
 
+
+from .verifier_portal.cli import app as verifier_portal_app
+app.add_typer(verifier_portal_app, name="verifier-portal", help="Verifier portal commands")
 
 if __name__ == "__main__":
     app()

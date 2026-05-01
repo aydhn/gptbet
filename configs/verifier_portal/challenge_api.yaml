@@ -1,0 +1,7 @@
+challenge_api_issue_taxonomy:
+  - proof_reference_mismatch
+  - disclosure_staleness_claim
+submission_rate_limits:
+  registered_verifier: 10
+quarantine_rules:
+  quarantine_all_unknown: true

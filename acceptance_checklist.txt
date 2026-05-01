@@ -1,9 +1,9 @@
-- [x] witness mesh model and types correctly established
-- [x] witness statement handling built and tests implemented
-- [x] consensus/disagreement aggregation logic defined
-- [x] challenge-response flow designed
-- [x] anomaly adjudication processing defined
-- [x] public-style readiness scoring system implemented
-- [x] example commands correctly invoke the new logic module
-- [x] docs added for the newly minted components and runbooks
-- [x] tests passing gracefully
+- [x] Verifier portal profile/view model is functional.
+- [x] Proof-aware profile-specific packet rendering works.
+- [x] External dashboard feed rendering and redaction works.
+- [x] Challenge API validation, deduplication, and quarantine logic works.
+- [x] Publication lifecycle (supersession tracking) is supported.
+- [x] Hook placements (readiness, diagnostics, integration) are in place.
+- [x] All Typer CLI commands execute successfully.
+- [x] All Pytest tests pass cleanly.
+- [x] Architecture accommodates future hosted solutions and rate-shaped ecosystems.
