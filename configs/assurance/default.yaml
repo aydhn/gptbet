@@ -1,0 +1,4 @@
+default_assurance_strategy: "balanced_proof_carrying_strategy"
+promotion_grade_thresholds:
+  coverage_rate: 0.95
+  replay_match_rate: 1.0

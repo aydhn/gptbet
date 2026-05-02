@@ -171,7 +171,9 @@ def list_external_audit_exchange_strategies():
 
 
 from .verifier_portal.cli import app as verifier_portal_app
+from .assurance.cli import app as assurance_app
 app.add_typer(verifier_portal_app, name="verifier-portal", help="Verifier portal commands")
+app.add_typer(assurance_app, name="assurance", help="Phase 62 Assurance")
 
 if __name__ == "__main__":
     app()

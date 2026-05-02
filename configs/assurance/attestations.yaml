@@ -1,0 +1,6 @@
+accepted_attestation_families:
+  - conformance_runner_attester
+  - integrity_verifier_attester
+  - transparency_verifier_attester
+stale_attestation_block_rules:
+  block_on_critical: true

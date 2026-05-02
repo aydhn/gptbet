@@ -1,0 +1,3 @@
+promotion_envelope_gate_rules:
+  require_all_mandatory_claims: true
+  allow_caveats: true
