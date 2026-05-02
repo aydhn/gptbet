@@ -1,0 +1,30 @@
+# Trust-Weighted Ecosystem Routing
+routing_policies:
+  - trust-first
+  - balanced
+  - freshness-first
+  - replay-strict
+  - notarization-preferential
+  - quarantine-avoidant
+  - fallback-allowed
+
+trust_weight_components:
+  source_trust_weight_max: 40.0
+  freshness_weight_max: 20.0
+  capability_fit_weight_max: 15.0
+  replay_readiness_weight_max: 15.0
+  notarization_support_bonus_max: 10.0
+  supersession_hygiene_weight: 10.0
+
+routing_penalties:
+  quarantine_penalty: 50.0
+  sync_lag_penalty_per_hour: 2.0
+  conflict_burden_penalty: 15.0
+
+route_fallback_policies:
+  allow_degraded_route: true
+  allow_stale_if_trusted: true
+
+routing_cache_invalidation_rules:
+  invalidate_on_quarantine: true
+  invalidate_on_supersession: true

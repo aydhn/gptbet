@@ -1,0 +1,5 @@
+# Ecosystem Sync Configuration
+default_ecosystem_sync_strategy: "ConservativeSyncRoutingStrategy"
+enabled: true
+log_level: "INFO"
+metrics_enabled: true

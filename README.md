@@ -32,3 +32,16 @@ Phase 65 builds on the assurance registry notarization and external federation p
 - `python -m sports_signal_bot.main ecosystem-discovery preview-registry-catalogs`
 - `python -m sports_signal_bot.main ecosystem-discovery preview-protocol-profiles`
 - `python -m sports_signal_bot.main ecosystem-discovery preview-portable-proof-catalogs`
+
+### Phase 66: Ecosystem Sync & Trust-Weighted Routing
+Phase 66 introduces continuous ecosystem synchronization, federated catalog overlays, and trust-weighted routing to convert the static discovery layer into a dynamic control plane.
+
+- **Subscriptions vs Trust**: Subscriptions are watch channels, not automatic trust channels. A synced catalog entry remains verified but isn't trusted until evaluated by local policy.
+- **Routing is Recommendation**: Routing computes weighted scores based on freshness, trust, and capability to suggest the best path, but it does not implicitly accept the artifacts.
+- **Overlays & Supersession**: Federated overlays merge multi-source data while preserving strict lineage. Supersession correctly propagates tombstones to prevent stale routes.
+
+#### Key Commands
+- `python -m sports_signal_bot.main ecosystem-sync run-ecosystem-sync-pass`
+- `python -m sports_signal_bot.main ecosystem-sync preview-discovery-subscriptions`
+- `python -m sports_signal_bot.main ecosystem-sync preview-routing-decisions`
+- `python -m sports_signal_bot.main ecosystem-sync preview-routing-cache`

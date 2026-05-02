@@ -1,0 +1,13 @@
+# Freshness, Lag, and Staleness Thresholds
+freshness_tradeoff_rules:
+  allow_stale_high_trust_over_fresh_low_trust: true
+  max_stale_allowed_seconds: 604800 # 7 days
+
+stale_source_thresholds:
+  warning_threshold_seconds: 86400 # 1 day
+  quarantine_threshold_seconds: 259200 # 3 days
+
+quarantine_triggers:
+  repeated_sync_failures: 3
+  stale_beyond_quarantine_threshold: true
+  digest_mismatch: true
