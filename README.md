@@ -17,3 +17,6 @@ To run the assurance pass:
 
 ## Phase 63: Assurance Interoperability & Exchange
 Adds cross-system assurance packages, notarized promotion envelopes, and quarantine-first federated registry evaluation rules.
+
+### Phase 64: Capability Negotiation & Registry Notarization
+Establishes a capability negotiation layer for external registries. Rather than blindly trusting imported assurance envelopes or federation profiles, registries can explicitly negotiate a safe, compatible subset of features (like supported claim families, proof formats, and replay modes). Includes portable spec bundles and snapshot notarization for auditable cross-system exchange.

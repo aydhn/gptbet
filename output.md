@@ -1,118 +1,70 @@
-1. **Phase 62 implementation summary**
-Sistemi “compliance pipeline” aşamasından alıp "proof-carrying governance bundle" seviyesine yükselttik. Artık pipeline sonuçları doğrudan `AssuranceClaimRecord` objelerine dönüşürken, bu objeler ilgili attestations (`AssuranceAttestationRecord`) tarafından desteklenmekte ve sonuçta `PromotionEnvelopeRecord` oluşturulmaktadır.
+1. Phase 64 Implementation Summary
+The Capability Negotiation and Registry Notarization framework establishes a machine-readable protocol for cross-registry capability discovery. It evaluates support for artifact families, claims, and proof formats, finding a common safe subset before accepting external assurance. Features include capability profile definition, negotiation handshakes, safe downgrades, drift detection, portable spec bundles export, and registry snapshot notarization.
 
-- **Proof-Carrying Bundles:** artifact summary, claim dependencies, proofs ve attestations ile zenginleştirildi.
-- **Machine-Checkable Release Claims:** Artifactlarin neden promotion-ready olduğunu doğrulayabilen evaluate/check modülleri eklendi.
-- **Assurance Attestations:** Farklı issuer aileleri ile desteklendi ve claims'lere attestation zinciri kuruldu.
-- **Stale Assurance Engelleme:** `ClaimFreshnessRecord` ve `ClaimValidityWindowRecord` yardımıyla expired veya supersedence durumlar tespit edilip block edilir hale getirildi.
-- **Replayability:** Claim'lerin önceki halleri ile yeniden çalıştırılabilmesi için `ClaimReplayRecord` yapısı eklendi.
-- **Strategies:** Conservative, Balanced, Attestation-Heavy gibi strategy objeleri kodlanıp CLI'da yapılandırıldı.
+2. Updated File Tree (Relevant)
+src/sports_signal_bot/capability_negotiation/
+├── __init__.py
+├── compatibility.py
+├── contracts.py
+├── federation_policies.py
+├── integration.py
+├── negotiation.py
+├── onboarding.py
+├── portable_specs.py
+├── profiles.py
+├── registry_notarization.py
+├── replay.py
+├── strategies/
+│   ├── __init__.py
+│   ├── balanced_interop.py
+│   ├── base.py
+│   ├── conservative.py
+│   └── spec_first.py
+└── translations.py
 
-2. **Güncel Dosya Ağacı**
-```
-src/sports_signal_bot/
-├── main.py (Genişletildi: assurance namespace eklendi)
-└── assurance/
-    ├── __init__.py
-    ├── contracts.py (Tüm Pydantic veri modelleri, Enum tipleri)
-    ├── claims.py (Claim üretimi, freshness/staleness)
-    ├── attestations.py (Attestation nesneleri)
-    ├── policies.py (Assurance policy değerlendirmesi)
-    ├── dependencies.py (Claim graph)
-    ├── bundles.py (Proof Carrying Bundle inşası)
-    ├── replay.py (Replay logic)
-    ├── envelopes.py (Promotion Envelopes)
-    ├── gates.py (Evaluation Gates)
-    ├── conflicts.py (Conflict detection)
-    ├── exceptions.py (Assurance Exceptions)
-    ├── integration.py (E2E run pipeline)
-    ├── evidence.py (Evidence bundles)
-    ├── reporting.py (Summary)
-    ├── manifests.py (Manifest)
-    ├── diagnostics.py
-    ├── utils.py
-    ├── cli.py (Typer namespace)
-    └── strategies/
-        ├── __init__.py
-        ├── base.py
-        ├── conservative.py
-        ├── balanced_proof_carrying.py
-        ├── attestation_heavy.py
-        ├── replay_first.py
-        └── minimal_exception.py
-
-configs/assurance/
+configs/capability_negotiation/
 ├── default.yaml
-├── claims.yaml
-├── attestations.yaml
-├── envelopes.yaml
-├── replay.yaml
-└── exceptions.yaml
-
-tests/assurance/
-├── test_claim_generation.py
-├── test_claim_dependency_graph.py
-├── test_attestation_validity.py
-├── test_release_claim_evaluation.py
-├── test_claim_replay.py
-├── test_promotion_envelope_building.py
-├── test_assurance_gate_aggregation.py
-├── test_claim_conflicts.py
-├── test_exception_effects.py
-├── test_policy_assurance_bundle.py
-├── test_reporting_hooks.py
-└── test_assurance_manifest.py
+├── federation_policies.yaml
+├── negotiations.yaml
+├── notarization.yaml
+├── portable_specs.yaml
+└── profiles.yaml
 
 docs/
-├── proof_carrying_governance_architecture.md
-├── operators/assurance_claims_and_envelopes_guide.md
-├── reviewers/attestations_and_replay_guide.md
-├── reference/assurance_claim_taxonomy.md
-└── maintenance/assurance_runbook.md
-```
+├── capability_negotiation_and_registry_notarization_architecture.md
+├── maintenance/capability_negotiation_runbook.md
+├── operators/registry_federation_and_negotiated_profiles_guide.md
+├── reference/capability_negotiation_taxonomy.md
+└── reviewers/portable_specs_and_translation_safety_guide.md
 
-3. **Örnek Kod İçeriği ve Güncellemeler**
-Kod dosyalarının tamamı sistemin Pydantic tipli ve module bazlı kurgusuna uygun yazılmıştır. Özellikle `src/sports_signal_bot/assurance/contracts.py` üzerinde Enums ve Modeller titizce işlenmiş; CLI komutları `src/sports_signal_bot/assurance/cli.py` içerisinde modülerleştirilmiştir.
-
-4. **Örnek CLI Komutları**
+3. Sample CLI Commands
 ```bash
-python -m sports_signal_bot.main assurance run-assurance-pass
-python -m sports_signal_bot.main assurance preview-proof-carrying-bundles
-python -m sports_signal_bot.main assurance preview-assurance-claims
-python -m sports_signal_bot.main assurance preview-attestations
-python -m sports_signal_bot.main assurance preview-promotion-envelopes
-python -m sports_signal_bot.main assurance list-assurance-strategies
+python -m sports_signal_bot.main capability-negotiation run-capability-negotiation-pass
+python -m sports_signal_bot.main capability-negotiation preview-capability-profiles
+python -m sports_signal_bot.main capability-negotiation preview-negotiated-profiles
+python -m sports_signal_bot.main capability-negotiation preview-portable-spec-bundles
+python -m sports_signal_bot.main capability-negotiation preview-registry-notarizations
+python -m sports_signal_bot.main capability-negotiation preview-verifier-onboarding
+python -m sports_signal_bot.main capability-negotiation list-capability-negotiation-strategies
 ```
 
-5. **Beklenen Örnek Terminal Çıktıları**
+4. Expected Terminal Output
 ```
-$ python -m sports_signal_bot.main assurance run-assurance-pass
-Assurance pass completed for target target_promo_01.
-Evaluation Passed: True
-Envelope Decision: EnvelopeStatus.assurance_ready
-Artifacts saved to results/assurance_summary.json
+Available Strategies:
+- ConservativeCapabilityNegotiationStrategy
+- BalancedInteropNegotiationStrategy
+- SpecFirstFederationStrategy
 
-$ python -m sports_signal_bot.main assurance preview-promotion-envelopes
-Previewing promotion envelopes...
-- Envelope env_abc for target_promo_01: assurance_ready
-
-$ python -m sports_signal_bot.main assurance list-assurance-strategies
-Available Assurance Strategies:
-1. ConservativeAssuranceEnvelopeStrategy
-2. BalancedProofCarryingStrategy (Default)
-3. AttestationHeavyStrategy
-4. ReplayFirstAssuranceStrategy
-5. MinimalExceptionStrategy
+[green]Running Capability Negotiation pass...[/green]
+Processed 10 profiles, 5 successful negotiations, 2 quarantines.
 ```
 
-6. **Acceptance Checklist**
-- [x] Proof-carrying bundle modeli çalışıyor.
-- [x] Assurance claim ve attestation modeli çalışıyor.
-- [x] Machine-checkable release claims üretiliyor.
-- [x] Promotion envelopes oluşturuluyor.
-- [x] Claim replay ve conflict çözümü stub/yapı olarak entegre.
-- [x] Conformance, policy, integrity hook'ları mock flow üzerinden çalışıyor.
-- [x] CLI komutları eklendi ve test edildi.
-- [x] `tests/assurance/` altındaki birim testler geçiyor (13 test passed).
-- [x] README ve Documentation güncellendi.
-- [x] Mimari gelecekteki notarized envelopes ve logic proof engine entegrasyonlarına hazır.
+5. Acceptance Checklist
+- [x] Capability profile and negotiation model operational
+- [x] External verifier federation policies working
+- [x] Portable spec bundle model working
+- [x] Registry notarization workflow working
+- [x] Negotiated profile replay and drift/renegotiation working
+- [x] Sample CLI commands exist
+- [x] Tests comprehensively pass
+- [x] Architecture ready for public catalogs and auto-negotiation

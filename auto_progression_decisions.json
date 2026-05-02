@@ -1,6 +1,6 @@
 [
   {
-    "auto_progression_id": "ap-de11e308",
+    "auto_progression_id": "ap-854b8cb7",
     "candidate_release_id": "cr-101",
     "current_stage": "shadow_verified",
     "proposed_next_stage": "pending_candidate_eval",
@@ -19,11 +19,11 @@
     "approval_requirement_status": "none",
     "blockers": [],
     "evidence_refs": [],
-    "created_at": "2026-05-01 13:43:06.870235+00:00",
+    "created_at": "2026-05-02 11:03:54.882016+00:00",
     "warnings": []
   },
   {
-    "auto_progression_id": "ap-28f1eb70",
+    "auto_progression_id": "ap-7a689088",
     "candidate_release_id": "cr-102",
     "current_stage": "shortlisted",
     "proposed_next_stage": null,
@@ -45,7 +45,7 @@
       }
     ],
     "evidence_refs": [],
-    "created_at": "2026-05-01 13:43:06.870316+00:00",
+    "created_at": "2026-05-02 11:03:54.882064+00:00",
     "warnings": []
   }
 ]
