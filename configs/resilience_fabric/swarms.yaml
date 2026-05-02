@@ -1,0 +1,12 @@
+swarm_quorum_rules:
+  registry_mirror_swarm:
+    min_size: 3
+    agreement_threshold: 0.67
+    stale_member_exclusion: true
+  checkpoint_mirror_swarm:
+    min_size: 2
+    agreement_threshold: 1.0
+    stale_member_exclusion: true
+split_brain_detection_rules:
+  divergence_threshold: 2
+  time_window: PT1H

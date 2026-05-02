@@ -1,0 +1,19 @@
+relay_family_policies:
+  external_catalog_relay:
+    integrity_mode: strict
+    freshness_expectation: PT1H
+    review_policy: required_for_mutations
+    delivery_mode: periodic_delta_bridge
+  trust_signal_relay:
+    integrity_mode: strict
+    freshness_expectation: PT5M
+    review_policy: review_quarantine_bridge
+    delivery_mode: metadata_signal_bridge
+  mirror_health_relay:
+    integrity_mode: relaxed
+    freshness_expectation: PT15M
+    review_policy: auto_accept
+    delivery_mode: event_batch_bridge
+relay_quarantine_rules:
+  max_quarantine_age: PT24H
+  auto_reject_after: PT48H

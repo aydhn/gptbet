@@ -1,0 +1,20 @@
+default_resilience_strategy: "ConservativeResilienceStrategy"
+resilience_score_weights:
+  sync_recovery_time: 0.2
+  route_degradation_containment: 0.15
+  no_safe_route_visibility: 0.15
+  swarm_split_detection_quality: 0.1
+  supersession_repair_latency: 0.1
+  quarantine_accuracy_proxy: 0.1
+  relay_health_resilience: 0.05
+  replay_backlog_containment: 0.05
+  observability_coverage_during_failure: 0.05
+  remediation_completeness: 0.05
+degraded_mode_triggers:
+  relay_health_critical_ratio: 0.3
+  swarm_split_suspicion_ratio: 0.2
+  calibration_unsafe_ratio: 0.1
+  simulation_failure_ratio: 0.2
+recovery_exit_rules:
+  required_clean_cycles: 3
+  max_unresolved_anomalies: 0
