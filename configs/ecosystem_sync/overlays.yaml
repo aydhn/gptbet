@@ -1,0 +1,15 @@
+# Federated Catalog Overlay Rules
+overlay_families:
+  - trust_overlay
+  - freshness_overlay
+  - federation_overlay
+  - quarantine_overlay
+  - notarization_overlay
+  - supersession_overlay
+  - negotiated_profile_overlay
+
+overlay_merge_rules:
+  require_same_entry_family: true
+  preserve_lineage: true
+  allow_trust_downgrade: true
+  allow_freshness_override: false

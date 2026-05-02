@@ -1,0 +1,19 @@
+# Ecosystem Sync Run Constraints
+sync_modes:
+  - manual_pull
+  - scheduled_pull
+  - incremental_snapshot_pull
+  - full_refresh_pull
+  - review_quarantine_pull
+  - overlay_refresh_only
+  - metadata_only_pull
+
+sync_pipeline_rules:
+  max_concurrent_syncs: 5
+  timeout_per_source_seconds: 30
+  require_signature_validation: true
+
+supersession_propagation_rules:
+  propagate_to_overlays: true
+  propagate_to_routing_cache: true
+  tombstone_old_entries: true

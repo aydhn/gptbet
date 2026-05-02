@@ -1,0 +1,22 @@
+# Discovery Subscription Taxonomy & Config
+allowed_subscription_families:
+  - registry_catalog_subscription
+  - verifier_catalog_subscription
+  - portable_spec_subscription
+  - portable_proof_subscription
+  - protocol_profile_subscription
+  - notarized_snapshot_subscription
+  - supersession_map_subscription
+  - trust_metadata_subscription
+  - quarantine_feed_subscription
+  - directory_subscription
+
+refresh_policies:
+  default_interval_seconds: 3600
+  notarized_snapshot_subscription: 1800
+  quarantine_feed_subscription: 300
+  directory_subscription: 86400
+
+sync_retry_limits:
+  max_attempts: 3
+  backoff_factor: 2.0

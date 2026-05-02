@@ -173,12 +173,14 @@ def list_external_audit_exchange_strategies():
     print("5. ReputationAwareChallengeStrategy")
 
 
+from .ecosystem_sync.cli import app as ecosystem_sync_app
 from .verifier_portal.cli import app as verifier_portal_app
 from .assurance.cli import app as assurance_app
 app.add_typer(verifier_portal_app, name="verifier-portal", help="Verifier portal commands")
 app.add_typer(assurance_app, name="assurance", help="Phase 62 Assurance")
 
 app.add_typer(ecosystem_discovery_app, name="ecosystem-discovery", help="Ecosystem discovery and assurance catalog commands")
+app.add_typer(ecosystem_sync_app, name="ecosystem-sync", help="Phase 66 Ecosystem Sync & Routing")
 
 if __name__ == "__main__":
     app()
