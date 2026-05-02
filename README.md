@@ -14,3 +14,6 @@ See the following docs for more details:
 
 To run the assurance pass:
 `python -m sports_signal_bot.main assurance run-assurance-pass`
+
+## Phase 63: Assurance Interoperability & Exchange
+Adds cross-system assurance packages, notarized promotion envelopes, and quarantine-first federated registry evaluation rules.

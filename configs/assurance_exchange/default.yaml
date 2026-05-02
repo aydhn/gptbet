@@ -1,0 +1,2 @@
+default_assurance_exchange_strategy: "balanced_registry_federation"
+quarantine_default: true

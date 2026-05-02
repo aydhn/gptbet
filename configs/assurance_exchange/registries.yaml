@@ -1,0 +1,4 @@
+federated_registry_definitions:
+  - registry_id: "trusted_partner_1"
+    trust_domain: "internal_group"
+    sync_mode: "federated_pull_reviewed"
