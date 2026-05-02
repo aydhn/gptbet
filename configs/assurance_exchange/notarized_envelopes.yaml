@@ -1,0 +1,2 @@
+notarized_envelope_acceptance_rules:
+  require_local_replay: true

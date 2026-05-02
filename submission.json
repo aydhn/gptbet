@@ -1,16 +1,10 @@
 {
-  "phase_name": "Phase 58: External Audit Exchange Readiness",
-  "status": "completed",
-  "summary": "Implemented the external audit exchange adapter layer, notarization hooks, witness reputation scoring, challenge triage and routing, and external findings ingestion flow. Configured exchange readiness scoring and provided strategies to safely bridge local trust with external verification ecosystems.",
-  "artifacts": [
-    "src/sports_signal_bot/external_audit_exchange/",
-    "tests/external_audit_exchange/",
-    "configs/external_audit_exchange/",
-    "docs/external_audit_exchange_architecture.md",
-    "docs/operators/notarization_and_external_review_guide.md",
-    "docs/reviewers/witness_reputation_and_external_findings_guide.md",
-    "docs/reference/external_audit_exchange_taxonomy.md",
-    "docs/maintenance/external_audit_exchange_runbook.md",
-    "results/external_audit_exchange_summary.json"
+  "phase": 63,
+  "summary": "Implemented Assurance Exchange and Registry Federation layer.",
+  "components": [
+    "AssuranceExchangePacketRecord",
+    "FederatedRegistryRecord",
+    "NotarizedPromotionEnvelopeRecord",
+    "CrossSystemReplayRecord"
   ]
 }

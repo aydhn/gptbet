@@ -1,0 +1,3 @@
+claim_translation_rules:
+  - source_claim_family: "e2e_promotion_claim"
+    target_claim_family: "e2e_promotion_claim"
