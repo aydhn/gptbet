@@ -1,0 +1,2 @@
+exception_visibility_rules:
+  require_explicit_caveat_in_envelope: true

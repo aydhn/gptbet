@@ -1,0 +1,10 @@
+required_claim_families_by_target:
+  promotion_candidate:
+    - policy_conformance_claim
+    - integrity_chain_claim
+    - transparency_publication_claim
+    - e2e_promotion_claim
+claim_freshness_rules:
+  default_max_age_seconds: 86400
+multi_source_claim_requirements:
+  - witness_quorum_claim
