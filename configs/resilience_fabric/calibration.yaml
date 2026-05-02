@@ -1,0 +1,7 @@
+calibration_adjustment_bounds:
+  max_trust_increase_per_cycle: 0.05
+  max_trust_decrease_per_cycle: 0.2
+  hard_safety_floor: 0.1
+calibration_validation_requirements:
+  required_validation_mode: shadow_routing_comparison
+  min_validation_duration: PT1H

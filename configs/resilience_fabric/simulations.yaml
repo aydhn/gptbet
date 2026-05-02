@@ -1,0 +1,8 @@
+simulation_scenario_catalog:
+  - stale_source_storm
+  - mirror_partition_event
+  - supersession_propagation_failure
+  - trust_downgrade_cascade
+simulation_isolation_rules:
+  prevent_live_mutation: true
+  require_explicit_exit: true

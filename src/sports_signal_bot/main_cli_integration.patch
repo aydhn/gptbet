@@ -1,0 +1,19 @@
+<<<<<<< SEARCH
+import typer
+
+app = typer.Typer(help="Sports Signal Bot CLI")
+
+if __name__ == "__main__":
+=======
+import typer
+
+app = typer.Typer(help="Sports Signal Bot CLI")
+
+try:
+    from src.sports_signal_bot.resilience_fabric.cli import app as resilience_app
+    app.add_typer(resilience_app, name="resilience-fabric")
+except ImportError:
+    pass
+
+if __name__ == "__main__":
+>>>>>>> REPLACE
