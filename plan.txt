@@ -1,0 +1,13 @@
+1. **Config Files**: Create configuration files under `configs/ecosystem_discovery` (default.yaml, catalogs.yaml, discovery.yaml, protocols.yaml, rankings.yaml, federation_visibility.yaml).
+2. **Contracts (`src/sports_signal_bot/ecosystem_discovery/contracts.py`)**: Define all required data models (`AssuranceRegistryCatalogRecord`, `CatalogEntryRecord`, `VerifierProtocolProfileRecord`, etc.).
+3. **Trust & Freshness (`src/sports_signal_bot/ecosystem_discovery/trust.py`, `freshness.py`)**: Implement trust scoring (`compute_catalog_trust_score`, `classify_catalog_trust`) and freshness calculation (`compute_catalog_freshness`, `validate_catalog_supersession`).
+4. **Protocols & Negotiation (`src/sports_signal_bot/ecosystem_discovery/protocols.py`, `negotiation.py`)**: Implement negotiated protocol profile creation (`build_verifier_protocol_profile`, `negotiate_protocol_profile`, `enforce_protocol_negotiation_safety`).
+5. **Catalogs & Directories (`src/sports_signal_bot/ecosystem_discovery/catalogs.py`, `directories.py`)**: Implement catalog building (`build_assurance_registry_catalog`) and ecosystem directory building (`build_ecosystem_directory`).
+6. **Proof Marketplace & Portable Specs (`src/sports_signal_bot/ecosystem_discovery/proof_marketplace.py`, `portable_specs.py`)**: Implement proof cataloging (`build_portable_proof_catalog`, `register_proof_availability`) and spec cataloging.
+7. **Discovery Pipeline & Rankings (`src/sports_signal_bot/ecosystem_discovery/discovery.py`, `rankings.py`, `quarantine.py`)**: Implement discovery workflows (`run_ecosystem_discovery`), candidate ranking (`rank_discovery_candidates`), and quarantine handling (`quarantine_discovery_candidate`).
+8. **Strategies (`src/sports_signal_bot/ecosystem_discovery/strategies/*`)**: Implement `ConservativeEcosystemDiscoveryStrategy`, `BalancedCatalogNegotiationStrategy`, `SpecAwareDiscoveryStrategy`, etc.
+9. **Integration & Reporting (`src/sports_signal_bot/ecosystem_discovery/integration.py`, `reporting.py`, `manifests.py`, `diagnostics.py`, `utils.py`)**: Tie it all together, generate the `EcosystemDiscoveryManifest`, metrics.
+10. **CLI Integration (`src/sports_signal_bot/main.py`)**: Add `ecosystem-discovery` Typer namespace with commands like `run-ecosystem-discovery-pass`, `preview-registry-catalogs`, `preview-protocol-profiles`, etc.
+11. **Tests (`tests/ecosystem_discovery/*`)**: Write tests ensuring catalogs build, discovery works, trust/freshness rank properly, protocol negotiation is safe, and quarantine functions correctly.
+12. **Documentation (`docs/*`)**: Create the required Markdown documentation guides and update `README.md`.
+13. **Pre-commit**: Run pre-commit hooks to ensure everything is correct.

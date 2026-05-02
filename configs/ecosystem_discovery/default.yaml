@@ -1,0 +1,7 @@
+default_ecosystem_discovery_strategy: "ConservativeEcosystemDiscoveryStrategy"
+ecosystem_readiness_dimension_weights:
+  registry_coverage: 0.2
+  verifier_profile_coverage: 0.2
+  spec_bundle_coverage: 0.2
+  proof_bundle_coverage: 0.2
+  public_safe_discovery_coverage: 0.2

@@ -1,0 +1,9 @@
+trusted_catalog_sources:
+  - "registry:local"
+  - "registry:primary_federation"
+catalog_trust_scoring_rules:
+  baseline_weight: 0.4
+  signature_weight: 0.3
+  freshness_weight: 0.3
+stale_catalog_suppression_thresholds:
+  max_age_days: 7

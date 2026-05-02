@@ -1,0 +1,5 @@
+discovery_filter_rules:
+  allow_unverified: false
+  quarantine_unknown: true
+portable_proof_listing_rules:
+  require_notarization_availability: true

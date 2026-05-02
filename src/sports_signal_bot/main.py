@@ -1,4 +1,5 @@
 import typer
+from sports_signal_bot.ecosystem_discovery.cli import app as ecosystem_discovery_app
 from .conformance.cli import app as conformance_app
 from .transparency.cli import app as transparency_app
 from .witness_mesh.cli import app as witness_mesh_app
@@ -176,6 +177,8 @@ from .verifier_portal.cli import app as verifier_portal_app
 from .assurance.cli import app as assurance_app
 app.add_typer(verifier_portal_app, name="verifier-portal", help="Verifier portal commands")
 app.add_typer(assurance_app, name="assurance", help="Phase 62 Assurance")
+
+app.add_typer(ecosystem_discovery_app, name="ecosystem-discovery", help="Ecosystem discovery and assurance catalog commands")
 
 if __name__ == "__main__":
     app()
