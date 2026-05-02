@@ -1,0 +1,5 @@
+verifier_listing_visibility_rules:
+  allow_public_listing: true
+  require_trust_domain: true
+negotiation_to_exchange_prerequisites:
+  require_negotiated_profile: true

@@ -1,0 +1,8 @@
+supported_protocol_profiles:
+  - "minimal_readonly_protocol"
+  - "proof_rich_verifier_protocol"
+  - "federated_registry_sync_protocol"
+common_subset_negotiation_rules:
+  strict_subset_only: true
+protocol_escalation_blocks:
+  prevent_public_to_verifier: true

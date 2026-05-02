@@ -1,0 +1,4 @@
+ranking_weights:
+  trust_score: 0.5
+  freshness: 0.3
+  capability_fit: 0.2
