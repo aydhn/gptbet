@@ -1,0 +1,27 @@
+streaming_discovery:
+  default_streaming_strategy: "BalancedObservabilityFabricStrategy"
+  enabled_topics:
+    - "sync_events"
+    - "overlay_events"
+    - "routing_events"
+    - "trust_events"
+    - "freshness_events"
+    - "anomaly_events"
+    - "observability_events"
+  consumer_profiles:
+    sync_observer:
+      lag_threshold: 50
+    anomaly_clusterer:
+      lag_threshold: 10
+  routing_adaptation_bounds:
+    max_trust_weight_change: 0.2
+    max_freshness_penalty: 0.3
+  anomaly_cluster_heuristics:
+    time_window_minutes: 60
+    min_events_for_cluster: 3
+  degraded_mode_triggers:
+    anomaly_cluster_severity_threshold: "high"
+    no_safe_route_count: 5
+  resilience_action_policies:
+    auto_suppress_stale: true
+    require_replay_on_mismatch: true
