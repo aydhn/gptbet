@@ -1,0 +1,6 @@
+corridor_family_rules:
+  - family: "review_visibility_corridor"
+    allow_transfer: true
+allowed_transfer_classes_by_lane_family:
+  - family: "family_a"
+    classes: ["review_context_transfer"]

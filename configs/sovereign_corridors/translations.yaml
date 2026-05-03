@@ -1,0 +1,5 @@
+border_translation_rules:
+  - rule_id: "rule_1"
+translation_loss_thresholds:
+  - loss_class: "bounded_loss"
+    threshold: "medium"
