@@ -1,0 +1,7 @@
+sovereignty_boundary_rules:
+  us_domain:
+    export_limited: true
+  eu_domain:
+    strict_local: true
+token_portability_rules:
+  default: "nonportable"

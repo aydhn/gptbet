@@ -1,0 +1,3 @@
+regions: [{"id": "us-east", "family": "primary_execution_region"}, {"id": "eu-west", "family": "secondary_execution_region"}]
+region_affinity_rules:
+  critical_lanes: "hard_local_affinity"

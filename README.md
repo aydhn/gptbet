@@ -1,3 +1,38 @@
+# Phase 75: Multi-Region Execution Fabric & Sovereign Governance
+
+This phase establishes a multi-region bounded execution fabric on top of the distributed execution coordination clusters, adding broker sharding, cross-cluster recovery treaties, and sovereignty-aware remediation governance.
+
+## Purpose
+
+The goal is to safely extend bounded remediation coordination across regions without sacrificing local safety floors or implicitly relaxing throughput. Broker shards hold explicit ownership, recovery operations require explicit treaties, and sovereignty policies take precedence over both treaties and performance.
+
+## Core Taxonomies
+
+- **Region Affinities**: `hard_local_affinity`, `preferred_local_affinity`, `treaty_transfer_affinity`, `failover_affinity`
+- **Broker Shards**: `execution_token_shard`, `renewal_shard`, `rollback_reserve_shard`
+- **Treaty Families**: `review_delegation_treaty`, `bounded_runtime_treaty`, `failover_assistance_treaty`
+- **Sovereignty Families**: `local_only_sovereignty`, `review_export_limited_sovereignty`
+
+## Key Capabilities
+
+1. **Broker Sharding**: Token broker pools are sharded by region, tenant, and review scope, enforcing strict ownership and safe handoff mechanisms.
+2. **Cross-Cluster Treaties**: Operations between clusters (delegation, review, failover assistance) require explicitly negotiated treaties with expiry boundaries.
+3. **Sovereignty Rules**: Domains enforce their own non-portable token requirements and observability export limits, which override treaty allowances.
+4. **Cross-Region Admissions & Failover**: Safe bounds check for target regions based on snapshot freshness and revalidation policies.
+
+## Execution
+
+```bash
+# Evaluate Multi-Region Fabric setup
+python -m sports_signal_bot.main multi-region run-multi-region-fabric-pass
+
+# Inspect treaties
+python -m sports_signal_bot.main multi-region preview-recovery-treaties
+
+# View available execution strategies
+python -m sports_signal_bot.main multi-region list-multi-region-fabric-strategies
+```
+
 # Sports Signal Bot
 
 Sports Signal Bot is an advanced ecosystem for sports forecasting, orchestration, discovery, and governance.
