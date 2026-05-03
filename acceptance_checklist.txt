@@ -1,9 +1,9 @@
-- [x] Verifier portal profile/view model is functional.
-- [x] Proof-aware profile-specific packet rendering works.
-- [x] External dashboard feed rendering and redaction works.
-- [x] Challenge API validation, deduplication, and quarantine logic works.
-- [x] Publication lifecycle (supersession tracking) is supported.
-- [x] Hook placements (readiness, diagnostics, integration) are in place.
-- [x] All Typer CLI commands execute successfully.
-- [x] All Pytest tests pass cleanly.
-- [x] Architecture accommodates future hosted solutions and rate-shaped ecosystems.
+- [x] Remediation copilot session model works
+- [x] Review packet and approval-gated flow works
+- [x] Rehearsal ledger and execution readiness model works
+- [x] Portable playbook federation and adaptation works
+- [x] Self-healing preparation / automation candidate model works
+- [x] Resilience advisor / fabric / assurance / reporting hooks simulated
+- [x] Sample CLI commands work
+- [x] Tests pass
+- [x] Prepared for semi-autonomous bots and self-healing lanes

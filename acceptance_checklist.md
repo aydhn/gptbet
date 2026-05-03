@@ -1,10 +1,9 @@
-- [x] Governance spec registry operates (`GovernanceSpecRecord`, `SpecAssertionRecord`, `GovernanceSpecRegistry`, etc.).
-- [x] Conformance suites operate (`ConformanceSuiteRecord`, `ConformanceSuiteRegistry`, `run_suite`).
-- [x] Policy linting operates (`LintRunner`, `lint_policy_bundle`).
-- [x] Drift attestations are generated (`DriftAttestationRunner`, `DriftAttestationRecord`).
-- [x] Continuous verification compliance pipeline operates (`ContinuousVerificationRunner`, `VerificationPipelineRunRecord`).
-- [x] Compliance gates and exceptions operate (`ComplianceGateEvaluator`, `ExceptionManager`).
-- [x] Policy/integrity/transparency/witness/publication/portal hooks are present (via assertions and suites).
-- [x] Sample CLI commands work (e.g., `run-conformance-pass`, `preview-policy-lint`).
-- [x] Tests pass successfully.
-- [x] Architecture is ready for stronger formal methods, proof-carrying governance, and continuous assurance attestation.
+- [x] Remediation copilot session model works
+- [x] Review packet and approval-gated flow works
+- [x] Rehearsal ledger and execution readiness model works
+- [x] Portable playbook federation and adaptation works
+- [x] Self-healing preparation / automation candidate model works
+- [x] Resilience advisor / fabric / assurance / reporting hooks simulated
+- [x] Sample CLI commands work
+- [x] Tests pass
+- [x] Prepared for semi-autonomous bots and self-healing lanes
