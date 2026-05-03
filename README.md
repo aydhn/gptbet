@@ -89,3 +89,6 @@ The system now expands execution coordination into a distributed cluster model, 
 
 **Why Distribution Does Not Relax Safety:**
 Distribution enables bounded execution parallelism and scalability by federating workloads. It explicitly avoids diluting lane or token boundaries. Any cross-node contentions that conflict with tenancy or safety isolation rules are escalated to councils and blocked or serialized, prioritizing safe execution over unsafe throughput.
+
+### Phase 76: Sovereign Runtime Corridors
+This layer adds treaty-backed remediation corridors standard, policy-border translation ledger discipline, and a regional assurance continuity controller layer to the multi-region execution fabric. Cross-region remediation flows only over explicit narrow corridors, tracked by translation ledgers, maintaining explicit assurance continuity.

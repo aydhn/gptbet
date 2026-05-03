@@ -1,0 +1,6 @@
+continuity_checkpoint_requirements:
+  - requirement: "req_1"
+failover_assistance_corridor_rules:
+  - rules: "cautious"
+corridor_health_thresholds:
+  - threshold: "strict"

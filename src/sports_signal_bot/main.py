@@ -8,6 +8,7 @@ from sports_signal_bot.cli.distributed_coordination import app as distributed_co
 
 app = typer.Typer()
 
+from sports_signal_bot.cli.sovereign_corridors_cli import app as sovereign_corridors_app
 multi_region_fabric_app = typer.Typer()
 app.add_typer(multi_region_fabric_app, name="multi-region", help="Multi-Region Execution Fabric operations")
 
@@ -83,6 +84,7 @@ def list_multi_region_fabric_strategies():
     typer.echo(" - FailoverGuardedStrategy")
 
 app.add_typer(resilience_advisor_app, name="resilience-advisor")
+app.add_typer(sovereign_corridors_app, name="sovereign-corridors", help="Phase 76: Sovereign Runtime Corridors")
 app.add_typer(copilot_app, name="remediation-copilot")
 
 app.add_typer(remediation_lanes_app, name="remediation-lanes", help="Phase 71: Remediation Lane Architecture")

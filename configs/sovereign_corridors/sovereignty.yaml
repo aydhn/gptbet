@@ -1,0 +1,4 @@
+sovereignty_override_rules:
+  - rule: "deny_beats_allow"
+token_reissue_preparation_rules:
+  - rule: "no_widening"
