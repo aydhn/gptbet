@@ -1,0 +1,5 @@
+attestation_validity_windows:
+  default_days: 30
+attestation_required_dimensions:
+  - entry_guard_integrity
+  - translation_integrity

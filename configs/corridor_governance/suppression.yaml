@@ -1,0 +1,4 @@
+catalog_suppression_rules:
+  hide_expired: true
+sovereignty_visibility_overrides:
+  deny_hides_all: true

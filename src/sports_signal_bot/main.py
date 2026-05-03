@@ -94,3 +94,6 @@ app.add_typer(distributed_coordination_app, name="distributed-coordination", hel
 
 if __name__ == "__main__":
     app()
+
+from sports_signal_bot.cli.corridor_governance_cli import app as corridor_governance_app
+app.add_typer(corridor_governance_app, name="corridor-governance", help="Corridor Governance operations")

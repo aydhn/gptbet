@@ -1,0 +1,5 @@
+scorecard_dimension_weights:
+  corridor_freshness: 1.0
+  treaty_freshness: 1.5
+scorecard_penalty_rules:
+  stale_treaty: 20
