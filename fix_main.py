@@ -1,4 +1,6 @@
-from sports_signal_bot.remediation_lanes.cli import remediation_lanes_app
+import sys
+
+content = """from sports_signal_bot.remediation_lanes.cli import remediation_lanes_app
 import typer
 from sports_signal_bot.cli.resilience_advisor import app as resilience_advisor_app
 from sports_signal_bot.cli.remediation_copilot import app as copilot_app
@@ -11,3 +13,7 @@ app.add_typer(remediation_lanes_app, name="remediation-lanes", help="Phase 71: R
 
 if __name__ == "__main__":
     app()
+"""
+
+with open("src/sports_signal_bot/main.py", "w") as f:
+    f.write(content)

@@ -1,9 +1,10 @@
-- [x] Remediation copilot session model works
-- [x] Review packet and approval-gated flow works
-- [x] Rehearsal ledger and execution readiness model works
-- [x] Portable playbook federation and adaptation works
-- [x] Self-healing preparation / automation candidate model works
-- [x] Resilience advisor / fabric / assurance / reporting hooks simulated
-- [x] Sample CLI commands work
-- [x] Tests pass
-- [x] Prepared for semi-autonomous bots and self-healing lanes
+- [x] remediation lane modeli çalışıyor
+- [x] bounded execution token modeli çalışıyor
+- [x] review-aware readiness ve closed-loop gates çalışıyor
+- [x] loop closure verification çalışıyor
+- [x] federated playbook exchange catalog modeli çalışıyor
+- [x] automation preparation candidate modeli çalışıyor
+- [x] remediation_copilot/resilience_advisor/assurance/conformance/federation/reporting hook'ları çalışıyor (manifest/ledger üzerinden)
+- [x] sample CLI komutları çalışıyor
+- [x] testler anlamlı şekilde geçiyor
+- [x] mimari semi-autonomous remediation lanes, approval-token renewal workflows ve stronger bounded recovery automation fazlarına hazır durumda
