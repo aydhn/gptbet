@@ -1,0 +1,5 @@
+broker_shard_partitioning_rules:
+  partition_by:
+    - "region"
+    - "tenant"
+  max_shards_per_region: 10

@@ -1,0 +1,4 @@
+treaty_families_and_scopes:
+  review_delegation_treaty:
+    - "allow_review"
+    - "allow_observability"

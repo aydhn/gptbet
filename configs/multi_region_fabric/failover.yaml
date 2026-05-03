@@ -1,0 +1,5 @@
+failover_revalidation_requirements:
+  require_fresh_snapshot: true
+  require_treaty_check: true
+runtime_transfer_restrictions:
+  block_on_sovereignty_deny: true

@@ -1,0 +1,5 @@
+default_multi_region_strategy: "ConservativeMultiRegionFabricStrategy"
+snapshot_freshness_thresholds:
+  max_age_seconds: 300
+tenant_cross_region_isolation_rules:
+  default: "strict"
