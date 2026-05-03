@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from src.sports_signal_bot.execution_coordination.contracts import ContentionRecord, ContentionFamily, ContentionSeverity
+from sports_signal_bot.execution_coordination.contracts import ContentionRecord, ContentionFamily, ContentionSeverity
 
 class ContentionDetector:
     def __init__(self):

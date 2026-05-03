@@ -1,0 +1,9 @@
+broker_pool_partition_rules:
+  allocation_strategy: "sticky_owner_allocation"
+  max_brokers_per_pool: 5
+  handoff_requires_snapshot: true
+rollback_reserve_rules:
+  min_reserved_capacity_percent: 20
+  allow_borrowing: false
+closure_reserve_rules:
+  min_reserved_capacity_percent: 10

@@ -1,19 +1,6 @@
 {
-  "phase_name": "Phase 70: Remediation Copilot",
-  "files_changed": [
-    "src/sports_signal_bot/remediation_copilot/*.py",
-    "tests/remediation_copilot/*.py",
-    "configs/remediation_copilot/*.yaml",
-    "docs/remediation_copilot_and_rehearsal_architecture.md",
-    "docs/operators/*.md",
-    "docs/reviewers/*.md",
-    "docs/reference/*.md",
-    "docs/maintenance/*.md",
-    "src/sports_signal_bot/main.py",
-    "output.md",
-    "README_Phase70.md"
-  ],
-  "checklist_completed": true,
-  "tests_passed": true,
-  "execution_verified": true
+  "phase": 74,
+  "status": "completed",
+  "commit_message": "feat(phase-74): distributed execution coordination fabric",
+  "branch_name": "feat/phase-74-distributed-coordination"
 }

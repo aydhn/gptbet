@@ -1,7 +1,7 @@
 import datetime
 import uuid
 from typing import List, Dict, Any
-from src.sports_signal_bot.execution_coordination.contracts import CoordinationLedgerEntryRecord
+from sports_signal_bot.execution_coordination.contracts import CoordinationLedgerEntryRecord
 
 class CoordinationLedger:
     def __init__(self):

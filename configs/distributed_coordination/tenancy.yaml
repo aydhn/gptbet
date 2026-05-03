@@ -1,0 +1,6 @@
+tenant_isolation_policies:
+  strict_namespace: true
+  forbidden_shared_surfaces:
+    - "global_rollback_cache"
+    - "root_closure_pool"
+  token_scope_cross_tenant_allowed: false

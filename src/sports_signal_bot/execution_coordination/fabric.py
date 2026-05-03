@@ -1,14 +1,14 @@
 import uuid
 from typing import List, Optional
-from src.sports_signal_bot.execution_coordination.contracts import (
+from sports_signal_bot.execution_coordination.contracts import (
     ExecutionCoordinationFabricRecord, FabricStatus, CoordinationHealthRecord, PriorityBand, SchedulingWindowRecord
 )
-from src.sports_signal_bot.execution_coordination.schedulers import MultiLaneScheduler
-from src.sports_signal_bot.execution_coordination.brokers import ApprovalTokenBroker
-from src.sports_signal_bot.execution_coordination.contentions import ContentionDetector
-from src.sports_signal_bot.execution_coordination.arbitration import ArbitrationEngine
-from src.sports_signal_bot.execution_coordination.ledgers import CoordinationLedger
-from src.sports_signal_bot.execution_coordination.strategies import BaseCoordinationStrategy, BalancedMultiLaneFabricStrategy
+from sports_signal_bot.execution_coordination.schedulers import MultiLaneScheduler
+from sports_signal_bot.execution_coordination.brokers import ApprovalTokenBroker
+from sports_signal_bot.execution_coordination.contentions import ContentionDetector
+from sports_signal_bot.execution_coordination.arbitration import ArbitrationEngine
+from sports_signal_bot.execution_coordination.ledgers import CoordinationLedger
+from sports_signal_bot.execution_coordination.strategies import BaseCoordinationStrategy, BalancedMultiLaneFabricStrategy
 import datetime
 
 class SupervisedExecutionCoordinationFabric:

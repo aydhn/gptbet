@@ -1,0 +1,4 @@
+failover_revalidation_requirements:
+  require_valid_snapshot: true
+  require_active_node: true
+  cautious_mode_duration_seconds: 300

@@ -1,9 +1,9 @@
 import uuid
 from typing import List, Optional
-from src.sports_signal_bot.execution_coordination.contracts import (
+from sports_signal_bot.execution_coordination.contracts import (
     ContentionRecord, ArbitrationDecisionRecord, LaneScheduleRecord
 )
-from src.sports_signal_bot.execution_coordination.strategies import BaseCoordinationStrategy, BalancedMultiLaneFabricStrategy
+from sports_signal_bot.execution_coordination.strategies import BaseCoordinationStrategy, BalancedMultiLaneFabricStrategy
 
 class ArbitrationEngine:
     def __init__(self, strategy: Optional[BaseCoordinationStrategy] = None):
