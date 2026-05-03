@@ -1,0 +1,10 @@
+concurrency_class_rules:
+  strictly_serial:
+    max_parallel: 1
+    shared_surfaces_allowed: false
+  bounded_parallel_low_risk:
+    max_parallel: 5
+    shared_surfaces_allowed: true
+  rollback_exclusive:
+    max_parallel: 1
+    shared_surfaces_allowed: false

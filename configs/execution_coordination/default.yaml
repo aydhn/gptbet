@@ -1,0 +1,4 @@
+default_coordination_strategy: BalancedMultiLaneFabricStrategy
+coordination_health_thresholds:
+  max_backlog_pressure: 0.7
+  max_contentions: 5
