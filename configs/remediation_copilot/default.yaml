@@ -1,0 +1,14 @@
+default_remediation_copilot_strategy: "ConservativeApprovalGatedCopilotStrategy"
+approval_requirements_by_incident_family:
+  sync_lag: ["step_group_approval", "scope_approval"]
+  swarm_split_brain: ["high_risk_guarded_approval"]
+rehearsal_mandatory_families:
+  - "sync_recovery_playbook"
+  - "routing_recovery_playbook"
+portable_playbook_export_rules:
+  allowed_families: ["portal_feed_freshness_playbook", "publication_repair_playbook"]
+execution_readiness_thresholds:
+  min_confidence: 0.85
+automation_candidate_rules:
+  require_rehearsal: true
+  require_rollback: true

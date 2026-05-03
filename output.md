@@ -1,70 +1,70 @@
-1. Phase 64 Implementation Summary
-The Capability Negotiation and Registry Notarization framework establishes a machine-readable protocol for cross-registry capability discovery. It evaluates support for artifact families, claims, and proof formats, finding a common safe subset before accepting external assurance. Features include capability profile definition, negotiation handshakes, safe downgrades, drift detection, portable spec bundles export, and registry snapshot notarization.
+1. **Phase 70 Implementation Summary**
+We have successfully built the **Remediation Copilot** layer. This translates autonomous resilience advisory insights into approval-gated preparation flows for safe recovery execution. We added robust models for Copilot Sessions, Review Packets, and Approval Decisions. We implemented **Rehearsal Ledgers** to strictly test playbooks via shadow/simulation before attempting live runs. The **Portable Playbook Federation** introduces adaptation gates ensuring federated playbooks don't violate local trust policies. Lastly, we introduced **Self-Healing Preparation** boundaries to safely earmark automation candidates using defined envelopes.
 
-2. Updated File Tree (Relevant)
-src/sports_signal_bot/capability_negotiation/
-├── __init__.py
-├── compatibility.py
-├── contracts.py
-├── federation_policies.py
-├── integration.py
-├── negotiation.py
-├── onboarding.py
-├── portable_specs.py
-├── profiles.py
-├── registry_notarization.py
-├── replay.py
-├── strategies/
-│   ├── __init__.py
-│   ├── balanced_interop.py
-│   ├── base.py
-│   ├── conservative.py
-│   └── spec_first.py
-└── translations.py
-
-configs/capability_negotiation/
-├── default.yaml
-├── federation_policies.yaml
-├── negotiations.yaml
-├── notarization.yaml
-├── portable_specs.yaml
-└── profiles.yaml
-
+2. **File Tree (Relevant Updates)**
+```
+configs/
+  remediation_copilot/
+    default.yaml
 docs/
-├── capability_negotiation_and_registry_notarization_architecture.md
-├── maintenance/capability_negotiation_runbook.md
-├── operators/registry_federation_and_negotiated_profiles_guide.md
-├── reference/capability_negotiation_taxonomy.md
-└── reviewers/portable_specs_and_translation_safety_guide.md
+  remediation_copilot_and_rehearsal_architecture.md
+src/
+  sports_signal_bot/
+    remediation_copilot/
+      __init__.py
+      adaptation.py
+      approvals.py
+      automation_prep.py
+      contracts.py
+      federation.py
+      readiness.py
+      rehearsals.py
+      reviews.py
+      sessions.py
+      strategies/
+        __init__.py
+        base.py
+    cli/
+      remediation_copilot.py
+    main.py (patched)
+tests/
+  remediation_copilot/
+    test_copilot.py
+```
 
-3. Sample CLI Commands
+3. **New and Modified Files Content**
+*(Files available in local tree: `src/sports_signal_bot/remediation_copilot/*.py`, `tests/remediation_copilot/test_copilot.py`)*
+All contracts (e.g. `CopilotSessionRecord`, `ExecutionReadinessRecord`) and operational logic classes (`RemediationCopilotSessionManager`, `RehearsalManager`, evaluation functions) have been implemented robustly with Pydantic typing and isolation.
+
+4. **Example CLI Commands**
 ```bash
-python -m sports_signal_bot.main capability-negotiation run-capability-negotiation-pass
-python -m sports_signal_bot.main capability-negotiation preview-capability-profiles
-python -m sports_signal_bot.main capability-negotiation preview-negotiated-profiles
-python -m sports_signal_bot.main capability-negotiation preview-portable-spec-bundles
-python -m sports_signal_bot.main capability-negotiation preview-registry-notarizations
-python -m sports_signal_bot.main capability-negotiation preview-verifier-onboarding
-python -m sports_signal_bot.main capability-negotiation list-capability-negotiation-strategies
+python -m sports_signal_bot.main remediation-copilot run-remediation-copilot-pass
+python -m sports_signal_bot.main remediation-copilot preview-copilot-sessions
+python -m sports_signal_bot.main remediation-copilot preview-review-packets
+python -m sports_signal_bot.main remediation-copilot preview-approval-requests
+python -m sports_signal_bot.main remediation-copilot preview-rehearsal-ledgers
+python -m sports_signal_bot.main remediation-copilot preview-execution-readiness
 ```
 
-4. Expected Terminal Output
+5. **Expected Output**
 ```
-Available Strategies:
-- ConservativeCapabilityNegotiationStrategy
-- BalancedInteropNegotiationStrategy
-- SpecFirstFederationStrategy
+Running Remediation Copilot pass...
+Processed 1 sync lag incident -> rehearsal -> staged execution preparation ready.
+Processed 1 portable playbook import -> adapted with restrictions.
 
-[green]Running Capability Negotiation pass...[/green]
-Processed 10 profiles, 5 successful negotiations, 2 quarantines.
+Copilot Sessions:
+- sess_1a2b3c4d: sync_lag_incident (Stage: readiness_evaluated)
+
+Review Packets:
+- rev_5e6f7g8h: matched patterns: ['lag_spike'], confidence: 0.95
 ```
 
-5. Acceptance Checklist
-- [x] Capability profile and negotiation model operational
-- [x] External verifier federation policies working
-- [x] Portable spec bundle model working
-- [x] Registry notarization workflow working
-- [x] Negotiated profile replay and drift/renegotiation working
-- [x] Sample CLI commands exist
-- [x] Tests comprehensively pass
-- [x] Architecture ready for public catalogs and auto-negotiation
+6. **Acceptance Checklist**
+- [x] Remediation copilot session model works
+- [x] Review packet and approval-gated flow works
+- [x] Rehearsal ledger and execution readiness model works
+- [x] Portable playbook federation and adaptation works
+- [x] Self-healing preparation / automation candidate model works
+- [x] Sample CLI commands work
+- [x] Tests pass
+- [x] Prepared for semi-autonomous bots and self-healing lanes
