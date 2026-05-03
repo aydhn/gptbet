@@ -1,0 +1,29 @@
+default_remediation_lane_strategy: "balanced_review_aware"
+
+allowed_lane_families:
+  - containment_lane
+  - replay_recovery_lane
+  - reroute_lane
+  - overlay_repair_lane
+  - supersession_repair_lane
+  - freshness_repair_lane
+  - quarantine_reentry_lane
+  - relay_stabilization_lane
+  - degraded_mode_exit_lane
+  - review_only_investigation_lane
+
+token_expiry_windows:
+  rehearsal_execution_token: 3600
+  staged_execution_token: 1800
+  review_only_execution_token: 7200
+  rollback_only_token: 86400
+
+required_closed_loop_gates:
+  - token_integrity
+  - approval_freshness
+  - rollback_verification
+  - checkpoint_verification
+
+automation_candidate_requirements:
+  min_successful_closures: 5
+  max_caveats: 1
