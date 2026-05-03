@@ -1,87 +1,77 @@
-# Phase 68 Implementation Summary
+# Phase 72 Implementation Summary: Bounded Live Execution, Rollback, and Supervised Closure
 
-In this phase, we designed and integrated the Resilience Fabric and Game-Day Simulation layers onto the existing streaming discovery architecture. The fabric introduces:
-- **External Event Relays & Bridges:** Ensuring remote events (trust signals, catalogs) are treated as *hints* requiring verification prior to live state updates.
-- **Mirror Swarms & Split-Brain Detection:** Coordinating node agreements, recognizing lags or splits without assuming the majority is always the absolute truth.
-- **Adaptive Trust Loop Calibration:** Allowing bounded routing weight adjustments and ensuring validation of calibration changes to prevent silent state regressions.
-- **Game-Day Simulation:** A framework isolating scenarios (like stale source storms) to expose vulnerabilities without mutating production states.
+Bu fazda, sistem sınırları aşmadan, tamamen tokenize edilmiş "Bounded Live Execution" (Dar Kapsamlı Canlı Yürütme) mimarisi kurulmuştur. Limitsiz otomasyon veya self-healing hedeflenmemiş; yalnız güvenli lane'lerde, token onayı ile, limitli bir zaman aralığında çalışabilen bir motor oluşturulmuştur.
 
-The result is an explicit resilience layer ready to scale to massive environments and autonomous verification, ensuring robust degradation and recovery pipelines.
+### Eklenen Modüller ve Dosyalar
 
-## File Tree Updates
-New directories and core modules created:
+*   `src/sports_signal_bot/live_execution/contracts.py`: Canlı runtime için token, guard, status, adım, renewal, rollback ve closure verilerini tutan `Pydantic` modelleri oluşturulmuştur. Guard outcomes (e.g., `REVIEW_REQUIRED`), closure states (e.g., `COMPLETED_WITH_CAVEATS`) tamamen tiplendirilmiştir.
+*   `src/sports_signal_bot/live_execution/engines.py`: Execution engine tiplerini yapılandıran fabrika sınıfı.
+*   `src/sports_signal_bot/live_execution/runtimes.py`: Çalışma aralığını (RuntimeWindowRecord) yapılandıran ve adım bazlı execution state'lerini manipüle eden core script.
+*   `src/sports_signal_bot/live_execution/renewals.py`: Approval-token renewal workflow. Yenileme isteklerinde, scope'un sadece aynı kalması veya daralması sağlanır.
+*   `src/sports_signal_bot/live_execution/rollback_automata.py`: "Lane-Scoped Rollback Automaton" yapısı. `IDLE`, `ARMED`, `TRIGGERED`, ve `COMPLETED_CLEAN` durumlarıyla yönetilir.
+*   `src/sports_signal_bot/live_execution/closure.py`: Süreç tamamlandığında beklenen checkpoint sinyallerinin gelip gelmediğini kontrol eden "Supervised Closure Controller" mantığı.
+*   `src/sports_signal_bot/live_execution/strategies/`: Conservartive, Balanced, Federated, ClosureDominant ve RenewalStrict gibi strateji ailelerinin implementasyonları.
+*   `src/sports_signal_bot/cli/live_execution_cli.py`: Süreçleri çalıştıran, JSON manifest dosyalarını diske yazan ve stratejileri listeleyen CLI komutları eklendi.
+
+### Güncellenen Dosya Ağacı (İlgili Kısım)
+
 ```
-configs/resilience_fabric/
-├── calibration.yaml
-├── default.yaml
-├── relays.yaml
-├── simulations.yaml
-└── swarms.yaml
-src/sports_signal_bot/resilience_fabric/
+src/sports_signal_bot/live_execution/
 ├── __init__.py
-├── calibration.py
-├── cli.py
+├── closure.py
 ├── contracts.py
-├── game_day.py
-├── relays.py
-├── strategies
-│   ├── __init__.py
-│   ├── balanced_relay_swarm.py
-│   ├── base.py
-│   ├── calibration_guarded.py
-│   ├── conservative.py
-│   ├── game_day_first.py
-│   └── swarm_strict_consensus.py
-└── swarms.py
-tests/resilience_fabric/
-├── test_mirror_swarm_agreement.py
-├── test_relay_envelopes_and_bridges.py
-└── test_simulation_isolation.py
-docs/
-├── reference/resilience_fabric_taxonomy.md
-├── operators/relays_swarms_and_calibration_guide.md
-├── reviewers/split_brain_and_resilience_scorecard_guide.md
-├── maintenance/resilience_fabric_runbook.md
-└── resilience_fabric_and_game_day_simulation_architecture.md
+├── engines.py
+├── renewals.py
+├── rollback_automata.py
+├── runtimes.py
+└── strategies/
+    ├── __init__.py
+    ├── balanced_supervised_runtime.py
+    ├── base.py
+    ├── closure_dominant.py
+    ├── conservative.py
+    ├── federated_runtime_aware.py
+    └── renewal_strict.py
 ```
 
-*(Note: `src/sports_signal_bot/main.py` was also patched to mount the new Typer CLI.)*
+### Örnek CLI Komutları
+```bash
+# Stratejileri listelemek için
+python3 -m sports_signal_bot.main live-execution list-live-execution-strategies
 
-## Example CLI Commands
+# Canlı execution senaryosunu (engine, runtime, renewal, rollback ve closure) tetiklemek için
+python3 -m sports_signal_bot.main live-execution run-live-execution-pass
+```
+
+### Beklenen Örnek Terminal Çıktıları
 
 ```bash
-# Run the complete resilience fabric workflow
-python -m sports_signal_bot.main run-resilience-fabric-pass
+$ python3 -m sports_signal_bot.main live-execution list-live-execution-strategies
+Live Execution Strategies:
+- ConservativeLiveLaneStrategy
+- BalancedSupervisedRuntimeStrategy
+- FederatedRuntimeAwareStrategy
+- ClosureDominantStrategy
+- RenewalStrictStrategy
 
-# Preview mirror swarms and detect split brains
-python -m sports_signal_bot.main preview-mirror-swarms
-
-# List the active resilience strategies
-python -m sports_signal_bot.main list-resilience-fabric-strategies
+$ python3 -m sports_signal_bot.main live-execution run-live-execution-pass
+Running live execution pass...
+Manifest written to results/live_execution_manifest.json
+Summary: {
+  "live_capable_lane_count": 4,
+  "runtime_entered": 1,
+  "token_renewals_approved": 1,
+  "rollback_automata_armed": 1,
+  "closure_sessions_pending": 1
+}
 ```
 
-## Expected Terminal Output
-
-```text
-$ python -m sports_signal_bot.main preview-mirror-swarms
-Mirror Swarms:
-- swarm_registry_1 (3 members): unanimous_agreement
-- swarm_checkpoint_1 (2 members): split_observation (suspected_split_brain)
-
-$ python -m sports_signal_bot.main list-resilience-fabric-strategies
-Available Strategies:
-- ConservativeResilienceStrategy
-- BalancedRelaySwarmStrategy
-- GameDayFirstResilienceStrategy
-```
-
-## Acceptance Checklist
-
-- [x] External event relay model operates securely and verified.
-- [x] Relay bridge and health models handle envelope construction correctly.
-- [x] Mirror swarm agreement/divergence models isolate split brains successfully.
-- [x] Adaptive trust loop calibration respects configured bounds.
-- [x] Game-day simulation and resilience scorecards execute in an isolated state.
-- [x] CLI tools are implemented to preview states securely.
-- [x] System passes all new testing specifications.
-- [x] Configuration models and comprehensive documentation produced.
+### Acceptance Checklist
+* [x] Bounded live execution engine modeli çalışıyor (`engines.py` ve `runtimes.py`).
+* [x] Approval-token renewal workflow çalışıyor, scope genişlemesi yok (`renewals.py`).
+* [x] Lane-scoped rollback automata çalışıyor (`rollback_automata.py`).
+* [x] Supervised closure controller ve completion verification çalışıyor (`closure.py`).
+* [x] Federated runtime fit ve live lane eligibility stratejileri çalışıyor (`strategies/`).
+* [x] Örnek CLI komutları sisteme eklenip test edildi.
+* [x] Tüm modüller `pytest tests/live_execution/` test senaryolarını başarıyla geçiyor.
+* [x] Dokümantasyon `docs/` klasörü altına işlendi ve yeni katmanın mantığı açıklandı.

@@ -1,0 +1,10 @@
+default_live_execution_strategy: "BalancedSupervisedRuntimeStrategy"
+live_eligible_lane_families:
+  - "invalidate_route_cache_lane"
+  - "reduce_replay_backlog_lane"
+  - "pause_source_lane"
+token_constraint_defaults:
+  max_duration_sec: 3600
+  allowed_step_count: 5
+max_token_windows: 24
+closure_timeout_thresholds: 600
