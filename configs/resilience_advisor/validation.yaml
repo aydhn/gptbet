@@ -1,0 +1,5 @@
+resilience_advisor_validation:
+  validation_requirements_by_family:
+    "routing_recovery": ["static_safety", "simulation_only"]
+    "sync_recovery": ["static_safety"]
+    "quarantine_recovery": ["static_safety", "review_validation"]

@@ -1,0 +1,16 @@
+resilience_advisor:
+  default_resilience_advisor_strategy: "balanced_playbook_synthesis"
+  supported_incident_families:
+    - "sync_recovery"
+    - "routing_recovery"
+    - "relay_health"
+    - "swarm_consensus"
+    - "replay_backlog"
+    - "quarantine_recovery"
+    - "degraded_mode_exit"
+    - "resilience_score"
+    - "cross_signal_root_cause"
+    - "portal_freshness"
+  no_safe_advice_thresholds:
+    min_pattern_confidence: "low"
+    max_critical_blockers: 0
