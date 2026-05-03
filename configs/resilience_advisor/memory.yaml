@@ -1,0 +1,11 @@
+resilience_advisor_memory:
+  pattern_similarity_weights:
+    signature_match: 0.4
+    layer_overlap: 0.3
+    time_window_similarity: 0.3
+  stale_pattern_penalties:
+    penalty_per_day: 0.01
+    max_penalty: 0.5
+  simulation_feedback_rules:
+    success_boost: 0.1
+    failure_penalty: 0.2

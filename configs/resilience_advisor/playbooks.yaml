@@ -1,0 +1,20 @@
+resilience_advisor_playbooks:
+  playbook_step_taxonomy:
+    - "isolate_source"
+    - "pause_subscription"
+    - "force_overlay_rebuild"
+    - "invalidate_route_cache"
+    - "reroute_to_safer_source"
+    - "quarantine_source"
+    - "require_replay_before_resume"
+    - "tighten_trust_penalties"
+    - "restore_baseline_calibration"
+    - "reduce_refresh_pressure"
+    - "re-evaluate_supersession_chain"
+    - "request_manual_review"
+    - "widen_observability_sampling"
+    - "enter_recovery_mode"
+    - "exit_recovery_mode_candidate"
+  library_supersession_rules:
+    archive_after_days: 90
+    max_superseded_versions: 3

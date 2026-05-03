@@ -1,0 +1,7 @@
+resilience_advisor_orchestration:
+  orchestration_guard_rules:
+    require_rollback_notes: true
+    require_observability_notes: true
+  recovery_scope_defaults:
+    default_scope: "bounded"
+    allow_global_recovery: false

@@ -18,3 +18,6 @@ Sports Signal Bot is an advanced ecosystem for sports forecasting, orchestration
 ## Streaming Discovery & Observability Fabric
 
 The streaming discovery and observability fabric layer operates on events as signals, adapting routes based on anomalies and ensuring visibility into ecosystem health.
+
+## Resilience Advisor & Recovery Orchestration (Phase 69)
+The system includes an autonomous, bounded resilience advisor that observes failure patterns and synthesizes safe, reviewable remediation playbooks and orchestration plans. See `docs/resilience_advisor_and_recovery_orchestration_architecture.md` for details.

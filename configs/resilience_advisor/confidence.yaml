@@ -1,0 +1,5 @@
+resilience_advisor_confidence:
+  confidence_caps:
+    max_with_conflicting_signals: "guarded"
+    max_with_stale_patterns: "moderate"
+    max_without_simulation: "high"
