@@ -1,0 +1,4 @@
+treaty_lifecycle_transition_rules:
+  strict_renewal: true
+treaty_renewal_thresholds:
+  days_before_expiry: 14

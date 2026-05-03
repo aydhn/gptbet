@@ -9,8 +9,8 @@ console = Console()
 @app.command()
 def run_execution_coordination_pass():
     """Run a single pass of the execution coordination fabric"""
-    from src.sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
-    from src.sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord
+    from sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
+    from sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord
     import datetime
 
     fabric = SupervisedExecutionCoordinationFabric()
@@ -50,7 +50,7 @@ def preview_multi_lane_schedules():
 @app.command()
 def list_execution_coordination_strategies():
     """List available coordination strategies"""
-    from src.sports_signal_bot.execution_coordination.strategies import (
+    from sports_signal_bot.execution_coordination.strategies import (
         ConservativeCoordinationFabricStrategy,
         BalancedMultiLaneFabricStrategy,
         RollbackClosurePriorityStrategy
