@@ -1,0 +1,1 @@
+def test_federated_playbook_catalogs(): pass

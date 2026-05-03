@@ -1,0 +1,5 @@
+token_scope_rules:
+  max_widening: 0
+token_expiry_windows:
+  rehearsal_execution_token: 3600
+  staged_execution_token: 1800

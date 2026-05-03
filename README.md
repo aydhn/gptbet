@@ -21,3 +21,6 @@ The streaming discovery and observability fabric layer operates on events as sig
 
 ## Resilience Advisor & Recovery Orchestration (Phase 69)
 The system includes an autonomous, bounded resilience advisor that observes failure patterns and synthesizes safe, reviewable remediation playbooks and orchestration plans. See `docs/resilience_advisor_and_recovery_orchestration_architecture.md` for details.
+
+## Phase 71: Remediation Lane Architecture and Bounded Execution Tokens
+Adds bounded execution tokens, review-aware execution readiness, closed-loop loop-closure verification, and federated playbook cataloging to convert blanket approvals into bounded, verifiable, and verifiable remediation lane checkpoints.

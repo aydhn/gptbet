@@ -1,0 +1,11 @@
+allowed_lane_families:
+  - "containment_lane"
+  - "replay_recovery_lane"
+  - "reroute_lane"
+  - "overlay_repair_lane"
+  - "supersession_repair_lane"
+  - "freshness_repair_lane"
+  - "quarantine_reentry_lane"
+  - "relay_stabilization_lane"
+  - "degraded_mode_exit_lane"
+  - "review_only_investigation_lane"

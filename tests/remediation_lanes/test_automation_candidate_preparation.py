@@ -1,0 +1,1 @@
+def test_automation_candidate(): pass

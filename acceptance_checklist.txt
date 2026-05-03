@@ -1,9 +1,9 @@
-- [x] Remediation copilot session model works
-- [x] Review packet and approval-gated flow works
-- [x] Rehearsal ledger and execution readiness model works
-- [x] Portable playbook federation and adaptation works
-- [x] Self-healing preparation / automation candidate model works
-- [x] Resilience advisor / fabric / assurance / reporting hooks simulated
-- [x] Sample CLI commands work
-- [x] Tests pass
-- [x] Prepared for semi-autonomous bots and self-healing lanes
+- [x] Remediation lane model working
+- [x] Bounded execution token model working
+- [x] Review-aware readiness and closed-loop gates working
+- [x] Loop closure verification working
+- [x] Federated playbook exchange catalog model working
+- [x] Automation preparation candidate model working
+- [x] Reporting and hook interfaces ready
+- [x] Sample CLI commands working
+- [x] Test suite passing

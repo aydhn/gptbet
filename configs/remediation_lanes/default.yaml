@@ -1,0 +1,3 @@
+default_remediation_lane_strategy: "balanced_review_aware"
+lane_eligibility_thresholds:
+  confidence_floor: 0.8

@@ -1,0 +1,10 @@
+required_closed_loop_gates:
+  - "checkpoint_gate"
+  - "rollback_gate"
+closure_verification_requirements:
+  evidence_count_min: 1
+stop_condition_taxonomy:
+  - "trust_drop_below_floor"
+  - "freshness_regression_burst"
+rollback_binding_requirements:
+  explicit_binding_required: true

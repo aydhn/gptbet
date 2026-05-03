@@ -1,0 +1,2 @@
+federated_playbook_listing_rules:
+  require_adaptation: true

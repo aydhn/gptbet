@@ -1,0 +1,1 @@
+# closure_first.py

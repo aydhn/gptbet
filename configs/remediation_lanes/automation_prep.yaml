@@ -1,0 +1,3 @@
+automation_candidate_requirements:
+  min_successful_closures: 3
+  max_caveats: 1
