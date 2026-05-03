@@ -1,0 +1,6 @@
+arbitration_precedence_rules:
+  - rollback_priority
+  - closure_priority
+  - active_runtime_critical
+  - approval_freshness
+  - shared_source_scope

@@ -1,0 +1,7 @@
+contention_surface_definitions:
+  shared_db:
+    severity: high
+    resolution: serialize
+  observability_bandwidth:
+    severity: medium
+    resolution: throttle

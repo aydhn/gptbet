@@ -1,0 +1,6 @@
+token_broker_policies:
+  default_policy:
+    max_active_allocations: 5
+    renewal_backlog_threshold: 10
+    preemption_enabled: true
+    allow_widening: false

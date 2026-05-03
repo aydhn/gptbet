@@ -1,0 +1,4 @@
+starvation_detection_rules:
+  max_wait_time_minutes: 30
+  max_defer_count: 5
+  adjustment: boost_priority_one_band
