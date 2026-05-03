@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
-from src.sports_signal_bot.execution_coordination.contracts import (
+from sports_signal_bot.execution_coordination.contracts import (
     LaneScheduleRecord,
     ContentionRecord,
     ArbitrationDecisionRecord,

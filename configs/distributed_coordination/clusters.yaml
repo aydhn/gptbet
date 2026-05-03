@@ -1,0 +1,7 @@
+cluster_membership_rules:
+  require_heartbeat: true
+  heartbeat_interval_seconds: 10
+  auto_evict_after_missed_beats: 3
+scheduler_shard_rules:
+  max_lanes_per_shard: 50
+  rebalance_threshold_percent: 20

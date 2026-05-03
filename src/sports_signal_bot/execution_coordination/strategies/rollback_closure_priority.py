@@ -1,7 +1,7 @@
 import uuid
 from typing import List
-from src.sports_signal_bot.execution_coordination.strategies.base import BaseCoordinationStrategy
-from src.sports_signal_bot.execution_coordination.contracts import (
+from sports_signal_bot.execution_coordination.strategies.base import BaseCoordinationStrategy
+from sports_signal_bot.execution_coordination.contracts import (
     LaneScheduleRecord,
     ContentionRecord,
     ArbitrationDecisionRecord,

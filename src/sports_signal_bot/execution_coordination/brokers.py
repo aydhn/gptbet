@@ -1,7 +1,7 @@
 import datetime
 import uuid
 from typing import List, Optional
-from src.sports_signal_bot.execution_coordination.contracts import (
+from sports_signal_bot.execution_coordination.contracts import (
     ApprovalTokenBrokerRecord, TokenAllocationRecord, TokenReservationRecord,
     TokenBrokerStatus, TokenBrokerDecisionRecord
 )

@@ -1,0 +1,8 @@
+council_precedence_rules:
+  rollback_binding_contention: 1
+  closure_controller_contention: 2
+  tenant_boundary_integrity: 3
+  approval_freshness: 4
+cross_node_contention_rules:
+  escalate_to_council: true
+  auto_serialize_unknown: true

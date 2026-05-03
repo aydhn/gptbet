@@ -1,0 +1,7 @@
+default_distributed_coordination_strategy: "ConservativeDistributedFabricStrategy"
+distributed_fairness_limits:
+  starvation_threshold_seconds: 300
+  max_priority_bump: 1
+snapshot_freshness_thresholds:
+  stale_after_seconds: 60
+  force_revalidation_after_seconds: 120
