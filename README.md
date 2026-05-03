@@ -92,3 +92,15 @@ Distribution enables bounded execution parallelism and scalability by federating
 
 ### Phase 76: Sovereign Runtime Corridors
 This layer adds treaty-backed remediation corridors standard, policy-border translation ledger discipline, and a regional assurance continuity controller layer to the multi-region execution fabric. Cross-region remediation flows only over explicit narrow corridors, tracked by translation ledgers, maintaining explicit assurance continuity.
+
+### Phase 78: Registry Conformance & Sovereign Interoperability Policy
+The system establishes a registry conformance layer to govern corridors, attestations, treaty benchmarking, and policy conformance packaging. This ensures discoverability, supersession awareness, and bounded exchange of continuity attestations without bypassing sovereignty.
+
+**Key capabilities:**
+- **Corridor Registries**: Manage currentness, freshness, and supersession of governance targets.
+- **Attestation Exchanges**: Bound exchange of continuity attestations with explicit caveats and scopes.
+- **Treaty Benchmarking**: Compare treaty dimensions against standard baselines to compute alignment.
+- **Policy Conformance Packs**: Package evidence and identify gaps to determine overall conformance status.
+
+**Run a pass:**
+- `python -m sports_signal_bot.main registry-conformance run-registry-conformance-pass`

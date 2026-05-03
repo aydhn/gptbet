@@ -6,6 +6,7 @@ from sports_signal_bot.cli.resilience_advisor import app as resilience_advisor_a
 from sports_signal_bot.cli.remediation_copilot import app as copilot_app
 from sports_signal_bot.cli.distributed_coordination import app as distributed_coordination_app
 
+from sports_signal_bot.registry_conformance.cli import app as registry_conformance_app
 app = typer.Typer()
 
 from sports_signal_bot.cli.sovereign_corridors_cli import app as sovereign_corridors_app
@@ -91,6 +92,7 @@ app.add_typer(remediation_lanes_app, name="remediation-lanes", help="Phase 71: R
 app.add_typer(live_execution_app, name="live-execution", help="Live execution operations")
 app.add_typer(execution_coordination_app, name="execution-coordination")
 app.add_typer(distributed_coordination_app, name="distributed-coordination", help="Phase 74: Distributed Execution Coordination Fabric")
+app.add_typer(registry_conformance_app, name="registry-conformance", help="Phase 78: Registry Conformance")
 
 if __name__ == "__main__":
     app()
