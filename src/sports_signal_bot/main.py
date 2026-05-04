@@ -131,5 +131,12 @@ try:
 except ImportError as e:
     print(f"Failed to import governance exceptions cli: {e}")
 
+
+try:
+    from sports_signal_bot.governance_recovery.cli import app as governance_recovery_app
+    app.add_typer(governance_recovery_app, name="governance-recovery", help="Phase 86: Governance Recovery")
+except ImportError as e:
+    print(f"Failed to import governance recovery cli: {e}")
+
 if __name__ == "__main__":
     app()

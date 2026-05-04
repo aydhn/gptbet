@@ -1,0 +1,5 @@
+quorum_routing_scope_rules:
+  permit_scope_widening: false
+routing_pressure_thresholds:
+  stale_packet_density: 0.2
+  degraded_edge_ratio: 0.1

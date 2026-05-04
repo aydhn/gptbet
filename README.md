@@ -139,3 +139,9 @@ Commands:
 python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
 python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
 ```
+
+## Phase 86: Governance Recovery Architecture
+- **Purpose:** The governance recovery layer adds bounded exception registry federation, quorum exchange routing fabrics, baseline successor registries, and sovereign governance recovery escalators.
+- **Usage:** Run `python -m sports_signal_bot.main governance-recovery run-governance-recovery-pass`.
+- **Key Tenet:** Escalation recovers bounding and visibility; it never overrides local deny.
+- **Design Principle:** Exceptions remain exceptional; successors need registries; escalation triggers replay/review requirements without elevating authority.

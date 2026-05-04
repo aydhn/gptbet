@@ -1,0 +1,11 @@
+escalation_trigger_rules:
+  quorum_exchange_stale_burst: true
+  routing_pressure_critical: true
+escalation_checkpoint_rules:
+  require_replay_pass: true
+hint_restoration_rules:
+  keep_bounded: true
+sovereignty_override_rules:
+  allow_local_deny_override: false
+no_safe_hint_visibility_rules:
+  always_visible: true
