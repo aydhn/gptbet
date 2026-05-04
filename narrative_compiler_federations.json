@@ -1,0 +1,10 @@
+{
+  "federations": [
+    {
+      "id": "fed_001",
+      "family": "operator_narrative_federation",
+      "nodes": 5,
+      "status": "healthy"
+    }
+  ]
+}

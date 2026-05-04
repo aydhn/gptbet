@@ -1,0 +1,10 @@
+{
+  "atlases": [
+    {
+      "id": "atlas_001",
+      "family": "governance_evidence_atlas",
+      "nodes": 45,
+      "edges": 120
+    }
+  ]
+}
