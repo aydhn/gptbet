@@ -1,0 +1,4 @@
+signal_relevance_rules:
+  min_dimensions_useful: 4
+signal_staleness_caps:
+  stale_max_score: 0.4

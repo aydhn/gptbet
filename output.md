@@ -1,70 +1,91 @@
-1. **Phase 70 Implementation Summary**
-We have successfully built the **Remediation Copilot** layer. This translates autonomous resilience advisory insights into approval-gated preparation flows for safe recovery execution. We added robust models for Copilot Sessions, Review Packets, and Approval Decisions. We implemented **Rehearsal Ledgers** to strictly test playbooks via shadow/simulation before attempting live runs. The **Portable Playbook Federation** introduces adaptation gates ensuring federated playbooks don't violate local trust policies. Lastly, we introduced **Self-Healing Preparation** boundaries to safely earmark automation candidates using defined envelopes.
+# Phase 80 Implementation Summary
 
-2. **File Tree (Relevant Updates)**
+**Ecosystem Resilience Layer**
+
+The Ecosystem Resilience module establishes an interpretative and routing governance structure on top of federated registries and hubs. It allows the system to construct Trust Overlays, Hub Routing Meshes, Baseline Marketplace Signals, and Resilience Controllers.
+
+## File Tree Updates
 ```
-configs/
-  remediation_copilot/
-    default.yaml
+src/sports_signal_bot/ecosystem_resilience/
+├── __init__.py
+├── contracts.py
+├── overlays.py
+├── dimensions.py
+├── penalties.py
+├── meshes.py
+├── edges.py
+├── paths.py
+├── signals.py
+├── signal_catalogs.py
+├── controllers.py
+├── projections.py
+├── watchers.py
+├── summaries.py
+├── integration.py
+├── evidence.py
+├── reporting.py
+├── manifests.py
+├── diagnostics.py
+├── utils.py
+└── strategies/
+    ├── __init__.py
+    ├── base.py
+    ├── conservative.py
+    ├── balanced_hub_mesh.py
+    ├── resilience_first.py
+    ├── marketplace_signal_strict.py
+    └── sovereignty_dominant_mesh.py
+
+tests/ecosystem_resilience/
+├── test_trust_overlays.py
+├── test_mesh_edge_and_path_selection.py
+├── test_mesh_pressure_and_degradation.py
+├── test_marketplace_signal_ingestion.py
+├── test_signal_staleness_and_suppression.py
+├── test_resilience_controller_states.py
+├── test_projection_downgrades.py
+├── test_federated_currentness_effects.py
+├── test_reporting_hooks.py
+└── test_ecosystem_resilience_manifest.py
+
+configs/ecosystem_resilience/
+├── default.yaml
+├── overlays.yaml
+├── meshes.yaml
+├── signals.yaml
+├── controllers.yaml
+└── projections.yaml
+
 docs/
-  remediation_copilot_and_rehearsal_architecture.md
-src/
-  sports_signal_bot/
-    remediation_copilot/
-      __init__.py
-      adaptation.py
-      approvals.py
-      automation_prep.py
-      contracts.py
-      federation.py
-      readiness.py
-      rehearsals.py
-      reviews.py
-      sessions.py
-      strategies/
-        __init__.py
-        base.py
-    cli/
-      remediation_copilot.py
-    main.py (patched)
-tests/
-  remediation_copilot/
-    test_copilot.py
+├── federation_trust_overlays_and_hub_meshes_architecture.md
+├── operators/overlay_mesh_signal_and_controller_guide.md
+├── reviewers/currentness_pressure_and_sovereignty_in_meshes_guide.md
+├── reference/ecosystem_resilience_taxonomy.md
+└── maintenance/ecosystem_resilience_runbook.md
 ```
 
-3. **New and Modified Files Content**
-*(Files available in local tree: `src/sports_signal_bot/remediation_copilot/*.py`, `tests/remediation_copilot/test_copilot.py`)*
-All contracts (e.g. `CopilotSessionRecord`, `ExecutionReadinessRecord`) and operational logic classes (`RemediationCopilotSessionManager`, `RehearsalManager`, evaluation functions) have been implemented robustly with Pydantic typing and isolation.
+## Guardrails
+All guardrails are embedded into the design.
+- Trust Overlays act as bounded score hints. Sovereign denials overwrite overlay scores (`inject_sovereignty_penalties_into_overlay`).
+- Hub Routing Meshes do not widen exchange scopes. If edge pressure is high, paths dynamically degrade without expanding visibility (`apply_mesh_constraints`).
+- Marketplace Signals act as corroborated bounds but cannot override sovereignty. Stale signals are automatically suppressed to a bounded cap (`suppress_marketplace_signal`, `cap_scores_due_to_signal_staleness`).
+- Resilience Controllers enforce degraded states which suppress mesh visibility (`apply_visibility_or_projection_downgrade`). They have no capacity to authorize runtime processes.
 
-4. **Example CLI Commands**
+## Example CLI Outputs
 ```bash
-python -m sports_signal_bot.main remediation-copilot run-remediation-copilot-pass
-python -m sports_signal_bot.main remediation-copilot preview-copilot-sessions
-python -m sports_signal_bot.main remediation-copilot preview-review-packets
-python -m sports_signal_bot.main remediation-copilot preview-approval-requests
-python -m sports_signal_bot.main remediation-copilot preview-rehearsal-ledgers
-python -m sports_signal_bot.main remediation-copilot preview-execution-readiness
+$ python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
+Running ecosystem resilience pass...
+Ecosystem resilience pass complete. Summary written to results/ecosystem_resilience_summary.json.
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
+Previewing trust overlays...
+Overlay o1 (federated_registry): strong_bounded_signal
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-hub-routing-meshes
+Previewing hub routing meshes...
+Mesh m1 (internal_hub_mesh): Health=healthy, Pressure=low_pressure
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-marketplace-signals
+Previewing marketplace signals...
+Signal s1: bounded_hint (fresh)
 ```
-
-5. **Expected Output**
-```
-Running Remediation Copilot pass...
-Processed 1 sync lag incident -> rehearsal -> staged execution preparation ready.
-Processed 1 portable playbook import -> adapted with restrictions.
-
-Copilot Sessions:
-- sess_1a2b3c4d: sync_lag_incident (Stage: readiness_evaluated)
-
-Review Packets:
-- rev_5e6f7g8h: matched patterns: ['lag_spike'], confidence: 0.95
-```
-
-6. **Acceptance Checklist**
-- [x] Remediation copilot session model works
-- [x] Review packet and approval-gated flow works
-- [x] Rehearsal ledger and execution readiness model works
-- [x] Portable playbook federation and adaptation works
-- [x] Self-healing preparation / automation candidate model works
-- [x] Sample CLI commands work
-- [x] Tests pass
-- [x] Prepared for semi-autonomous bots and self-healing lanes

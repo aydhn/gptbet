@@ -115,3 +115,19 @@ It enables federated discoverability and structured attestation routing while st
 - `python -m sports_signal_bot.main federation-ecosystem preview-attestation-hubs`
 
 For details, refer to `docs/corridor_registry_federation_and_attestation_hubs_architecture.md`.
+
+## Ecosystem Resilience (Phase 80)
+The **Ecosystem Resilience** layer adds federated trust overlays, hub routing meshes, baseline marketplace signals, and ecosystem resilience controllers over the sovereign ecosystem.
+
+- **Trust Overlays**: Treat federated registry currentness and attestation values as interpretable layers, computing a `TrustOverlayBand` without granting direct admission rights. High scores cannot override local sovereignty denials.
+- **Hub Routing Meshes**: Orchestrate multi-hub attestation pathways. Meshes strictly bounds routes, dropping path preference (`PREFERRED_BOUNDED_PATH`, `DEGRADED_FALLBACK_PATH`, etc.) without expanding visibility scopes.
+- **Baseline Marketplace Signals**: Treat baseline catalog signals as bounded projection hints to boost or decay trust, enforcing staleness and corroboration limits.
+- **Resilience Controllers**: Oversee ecosystem health (pressure, controller state degradation) by reducing pipeline projections and enforcing caution/degraded states without issuing runtime authorizations.
+
+These mechanisms are explicitly separated from standard routing governance. Mesh paths are bounded hints, overlays explain decisions (vs authorizing them), and signals are never authoritative.
+
+Commands:
+```bash
+python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
+python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
+```

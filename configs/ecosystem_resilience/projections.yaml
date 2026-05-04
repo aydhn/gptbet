@@ -1,0 +1,2 @@
+ecosystem_visibility_projection_rules:
+  degraded_reduces_visibility: true
