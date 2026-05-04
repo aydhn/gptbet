@@ -1,0 +1,4 @@
+participant_visibility_rules:
+  sovereignty_overrides: true
+issuer_capability_constraints:
+  enforce_max_scope: true

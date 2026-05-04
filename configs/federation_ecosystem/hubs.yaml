@@ -1,0 +1,5 @@
+hub_scope_constraints:
+  max_broadening: none
+hub_queue_priorities:
+  bounded_exchange: high
+  review_only: low

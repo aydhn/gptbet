@@ -1,6 +1,6 @@
 import pytest
-from src.sports_signal_bot.execution_coordination.brokers import ApprovalTokenBroker
-from src.sports_signal_bot.execution_coordination.contracts import TokenBrokerStatus
+from sports_signal_bot.execution_coordination.brokers import ApprovalTokenBroker
+from sports_signal_bot.execution_coordination.contracts import TokenBrokerStatus
 
 def test_token_broker_allocation():
     broker = ApprovalTokenBroker()

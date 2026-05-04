@@ -104,3 +104,14 @@ The system establishes a registry conformance layer to govern corridors, attesta
 
 **Run a pass:**
 - `python -m sports_signal_bot.main registry-conformance run-registry-conformance-pass`
+
+## Phase 79: Federation Ecosystem
+The Federation Ecosystem phase establishes corridor registry federation, attestation exchange hubs, treaty baseline catalogs, and sovereign policy attestation ecosystems.
+It enables federated discoverability and structured attestation routing while strictly adhering to local sovereignty and bounded claims disciplines.
+
+### Key Commands:
+- `python -m sports_signal_bot.main federation-ecosystem run-federation-ecosystem-pass`
+- `python -m sports_signal_bot.main federation-ecosystem preview-registry-federations`
+- `python -m sports_signal_bot.main federation-ecosystem preview-attestation-hubs`
+
+For details, refer to `docs/corridor_registry_federation_and_attestation_hubs_architecture.md`.

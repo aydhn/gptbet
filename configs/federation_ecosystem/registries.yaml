@@ -1,0 +1,3 @@
+federation_currentness_rules:
+  stale_link_downgrades: true
+  caveat_propagation: explicit

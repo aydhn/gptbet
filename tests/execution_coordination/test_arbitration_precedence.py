@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
-from src.sports_signal_bot.execution_coordination.strategies.conservative import ConservativeCoordinationFabricStrategy
-from src.sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord
+from sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
+from sports_signal_bot.execution_coordination.strategies.conservative import ConservativeCoordinationFabricStrategy
+from sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord
 import datetime
 
 def test_conservative_arbitration_forces_serialization():

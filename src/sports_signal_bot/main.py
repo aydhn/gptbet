@@ -94,8 +94,15 @@ app.add_typer(execution_coordination_app, name="execution-coordination")
 app.add_typer(distributed_coordination_app, name="distributed-coordination", help="Phase 74: Distributed Execution Coordination Fabric")
 app.add_typer(registry_conformance_app, name="registry-conformance", help="Phase 78: Registry Conformance")
 
-if __name__ == "__main__":
-    app()
+
+from sports_signal_bot.cli.federation_ecosystem import app as federation_ecosystem_app
+app.add_typer(federation_ecosystem_app, name="federation-ecosystem", help="Phase 79: Federation Ecosystem")
 
 from sports_signal_bot.cli.corridor_governance_cli import app as corridor_governance_app
 app.add_typer(corridor_governance_app, name="corridor-governance", help="Corridor Governance operations")
+
+from sports_signal_bot.deployment.cli import app as deploy_app
+app.add_typer(deploy_app, name="deploy", help="Platform packaging and local deployment operations")
+
+if __name__ == "__main__":
+    app()

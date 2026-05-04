@@ -1,0 +1,4 @@
+conformance_pack_projection_rules:
+  require_valid_pack_for_exchange: true
+scorecard_ecosystem_projection_rules:
+  include_hub_caveat_burden: true
