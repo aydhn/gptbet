@@ -1,0 +1,5 @@
+narrative_freshness_and_caveat_rules:
+  max_input_age_seconds: 3600
+  drop_caveats_allowed: false
+no_safe_view_requirements:
+  require_explicit_visibility: true

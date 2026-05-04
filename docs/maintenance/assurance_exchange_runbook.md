@@ -1,4 +1,9 @@
-# Assurance Exchange Runbook
+# Maintenance Runbook: Assurance Exchange
 
-- **Stale Snapshots**: If `sync_state` shows stale mirrors, verify connectivity.
-- **Quarantine Surges**: A spike in quarantines means a partner registry updated their schema or policy without coordinating translation rules. Update `translations.yaml`.
+## Monitoring Alerts
+1. **Stale dashboard exchange packet:** Check snapshot ingestion latency.
+2. **Board resolution masking sovereignty failure:** Audit the federation board input refs.
+3. **Replay clearing strong match lacking evidence:** Review the clearing book configuration.
+
+## Escalation
+If narrative compiler continuously fails to output valid metrics due to stale data, initiate `reconciliation` fallback to identify source anomalies.

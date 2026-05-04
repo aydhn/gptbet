@@ -1,0 +1,6 @@
+restoration_ceiling_rules:
+  max_reduction_percentage: 10
+sovereignty_visibility_rules:
+  hide_local_deny: false
+settlement_progress_validation_rules:
+  require_replay_reconciliation: true

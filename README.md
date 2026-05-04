@@ -1,38 +1,33 @@
 # Sports Signal Bot
 
-A highly extensible, artifact-first, local-first Python 3.11+ sports forecasting system.
+(Omitted unchanged sections...)
 
-## Governance Stabilization (Phase 87)
-Phase 87 introduces the Sovereign Governance Stabilization layer.
-This layer provides:
-- Recovery Quorum Meshes
-- Successor Federation Councils
-- Exception Lineage Registries
-- Sovereign Governance Stabilization Programs
+## Assurance Exchange Architecture (Phase 91)
+The assurance exchange layer provides visibility into the governance and resilience of the system by coordinating bounded, truth-preserving artifacts.
 
-**Key Principles:**
-- Restored hints remain bounded and non-authoritative.
-- Successor convergence and lineage integrity dominate stabilization quality.
-- Local sovereignty (deny) can never be overridden by stabilization programs.
+It includes:
+- **Dashboard Exchanges**: For sharing assurance outputs, not authority.
+- **Federation Boards**: For deliberation and cap enforcement.
+- **Replay Clearing Layers**: For matching offers and requests bounded by evidence.
+- **Narrative Compilers**: For producing honest, caveat-preserving summaries tailored to distinct audiences.
 
-**CLI Commands:**
-- `python -m sports_signal_bot.cli_governance_stabilization run-governance-stabilization-pass`
-- `python -m sports_signal_bot.cli_governance_stabilization preview-recovery-quorum-meshes`
-- `python -m sports_signal_bot.cli_governance_stabilization preview-successor-councils`
+**Commands:**
+- `python -m sports_signal_bot.main assurance-exchange run-assurance-exchange-pass`
 
-## Phase 88: Governance Health & Stabilization Portfolios
-The `sports_signal_bot.governance_health` layer adds non-authoritative portfolio management and health compilation on top of stabilization programs, replay fabrics, and successor convergence registries. It provides bounded and explainable health bands without overriding sovereignty or hard safety limits.
+**Design Principles:**
+Exchanged assurance and narratives remain bounded and non-authoritative. Debt aging, replay evidence, and no-safe visibility consistently dominate assurance quality, preventing overly polished or deceitful executive summaries.
 
-Key components:
-*   **Stabilization Program Portfolios**: Groups and prioritizes programs. Organizes recovery but doesn't authorize it.
-*   **Lineage Replay Fabrics**: Validates lineage paths; routes replay workloads. Stale replays or failures strictly degrade outputs.
-*   **Successor Convergence Registries**: Tracks recovery convergence. Weak or unresolved convergence caps stabilization ceilings.
-*   **Sovereign Governance Health Compilers**: Compiles health outputs based on the above layers and strict pass rules (e.g., sovereignty_pass).
+## Assurance Exchange Architecture (Phase 91)
+The assurance exchange layer provides visibility into the governance and resilience of the system by coordinating bounded, truth-preserving artifacts.
 
-Use `python -m sports_signal_bot.main governance-health run-governance-health-pass` to run the compiler and view outputs.
+It includes:
+- **Dashboard Exchanges**: For sharing assurance outputs, not authority.
+- **Federation Boards**: For deliberation and cap enforcement.
+- **Replay Clearing Layers**: For matching offers and requests bounded by evidence.
+- **Narrative Compilers**: For producing honest, caveat-preserving summaries tailored to distinct audiences.
 
-## Resilience Synthesis (Phase 89)
-The project includes a Sovereign Governance Resilience Score Synthesis layer (`src/sports_signal_bot/resilience_synthesis`) that synthesizes the state of health compiler federations, replay workload exchanges, and convergence debt ledgers into bounded, explainable scores.
-Its purpose is not to act as a central global score authority, but to provide explainable bounded guidance without overriding local denial.
-It exposes operations like `run-resilience-synthesis-pass`.
-Synthesized scores are strongly capped based on replay evidence completeness, debt aging, and sovereignty preservation.
+**Commands:**
+- `python -m sports_signal_bot.main assurance-exchange run-assurance-exchange-pass`
+
+**Design Principles:**
+Exchanged assurance and narratives remain bounded and non-authoritative. Debt aging, replay evidence, and no-safe visibility consistently dominate assurance quality, preventing overly polished or deceitful executive summaries.

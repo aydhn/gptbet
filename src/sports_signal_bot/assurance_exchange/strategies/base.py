@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any
 
 class BaseAssuranceExchangeStrategy(ABC):
+    @property
     @abstractmethod
-    def get_name(self) -> str:
+    def name(self) -> str:
         pass
 
     @abstractmethod
-    def get_quarantine_default(self) -> bool:
+    def apply_currentness_rules(self, snapshot_age: int) -> str:
         pass
 
     @abstractmethod
-    def evaluate_acceptance(self, packet_id: str, context: Dict[str, Any]) -> str:
+    def apply_board_clearing_rules(self) -> str:
         pass

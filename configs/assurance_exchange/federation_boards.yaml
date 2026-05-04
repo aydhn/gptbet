@@ -1,0 +1,3 @@
+federation_board_quorum_rules:
+  minimum_members: 3
+  consensus_threshold: 0.67

@@ -1,0 +1,11 @@
+dashboard_exchange_scope_rules:
+  allow_scope_widening: false
+dashboard_snapshot_freshness_rules:
+  max_age_seconds: 3600
+audience_profile_constraints:
+  operator:
+    requires_full_visibility: true
+  reviewer:
+    requires_full_visibility: false
+  executive:
+    requires_full_visibility: false
