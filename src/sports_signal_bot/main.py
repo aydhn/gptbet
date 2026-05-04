@@ -117,5 +117,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from sports_signal_bot.cli_governance_fabric import app as governance_fabric_app
+    app.add_typer(governance_fabric_app, name="governance-fabric", help="Phase 83: Governance Fabric")
+except ImportError as e:
+    print(f"Failed to import governance fabric cli: {e}")
+
+
 if __name__ == "__main__":
     app()

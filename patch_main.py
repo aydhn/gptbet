@@ -1,29 +1,22 @@
-import os
 import re
 
-def main():
-    filepath = "src/sports_signal_bot/main.py"
-    with open(filepath, "r") as f:
-        content = f.read()
+with open('src/sports_signal_bot/main.py', 'r') as f:
+    content = f.read()
 
-    # Add import
-    import_stmt = "from sports_signal_bot.overlay_mesh_governance.cli import app as overlay_mesh_governance_app\n"
-    if "overlay_mesh_governance_app" not in content:
-        content = content.replace("import typer\n", "import typer\n" + import_stmt)
+# Add import
+if 'from .cli_governance_fabric import app as governance_fabric_app' not in content:
+    content = content.replace(
+        'from .cli_conformance import app as conformance_app',
+        'from .cli_conformance import app as conformance_app\nfrom .cli_governance_fabric import app as governance_fabric_app'
+    )
 
-    # Add app.add_typer
-    add_typer_stmt = "app.add_typer(overlay_mesh_governance_app, name=\"overlay-mesh-governance\", help=\"Overlay Mesh and Governance\")\n"
-    if add_typer_stmt not in content:
-        # Find the last app.add_typer and append
-        lines = content.split('\n')
-        for i in range(len(lines)-1, -1, -1):
-            if "app.add_typer(" in lines[i]:
-                lines.insert(i+1, add_typer_stmt)
-                break
-        content = '\n'.join(lines)
+# Add sub-app
+if 'app.add_typer(governance_fabric_app, name="governance-fabric")' not in content:
+    content = content.replace(
+        'app.add_typer(conformance_app, name="conformance")',
+        'app.add_typer(conformance_app, name="conformance")\napp.add_typer(governance_fabric_app, name="governance-fabric")'
+    )
 
-    with open(filepath, "w") as f:
-        f.write(content)
+with open('src/sports_signal_bot/main.py', 'w') as f:
+    f.write(content)
 
-if __name__ == "__main__":
-    main()
