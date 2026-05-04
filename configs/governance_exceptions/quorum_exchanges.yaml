@@ -1,0 +1,6 @@
+quorum_exchange_scope_rules:
+  max_allowed_domains: 5
+  max_time_window_seconds: 3600
+quorum_exchange_validity_rules:
+  require_fresh_evidence: true
+  allow_missing_caveats: false

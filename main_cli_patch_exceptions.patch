@@ -1,0 +1,14 @@
+--- src/sports_signal_bot/main.py
++++ src/sports_signal_bot/main.py
+@@ -107,6 +107,11 @@
+ except ImportError as e:
+     print(f"Failed to import governance fabric cli: {e}")
+
++try:
++    from sports_signal_bot.cli_governance_exceptions import app as governance_exceptions_app
++    app.add_typer(governance_exceptions_app, name="governance-exceptions", help="Phase 85: Governance Exceptions")
++except ImportError as e:
++    print(f"Failed to import governance exceptions cli: {e}")
+
+ if __name__ == "__main__":
+     app()

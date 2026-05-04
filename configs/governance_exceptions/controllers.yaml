@@ -1,0 +1,6 @@
+controller_cap_rules:
+  max_exceptions_per_ledger: 100
+sovereignty_override_rules:
+  allow_local_deny_override: false
+no_safe_hint_visibility_rules:
+  preserve_explicit_blocks: true

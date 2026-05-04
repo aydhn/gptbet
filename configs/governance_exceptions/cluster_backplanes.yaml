@@ -1,0 +1,8 @@
+cluster_backpressure_thresholds:
+  low: 50.0
+  moderate: 75.0
+  high: 90.0
+  critical: 98.0
+cluster_failover_and_replay_rules:
+  auto_failover: true
+  require_replay_on_failover: true
