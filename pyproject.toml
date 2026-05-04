@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "sports_signal_bot"
 version = "0.1.0"
 dependencies = [
+    "pyyaml",
     "pydantic",
     "typer"
 ]
