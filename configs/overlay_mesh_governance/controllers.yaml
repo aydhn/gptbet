@@ -1,0 +1,4 @@
+controller_cap_rules:
+  max_downgrades_per_mesh: 5
+sovereignty_and_scope_overrides:
+  allow_overrides: false

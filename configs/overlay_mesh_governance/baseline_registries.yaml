@@ -1,0 +1,5 @@
+baseline_registry_currentness_rules:
+  allow_stale: false
+  downgrade_superseded: true
+baseline_applicability_caps:
+  strict_scope_matching: true

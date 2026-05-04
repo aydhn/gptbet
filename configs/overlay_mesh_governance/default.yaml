@@ -1,0 +1,6 @@
+default_overlay_mesh_governance_strategy: "ConservativeOverlayMeshStrategy"
+overlay_propagation_rules:
+  allow_broadening: false
+  require_caveat_preservation: true
+caveat_preservation_requirements:
+  strict: true

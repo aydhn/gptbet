@@ -2,6 +2,7 @@ from sports_signal_bot.cli.execution_coordination import app as execution_coordi
 from sports_signal_bot.cli.live_execution_cli import app as live_execution_app
 from sports_signal_bot.remediation_lanes.cli import remediation_lanes_app
 import typer
+from sports_signal_bot.overlay_mesh_governance.cli import app as overlay_mesh_governance_app
 from sports_signal_bot.cli.resilience_advisor import app as resilience_advisor_app
 from sports_signal_bot.cli.remediation_copilot import app as copilot_app
 from sports_signal_bot.cli.distributed_coordination import app as distributed_coordination_app
@@ -103,6 +104,7 @@ app.add_typer(federation_ecosystem_app, name="federation-ecosystem", help="Phase
 
 from sports_signal_bot.cli.corridor_governance_cli import app as corridor_governance_app
 app.add_typer(corridor_governance_app, name="corridor-governance", help="Corridor Governance operations")
+app.add_typer(overlay_mesh_governance_app, name="overlay-mesh-governance", help="Overlay Mesh and Governance")
 
 from sports_signal_bot.deployment.cli import app as deploy_app
 app.add_typer(deploy_app, name="deploy", help="Platform packaging and local deployment operations")
@@ -111,6 +113,7 @@ app.add_typer(deploy_app, name="deploy", help="Platform packaging and local depl
 try:
     from sports_signal_bot.cli_trust_exchange import app as trust_exchange_app
     app.add_typer(trust_exchange_app, name="trust-exchange-scale", help="Trust Exchange & Scale Architecture (Phase 81)")
+
 except ImportError:
     pass
 
