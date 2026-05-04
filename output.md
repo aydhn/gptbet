@@ -1,91 +1,88 @@
-# Phase 80 Implementation Summary
+# Phase 90: Governance Assurance Implementation Summary
 
-**Ecosystem Resilience Layer**
+## Implementation Summary
+In Phase 90, the `governance_assurance` module was developed to introduce Resilience Synthesis Councils, Replay Exchange Marketplaces, Convergence Debt Settlement Planners, and Sovereign Governance Assurance Dashboards. The module ensures bounded routing, council caps, sequenced debt resolution, and visibility into system staleness and caveats. The CLI integration runs an automated pass that generates artifacts capturing this state.
 
-The Ecosystem Resilience module establishes an interpretative and routing governance structure on top of federated registries and hubs. It allows the system to construct Trust Overlays, Hub Routing Meshes, Baseline Marketplace Signals, and Resilience Controllers.
-
-## File Tree Updates
+## Updated File Tree
 ```
-src/sports_signal_bot/ecosystem_resilience/
-├── __init__.py
-├── contracts.py
-├── overlays.py
-├── dimensions.py
-├── penalties.py
-├── meshes.py
-├── edges.py
-├── paths.py
-├── signals.py
-├── signal_catalogs.py
-├── controllers.py
-├── projections.py
-├── watchers.py
-├── summaries.py
-├── integration.py
-├── evidence.py
-├── reporting.py
-├── manifests.py
-├── diagnostics.py
-├── utils.py
-└── strategies/
-    ├── __init__.py
-    ├── base.py
-    ├── conservative.py
-    ├── balanced_hub_mesh.py
-    ├── resilience_first.py
-    ├── marketplace_signal_strict.py
-    └── sovereignty_dominant_mesh.py
-
-tests/ecosystem_resilience/
-├── test_trust_overlays.py
-├── test_mesh_edge_and_path_selection.py
-├── test_mesh_pressure_and_degradation.py
-├── test_marketplace_signal_ingestion.py
-├── test_signal_staleness_and_suppression.py
-├── test_resilience_controller_states.py
-├── test_projection_downgrades.py
-├── test_federated_currentness_effects.py
-├── test_reporting_hooks.py
-└── test_ecosystem_resilience_manifest.py
-
-configs/ecosystem_resilience/
-├── default.yaml
-├── overlays.yaml
-├── meshes.yaml
-├── signals.yaml
+configs/governance_assurance/
 ├── controllers.yaml
-└── projections.yaml
-
+├── dashboards.yaml
+├── default.yaml
+├── replay_marketplaces.yaml
+├── settlement_planners.yaml
+└── synthesis_councils.yaml
 docs/
-├── federation_trust_overlays_and_hub_meshes_architecture.md
-├── operators/overlay_mesh_signal_and_controller_guide.md
-├── reviewers/currentness_pressure_and_sovereignty_in_meshes_guide.md
-├── reference/ecosystem_resilience_taxonomy.md
-└── maintenance/ecosystem_resilience_runbook.md
+├── maintenance/
+│   └── governance_assurance_runbook.md
+├── operators/
+│   └── councils_marketplaces_planners_and_dashboards_guide.md
+├── reference/
+│   └── governance_assurance_taxonomy.md
+├── resilience_synthesis_councils_and_governance_assurance_dashboards_architecture.md
+└── reviewers/
+    └── debt_aging_replay_evidence_and_assurance_visibility_guide.md
+src/sports_signal_bot/
+├── cli_governance_assurance.py
+├── governance_assurance/
+│   ├── alerts.py
+│   ├── contracts.py
+│   ├── controllers.py
+│   ├── council_cases.py
+│   ├── dashboards.py
+│   ├── diagnostics.py
+│   ├── drilldowns.py
+│   ├── evidence.py
+│   ├── integration.py
+│   ├── listings.py
+│   ├── manifests.py
+│   ├── matching.py
+│   ├── panels.py
+│   ├── replay_marketplaces.py
+│   ├── reporting.py
+│   ├── settlement_planners.py
+│   ├── settlement_steps.py
+│   ├── snapshots.py
+│   ├── strategies/
+│   │   ├── balanced_council_marketplace.py
+│   │   ├── base.py
+│   │   ├── conservative.py
+│   │   ├── debt_planner_first.py
+│   │   ├── replay_marketplace_strict.py
+│   │   └── sovereignty_dominant_assurance.py
+│   ├── summaries.py
+│   ├── synthesis_councils.py
+│   ├── utils.py
+│   ├── views.py
+│   └── watchers.py
+tests/governance_assurance/
+├── test_assurance_dashboards.py
+├── test_dashboard_snapshots_and_alerts.py
+├── test_debt_settlement_planners.py
+├── test_governance_assurance_manifest.py
+├── test_market_matching_and_fairness.py
+├── test_no_safe_visibility_in_dashboards.py
+├── test_replay_exchange_marketplaces.py
+├── test_reporting_hooks.py
+├── test_resilience_synthesis_councils.py
+└── test_settlement_progress_and_caps.py
 ```
 
-## Guardrails
-All guardrails are embedded into the design.
-- Trust Overlays act as bounded score hints. Sovereign denials overwrite overlay scores (`inject_sovereignty_penalties_into_overlay`).
-- Hub Routing Meshes do not widen exchange scopes. If edge pressure is high, paths dynamically degrade without expanding visibility (`apply_mesh_constraints`).
-- Marketplace Signals act as corroborated bounds but cannot override sovereignty. Stale signals are automatically suppressed to a bounded cap (`suppress_marketplace_signal`, `cap_scores_due_to_signal_staleness`).
-- Resilience Controllers enforce degraded states which suppress mesh visibility (`apply_visibility_or_projection_downgrade`). They have no capacity to authorize runtime processes.
-
-## Example CLI Outputs
+## Example CLI Commands
 ```bash
-$ python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
-Running ecosystem resilience pass...
-Ecosystem resilience pass complete. Summary written to results/ecosystem_resilience_summary.json.
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
-Previewing trust overlays...
-Overlay o1 (federated_registry): strong_bounded_signal
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-hub-routing-meshes
-Previewing hub routing meshes...
-Mesh m1 (internal_hub_mesh): Health=healthy, Pressure=low_pressure
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-marketplace-signals
-Previewing marketplace signals...
-Signal s1: bounded_hint (fresh)
+python -m sports_signal_bot.main governance-assurance run-governance-assurance-pass
+python -m sports_signal_bot.main governance-assurance list-governance-assurance-strategies
 ```
+
+## Expected Output
+```
+Running governance assurance pass...
+Pass complete. Summary written to results/governance_assurance_summary.json
+```
+
+## Acceptance Checklist
+- [x] Resilience synthesis council model functions.
+- [x] Replay exchange marketplace model functions.
+- [x] Convergence debt settlement planner model functions.
+- [x] Sovereign governance assurance dashboard model functions.
+- [x] Test coverage ensures no_safe visibility and bounds adherence.
