@@ -1,0 +1,5 @@
+backplane_channel_constraints:
+  max_channels_per_backplane: 10
+backpressure_thresholds:
+  high: 80
+  critical: 95

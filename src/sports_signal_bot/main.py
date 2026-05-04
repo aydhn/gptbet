@@ -1,4 +1,5 @@
 from sports_signal_bot.cli.execution_coordination import app as execution_coordination_app
+from sports_signal_bot.cli_sovereign_mediation import app as sovereign_mediation_app
 from sports_signal_bot.cli.live_execution_cli import app as live_execution_app
 from sports_signal_bot.remediation_lanes.cli import remediation_lanes_app
 import typer
@@ -120,6 +121,7 @@ except ImportError:
 try:
     from sports_signal_bot.cli_governance_fabric import app as governance_fabric_app
     app.add_typer(governance_fabric_app, name="governance-fabric", help="Phase 83: Governance Fabric")
+    app.add_typer(sovereign_mediation_app, name="sovereign-mediation", help="Phase 84: Sovereign Mediation")
 except ImportError as e:
     print(f"Failed to import governance fabric cli: {e}")
 

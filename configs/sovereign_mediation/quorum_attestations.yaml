@@ -1,0 +1,3 @@
+quorum_attestation_rules:
+  require_caveat_preservation: true
+  min_evidence_count: 2
