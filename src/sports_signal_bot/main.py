@@ -107,5 +107,12 @@ app.add_typer(corridor_governance_app, name="corridor-governance", help="Corrido
 from sports_signal_bot.deployment.cli import app as deploy_app
 app.add_typer(deploy_app, name="deploy", help="Platform packaging and local deployment operations")
 
+
+try:
+    from sports_signal_bot.cli_trust_exchange import app as trust_exchange_app
+    app.add_typer(trust_exchange_app, name="trust-exchange-scale", help="Trust Exchange & Scale Architecture (Phase 81)")
+except ImportError:
+    pass
+
 if __name__ == "__main__":
     app()

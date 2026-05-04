@@ -1,0 +1,15 @@
+default_trust_exchange_scale_strategy: "ConservativeOverlayExchangeStrategy"
+overlay_exchange_scope_rules:
+  max_projection_strength: "bounded"
+  require_caveat_preservation: true
+mesh_partitioning_rules:
+  partition_by: ["scope_class", "pressure_class"]
+  max_pressure_spillover: "none"
+signal_provenance_requirements:
+  minimum_corroboration: "weakly_corroborated"
+  stale_threshold_hours: 1
+governance_baseline_dimension_weights:
+  sovereignty: 1.0
+  currentness: 0.8
+controller_projection_cap_rules:
+  degraded_exchange_max_cap: 0.5
