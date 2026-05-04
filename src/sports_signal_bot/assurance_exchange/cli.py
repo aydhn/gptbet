@@ -1,57 +1,93 @@
 import typer
-import json
-from .contracts import FederatedRegistryRecord
-from .strategies import (
-    ConservativeAssuranceExchangeStrategy,
-    BalancedRegistryFederationStrategy,
-    QuarantineHeavyInteropStrategy,
-    NotarizedEnvelopeFirstStrategy,
-    ReplayStrictFederationStrategy
-)
+from rich.console import Console
+from .dashboard_exchanges import build_assurance_dashboard_exchange, summarize_dashboard_exchange
+from .federation_boards import build_council_federation_board, summarize_federation_board
+from .replay_clearing import build_replay_market_clearing_layer, summarize_replay_clearing
+from .planners import build_debt_settlement_planner_v2, summarize_settlement_planner_v2
+from .dashboards import build_governance_assurance_dashboard_v2, summarize_dashboard_health_v2
+from .narratives import build_governance_narrative_compiler, compile_governance_narrative, summarize_narrative_output
 
-app = typer.Typer(help="Assurance Exchange and Registry Federation CLI")
+app = typer.Typer(help="Assurance Exchange operations")
+console = Console()
 
-@app.command()
+@app.command("run-assurance-exchange-pass")
 def run_assurance_exchange_pass():
-    """Runs the assurance exchange verification pass."""
-    typer.echo("Running assurance exchange verification pass...")
-    typer.echo("Completed interop verification. Summary generated.")
+    """Run a full assurance exchange pass."""
+    console.print("[green]Running Assurance Exchange pass...[/green]")
 
-@app.command()
-def preview_federated_registries():
-    """Previews configured federated registries."""
-    typer.echo(json.dumps([{"registry_id": "test", "active": True}], indent=2))
+    # Simulate the pass
+    dashboard = build_assurance_dashboard_exchange(
+        source_dashboard_refs=["sd_1"],
+        source_snapshot_refs=["ss_1"],
+        exchange_scope="full",
+        audience_profile_refs=["ap_1"]
+    )
+    console.print(f"Built Dashboard Exchange: {summarize_dashboard_exchange(dashboard)}")
 
-@app.command()
-def preview_assurance_exchange_packets():
-    """Previews assurance exchange packets."""
-    typer.echo("Previewing assurance exchange packets...")
+    board = build_council_federation_board("synthesis_federation_board", ["mc_1"], "q_pol_1")
+    console.print(f"Built Federation Board: {summarize_federation_board(board)}")
 
-@app.command()
-def preview_compatibility_matrices():
-    """Previews compatibility matrices."""
-    typer.echo("Previewing compatibility matrices...")
+    layer = build_replay_market_clearing_layer("bounded_replay_clearing_layer")
+    console.print(f"Built Replay Market Clearing Layer: {summarize_replay_clearing(layer)}")
 
-@app.command()
-def preview_cross_system_replay():
-    """Previews cross-system replay outcomes."""
-    typer.echo("Previewing cross-system replay outcomes...")
+    planner = build_debt_settlement_planner_v2("replay_first_settlement_planner")
+    console.print(f"Built Debt Settlement Planner: {summarize_settlement_planner_v2(planner)}")
 
-@app.command()
-def preview_notarized_promotion_envelopes():
-    """Previews notarized promotion envelopes."""
-    typer.echo("Previewing notarized promotion envelopes...")
+    assurance_dashboard = build_governance_assurance_dashboard_v2("operator_assurance_dashboard")
+    console.print(f"Built Assurance Dashboard: {summarize_dashboard_health_v2(assurance_dashboard)}")
 
-@app.command()
+    compiler = build_governance_narrative_compiler("operator_narrative_compiler")
+    output = compile_governance_narrative(compiler)
+    console.print(f"Compiled Governance Narrative: {summarize_narrative_output(output)}")
+
+    console.print("[green]Assurance Exchange pass completed successfully.[/green]")
+
+@app.command("preview-dashboard-exchanges")
+def preview_dashboard_exchanges():
+    """Preview current dashboard exchanges."""
+    console.print("[blue]Previewing Dashboard Exchanges...[/blue]")
+    dashboard = build_assurance_dashboard_exchange(
+        source_dashboard_refs=["sd_1"],
+        source_snapshot_refs=["ss_1"],
+        exchange_scope="full",
+        audience_profile_refs=["ap_1"]
+    )
+    console.print(summarize_dashboard_exchange(dashboard))
+
+@app.command("preview-federation-boards")
+def preview_federation_boards():
+    """Preview current federation boards."""
+    console.print("[blue]Previewing Federation Boards...[/blue]")
+    board = build_council_federation_board("synthesis_federation_board", ["mc_1"], "q_pol_1")
+    console.print(summarize_federation_board(board))
+
+@app.command("preview-replay-clearing")
+def preview_replay_clearing():
+    """Preview current replay market clearing state."""
+    console.print("[blue]Previewing Replay Market Clearing...[/blue]")
+    layer = build_replay_market_clearing_layer("bounded_replay_clearing_layer")
+    console.print(summarize_replay_clearing(layer))
+
+@app.command("preview-assurance-narratives")
+def preview_assurance_narratives():
+    """Preview current governance narratives."""
+    console.print("[blue]Previewing Governance Narratives...[/blue]")
+    compiler = build_governance_narrative_compiler("operator_narrative_compiler")
+    output = compile_governance_narrative(compiler)
+    console.print(summarize_narrative_output(output))
+
+@app.command("list-assurance-exchange-strategies")
 def list_assurance_exchange_strategies():
-    """Lists available assurance exchange strategies."""
+    """List available assurance exchange strategies."""
+    from .strategies.conservative import ConservativeNarrativeAssuranceStrategy
+    from .strategies.balanced_board_clearing import BalancedBoardClearingStrategy
+    from .strategies.debt_settlement_narrative_first import DebtSettlementNarrativeFirstStrategy
+
     strategies = [
-        ConservativeAssuranceExchangeStrategy().get_name(),
-        BalancedRegistryFederationStrategy().get_name(),
-        QuarantineHeavyInteropStrategy().get_name(),
-        NotarizedEnvelopeFirstStrategy().get_name(),
-        ReplayStrictFederationStrategy().get_name()
+        ConservativeNarrativeAssuranceStrategy().name,
+        BalancedBoardClearingStrategy().name,
+        DebtSettlementNarrativeFirstStrategy().name
     ]
-    typer.echo("Available Strategies:")
+    console.print("[yellow]Available Strategies:[/yellow]")
     for s in strategies:
-        typer.echo(f"  - {s}")
+        console.print(f"- {s}")

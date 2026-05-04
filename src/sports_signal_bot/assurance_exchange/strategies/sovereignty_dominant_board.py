@@ -1,12 +1,12 @@
 from .base import BaseAssuranceExchangeStrategy
 
-class ConservativeNarrativeAssuranceStrategy(BaseAssuranceExchangeStrategy):
+class SovereigntyDominantBoardStrategy(BaseAssuranceExchangeStrategy):
     @property
     def name(self) -> str:
-        return "ConservativeNarrativeAssuranceStrategy"
+        return "SovereigntyDominantBoardStrategy"
 
     def apply_currentness_rules(self, snapshot_age: int) -> str:
-        if snapshot_age > 1800: # 30 mins
+        if snapshot_age > 1800:
             return "snapshot_stale"
         return "snapshot_current"
 

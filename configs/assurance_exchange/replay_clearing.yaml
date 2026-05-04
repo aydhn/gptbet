@@ -1,0 +1,4 @@
+replay_clearing_scope_and_evidence_rules:
+  require_full_evidence: true
+replay_clearing_fairness_rules:
+  prioritize_aging_requests: true
