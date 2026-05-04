@@ -1,0 +1,8 @@
+consortium_provenance_requirements:
+  minimum_confidence: 0.5
+consortium_corroboration_thresholds:
+  strong: 3
+  bounded: 1
+consortium_suppression_rules:
+  auto_suppress_stale: true
+  auto_suppress_low_provenance: true

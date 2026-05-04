@@ -1,0 +1,12 @@
+route_tier_precedence_rules:
+  - local_scope_tier
+  - sovereignty_guard_tier
+  - treaty_scope_tier
+  - route_quality_tier
+  - resilience_pressure_tier
+  - baseline_guidance_tier
+  - review_only_visibility_tier
+  - degraded_path_tier
+route_tier_block_and_downgrade_rules:
+  local_scope_tier: "block_on_deny"
+  sovereignty_guard_tier: "block_on_conflict"

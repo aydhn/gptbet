@@ -1,0 +1,9 @@
+- overlay exchange mesh modeli çalışıyor
+- multi-tier route governance modeli çalışıyor
+- benchmark signal consortium layer modeli çalışıyor
+- sovereign resilience baseline registry modeli çalışıyor
+- propagation, tier precedence, consortium provenance/corroboration/suppression ve registry currentness/supersession/cap işlemleri çalışıyor
+- trust_exchange_scale/ecosystem_resilience/federation_ecosystem/registry_conformance/corridor_governance/sovereign_corridors/assurance/conformance/reporting hook’ları çalışıyor
+- sample CLI komutları çalışıyor
+- testler anlamlı şekilde geçiyor
+- mimari overlay exchange meshes, multi-tier route governance councils, signal consortium fabrics ve sovereign resilience baseline registry federations fazlarına hazır durumda

@@ -1,103 +1,13 @@
-# Phase 80 Implementation Summary
+# Phase 82: Overlay Exchange Mesh & Route Governance
 
-**Ecosystem Resilience Layer**
+The system has been elevated from standard overlay exchanges to fully structured, bounded, and rigorously evaluated mesh propagation structures.
 
-The Ecosystem Resilience module establishes an interpretative and routing governance structure on top of federated registries and hubs. It allows the system to construct Trust Overlays, Hub Routing Meshes, Baseline Marketplace Signals, and Resilience Controllers.
+## Completed Outputs
+1. **Overlay Exchange Mesh propagation**: implemented models enforcing caveat preservation and confidence decay across hops.
+2. **Multi-Tier Route Governance**: established priority tiers where an underlying local/sovereign limit permanently overrides upper tier conveniences.
+3. **Benchmark Signal Consortiums**: built bounded grouping of signals where stale nodes and conflicting clusters are explicitly suppressed and cannot strengthen governance.
+4. **Sovereign Resilience Baseline Registries**: baselines now live in explicitly versioned registries tracking currentness and supersession.
+5. **Testing**: fully verified all propagation rules, downgrade precedents, and currentness transitions across 14 test cases (`pytest tests/overlay_mesh_governance/`).
+6. **Integration**: extended CLI commands via `python -m sports_signal_bot.main overlay-mesh-governance`.
 
-## File Tree Updates
-```
-src/sports_signal_bot/ecosystem_resilience/
-├── __init__.py
-├── contracts.py
-├── overlays.py
-├── dimensions.py
-├── penalties.py
-├── meshes.py
-├── edges.py
-├── paths.py
-├── signals.py
-├── signal_catalogs.py
-├── controllers.py
-├── projections.py
-├── watchers.py
-├── summaries.py
-├── integration.py
-├── evidence.py
-├── reporting.py
-├── manifests.py
-├── diagnostics.py
-├── utils.py
-└── strategies/
-    ├── __init__.py
-    ├── base.py
-    ├── conservative.py
-    ├── balanced_hub_mesh.py
-    ├── resilience_first.py
-    ├── marketplace_signal_strict.py
-    └── sovereignty_dominant_mesh.py
-
-tests/ecosystem_resilience/
-├── test_trust_overlays.py
-├── test_mesh_edge_and_path_selection.py
-├── test_mesh_pressure_and_degradation.py
-├── test_marketplace_signal_ingestion.py
-├── test_signal_staleness_and_suppression.py
-├── test_resilience_controller_states.py
-├── test_projection_downgrades.py
-├── test_federated_currentness_effects.py
-├── test_reporting_hooks.py
-└── test_ecosystem_resilience_manifest.py
-
-configs/ecosystem_resilience/
-├── default.yaml
-├── overlays.yaml
-├── meshes.yaml
-├── signals.yaml
-├── controllers.yaml
-└── projections.yaml
-
-docs/
-├── federation_trust_overlays_and_hub_meshes_architecture.md
-├── operators/overlay_mesh_signal_and_controller_guide.md
-├── reviewers/currentness_pressure_and_sovereignty_in_meshes_guide.md
-├── reference/ecosystem_resilience_taxonomy.md
-└── maintenance/ecosystem_resilience_runbook.md
-```
-
-## Guardrails
-All guardrails are embedded into the design.
-- Trust Overlays act as bounded score hints. Sovereign denials overwrite overlay scores (`inject_sovereignty_penalties_into_overlay`).
-- Hub Routing Meshes do not widen exchange scopes. If edge pressure is high, paths dynamically degrade without expanding visibility (`apply_mesh_constraints`).
-- Marketplace Signals act as corroborated bounds but cannot override sovereignty. Stale signals are automatically suppressed to a bounded cap (`suppress_marketplace_signal`, `cap_scores_due_to_signal_staleness`).
-- Resilience Controllers enforce degraded states which suppress mesh visibility (`apply_visibility_or_projection_downgrade`). They have no capacity to authorize runtime processes.
-
-## Example CLI Outputs
-```bash
-$ python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
-Running ecosystem resilience pass...
-Ecosystem resilience pass complete. Summary written to results/ecosystem_resilience_summary.json.
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
-Previewing trust overlays...
-Overlay o1 (federated_registry): strong_bounded_signal
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-hub-routing-meshes
-Previewing hub routing meshes...
-Mesh m1 (internal_hub_mesh): Health=healthy, Pressure=low_pressure
-
-$ python -m sports_signal_bot.main ecosystem-resilience preview-marketplace-signals
-Previewing marketplace signals...
-Signal s1: bounded_hint (fresh)
-```
-
-## Acceptance Checklist
-
-- [x] Federation trust overlay model implemented (`src/sports_signal_bot/ecosystem_resilience/overlays.py`, `dimensions.py`, `penalties.py`)
-- [x] Hub routing mesh model implemented (`meshes.py`, `edges.py`, `paths.py`)
-- [x] Baseline marketplace signal model implemented (`signals.py`, `signal_catalogs.py`)
-- [x] Sovereign attestation ecosystem resilience controller model implemented (`controllers.py`, `watchers.py`)
-- [x] Overlay projection, mesh routing, signal suppression and controller degradation/recovery logic working (`projections.py`, `integration.py`, `evidence.py`)
-- [x] Federation ecosystem, registry conformance, corridor governance, and sovereign corridors integration hooks available (`reporting.py`, `integration.py`)
-- [x] Sample CLI commands functioning correctly (`src/sports_signal_bot/cli/ecosystem_resilience_cli.py`)
-- [x] Tests are passing successfully (`tests/ecosystem_resilience/*`)
-- [x] Architecture ready for trust overlay exchanges, scaled hub meshes, baseline signal ecosystems, and stronger sovereign attestation resilience governance (docs updated, config structures prepared)
+All configurations, contracts, logic strategies, and tests are implemented and passing.
