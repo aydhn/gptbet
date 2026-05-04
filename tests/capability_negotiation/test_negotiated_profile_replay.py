@@ -1,7 +1,7 @@
-from src.sports_signal_bot.capability_negotiation.profiles import build_capability_profile
-from src.sports_signal_bot.capability_negotiation.negotiation import downgrade_to_safe_subset
-from src.sports_signal_bot.capability_negotiation.replay import build_negotiation_replay_context, replay_capability_negotiation
-from src.sports_signal_bot.capability_negotiation.contracts import ReplayOutcome
+from sports_signal_bot.capability_negotiation.profiles import build_capability_profile
+from sports_signal_bot.capability_negotiation.negotiation import downgrade_to_safe_subset
+from sports_signal_bot.capability_negotiation.replay import build_negotiation_replay_context, replay_capability_negotiation
+from sports_signal_bot.capability_negotiation.contracts import ReplayOutcome
 
 def test_replay():
     src = build_capability_profile("src", supported_artifact_families=["a", "b"])

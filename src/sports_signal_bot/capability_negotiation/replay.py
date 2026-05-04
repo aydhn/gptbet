@@ -1,11 +1,11 @@
 from typing import Dict, Any
-from src.sports_signal_bot.capability_negotiation.contracts import (
+from sports_signal_bot.capability_negotiation.contracts import (
     NegotiatedProfileRecord,
     CapabilityProfileRecord,
     ReplayOutcome
 )
-from src.sports_signal_bot.capability_negotiation.compatibility import diff_capability_profiles
-from src.sports_signal_bot.capability_negotiation.negotiation import downgrade_to_safe_subset
+from sports_signal_bot.capability_negotiation.compatibility import diff_capability_profiles
+from sports_signal_bot.capability_negotiation.negotiation import downgrade_to_safe_subset
 
 def build_negotiation_replay_context(
     original_profile: NegotiatedProfileRecord,

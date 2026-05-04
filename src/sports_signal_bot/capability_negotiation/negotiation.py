@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 from datetime import datetime
 
-from src.sports_signal_bot.capability_negotiation.contracts import (
+from sports_signal_bot.capability_negotiation.contracts import (
     CapabilityProfileRecord,
     CapabilityOfferRecord,
     CapabilityResponseRecord,
@@ -14,8 +14,8 @@ from src.sports_signal_bot.capability_negotiation.contracts import (
     NegotiatedReplayPolicyRecord,
     NegotiatedTrustRecord
 )
-from src.sports_signal_bot.capability_negotiation.compatibility import diff_capability_profiles
-from src.sports_signal_bot.capability_negotiation.translations import prevent_trust_amplification_via_translation
+from sports_signal_bot.capability_negotiation.compatibility import diff_capability_profiles
+from sports_signal_bot.capability_negotiation.translations import prevent_trust_amplification_via_translation
 
 def evaluate_capability_match(
     offer: CapabilityOfferRecord,

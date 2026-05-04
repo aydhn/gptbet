@@ -3,7 +3,7 @@ import hashlib
 from datetime import datetime
 from typing import Dict, Any
 
-from src.sports_signal_bot.capability_negotiation.contracts import (
+from sports_signal_bot.capability_negotiation.contracts import (
     RegistrySnapshotNotarizationRecord,
     RegistrySnapshotDigestRecord,
     NotarizedRegistryViewRecord,

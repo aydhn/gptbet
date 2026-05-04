@@ -1,4 +1,4 @@
-from src.sports_signal_bot.capability_negotiation.registry_notarization import request_registry_notarization, verify_registry_notarization
+from sports_signal_bot.capability_negotiation.registry_notarization import request_registry_notarization, verify_registry_notarization
 
 def test_registry_notarization():
     data = {"state": "active"}

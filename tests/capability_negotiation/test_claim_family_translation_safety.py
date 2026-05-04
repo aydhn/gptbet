@@ -1,5 +1,5 @@
-from src.sports_signal_bot.capability_negotiation.contracts import NegotiatedTranslationRuleRecord
-from src.sports_signal_bot.capability_negotiation.translations import prevent_trust_amplification_via_translation
+from sports_signal_bot.capability_negotiation.contracts import NegotiatedTranslationRuleRecord
+from sports_signal_bot.capability_negotiation.translations import prevent_trust_amplification_via_translation
 
 def test_prevent_trust_amplification():
     translations = [
