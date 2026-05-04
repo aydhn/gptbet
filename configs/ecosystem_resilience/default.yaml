@@ -1,0 +1,10 @@
+default_ecosystem_resilience_strategy: balanced_hub_mesh
+overlay_dimension_weights:
+  currentness_integrity: 1.0
+  attestation_validity_coverage: 0.9
+  caveat_burden: 0.5
+mesh_route_scope_constraints:
+  require_bounded_scope: true
+mesh_pressure_thresholds:
+  high_pressure_ratio: 0.7
+  critical_pressure_ratio: 0.9

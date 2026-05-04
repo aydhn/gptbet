@@ -1,21 +1,103 @@
-# Phase 74 Implementation Summary: Distributed Execution Coordination Fabric
+# Phase 80 Implementation Summary
 
-The goal of Phase 74 was to advance the supervised execution architecture from a single-node construct to a safe, distributed execution coordination fabric, while preserving bounded execution rules and tenancy isolation.
+**Ecosystem Resilience Layer**
 
-## Components Implemented
-1. **Contracts**: Defined comprehensive `BaseModel` contracts covering clusters, shards, brokers, allocations, councils, snapshots, and fairness algorithms.
-2. **Cluster & Node Management**: Created managers for clusters (`clusters.py`) and node roles (`nodes.py`) representing distributed topologies.
-3. **Multi-Lane Shards**: Implemented `SchedulerShardManager` in `shards.py` to assign lanes explicitly to specific nodes to prevent uncoordinated overlap.
-4. **Broker Pools & Token Ownership**: Implemented broker pools (`broker_pools.py`) and token ownership partition allocations (`allocations.py`) to prevent "double-spend" allocation scenarios.
-5. **Arbitration Councils**: Created the `FederatedCouncilManager` (`councils.py`) and `ArbitrationEngine` (`arbitration.py`) to handle cross-node contentions through explicit precedence rules.
-6. **Tenancy Isolation**: Built `TenancyIsolationManager` (`tenancy.py`) to enforce tenant/domain boundaries and strictly prevent cross-tenant leakages.
-7. **Cluster Snapshots & Failover**: Established distributed ledger snapshots (`snapshots.py`) and failover revalidation routines (`failover.py`). Target nodes are restricted from inheriting states based on stale snapshots.
-8. **Fairness & Contention Detection**: Implemented algorithms for starvation risk identification (`fairness.py`) and correlation of conflicts across clusters (`contentions.py`).
-9. **Ledgers & Diagnostics**: Added distributed auditing (`ledgers.py`), KPI reporting (`reporting.py`), and cluster health diagnostics (`diagnostics.py`).
-10. **Strategies**: Added standard fabric strategies (`ConservativeDistributedFabricStrategy`, `BalancedClusterCoordinationStrategy`, `TenancyFirstCoordinationStrategy`).
-11. **CLI Commands**: Registered standard operational commands via the new `distributed-coordination` Typer app.
-12. **Config Files**: Set up base configuration files detailing pool behavior, boundaries, failover rules, and councils.
-13. **Documentation**: Wrote comprehensive guides for architecture, operators, reviewers, taxonomies, and runbooks explaining why "Distribution Must Not Dilute Bounds".
-14. **Tests**: Implemented unit tests spanning cluster, shard, allocation, council, isolation, failover, and fairness scenarios. Verified functionality to ensure the fabric remains safely bounded.
+The Ecosystem Resilience module establishes an interpretative and routing governance structure on top of federated registries and hubs. It allows the system to construct Trust Overlays, Hub Routing Meshes, Baseline Marketplace Signals, and Resilience Controllers.
 
-The code adheres to the requested requirements, uses appropriate abstractions (`pydantic.BaseModel` instead of unstructured dicts wherever appropriate), ensures strong type safety, and is ready for further extension phases like sharding execution consensus.
+## File Tree Updates
+```
+src/sports_signal_bot/ecosystem_resilience/
+├── __init__.py
+├── contracts.py
+├── overlays.py
+├── dimensions.py
+├── penalties.py
+├── meshes.py
+├── edges.py
+├── paths.py
+├── signals.py
+├── signal_catalogs.py
+├── controllers.py
+├── projections.py
+├── watchers.py
+├── summaries.py
+├── integration.py
+├── evidence.py
+├── reporting.py
+├── manifests.py
+├── diagnostics.py
+├── utils.py
+└── strategies/
+    ├── __init__.py
+    ├── base.py
+    ├── conservative.py
+    ├── balanced_hub_mesh.py
+    ├── resilience_first.py
+    ├── marketplace_signal_strict.py
+    └── sovereignty_dominant_mesh.py
+
+tests/ecosystem_resilience/
+├── test_trust_overlays.py
+├── test_mesh_edge_and_path_selection.py
+├── test_mesh_pressure_and_degradation.py
+├── test_marketplace_signal_ingestion.py
+├── test_signal_staleness_and_suppression.py
+├── test_resilience_controller_states.py
+├── test_projection_downgrades.py
+├── test_federated_currentness_effects.py
+├── test_reporting_hooks.py
+└── test_ecosystem_resilience_manifest.py
+
+configs/ecosystem_resilience/
+├── default.yaml
+├── overlays.yaml
+├── meshes.yaml
+├── signals.yaml
+├── controllers.yaml
+└── projections.yaml
+
+docs/
+├── federation_trust_overlays_and_hub_meshes_architecture.md
+├── operators/overlay_mesh_signal_and_controller_guide.md
+├── reviewers/currentness_pressure_and_sovereignty_in_meshes_guide.md
+├── reference/ecosystem_resilience_taxonomy.md
+└── maintenance/ecosystem_resilience_runbook.md
+```
+
+## Guardrails
+All guardrails are embedded into the design.
+- Trust Overlays act as bounded score hints. Sovereign denials overwrite overlay scores (`inject_sovereignty_penalties_into_overlay`).
+- Hub Routing Meshes do not widen exchange scopes. If edge pressure is high, paths dynamically degrade without expanding visibility (`apply_mesh_constraints`).
+- Marketplace Signals act as corroborated bounds but cannot override sovereignty. Stale signals are automatically suppressed to a bounded cap (`suppress_marketplace_signal`, `cap_scores_due_to_signal_staleness`).
+- Resilience Controllers enforce degraded states which suppress mesh visibility (`apply_visibility_or_projection_downgrade`). They have no capacity to authorize runtime processes.
+
+## Example CLI Outputs
+```bash
+$ python -m sports_signal_bot.main ecosystem-resilience run-ecosystem-resilience-pass
+Running ecosystem resilience pass...
+Ecosystem resilience pass complete. Summary written to results/ecosystem_resilience_summary.json.
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-trust-overlays
+Previewing trust overlays...
+Overlay o1 (federated_registry): strong_bounded_signal
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-hub-routing-meshes
+Previewing hub routing meshes...
+Mesh m1 (internal_hub_mesh): Health=healthy, Pressure=low_pressure
+
+$ python -m sports_signal_bot.main ecosystem-resilience preview-marketplace-signals
+Previewing marketplace signals...
+Signal s1: bounded_hint (fresh)
+```
+
+## Acceptance Checklist
+
+- [x] Federation trust overlay model implemented (`src/sports_signal_bot/ecosystem_resilience/overlays.py`, `dimensions.py`, `penalties.py`)
+- [x] Hub routing mesh model implemented (`meshes.py`, `edges.py`, `paths.py`)
+- [x] Baseline marketplace signal model implemented (`signals.py`, `signal_catalogs.py`)
+- [x] Sovereign attestation ecosystem resilience controller model implemented (`controllers.py`, `watchers.py`)
+- [x] Overlay projection, mesh routing, signal suppression and controller degradation/recovery logic working (`projections.py`, `integration.py`, `evidence.py`)
+- [x] Federation ecosystem, registry conformance, corridor governance, and sovereign corridors integration hooks available (`reporting.py`, `integration.py`)
+- [x] Sample CLI commands functioning correctly (`src/sports_signal_bot/cli/ecosystem_resilience_cli.py`)
+- [x] Tests are passing successfully (`tests/ecosystem_resilience/*`)
+- [x] Architecture ready for trust overlay exchanges, scaled hub meshes, baseline signal ecosystems, and stronger sovereign attestation resilience governance (docs updated, config structures prepared)

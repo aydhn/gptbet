@@ -1,0 +1,5 @@
+mesh_families:
+  - internal_hub_mesh
+  - treaty_bound_hub_mesh
+score_projection_from_mesh_rules:
+  preferred_bonus: 0.1

@@ -1,0 +1,4 @@
+controller_degradation_rules:
+  critical_mesh_health_triggers_degraded: true
+controller_recovery_rules:
+  recovery_requires_healthy_mesh: true

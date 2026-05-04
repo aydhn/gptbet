@@ -1,0 +1,5 @@
+overlay_penalty_rules:
+  sovereignty_deny: 1.0
+  stale_source: 0.5
+sovereignty_overlay_overrides:
+  override_band: highly_fragile

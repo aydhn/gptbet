@@ -96,6 +96,9 @@ app.add_typer(registry_conformance_app, name="registry-conformance", help="Phase
 
 
 from sports_signal_bot.cli.federation_ecosystem import app as federation_ecosystem_app
+
+from sports_signal_bot.cli.ecosystem_resilience_cli import app as ecosystem_resilience_app
+app.add_typer(ecosystem_resilience_app, name="ecosystem-resilience", help="Phase 80: Ecosystem Resilience")
 app.add_typer(federation_ecosystem_app, name="federation-ecosystem", help="Phase 79: Federation Ecosystem")
 
 from sports_signal_bot.cli.corridor_governance_cli import app as corridor_governance_app
