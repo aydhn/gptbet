@@ -15,5 +15,8 @@ app.add_typer(evidence_atlas_app, name="evidence-atlas", help="Evidence Atlas op
 def smoke_run():
     console.print("Smoke run ok.")
 
+from sports_signal_bot.cli_proof_catalogs import app as proof_catalogs_app
+app.add_typer(proof_catalogs_app, name="proof-catalogs", help="Phase 93: Proof Catalogs")
+
 if __name__ == "__main__":
     app()

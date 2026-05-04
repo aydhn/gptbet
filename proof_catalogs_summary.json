@@ -1,0 +1,55 @@
+{
+  "evidence_atlas_federations": [
+    {
+      "atlas_federation_id": "4e720729-5e45-4fa9-a6fc-9c697b38b3a5",
+      "federation_family": "governance_evidence_atlas_federation",
+      "member_atlas_refs": [],
+      "active_link_refs": [],
+      "currentness_policy_ref": "default_currentness_policy",
+      "lineage_policy_ref": "default_lineage_policy",
+      "applicability_policy_ref": "default_applicability_policy",
+      "health_status": "healthy",
+      "warnings": []
+    }
+  ],
+  "narrative_audit_boards": [
+    {
+      "narrative_audit_board_id": "e147c6bf-ce2f-4737-98e7-ba2f51db62c6",
+      "board_family": "freshness_audit_board",
+      "governed_narrative_refs": [],
+      "participant_refs": [],
+      "quorum_policy_ref": "default_quorum_policy",
+      "precedence_policy_ref": "default_precedence_policy",
+      "backlog_ref": "default_backlog",
+      "health_status": "healthy",
+      "warnings": []
+    }
+  ],
+  "assurance_mesh_observatories": [
+    {
+      "observatory_id": "e881489e-0933-4899-9a0d-c3a601ae29aa",
+      "observatory_family": "bounded_assurance_mesh_observatory",
+      "monitored_mesh_refs": [],
+      "scope_refs": [],
+      "snapshot_refs": [],
+      "signal_refs": [],
+      "anomaly_refs": [],
+      "alert_refs": [],
+      "health_status": "healthy",
+      "warnings": []
+    }
+  ],
+  "sovereign_governance_proof_catalogs": [
+    {
+      "proof_catalog_id": "0a970fe3-df5c-46c6-854b-2ae6f33ccf71",
+      "catalog_family": "governance_proof_catalog",
+      "entry_refs": [],
+      "class_refs": [],
+      "lineage_refs": [],
+      "applicability_refs": [],
+      "verification_refs": [],
+      "health_status": "healthy",
+      "warnings": []
+    }
+  ]
+}

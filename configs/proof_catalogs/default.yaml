@@ -1,0 +1,25 @@
+default_proof_catalog_strategy: "ConservativeProofAtlasStrategy"
+atlas_federation_currentness_rules:
+  stale_limit_minutes: 60
+  downgrade_to_caveated: true
+narrative_audit_quorum_and_caveat_rules:
+  min_quorum: 3
+  enforce_caveats: true
+mesh_observatory_snapshot_rules:
+  snapshot_interval_minutes: 15
+mesh_observatory_anomaly_rules:
+  alert_on_caveat_drop: true
+clearing_council_evidence_rules:
+  require_proof_catalog_entry: true
+proof_catalog_freshness_rules:
+  max_age_minutes: 120
+proof_query_caveat_rules:
+  preserve_caveats_in_results: true
+narrative_proof_linkage_rules:
+  require_lineage: true
+sovereignty_visibility_rules:
+  suppress_deny: false
+no_safe_view_requirements:
+  require_in_all_views: true
+audience_profile_constraints:
+  enforce_strict_audience_match: true
