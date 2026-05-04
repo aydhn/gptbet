@@ -1,0 +1,10 @@
+{
+  "councils": [
+    {
+      "id": "council_001",
+      "family": "bounded_clearing_council",
+      "open_cases": 3,
+      "status": "healthy"
+    }
+  ]
+}

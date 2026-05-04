@@ -1,0 +1,28 @@
+strategy: ConservativeEvidenceAtlasStrategy
+rules:
+  narrative_federation_currentness_rules:
+    require_all_nodes_current: true
+    downgrade_if_stale_detected: true
+  assurance_mesh_scope_and_freshness_rules:
+    max_path_length: 3
+    require_fresh_edges: true
+  clearing_council_quorum_and_evidence_rules:
+    minimum_quorum: 3
+    require_strong_evidence: true
+  clearing_council_precedence_rules:
+    prioritize_bounded_matches: true
+  atlas_node_and_edge_freshness_rules:
+    max_node_age_hours: 24
+    max_edge_age_hours: 48
+  atlas_query_caveat_rules:
+    propagate_all_caveats: true
+  dashboard_exchange_mesh_rules:
+    require_signed_packets: true
+  narrative_caveat_preservation_rules:
+    never_strip_caveats: true
+  sovereignty_visibility_rules:
+    always_show_local_deny: true
+  no_safe_view_requirements:
+    include_in_all_views: true
+  audience_profile_constraints:
+    strict_profile_matching: true
