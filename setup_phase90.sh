@@ -1,0 +1,67 @@
+#!/bin/bash
+mkdir -p src/sports_signal_bot/governance_assurance/strategies
+mkdir -p configs/governance_assurance
+mkdir -p tests/governance_assurance
+mkdir -p docs/operators
+mkdir -p docs/reviewers
+mkdir -p docs/reference
+mkdir -p docs/maintenance
+
+touch src/sports_signal_bot/governance_assurance/__init__.py
+touch src/sports_signal_bot/governance_assurance/contracts.py
+touch src/sports_signal_bot/governance_assurance/synthesis_councils.py
+touch src/sports_signal_bot/governance_assurance/council_cases.py
+touch src/sports_signal_bot/governance_assurance/replay_marketplaces.py
+touch src/sports_signal_bot/governance_assurance/listings.py
+touch src/sports_signal_bot/governance_assurance/matching.py
+touch src/sports_signal_bot/governance_assurance/settlement_planners.py
+touch src/sports_signal_bot/governance_assurance/settlement_steps.py
+touch src/sports_signal_bot/governance_assurance/dashboards.py
+touch src/sports_signal_bot/governance_assurance/views.py
+touch src/sports_signal_bot/governance_assurance/panels.py
+touch src/sports_signal_bot/governance_assurance/snapshots.py
+touch src/sports_signal_bot/governance_assurance/alerts.py
+touch src/sports_signal_bot/governance_assurance/drilldowns.py
+touch src/sports_signal_bot/governance_assurance/controllers.py
+touch src/sports_signal_bot/governance_assurance/watchers.py
+touch src/sports_signal_bot/governance_assurance/summaries.py
+touch src/sports_signal_bot/governance_assurance/integration.py
+touch src/sports_signal_bot/governance_assurance/evidence.py
+touch src/sports_signal_bot/governance_assurance/reporting.py
+touch src/sports_signal_bot/governance_assurance/manifests.py
+touch src/sports_signal_bot/governance_assurance/diagnostics.py
+touch src/sports_signal_bot/governance_assurance/utils.py
+
+touch src/sports_signal_bot/governance_assurance/strategies/__init__.py
+touch src/sports_signal_bot/governance_assurance/strategies/base.py
+touch src/sports_signal_bot/governance_assurance/strategies/conservative.py
+touch src/sports_signal_bot/governance_assurance/strategies/balanced_council_marketplace.py
+touch src/sports_signal_bot/governance_assurance/strategies/debt_planner_first.py
+touch src/sports_signal_bot/governance_assurance/strategies/replay_marketplace_strict.py
+touch src/sports_signal_bot/governance_assurance/strategies/sovereignty_dominant_assurance.py
+
+touch src/sports_signal_bot/cli_governance_assurance.py
+
+touch configs/governance_assurance/default.yaml
+touch configs/governance_assurance/synthesis_councils.yaml
+touch configs/governance_assurance/replay_marketplaces.yaml
+touch configs/governance_assurance/settlement_planners.yaml
+touch configs/governance_assurance/dashboards.yaml
+touch configs/governance_assurance/controllers.yaml
+
+touch docs/resilience_synthesis_councils_and_governance_assurance_dashboards_architecture.md
+touch docs/operators/councils_marketplaces_planners_and_dashboards_guide.md
+touch docs/reviewers/debt_aging_replay_evidence_and_assurance_visibility_guide.md
+touch docs/reference/governance_assurance_taxonomy.md
+touch docs/maintenance/governance_assurance_runbook.md
+
+touch tests/governance_assurance/test_resilience_synthesis_councils.py
+touch tests/governance_assurance/test_replay_exchange_marketplaces.py
+touch tests/governance_assurance/test_market_matching_and_fairness.py
+touch tests/governance_assurance/test_debt_settlement_planners.py
+touch tests/governance_assurance/test_settlement_progress_and_caps.py
+touch tests/governance_assurance/test_assurance_dashboards.py
+touch tests/governance_assurance/test_dashboard_snapshots_and_alerts.py
+touch tests/governance_assurance/test_no_safe_visibility_in_dashboards.py
+touch tests/governance_assurance/test_reporting_hooks.py
+touch tests/governance_assurance/test_governance_assurance_manifest.py
