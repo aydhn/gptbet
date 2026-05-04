@@ -1,0 +1,15 @@
+default_governance_stabilization_strategy: "balanced_recovery_quorum"
+
+mesh_quorum_rules:
+  require_sovereignty_preservation: true
+  prevent_scope_broadening: true
+  downgrade_on_degraded_edge: true
+
+successor_lineage_rules:
+  require_stable_convergence_for_bounded_hint: true
+  penalize_stale_lineage_gaps: true
+
+stabilization_checkpoint_rules:
+  enforce_quorum_freshness: true
+  enforce_replay_mismatch_cleared: true
+  block_stabilized_state_on_local_deny: true

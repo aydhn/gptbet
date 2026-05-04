@@ -1,4 +1,4 @@
-from src.sports_signal_bot.capability_negotiation.contracts import RegistryCapabilityManifest
+from sports_signal_bot.capability_negotiation.contracts import RegistryCapabilityManifest
 
 def test_manifest_creation():
     manifest = RegistryCapabilityManifest(

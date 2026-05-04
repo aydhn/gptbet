@@ -1,11 +1,11 @@
 import uuid
 from typing import Dict, Any
 
-from src.sports_signal_bot.capability_negotiation.contracts import (
+from sports_signal_bot.capability_negotiation.contracts import (
     VerifierOnboardingRecord,
     CapabilityProfileRecord
 )
-from src.sports_signal_bot.capability_negotiation.federation_policies import (
+from sports_signal_bot.capability_negotiation.federation_policies import (
     FederationPolicyRecord,
     evaluate_verifier_federation_policy
 )

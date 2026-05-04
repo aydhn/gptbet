@@ -1,5 +1,5 @@
 from typing import List, Dict, Any
-from src.sports_signal_bot.capability_negotiation.contracts import (
+from sports_signal_bot.capability_negotiation.contracts import (
     NegotiatedTranslationRuleRecord,
     CapabilityDiffRecord
 )

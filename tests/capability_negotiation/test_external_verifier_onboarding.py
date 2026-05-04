@@ -1,6 +1,6 @@
-from src.sports_signal_bot.capability_negotiation.profiles import build_capability_profile
-from src.sports_signal_bot.capability_negotiation.federation_policies import resolve_federation_policy
-from src.sports_signal_bot.capability_negotiation.onboarding import onboard_external_verifier_capabilities
+from sports_signal_bot.capability_negotiation.profiles import build_capability_profile
+from sports_signal_bot.capability_negotiation.federation_policies import resolve_federation_policy
+from sports_signal_bot.capability_negotiation.onboarding import onboard_external_verifier_capabilities
 
 def test_onboarding():
     policy = resolve_federation_policy({

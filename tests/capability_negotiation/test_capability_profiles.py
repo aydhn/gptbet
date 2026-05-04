@@ -1,4 +1,4 @@
-from src.sports_signal_bot.capability_negotiation.profiles import build_capability_profile
+from sports_signal_bot.capability_negotiation.profiles import build_capability_profile
 
 def test_build_capability_profile():
     profile = build_capability_profile(

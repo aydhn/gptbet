@@ -1,5 +1,5 @@
-from src.sports_signal_bot.capability_negotiation.portable_specs import build_portable_spec_bundle, verify_portable_spec_bundle
-from src.sports_signal_bot.capability_negotiation.contracts import SpecPortabilityClass
+from sports_signal_bot.capability_negotiation.portable_specs import build_portable_spec_bundle, verify_portable_spec_bundle
+from sports_signal_bot.capability_negotiation.contracts import SpecPortabilityClass
 
 def test_portable_spec_bundle():
     specs = [
