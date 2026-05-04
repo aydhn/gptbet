@@ -1,0 +1,35 @@
+default_context_assembly_strategy: "BalancedTraceFreshnessBoardStrategy"
+trace_federation_currentness_rules:
+  require_all_nodes_current: true
+  caveat_propagation: true
+  downgrade_stale_routes: true
+proof_freshness_quorum_and_refresh_rules:
+  quorum_size: 3
+  decay_grace_period_hours: 24
+  require_refresh_evidence: true
+exchange_board_freshness_and_caveat_rules:
+  board_quorum: 3
+  stale_snapshot_grace_hours: 6
+  mandatory_caveat_transfer: true
+exchange_board_precedence_rules:
+  local_deny_wins: true
+  no_safe_hints_prevail: true
+context_bundle_freshness_rules:
+  stale_inputs_block_current_bundle: true
+  degraded_exchange_visible: true
+context_bundle_caveat_rules:
+  caveat_preservation_required: true
+  audience_simplification_limit: true
+trace_drilldown_integrity_rules:
+  preserve_leaf_nodes: true
+  verify_evidence_links: true
+sovereignty_visibility_rules:
+  unresolved_conflict_visible: true
+  local_deny_override_blocked: true
+no_safe_view_requirements:
+  include_in_all_audience_profiles: true
+  no_compression_allowed: true
+audience_profile_constraints:
+  executive_preserves_burden: true
+degraded_exchange_handling_rules:
+  mark_as_review_only: true

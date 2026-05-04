@@ -1,0 +1,12 @@
+federation_families:
+  - governance_trace_router_federation
+  - replay_lineage_trace_router_federation
+  - debt_settlement_trace_router_federation
+  - sovereignty_warning_trace_router_federation
+  - no_safe_visibility_trace_router_federation
+  - assurance_snapshot_trace_router_federation
+  - composite_trace_router_federation
+link_status_rules:
+  stale_trace_routes_strong_federation_basis: false
+  scope_mismatch_produces_explicit_downgrade: true
+  sovereignty_warnings_preserved_in_federation: true

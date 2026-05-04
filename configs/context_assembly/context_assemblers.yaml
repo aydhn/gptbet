@@ -1,0 +1,25 @@
+assembler_families:
+  - operator_context_assembler
+  - reviewer_context_assembler
+  - executive_context_assembler
+  - sovereignty_preservation_context_assembler
+  - replay_and_debt_context_assembler
+  - no_safe_visibility_context_assembler
+  - composite_governance_context_assembler
+section_taxonomies:
+  - federated_trace_section
+  - proof_freshness_section
+  - observatory_exchange_section
+  - replay_and_debt_section
+  - settlement_progress_section
+  - sovereignty_warning_section
+  - no_safe_visibility_section
+  - stale_state_section
+  - caveat_summary_section
+  - action_context_section
+  - degraded_path_section
+bundle_rules:
+  stale_inputs_cannot_produce_current_bundle: true
+  audience_scoping_must_not_destroy_raw_burden_meaning: true
+  no_safe_and_sovereignty_sections_mandatory: true
+  context_assembly_must_carry_preserved_evidence_links: true

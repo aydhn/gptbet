@@ -1,0 +1,22 @@
+board_families:
+  - freshness_exchange_board
+  - caveat_transfer_exchange_board
+  - sovereignty_signal_exchange_board
+  - no_safe_visibility_exchange_board
+  - degraded_exchange_review_board
+  - mesh_pressure_exchange_board
+  - audience_projection_exchange_board
+case_families:
+  - stale_signal_exchange_case
+  - missing_caveat_transfer_case
+  - missing_no_safe_signal_case
+  - sovereignty_warning_loss_case
+  - degraded_exchange_case
+  - mesh_pressure_case
+  - audience_scope_overprojection_case
+  - conflicting_signal_exchange_case
+exchange_rules:
+  no_quorum_no_strong_exchange_affirmation: true
+  stale_signals_no_strong_exchange_pass: true
+  no_safe_and_sovereignty_alerts_explicitly_preserved: true
+  degraded_exchange_cannot_be_hidden: true
