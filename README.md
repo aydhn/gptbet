@@ -30,3 +30,9 @@ Key components:
 *   **Sovereign Governance Health Compilers**: Compiles health outputs based on the above layers and strict pass rules (e.g., sovereignty_pass).
 
 Use `python -m sports_signal_bot.main governance-health run-governance-health-pass` to run the compiler and view outputs.
+
+## Resilience Synthesis (Phase 89)
+The project includes a Sovereign Governance Resilience Score Synthesis layer (`src/sports_signal_bot/resilience_synthesis`) that synthesizes the state of health compiler federations, replay workload exchanges, and convergence debt ledgers into bounded, explainable scores.
+Its purpose is not to act as a central global score authority, but to provide explainable bounded guidance without overriding local denial.
+It exposes operations like `run-resilience-synthesis-pass`.
+Synthesized scores are strongly capped based on replay evidence completeness, debt aging, and sovereignty preservation.

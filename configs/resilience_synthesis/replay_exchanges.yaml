@@ -1,0 +1,2 @@
+replay_exchange_scope_and_evidence_rules:
+  require_full_evidence: true
