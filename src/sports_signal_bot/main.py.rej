@@ -1,0 +1,18 @@
+--- main.py
++++ main.py
+@@ -19,6 +19,7 @@
+ from .cli_governance_fabric import app as governance_fabric_app
+ from .cli_trust_exchange import app as trust_exchange_app
+ from .cli_sovereign_mediation import app as sovereign_mediation_app
++from .cli_governance_exceptions import app as governance_exceptions_app
+
+ app = typer.Typer(
+     name="sports-signal-bot",
+@@ -34,6 +35,7 @@
+ app.add_typer(governance_fabric_app, name="governance-fabric")
+ app.add_typer(trust_exchange_app, name="trust-exchange")
+ app.add_typer(sovereign_mediation_app, name="sovereign-mediation")
++app.add_typer(governance_exceptions_app, name="governance-exceptions")
+
+ @app.callback()
+ def main_callback():

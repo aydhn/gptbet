@@ -1,0 +1,5 @@
+baseline_council_evidence_requirements:
+  min_confidence_score: 0.8
+  require_successor_link: true
+baseline_successor_resolution_rules:
+  max_unresolved_duration_seconds: 7200

@@ -1,0 +1,6 @@
+exception_boundedness_rules:
+  max_validity_window_seconds: 86400
+  allow_scope_broadening: false
+exception_expiry_and_supersession_rules:
+  auto_expire: true
+  supersede_on_resolution: true
