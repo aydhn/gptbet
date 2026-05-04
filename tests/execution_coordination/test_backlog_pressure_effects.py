@@ -1,7 +1,7 @@
 import pytest
-from src.sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
-from src.sports_signal_bot.execution_coordination.strategies.rollback_closure_priority import RollbackClosurePriorityStrategy
-from src.sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord, FabricStatus
+from sports_signal_bot.execution_coordination.fabric import SupervisedExecutionCoordinationFabric
+from sports_signal_bot.execution_coordination.strategies.rollback_closure_priority import RollbackClosurePriorityStrategy
+from sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord, FabricStatus
 import datetime
 
 def test_rollback_priority_strategy_defers_normal_lanes():

@@ -1,0 +1,4 @@
+baseline_catalog_freshness_rules:
+  max_stale_days: 7
+baseline_dimension_coverage_requirements:
+  minimum_dimensions: 3

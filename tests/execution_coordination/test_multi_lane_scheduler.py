@@ -1,7 +1,7 @@
 import pytest
 import datetime
-from src.sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord, ScheduleStatus
-from src.sports_signal_bot.execution_coordination.schedulers import MultiLaneScheduler
+from sports_signal_bot.execution_coordination.contracts import PriorityBand, SchedulingWindowRecord, ScheduleStatus
+from sports_signal_bot.execution_coordination.schedulers import MultiLaneScheduler
 
 def test_multi_lane_scheduler_submit():
     scheduler = MultiLaneScheduler()
