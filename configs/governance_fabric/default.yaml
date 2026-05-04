@@ -1,0 +1,38 @@
+default_governance_fabric_strategy: "ConservativeCouncilFabricStrategy"
+
+council_quorum_rules:
+  default: "simple_quorum"
+  high_tier: "bounded_quorum"
+  sovereignty: "sovereignty_guard_quorum"
+
+council_escalation_rules:
+  tier_conflict: "escalate_to_council"
+  currentness_drift: "escalate_review_only"
+
+signal_fabric_channel_rules:
+  caveat_transfer: "strict_preserve"
+  broadening: "forbidden"
+
+signal_suppression_thresholds:
+  stale_density_high: 0.5
+  stale_density_critical: 0.8
+  conflict_density_high: 0.5
+
+baseline_federation_currentness_rules:
+  stale_projection: "project_stale_caveated"
+  mismatch_projection: "project_drift_caveated"
+
+audit_exchange_evidence_requirements:
+  minimum_evidence_count: 1
+  allow_empty: false
+
+audit_replay_validation_rules:
+  on_mismatch: "cap_projection"
+  on_missing_context: "block"
+
+controller_cap_rules:
+  audit_mismatch_cap: "downgrade_to_review_only"
+
+sovereignty_override_rules:
+  council_override: "forbidden"
+  audit_override: "forbidden"
