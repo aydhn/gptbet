@@ -52,3 +52,31 @@ It includes:
 
 **Design Principles:**
 Exchanged assurance and narratives remain bounded and non-authoritative. Debt aging, replay evidence, and no-safe visibility consistently dominate assurance quality, preventing overly polished or deceitful executive summaries.
+
+## Phase 94: Sovereign Governance Trace Routing
+
+Phase 94 introduces the `trace_routing` katmanı.
+
+The **Trace Routing Katmanı** aims to provide boundary and linkage across various proof catalogs, observatory exchanges, integrity councils and overall governance trace routes.
+
+### Components
+- **Proof Catalog Federations**: Links individual catalogs with currentness and lineage tracking without acting as a single runtime authority.
+- **Observatory Signal Exchanges**: Uses bounded signal exchange, preventing scope widening and ensuring caveats are not dropped.
+- **Narrative Integrity Councils**: Resolves integrity disputes over evidence gaps, preventing raw overrides of local sovereignty.
+- **Sovereign Governance Trace Routers**: Routes drilldowns and traces while preserving caveats and explicitly capturing No-Safe recovery hints.
+
+### Key Commands
+
+```bash
+python -m sports_signal_bot.main trace-routing run-trace-routing-pass
+python -m sports_signal_bot.main trace-routing preview-proof-federations
+python -m sports_signal_bot.main trace-routing preview-observatory-signal-exchanges
+python -m sports_signal_bot.main trace-routing preview-integrity-councils
+python -m sports_signal_bot.main trace-routing preview-trace-routers
+python -m sports_signal_bot.main trace-routing preview-trace-routing-health
+python -m sports_signal_bot.main trace-routing list-trace-routing-strategies
+```
+
+### Safety & Sovereignty Principles
+- Federated proofs, exchanged signals, and trace routes remain bounded and non-authoritative.
+- Freshness, proof sufficiency, and no-safe visibility dominate trace quality. No stale trace edges or overridden local denies can grant strong approvals.

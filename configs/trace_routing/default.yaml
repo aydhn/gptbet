@@ -1,0 +1,1 @@
+default_trace_routing_strategy: "BalancedProofSignalFederationStrategy"

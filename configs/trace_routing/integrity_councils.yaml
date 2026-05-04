@@ -1,0 +1,4 @@
+integrity_council_quorum_and_evidence_rules:
+  required_evidence_sources: ["proof", "atlas", "signal"]
+integrity_council_precedence_rules:
+  prioritize_caps: true
