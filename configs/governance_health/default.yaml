@@ -1,0 +1,25 @@
+default_governance_health_strategy: "ConservativeHealthCompilationStrategy"
+portfolio_priority_rules:
+  strict_ordering: true
+  allow_opportunistic_cleanup: true
+replay_fabric_capacity_rules:
+  max_load_percentage: 90
+  fail_fast_on_mismatch: true
+replay_fidelity_requirements:
+  minimum_acceptable: "matched"
+convergence_band_rules:
+  require_selected_successor: true
+convergence_debt_thresholds:
+  weak_convergence_limit: 5
+lineage_integrity_rules:
+  allow_gaps: false
+compiler_pass_rules:
+  sovereignty_pass_required: true
+compiler_penalty_rules:
+  stale_replay_penalty_severity: "high"
+restoration_ceiling_rules:
+  max_ceiling_on_stale: "low"
+sovereignty_preservation_rules:
+  strict_enforcement: true
+no_safe_hint_visibility_rules:
+  always_visible: true
