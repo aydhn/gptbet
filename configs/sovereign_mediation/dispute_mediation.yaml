@@ -1,0 +1,6 @@
+dispute_evidence_requirements:
+  min_evidence_sets: 2
+dispute_replay_validation_rules:
+  require_exact_match: true
+sovereignty_override_rules:
+  allow_override: false

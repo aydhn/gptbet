@@ -1,0 +1,3 @@
+baseline_mesh_currentness_rules:
+  max_drift_allowed: "1h"
+  require_successor_visibility: true
