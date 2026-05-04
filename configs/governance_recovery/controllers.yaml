@@ -1,0 +1,2 @@
+controller_rules:
+  escalate_on_stale_federation: true

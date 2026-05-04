@@ -1,0 +1,5 @@
+successor_resolution_requirements:
+  require_lineage: true
+  evidence_required: true
+successor_lineage_rules:
+  preserve_caveats: true

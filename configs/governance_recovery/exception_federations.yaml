@@ -1,0 +1,5 @@
+exception_federation_currentness_rules:
+  stale_exception_timeout: 86400
+  federation_expiry_action: "project_review_only"
+exception_expiry_and_supersession_rules:
+  require_successor_link_for_supersession: true
