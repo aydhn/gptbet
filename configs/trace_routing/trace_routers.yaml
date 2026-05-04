@@ -1,0 +1,14 @@
+trace_router_node_edge_freshness_rules:
+  edge_staleness_action: "degrade"
+trace_query_caveat_rules:
+  omit_caveats: false
+dashboard_exchange_mesh_rules:
+  require_no_safe_visibility: true
+narrative_integrity_rules:
+  preserve_all_warnings: true
+sovereignty_visibility_rules:
+  hide_local_deny: false
+no_safe_view_requirements:
+  mandatory: true
+audience_profile_constraints:
+  strict: true

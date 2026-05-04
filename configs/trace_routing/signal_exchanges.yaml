@@ -1,0 +1,3 @@
+signal_exchange_freshness_and_scope_rules:
+  max_freshness_delay: "1m"
+  allow_scope_widening: false

@@ -1,0 +1,4 @@
+active_strategies:
+  - "BalancedProofSignalFederationStrategy"
+  - "ConservativeTraceRouterStrategy"
+  - "IntegrityCouncilFirstStrategy"

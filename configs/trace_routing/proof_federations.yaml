@@ -1,0 +1,3 @@
+proof_federation_currentness_rules:
+  stale_tolerance_seconds: 0
+  caveat_propagation_enabled: true
