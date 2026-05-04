@@ -1,0 +1,2 @@
+synthesis_pass_rules:
+  require_all_passes: true

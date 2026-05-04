@@ -1,0 +1,1 @@
+default_resilience_synthesis_strategy: ConservativeResilienceSynthesisStrategy

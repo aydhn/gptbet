@@ -140,6 +140,13 @@ except ImportError as e:
 
 try:
     from sports_signal_bot.cli_governance_health import app as governance_health_app
+except ImportError as e:
+    print(f"Failed to import governance health cli: {e}")
+
+try:
+    from sports_signal_bot.cli_resilience_synthesis import app as resilience_synthesis_app
+    app.add_typer(resilience_synthesis_app, name="resilience-synthesis", help="Phase 89: Resilience Synthesis")
+
     app.add_typer(governance_health_app, name="governance-health", help="Phase 88: Governance Health")
 except ImportError as e:
     print(f"Failed to import governance health cli: {e}")
