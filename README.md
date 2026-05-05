@@ -99,3 +99,28 @@ The `consistency_ledgers` layer (Phase 98) provides a federated, ledger-backed a
 * `python -m sports_signal_bot.main consistency-ledgers list-consistency-ledger-strategies`
 
 *Note: All federated alignment, tribunal routes, cleared evidence, and consistency ledger outputs remain bounded and non-authoritative. They do not override local sovereignty. Freshness, evidence sufficiency, and `no_safe_recovery_hint` visibility dominate consistency quality.*
+
+## Phase 99: Sovereign Governance Assurance Synthesizers
+
+**Purpose**
+The Assurance Synthesizers layer bounds and explains consistency federation, route council, and evidence clearing exchange decisions. It ensures that federated consistency, tribunal route choices, and evidence clearing outputs never override local sovereignty or drop `no_safe_recovery_hints`.
+
+**Key Components**
+- **Consistency Ledger Federations:** Connects ledgers while preserving contradiction lineages and freshness caps.
+- **Tribunal Route Councils:** Disciplined meshes that adjudicate route disputes and apply caps based on evidence.
+- **Evidence Clearing Exchanges:** Passes evidence between domains while preserving caveats and strict audience scopes.
+- **Governance Assurance Synthesizers:** Evaluates federations, councils, and exchanges to produce Non-Authoritative `AssuranceBands`.
+
+**Commands**
+```bash
+python -m sports_signal_bot.main assurance-synthesizers run-assurance-synthesizers-pass
+python -m sports_signal_bot.main assurance-synthesizers preview-consistency-federations
+python -m sports_signal_bot.main assurance-synthesizers preview-route-councils
+python -m sports_signal_bot.main assurance-synthesizers preview-clearing-exchanges
+python -m sports_signal_bot.main assurance-synthesizers preview-assurance-synthesizers
+```
+
+**Guardrails & Principles**
+- *Federated consistency, route council decisions, clearing exchanges and assurance outputs remain bounded and non-authoritative.*
+- *Freshness, evidence sufficiency and no-safe visibility dominate assurance synthesis quality.* Stale inputs or insufficient evidence aggressively cap assurance bands.
+- No-safe hints are *never* stripped from syntheses.
