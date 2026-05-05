@@ -124,3 +124,28 @@ python -m sports_signal_bot.main assurance-synthesizers preview-assurance-synthe
 - *Federated consistency, route council decisions, clearing exchanges and assurance outputs remain bounded and non-authoritative.*
 - *Freshness, evidence sufficiency and no-safe visibility dominate assurance synthesis quality.* Stale inputs or insufficient evidence aggressively cap assurance bands.
 - No-safe hints are *never* stripped from syntheses.
+
+## Sovereign Governance End-State Review (Phase 100)
+Bu katmanın amacı; assurance synthesizer federations, council closure meshes, ve evidence assurance exchanges aracılığı ile tüm governance yüzeyinin son durumunu explainable, replayable ve caveat-preserving end-state review derlemelerine dönüştürmektir.
+
+Bu sistem merkezi bir "final authority" (kesin hakem) kurmayı hedeflemez. Aksine;
+- Freshness eksikliği
+- Kanıt yetersizliği (evidence gaps)
+- Çözülmemiş kalıntılar (unresolved residues)
+- no_safe_recovery_hint gibi bilgilerin korunması
+gibi konuların, end-state review aşamasında ne kadar büyük bir öneme sahip olduğunu (kaliteyi nasıl domino ettiğini) gösterir.
+
+### Bileşenler
+- **Assurance Federation:** assurance synthesizers çıktılarını federasyon yapısı altında birleştirir.
+- **Council Closure Mesh:** council kararlarının döngüsünü (lifecycle) meshler (ağlar) aracılığı ile disiplinli bir şekilde kapatır.
+- **Evidence Assurance Exchange:** assurance paketlerinin sınırlı/güvenli (bounded) exchange yüzeylerinde paylaşımını sağlar.
+- **Sovereign Governance End-State Review Compiler:** tüm çıktıları alıp, non-authoritative bir "end-state" derler.
+
+### Komutlar
+```bash
+python -m sports_signal_bot.main end-state-review run-end-state-review-pass
+python -m sports_signal_bot.main end-state-review preview-assurance-federations
+python -m sports_signal_bot.main end-state-review preview-closure-meshes
+python -m sports_signal_bot.main end-state-review preview-assurance-exchanges
+python -m sports_signal_bot.main end-state-review preview-end-state-reviews
+```

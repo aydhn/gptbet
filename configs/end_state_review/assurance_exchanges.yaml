@@ -1,0 +1,4 @@
+assurance_exchange_scope_and_evidence_rules:
+  allow_scope_widening: false
+assurance_exchange_fairness_rules:
+  max_pressure: 0.8

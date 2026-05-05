@@ -39,5 +39,9 @@ app.add_typer(cli_consistency_ledgers.app, name="consistency-ledgers")
 from src.sports_signal_bot.cli_assurance_synthesizers import app as assurance_synthesizers_app
 app.add_typer(assurance_synthesizers_app, name="assurance-synthesizers", help="Sovereign Governance Assurance Synthesizers (Phase 99)")
 
+
+from sports_signal_bot.cli_end_state_review import app as end_state_review_app
+app.add_typer(end_state_review_app, name="end-state-review", help="Phase 100: End State Review")
+
 if __name__ == "__main__":
     app()

@@ -1,0 +1,4 @@
+closure_mesh_quorum_and_evidence_rules:
+  minimum_evidence_completeness: "partial"
+closure_mesh_checkpoint_rules:
+  require_all_nodes_resolved: false

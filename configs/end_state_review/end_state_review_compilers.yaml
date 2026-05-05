@@ -1,0 +1,4 @@
+end_state_review_pass_rules:
+  require_sovereignty_pass: true
+end_state_review_penalty_rules:
+  stale_input_penalty: "cap_to_bounded"
