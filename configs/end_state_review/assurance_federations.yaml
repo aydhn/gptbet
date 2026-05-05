@@ -1,0 +1,2 @@
+assurance_federation_currentness_rules:
+  require_all_current: true

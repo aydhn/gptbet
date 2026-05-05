@@ -1,0 +1,10 @@
+context_bundle_freshness_rules:
+  max_age_seconds: 3600
+sovereignty_visibility_rules:
+  enforce: true
+no_safe_view_requirements:
+  preserve_hints: true
+audience_profile_constraints:
+  strict_match: false
+unresolved_residue_handling_rules:
+  allow_clean_closure: false
