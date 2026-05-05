@@ -1,0 +1,2 @@
+artifact_normalization_rules:
+  stable_sort: true

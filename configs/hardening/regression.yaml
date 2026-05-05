@@ -1,0 +1,3 @@
+regression_golden_rules:
+  exact_match_required: true
+  ignore_whitespace: false

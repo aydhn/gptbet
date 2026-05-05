@@ -1,0 +1,2 @@
+ci_release_blocking_rules:
+  block_on_critical: true
