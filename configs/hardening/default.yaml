@@ -1,0 +1,3 @@
+default_hardening_strategy: conservative
+ci_strictness_level: high
+stale_golden_detection_threshold: 30d

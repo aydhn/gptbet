@@ -4,6 +4,8 @@ from rich.console import Console
 # Import the new assurance_exchange CLI app
 from sports_signal_bot.assurance_exchange.cli import app as assurance_exchange_app
 from sports_signal_bot.cli_evidence_atlas import app as evidence_atlas_app
+from sports_signal_bot.cli_hardening import app as hardening_app
+
 from sports_signal_bot.cli_trace_routing import app as trace_routing_app
 
 app = typer.Typer(help="Sports Signal Bot CLI")
@@ -11,6 +13,8 @@ console = Console()
 
 app.add_typer(assurance_exchange_app, name="assurance-exchange", help="Assurance Exchange operations")
 app.add_typer(evidence_atlas_app, name="evidence-atlas", help="Evidence Atlas operations")
+app.add_typer(hardening_app, name="hardening", help="Hardening operations")
+
 app.add_typer(trace_routing_app, name="trace-routing", help="Trace Routing operations")
 
 @app.command("smoke-run")
@@ -45,3 +49,6 @@ app.add_typer(end_state_review_app, name="end-state-review", help="Phase 100: En
 
 if __name__ == "__main__":
     app()
+
+from sports_signal_bot.cli_hardening import app as hardening_app
+app.add_typer(hardening_app, name="hardening", help="Post-100 Hardening Pack 01 Commands")

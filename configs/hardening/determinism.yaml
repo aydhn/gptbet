@@ -1,0 +1,4 @@
+deterministic_seed_rules:
+  fixed_seed: 42
+frozen_clock_rules:
+  fixed_timestamp: '2023-10-27T10:00:00Z'

@@ -149,3 +149,9 @@ python -m sports_signal_bot.main end-state-review preview-closure-meshes
 python -m sports_signal_bot.main end-state-review preview-assurance-exchanges
 python -m sports_signal_bot.main end-state-review preview-end-state-reviews
 ```
+
+## Post-100 Hardening Pack 01
+The Hardening Pack shifts focus from functional capability to deterministic execution, regression safety, and operational confidence. It enforces `no_safe` visibility, sovereignty precedence, and stale honesty without creating new override surfaces.
+Commands:
+- `python -m sports_signal_bot.main hardening run-hardening-pack-01`
+- `python -m sports_signal_bot.main hardening preview-hardening-health`

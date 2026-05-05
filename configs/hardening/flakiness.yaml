@@ -1,0 +1,2 @@
+flakiness_probe_rules:
+  run_cycles: 5

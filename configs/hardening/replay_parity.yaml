@@ -1,0 +1,2 @@
+replay_parity_rules:
+  allow_semantic_equivalence: true

@@ -1,0 +1,3 @@
+safety_invariant_rules:
+  no_safe_omission_severity: high
+  sovereignty_masking_severity: critical
