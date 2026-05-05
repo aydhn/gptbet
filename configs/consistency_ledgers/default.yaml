@@ -1,0 +1,10 @@
+default_consistency_ledger_strategy: "balanced"
+context_bundle_freshness_rules:
+  max_age_seconds: 3600
+  staleness_downgrade_action: "review_only"
+sovereignty_visibility_rules:
+  require_local_deny_preservation: true
+no_safe_view_requirements:
+  require_no_safe_hint_preservation: true
+audience_profile_constraints:
+  strict_matching_required: true

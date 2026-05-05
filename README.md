@@ -83,3 +83,19 @@ Key differences:
 - Alignment outputs, federated coherence, tribunal decisions, and broker exchanges remain bounded and non-authoritative.
 - Freshness, evidence sufficiency, and no-safe visibility dominate alignment quality.
 - Any freshness gap or missing evidence results in caps (e.g., `review_only_alignment`).
+
+## Phase 98: Sovereign Governance Consistency Ledgers
+
+The `consistency_ledgers` layer (Phase 98) provides a federated, ledger-backed approach to governance observability. It integrates alignment compilers, dispute tribunals, and evidence clearers into bounded structures without establishing a central authority.
+
+**Key Concepts:**
+* **Alignment Compiler Federations**: Combines multiple compilers while preserving ceilings, caveats, and staleness limits.
+* **Dispute Tribunal Meshes**: Routes context disputes across connected tribunals without widening scope. Pressure mechanisms can suppress or downgrade routes safely.
+* **Evidence Exchange Clearers**: Bounded matching of evidence requests to available listings, prioritizing fairness and completeness over raw capability.
+* **Consistency Ledgers**: Replayable logs tracking consistency shifts and contradictions across the governance surface.
+
+**Commands:**
+* `python -m sports_signal_bot.main consistency-ledgers run-consistency-ledgers-pass`
+* `python -m sports_signal_bot.main consistency-ledgers list-consistency-ledger-strategies`
+
+*Note: All federated alignment, tribunal routes, cleared evidence, and consistency ledger outputs remain bounded and non-authoritative. They do not override local sovereignty. Freshness, evidence sufficiency, and `no_safe_recovery_hint` visibility dominate consistency quality.*

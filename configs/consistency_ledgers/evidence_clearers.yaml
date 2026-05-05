@@ -1,0 +1,7 @@
+evidence_clearer_scope_and_evidence_rules:
+  require_exact_scope_match: true
+  minimum_completeness_for_strong_match: 0.9
+  allow_degraded_match_for_critical: true
+evidence_clearer_fairness_rules:
+  penalize_stale_listings: true
+  prioritize_aged_requests: true

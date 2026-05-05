@@ -1,0 +1,7 @@
+tribunal_mesh_quorum_and_evidence_rules:
+  minimum_evidence_completeness: 0.8
+  quorum_threshold_percentage: 0.6
+tribunal_mesh_routing_rules:
+  allow_scope_widening: false
+  downgrade_on_high_backlog: true
+  no_safe_route_priority: "highest"

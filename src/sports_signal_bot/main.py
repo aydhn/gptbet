@@ -29,5 +29,12 @@ app.add_typer(coherence_scoring_app, name="coherence-scoring", help="Phase 96: C
 from sports_signal_bot.cli_alignment_compilers import app as alignment_compilers_app
 app.add_typer(alignment_compilers_app, name="alignment-compilers", help="Phase 97: Alignment Compilers")
 
+
+
+
+from sports_signal_bot.consistency_ledgers import cli as cli_consistency_ledgers
+app.add_typer(cli_consistency_ledgers.app, name="consistency-ledgers")
+
+
 if __name__ == "__main__":
     app()

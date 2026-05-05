@@ -1,0 +1,7 @@
+consistency_ledger_entry_rules:
+  require_source_ref: true
+  preserve_caveats_on_entry: true
+contradiction_detection_rules:
+  detect_freshness_conflicts: true
+  detect_no_safe_conflicts: true
+  detect_sovereignty_conflicts: true

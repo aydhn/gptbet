@@ -1,0 +1,4 @@
+controllers:
+  suppress_stale_alignment_outputs: true
+  trigger_review_on_critical_contradiction: true
+  halt_clearing_on_critical_pressure: false
