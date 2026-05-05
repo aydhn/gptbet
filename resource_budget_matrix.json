@@ -1,0 +1,10 @@
+{
+  "governance_surfaces": {
+    "latency_ms": 100,
+    "memory_mb": 50
+  },
+  "trace_surfaces": {
+    "latency_ms": 200,
+    "memory_mb": 100
+  }
+}

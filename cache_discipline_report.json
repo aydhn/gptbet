@@ -1,0 +1,13 @@
+[
+  {
+    "cache_policy_id": "policy_01",
+    "cache_family": "trace_query_cache",
+    "namespace_ref": "default_ns",
+    "ttl_seconds": 300,
+    "invalidation_rule_refs": [],
+    "staleness_risk_level": "low",
+    "cache_scope": "global",
+    "cache_status": "cache_safe",
+    "warnings": []
+  }
+]

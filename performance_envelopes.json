@@ -1,0 +1,14 @@
+[
+  {
+    "performance_envelope_id": "env_01",
+    "envelope_family": "trace_query_envelope",
+    "target_surface_ref": "trace_runner",
+    "latency_budget_ms": 100.0,
+    "memory_budget_mb": 50.0,
+    "serialization_budget_ms": 10.0,
+    "io_budget_ms": 20.0,
+    "artifact_size_budget_kb": 500.0,
+    "envelope_status": "within_budget",
+    "warnings": []
+  }
+]
