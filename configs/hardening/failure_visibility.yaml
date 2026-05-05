@@ -1,0 +1,3 @@
+failure_visibility_rules:
+  blocked_lane_visibility_required: true
+  timeout_partial_completion_caveat_required: true
