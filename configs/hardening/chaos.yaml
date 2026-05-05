@@ -1,0 +1,9 @@
+default_chaos_hardening_strategy: "conservative"
+
+chaos_seed_rules:
+  require_explicit_seed: true
+  allow_random_fallback: false
+
+ci_chaos_release_blocking_rules:
+  fail_build_on_no_safe_omission: true
+  fail_build_on_sovereignty_masking: true

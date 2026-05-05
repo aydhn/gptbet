@@ -49,6 +49,9 @@ from sports_signal_bot.cli_performance_hardening import app as performance_harde
 app.add_typer(performance_hardening_app, name="performance-hardening", help="Post-100 Hardening Pack 02 Commands")
 app.add_typer(end_state_review_app, name="end-state-review", help="Phase 100: End State Review")
 
+from sports_signal_bot.chaos_hardening.cli import app as chaos_hardening_app
+app.add_typer(chaos_hardening_app, name="chaos-hardening", help="Post-100 Hardening Pack 04: Chaos Hardening")
+
 from sports_signal_bot.cli_concurrency_hardening import app as concurrency_hardening_app
 app.add_typer(concurrency_hardening_app, name="concurrency", help="Concurrency Hardening Pack 03")
 

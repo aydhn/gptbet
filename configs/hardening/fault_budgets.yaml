@@ -1,0 +1,3 @@
+fault_budget_rules:
+  max_recovery_time_ms: 5000
+  max_error_rate_percent: 5

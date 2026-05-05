@@ -187,3 +187,20 @@ This package enforces bounded parallelism, async ordering correctness, and race-
   - `preview-parallelism-report`
 
 Concurrency optimization is purely to support bounded scale, never at the cost of explainability, freshness guarantees, or context trace accuracy.
+
+## Post-100 Hardening Pack 04: Chaos Hardening & Recovery Honesty
+This pack establishes chaos engineering, controlled fault injection, degradation rehearsal design, and recovery honesty validation. It proves that the system fails closed, preserves caveats, maintains no-safe visibility, does not hide stale state, and does not overclaim recovery under fault conditions.
+
+Commands:
+```bash
+python -m sports_signal_bot.main chaos-hardening run-hardening-pack-04
+python -m sports_signal_bot.main chaos-hardening preview-chaos-probe-report
+python -m sports_signal_bot.main chaos-hardening preview-fault-injection-report
+python -m sports_signal_bot.main chaos-hardening preview-degradation-rehearsal-report
+python -m sports_signal_bot.main chaos-hardening preview-recovery-honesty-report
+python -m sports_signal_bot.main chaos-hardening preview-failure-visibility-report
+python -m sports_signal_bot.main chaos-hardening preview-chaos-hardening-health
+python -m sports_signal_bot.main chaos-hardening list-chaos-hardening-strategies
+```
+
+Why failure honesty matters: Graceful degradation is a safety property. Hiding failure creates false confidence, leading to catastrophic downstream effects.

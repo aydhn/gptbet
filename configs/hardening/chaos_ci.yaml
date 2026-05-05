@@ -1,0 +1,2 @@
+ci_chaos_strictness: "high"
+chaos_iteration_counts: 5

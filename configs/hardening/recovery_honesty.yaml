@@ -1,0 +1,3 @@
+recovery_honesty_rules:
+  treat_hidden_degradation_as_overclaim: true
+  treat_stale_fallback_as_overclaim: true
