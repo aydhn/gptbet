@@ -1,0 +1,4 @@
+timeout_and_cancellation_rules:
+  default_timeout_ms: 5000
+  require_explicit_cleanup: true
+  block_stale_partial_merges: true

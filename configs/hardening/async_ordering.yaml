@@ -1,0 +1,4 @@
+async_ordering_rules:
+  require_deterministic_merge: true
+  enforce_strict_lineage: true
+  allow_partial_joins: false

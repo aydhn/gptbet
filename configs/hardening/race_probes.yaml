@@ -1,0 +1,7 @@
+race_probe_rules:
+  perturbation_iterations: 10
+  strategies:
+    - random_shuffle
+    - reverse
+    - interleave
+  fixed_seed_base: 42

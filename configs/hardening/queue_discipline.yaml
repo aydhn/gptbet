@@ -1,0 +1,4 @@
+queue_backpressure_rules:
+  max_queue_depth: 1000
+  overflow_action: explicit_downgrade
+  starvation_monitoring: enabled

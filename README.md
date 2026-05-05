@@ -172,3 +172,18 @@ Commands:
 - `python -m sports_signal_bot.main performance-hardening preview-perf-regression-report`
 - `python -m sports_signal_bot.main performance-hardening preview-performance-hardening-health`
 - `python -m sports_signal_bot.main performance-hardening list-performance-hardening-strategies`
+
+## Post-100 Hardening Pack 03: Concurrency & Async Discipline
+This package enforces bounded parallelism, async ordering correctness, and race-condition probing across the Sovereign Governance framework. It ensures that concurrency mechanisms do not compromise freshness, caveat preservation, 'no-safe' visibility, or local sovereignty.
+
+* **Concurrency Guards vs Bounded Parallelism**: Guards protect specific shared resources or paths, while parallelism contracts bound the number of concurrent operations globally.
+* **Race Probes**: Systematic perturbation of execution schedules to find non-deterministic behavior.
+* **Async Discipline**: Strict rules for ordering, cancellation, timeout, and idempotency to ensure consistent, traceable, and explainable side effects.
+
+### Usage
+- Run the full suite: `python -m sports_signal_bot.main concurrency run-hardening-pack-03`
+- Previews:
+  - `preview-concurrency-guard-report`
+  - `preview-parallelism-report`
+
+Concurrency optimization is purely to support bounded scale, never at the cost of explainability, freshness guarantees, or context trace accuracy.
