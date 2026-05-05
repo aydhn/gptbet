@@ -45,6 +45,8 @@ app.add_typer(assurance_synthesizers_app, name="assurance-synthesizers", help="S
 
 
 from sports_signal_bot.cli_end_state_review import app as end_state_review_app
+from sports_signal_bot.cli_performance_hardening import app as performance_hardening_app
+app.add_typer(performance_hardening_app, name="performance-hardening", help="Post-100 Hardening Pack 02 Commands")
 app.add_typer(end_state_review_app, name="end-state-review", help="Phase 100: End State Review")
 
 if __name__ == "__main__":

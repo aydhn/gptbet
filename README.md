@@ -155,3 +155,20 @@ The Hardening Pack shifts focus from functional capability to deterministic exec
 Commands:
 - `python -m sports_signal_bot.main hardening run-hardening-pack-01`
 - `python -m sports_signal_bot.main hardening preview-hardening-health`
+
+## Performance Hardening Pack 02
+The Post-100 Hardening Pack 02 enforces performance envelopes, load profiling, hot paths, and bounded caching across the system.
+
+Performance features must remain correctness-safe:
+- Cache discipline is a safety feature, not just a performance hack.
+- We measure performance deviations and stale-hit intolerance to prevent correctness regressions.
+
+Commands:
+- `python -m sports_signal_bot.main performance-hardening run-hardening-pack-02`
+- `python -m sports_signal_bot.main performance-hardening preview-performance-envelope-report`
+- `python -m sports_signal_bot.main performance-hardening preview-load-profile-report`
+- `python -m sports_signal_bot.main performance-hardening preview-hot-path-report`
+- `python -m sports_signal_bot.main performance-hardening preview-cache-discipline-report`
+- `python -m sports_signal_bot.main performance-hardening preview-perf-regression-report`
+- `python -m sports_signal_bot.main performance-hardening preview-performance-hardening-health`
+- `python -m sports_signal_bot.main performance-hardening list-performance-hardening-strategies`
