@@ -1,0 +1,4 @@
+controllers_rules:
+  compilation_interval_seconds: 300
+  staleness_suppression_active: true
+  auto_remediation_enabled: false

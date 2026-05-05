@@ -1,0 +1,6 @@
+broker_exchange_scope_and_evidence_rules:
+  incomplete_evidence_action: "caveated_route"
+  stale_evidence_action: "revalidation_required_exchange"
+broker_exchange_fairness_rules:
+  max_request_aging_hours: 48
+  review_only_spillover_cap: 0.3

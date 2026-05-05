@@ -1,0 +1,13 @@
+alignment_pass_rules:
+  required_passes:
+    - "context_integrity_pass"
+    - "proof_freshness_pass"
+    - "trace_consistency_pass"
+    - "sovereignty_preservation_pass"
+    - "no_safe_visibility_pass"
+alignment_penalty_rules:
+  stale_context_severity: "high"
+  stale_proof_severity: "critical"
+  no_safe_visibility_failure_severity: "critical"
+context_bundle_freshness_rules:
+  max_age_minutes: 60

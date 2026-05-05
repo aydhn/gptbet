@@ -26,5 +26,8 @@ app.add_typer(context_assembly_app, name="context-assembly", help="Phase 95: Con
 from sports_signal_bot.cli_coherence_scoring import app as coherence_scoring_app
 app.add_typer(coherence_scoring_app, name="coherence-scoring", help="Phase 96: Coherence Scoring")
 
+from sports_signal_bot.cli_alignment_compilers import app as alignment_compilers_app
+app.add_typer(alignment_compilers_app, name="alignment-compilers", help="Phase 97: Alignment Compilers")
+
 if __name__ == "__main__":
     app()

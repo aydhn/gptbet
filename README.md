@@ -64,3 +64,22 @@ The coherence scoring layer builds upon trace routing and context assembly to pr
 
 **Design Principles:**
 Coherence outputs remain strictly bounded. Freshness gaps, evidence sufficiency limits, and any `no_safe_recovery_hint` will cap the coherence score, ensuring that missing evidence or stale context prevents false assurance from being published. Caveats and sovereignty rules are strictly preserved in federated outputs.
+
+## Phase 97: Sovereign Governance Alignment Compilers
+
+The Alignment Compilers layer aims to bring together coherence scorer federations, context dispute tribunals, and evidence broker exchanges into non-authoritative sovereign governance alignment outputs.
+
+Key differences:
+- **Coherence Federation**: Combines scores without overriding them, capturing penalties and staleness.
+- **Context Dispute Tribunal**: Processes context disputes with bounded replay reviews and evidence freshness.
+- **Evidence Broker Exchange**: Shares evidence without scope widening and preserves caveats.
+- **Governance Alignment Compiler**: Derives bounded, explainable alignment bands while preserving no-safe visibility and local sovereignty.
+
+**Commands:**
+- `python -m sports_signal_bot.main alignment-compilers run-alignment-compilers-pass`
+- `python -m sports_signal_bot.main alignment-compilers list-alignment-compiler-strategies`
+
+**Safety & Sovereignty Principles:**
+- Alignment outputs, federated coherence, tribunal decisions, and broker exchanges remain bounded and non-authoritative.
+- Freshness, evidence sufficiency, and no-safe visibility dominate alignment quality.
+- Any freshness gap or missing evidence results in caps (e.g., `review_only_alignment`).

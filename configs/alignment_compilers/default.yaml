@@ -1,0 +1,5 @@
+default_alignment_compiler_strategy: "ConservativeAlignmentCompilerStrategy"
+no_safe_view_requirements:
+  - "no_safe_recovery_hint_must_be_present"
+sovereignty_visibility_rules:
+  - "deny_must_not_be_overridden"
