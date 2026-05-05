@@ -1,0 +1,12 @@
+default_assurance_synthesizer_strategy: BalancedCouncilClearingSynthesisStrategy
+consistency_federation_currentness_rules: strict
+route_council_quorum_and_evidence_rules: true
+route_council_precedence_rules: strict
+clearing_exchange_scope_and_evidence_rules: true
+clearing_exchange_fairness_rules: baseline
+assurance_pass_rules: default
+assurance_penalty_rules: fast_degrade
+context_bundle_freshness_rules: strict
+sovereignty_visibility_rules: hard_stop
+no_safe_view_requirements: explicit
+audience_profile_constraints: bounded
