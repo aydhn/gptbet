@@ -1,0 +1,6 @@
+default_coherence_scoring_strategy: "ConservativeCoherenceScoringStrategy"
+context_federation_currentness_rules:
+  stale_limit_hours: 24
+freshness_chamber_quorum_and_refresh_rules:
+  min_quorum: 3
+  refresh_evidence_required: true

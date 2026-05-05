@@ -1,24 +1,3 @@
-
-### Evidence Atlas & Narrative Federations (Phase 92)
-
-The **Evidence Atlas** layer establishes a sovereign evidence topography combining multiple narratives into structured **Narrative Compiler Federations**, bounding exchanges into **Assurance Exchange Meshes**, and mediating disputes through **Replay Clearing Councils**. The overall **Sovereign Governance Evidence Atlas** integrates these into navigable, transparent, and sovereignty-preserving structures.
-
-* **Narrative Federations, Assurance Meshes, and Evidence Atlases:**
-  * Unlike singular narrative generation, Federations compile, overlay freshness constraints, and preserve caveats across outputs.
-  * Meshes provide bounded paths for transmitting assurance, dynamically degrading when under pressure without losing no-safe visibility.
-  * Clearing Councils evaluate bounded match conditions with strict quorum and precedence rules to resolve replay clearing conflicts safely.
-  * Evidence Atlases create non-authoritative (but verifiable) navigation overlays, linking debt, staleness, caveat constraints, and sovereignty rules across the governance map.
-
-* **Usage**:
-  * Run a full evidence atlas pass: `python -m sports_signal_bot.main evidence-atlas run-evidence-atlas-pass`
-  * Preview federations and meshes: `python -m sports_signal_bot.main evidence-atlas preview-narrative-federations`
-  * Check overall evidence atlas health: `python -m sports_signal_bot.main evidence-atlas preview-evidence-atlas-health`
-
-* **Why Federated Assurance Remains Bounded**:
-  Federated output explicitly cannot create new runtime authority; it merely navigates and synthesizes existing caveats, capping its strength by the weakest or stalest link to ensure safety.
-
-* **Why Freshness, Evidence, and No-Safe Visibility Dominate**:
-  An evidence atlas without strict freshness boundaries acts as a false map. Stale edges and unresolved conflicts force paths to downgrade (to `review_only` or `caveated`), and any `no_safe_recovery_hint` is strictly preserved to prevent executive summarization from hiding critical localized failures.
 # Sports Signal Bot
 
 (Omitted unchanged sections...)
@@ -38,20 +17,12 @@ It includes:
 **Design Principles:**
 Exchanged assurance and narratives remain bounded and non-authoritative. Debt aging, replay evidence, and no-safe visibility consistently dominate assurance quality, preventing overly polished or deceitful executive summaries.
 
-## Assurance Exchange Architecture (Phase 91)
-The assurance exchange layer provides visibility into the governance and resilience of the system by coordinating bounded, truth-preserving artifacts.
+## Evidence Atlas & Narrative Federations (Phase 92)
 
-It includes:
-- **Dashboard Exchanges**: For sharing assurance outputs, not authority.
-- **Federation Boards**: For deliberation and cap enforcement.
-- **Replay Clearing Layers**: For matching offers and requests bounded by evidence.
-- **Narrative Compilers**: For producing honest, caveat-preserving summaries tailored to distinct audiences.
+The **Evidence Atlas** layer establishes a sovereign evidence topography combining multiple narratives into structured **Narrative Compiler Federations**, bounding exchanges into **Assurance Exchange Meshes**, and mediating disputes through **Replay Clearing Councils**. The overall **Sovereign Governance Evidence Atlas** integrates these into navigable, transparent, and sovereignty-preserving structures.
 
-**Commands:**
-- `python -m sports_signal_bot.main assurance-exchange run-assurance-exchange-pass`
-
-**Design Principles:**
-Exchanged assurance and narratives remain bounded and non-authoritative. Debt aging, replay evidence, and no-safe visibility consistently dominate assurance quality, preventing overly polished or deceitful executive summaries.
+* **Usage**:
+  * Run a full evidence atlas pass: `python -m sports_signal_bot.main evidence-atlas run-evidence-atlas-pass`
 
 ## Phase 94: Sovereign Governance Trace Routing
 
@@ -70,16 +41,26 @@ The **Trace Routing Katmanı** aims to provide boundary and linkage across vario
 ```bash
 python -m sports_signal_bot.main trace-routing run-trace-routing-pass
 python -m sports_signal_bot.main trace-routing preview-proof-federations
-python -m sports_signal_bot.main trace-routing preview-observatory-signal-exchanges
-python -m sports_signal_bot.main trace-routing preview-integrity-councils
-python -m sports_signal_bot.main trace-routing preview-trace-routers
-python -m sports_signal_bot.main trace-routing preview-trace-routing-health
-python -m sports_signal_bot.main trace-routing list-trace-routing-strategies
 ```
 
 ### Safety & Sovereignty Principles
 - Federated proofs, exchanged signals, and trace routes remain bounded and non-authoritative.
-- Freshness, proof sufficiency, and no-safe visibility dominate trace quality. No stale trace edges or overridden local denies can grant strong approvals.
 
 ## Phase 95: Sovereign Governance Context Assembly
 This phase implements trace router federations, proof freshness councils, observatory exchange boards, and sovereign governance context assemblers. It ensures that trace paths, proof freshness, and signal exchanges are aggregated into explainable, non-authoritative context bundles that strictly preserve caveats, local deny sovereignty, and no-safe recovery hints.
+
+## Phase 96: Coherence Scoring
+
+The coherence scoring layer builds upon trace routing and context assembly to provide explainable, federated context evaluations. It introduces:
+
+- **Context Assembler Federations**: Groups context assemblers into bounded, non-authoritative federations.
+- **Freshness Dispute Chambers**: Structure to evaluate, decay, and rule on freshness disputes.
+- **Trace Evidence Brokers**: Match and route traces within constraints without widening scope.
+- **Sovereign Governance Coherence Scorers**: Measure internal consistency to produce bounded, explainable scores.
+
+**Commands:**
+- `python -m sports_signal_bot.main coherence-scoring run-coherence-scoring-pass`
+- `python -m sports_signal_bot.main coherence-scoring list-coherence-scoring-strategies`
+
+**Design Principles:**
+Coherence outputs remain strictly bounded. Freshness gaps, evidence sufficiency limits, and any `no_safe_recovery_hint` will cap the coherence score, ensuring that missing evidence or stale context prevents false assurance from being published. Caveats and sovereignty rules are strictly preserved in federated outputs.
