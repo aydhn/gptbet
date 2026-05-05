@@ -1,0 +1,2 @@
+degraded_exchange_handling_rules:
+  action: "downgrade_to_review_only"

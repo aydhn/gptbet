@@ -1,0 +1,5 @@
+families:
+  - internal_trace_evidence_broker
+  - bounded_trace_evidence_broker
+evidence_broker_scope_and_evidence_rules:
+  require_full_evidence: true

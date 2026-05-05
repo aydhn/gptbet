@@ -1,0 +1,6 @@
+families:
+  - federated_context_coherence_scorer
+  - composite_governance_coherence_scorer
+coherence_pass_rules:
+  require_sovereignty_preservation: true
+  require_no_safe_visibility: true

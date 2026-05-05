@@ -23,5 +23,8 @@ app.add_typer(proof_catalogs_app, name="proof-catalogs", help="Phase 93: Proof C
 from sports_signal_bot.cli_context_assembly import app as context_assembly_app
 app.add_typer(context_assembly_app, name="context-assembly", help="Phase 95: Context Assembly")
 
+from sports_signal_bot.cli_coherence_scoring import app as coherence_scoring_app
+app.add_typer(coherence_scoring_app, name="coherence-scoring", help="Phase 96: Coherence Scoring")
+
 if __name__ == "__main__":
     app()
