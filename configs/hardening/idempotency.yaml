@@ -1,0 +1,3 @@
+idempotency_rules:
+  enforce_on_side_effects: true
+  duplicate_write_tolerance_mode: strict_block

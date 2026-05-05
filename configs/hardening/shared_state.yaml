@@ -1,0 +1,4 @@
+shared_state_ownership_rules:
+  require_explicit_owner: true
+  allow_optimistic_access: false
+  track_mutation_lineage: true

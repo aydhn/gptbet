@@ -1,0 +1,5 @@
+default_concurrency_hardening_strategy: "ConservativeConcurrencyHardeningStrategy"
+ci_concurrency_release_blocking_rules:
+  block_on_any_race_detection: true
+  block_on_unprotected_shared_state: true
+  block_on_ordering_violation: true
