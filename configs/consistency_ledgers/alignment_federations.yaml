@@ -1,0 +1,5 @@
+alignment_federation_currentness_rules:
+  require_all_members_current: true
+  downgrade_on_partial_staleness: "weak_agreement"
+  ceiling_transfer_policy: "preserve"
+  penalty_transfer_policy: "preserve"
