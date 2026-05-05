@@ -1,0 +1,3 @@
+coherence_federation_currentness_rules:
+  stale_node_action: "federation_stale"
+  caveated_node_action: "federation_caveated"

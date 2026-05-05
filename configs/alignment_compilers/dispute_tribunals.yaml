@@ -1,0 +1,3 @@
+tribunal_quorum_and_evidence_rules:
+  minimum_quorum: 3
+  incomplete_evidence_action: "downgrade_to_review_only_context"
