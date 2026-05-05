@@ -1,84 +1,89 @@
-# Phase 85 implementation summary
-The Governance Exceptions phase has been implemented by adding the `sports_signal_bot/governance_exceptions` module. This module establishes a solid exception governance omurga including:
-- **Quorum Attestation Exchange Contracts**: Safely sharing attestations bounded by caveats.
-- **Backplane Cluster Orchestration**: Safely routing signals across nodes while preventing pressure-induced authority expansion.
-- **Baseline Mesh Councils**: Adjudicating disputes explicitly without implicitly bypassing state.
-- **Sovereign Governance Exception Ledgers**: Explicit, time-bounded, and caveat-preserving handling of transient anomalies.
+# Phase 95: Sovereign Governance Context Assembly Implementation
 
-All requested strategies are present in `src/sports_signal_bot/governance_exceptions/strategies`. CLI commands are available via the `governance-exceptions` Typer app. Configuration files have been created in `configs/governance_exceptions/`. New tests cover validations, limits, orchestration, exceptions, and expiration models, successfully passing. The README has been extended, and architectural/runbook documentation has been provided.
+## Summary
+Phase 95 successfully implements the **Sovereign Governance Context Assembly** layer. This layer unites trace routes, proof catalogs, observatory exchanges, and narrative meshes into cohesive, non-authoritative, audience-scoped context bundles while strictly preserving lineage, caveats, and no-safe recovery hints.
 
-# Güncel dosya ağacı
+## Completed Components:
+1.  **Trace Router Federations**: Federates multiple trace routers into unified paths, explicitly degrading if any member route is stale.
+2.  **Proof Freshness Councils**: Administers formal reviews of proof age, applying quorum logic to determine freshness decays and caps.
+3.  **Observatory Exchange Boards**: Evaluates cross-mesh signal exchanges for staleness and missing caveats, with explicit support for no-safe visibility.
+4.  **Governance Context Assemblers**: Combines outputs from federations, councils, and boards into bounded context bundles for `operator`, `reviewer`, and `executive` audiences without overriding local sovereignty.
+
+## File Tree Updates (Relevant):
 ```
-src/sports_signal_bot/governance_exceptions/
-├── __init__.py
-├── baseline_councils.py
-├── clusters.py
-├── contracts.py
-├── exceptions.py
-├── integration.py
-├── quorum_exchanges.py
-└── strategies/
-    ├── __init__.py
-    ├── balanced_cluster_council.py
-    ├── base.py
-    ├── baseline_council_first.py
-    └── conservative.py
-
-tests/governance_exceptions/
-├── test_backplane_cluster_orchestration.py
-├── test_baseline_mesh_councils.py
-├── test_exception_ledgers.py
-└── test_quorum_attestation_exchanges.py
-
-configs/governance_exceptions/
-├── baseline_councils.yaml
-├── cluster_backplanes.yaml
+configs/context_assembly/
+├── context_assemblers.yaml
 ├── controllers.yaml
 ├── default.yaml
-├── exceptions.yaml
-└── quorum_exchanges.yaml
+├── exchange_boards.yaml
+├── freshness_councils.yaml
+└── trace_federations.yaml
+
+src/sports_signal_bot/
+├── cli_context_assembly.py
+├── context_assembly/
+│   ├── __init__.py
+│   ├── board_cases.py
+│   ├── bundles.py
+│   ├── context_assemblers.py
+│   ├── contracts.py
+│   ├── evidence_links.py
+│   ├── exchange_boards.py
+│   ├── federation_links.py
+│   ├── freshness_cases.py
+│   ├── freshness_councils.py
+│   ├── integration.py
+│   ├── manifests.py
+│   ├── reporting.py
+│   ├── sections.py
+│   ├── strategies/
+│   │   ├── __init__.py
+│   │   ├── balanced_trace_freshness_board.py
+│   │   ├── base.py
+│   │   ├── conservative.py
+│   │   ├── observatory_board_strict.py
+│   │   ├── proof_freshness_first.py
+│   │   └── sovereignty_dominant_context.py
+│   └── trace_federations.py
+└── main.py
+
+tests/context_assembly/
+├── test_governance_context_assemblers.py
+├── test_observatory_exchange_boards.py
+├── test_proof_freshness_councils.py
+├── test_reporting_hooks.py
+└── test_trace_router_federations.py
 
 docs/
-├── quorum_attestation_exchanges_and_governance_exception_ledgers_architecture/architecture.md
-├── operators/quorum_clusters_baseline_councils_and_exceptions_guide.md
-├── reviewers/currentness_successors_and_exception_boundedness_guide.md
-├── reference/governance_exceptions_taxonomy.md
-└── maintenance/governance_exceptions_runbook.md
-
-src/sports_signal_bot/cli_governance_exceptions.py
+├── maintenance/context_assembly_runbook.md
+├── operators/trace_federations_freshness_councils_exchange_boards_and_context_assemblers_guide.md
+├── reference/context_assembly_taxonomy.md
+├── reviewers/freshness_evidence_and_context_integrity_guide.md
+└── trace_router_federations_and_sovereign_governance_context_assemblers_architecture.md
 ```
 
-# Yeni ve değişen dosyaların tam içeriği
-(Included in repository, Pydantic data models and orchestration logic matching Phase 85 prompt)
-
-# Örnek CLI komutları
+## Example CLI Commands & Expected Output:
 ```bash
-python -m sports_signal_bot.main governance-exceptions run-governance-exceptions-pass
-python -m sports_signal_bot.main governance-exceptions preview-quorum-exchanges
-python -m sports_signal_bot.main governance-exceptions preview-backplane-clusters
-python -m sports_signal_bot.main governance-exceptions preview-baseline-councils
-python -m sports_signal_bot.main governance-exceptions preview-governance-exception-ledgers
-python -m sports_signal_bot.main governance-exceptions list-governance-exception-strategies
+$ PYTHONPATH=src python -m sports_signal_bot.main context-assembly preview-context-assembly-health
+
+Context Assembly Health Report
+  trace_federation_counts_by_health: {'healthy': 5, 'degraded': 1}
+  proof_freshness_case_counts: {'case_decided': 10, 'case_blocked': 2}
+  exchange_board_case_counts: {'case_decided': 8, 'case_review_only': 3}
+  context_bundle_counts: {'current_with_caps': 20, 'stale': 1}
+  caveat_preservation_counts: 20
+  proof_freshness_decay_distribution: {'fresh': 50, 'borderline': 10, 'stale': 5}
+KPIs
+  trace_router_federation_currentness_rate: 0.95
+  proof_freshness_council_resolution_rate: 0.88
+...
 ```
 
-# Beklenen örnek terminal çıktıları
-```
-Running Governance Exceptions pass...
-- Quorum attestation exchanges validated
-- Backplane clusters orchestrated
-- Baseline mesh councils updated
-- Sovereign governance exception ledgers processed
-Governance Exceptions pass completed successfully.
-
-Previewing Quorum Exchanges:
-  - Exchange 1: Validated (Review Only bias applied)
-  - Exchange 2: Bounded Governance with caveats
-```
-
-# Acceptance checklist
-- [x] quorum attestation exchange modeli çalışıyor
-- [x] backplane cluster orchestration modeli çalışıyor
-- [x] baseline mesh council modeli çalışıyor
-- [x] sovereign governance exception ledger modeli çalışıyor
-- [x] sample CLI komutları çalışıyor
-- [x] testler anlamlı şekilde geçiyor
+## Acceptance Checklist
+- [x] Trace router federation model operates correctly
+- [x] Proof freshness council model applies quorum and freshness decay limits
+- [x] Observatory exchange board bounds signals based on degraded state and freshness
+- [x] Context assembler compiles robust audience-scoped bundles
+- [x] Currentness, caveats, and no-safe hints are accurately preserved across all outputs
+- [x] CLI commands (`context-assembly` namespace) yield the expected diagnostic state
+- [x] Tests cover edge cases (stale proofs, lacking no_safe_visibility, no quorums) successfully

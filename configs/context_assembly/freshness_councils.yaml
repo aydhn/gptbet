@@ -1,0 +1,21 @@
+council_families:
+  - proof_currentness_council
+  - proof_decay_review_council
+  - proof_refresh_requirement_council
+  - sovereignty_warning_proof_council
+  - no_safe_visibility_proof_council
+  - replay_proof_freshness_council
+  - narrative_support_proof_council
+case_families:
+  - stale_proof_case
+  - borderline_freshness_case
+  - proof_refresh_gap_case
+  - proof_trace_gap_case
+  - sovereignty_visibility_proof_case
+  - no_safe_visibility_proof_case
+  - conflicting_proof_freshness_case
+  - dashboard_proof_drift_case
+freshness_rules:
+  no_quorum_no_strong_affirmation: true
+  stale_proof_no_strong_approval: true
+  no_safe_warnings_explicitly_preserved: true

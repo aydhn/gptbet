@@ -1,0 +1,13 @@
+controllers:
+  trace_federation_controller:
+    enabled: true
+    interval_seconds: 300
+  freshness_council_controller:
+    enabled: true
+    interval_seconds: 600
+  exchange_board_controller:
+    enabled: true
+    interval_seconds: 600
+  context_assembly_controller:
+    enabled: true
+    interval_seconds: 300

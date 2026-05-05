@@ -20,5 +20,8 @@ def smoke_run():
 from sports_signal_bot.cli_proof_catalogs import app as proof_catalogs_app
 app.add_typer(proof_catalogs_app, name="proof-catalogs", help="Phase 93: Proof Catalogs")
 
+from sports_signal_bot.cli_context_assembly import app as context_assembly_app
+app.add_typer(context_assembly_app, name="context-assembly", help="Phase 95: Context Assembly")
+
 if __name__ == "__main__":
     app()

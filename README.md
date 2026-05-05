@@ -80,3 +80,6 @@ python -m sports_signal_bot.main trace-routing list-trace-routing-strategies
 ### Safety & Sovereignty Principles
 - Federated proofs, exchanged signals, and trace routes remain bounded and non-authoritative.
 - Freshness, proof sufficiency, and no-safe visibility dominate trace quality. No stale trace edges or overridden local denies can grant strong approvals.
+
+## Phase 95: Sovereign Governance Context Assembly
+This phase implements trace router federations, proof freshness councils, observatory exchange boards, and sovereign governance context assemblers. It ensures that trace paths, proof freshness, and signal exchanges are aggregated into explainable, non-authoritative context bundles that strictly preserve caveats, local deny sovereignty, and no-safe recovery hints.
