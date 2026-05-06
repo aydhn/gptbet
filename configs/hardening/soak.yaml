@@ -1,0 +1,6 @@
+default_endurance_hardening_strategy: "ConservativeEnduranceHardeningStrategy"
+soak_cycle_rules:
+  min_cycles: 10
+  require_clean_finality: true
+ci_extended_run_release_blocking_rules:
+  block_on_unstable: true

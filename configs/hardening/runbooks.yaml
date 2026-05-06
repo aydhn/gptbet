@@ -1,0 +1,4 @@
+runbook_verification_rules:
+  strictness: "high"
+residue_visibility_rules:
+  visibility_strictness: "high"
