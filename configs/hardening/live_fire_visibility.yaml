@@ -1,0 +1,6 @@
+live_fire_visibility_rules:
+  no_safe_required: true
+visibility_gap_severity_rules:
+  gap_is_critical: true
+executive_summary_honesty_rules:
+  hide_burden: false

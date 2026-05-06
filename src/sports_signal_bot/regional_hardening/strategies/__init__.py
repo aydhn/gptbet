@@ -1,0 +1,3 @@
+"""
+Strategies for Regional Hardening.
+"""

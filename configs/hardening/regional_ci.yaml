@@ -1,0 +1,3 @@
+ci_regional_release_blocking_rules:
+  block_on_stale_target: true
+  block_on_hidden_residue: true

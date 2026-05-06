@@ -1,0 +1,4 @@
+cutover_wave_rules:
+  mandatory_waves: 3
+residue_visibility_rules:
+  must_be_visible: true
