@@ -69,5 +69,8 @@ from sports_signal_bot.cli_hardening import app as hardening_app
 app.add_typer(hardening_app, name="hardening", help="Post-100 Hardening Pack 01 Commands")
 from sports_signal_bot.regional_hardening_cli import app as regional_hardening_app
 app.add_typer(regional_hardening_app, name="regional-hardening", help="Post-100 Hardening Pack 08: Regional Hardening")
+from sports_signal_bot.cli_geo_hardening import app as geo_hardening_app
+app.add_typer(geo_hardening_app, name="geo-hardening", help="Phase 109: Geo Hardening")
+
 if __name__ == "__main__":
     app()

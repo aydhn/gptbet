@@ -1,0 +1,3 @@
+# Taxonomy
+
+Geo hardening terminology.

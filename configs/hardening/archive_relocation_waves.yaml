@@ -1,0 +1,5 @@
+relocation_wave_integrity_rules:
+  require_replay_support: true
+  require_rollback_validation: true
+residue_visibility_rules:
+  allow_unresolved_residue: false

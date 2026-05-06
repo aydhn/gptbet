@@ -1,0 +1,5 @@
+active_active_symmetry_rules:
+  require_visibility_symmetry: true
+  allow_dual_writer_risk: false
+visibility_gap_severity_rules:
+  no_safe_omission_severity: "critical"
