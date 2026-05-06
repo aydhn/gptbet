@@ -1,0 +1,5 @@
+default_regional_resilience_strategy: conservative
+failover_checkpoint_rules:
+  strict: true
+stale_region_rejection_rules:
+  reject_if_lag_exceeds_ms: 1000

@@ -1,2 +1,1 @@
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-python -m pytest tests/governance_exceptions/
+poetry run pytest tests/regional_hardening/
