@@ -1,0 +1,4 @@
+executive_summary_honesty_rules:
+  hide_burden: false
+ci_ops_release_blocking_rules:
+  block_on_critical_gap: true

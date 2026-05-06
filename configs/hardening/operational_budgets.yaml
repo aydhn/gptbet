@@ -1,0 +1,2 @@
+operational_budgets:
+  max_escalation_lag_minutes: 30

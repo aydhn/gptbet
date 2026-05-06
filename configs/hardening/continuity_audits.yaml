@@ -1,0 +1,7 @@
+continuity_audit_rules:
+  require_evidence: true
+continuity_gap_severity_rules:
+  no_safe_omission: "high"
+  sovereignty_masking: "critical"
+residue_visibility_rules:
+  hidden_residue_allowed: false

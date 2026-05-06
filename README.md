@@ -217,3 +217,8 @@ This hardening pack focuses on soak endurance, long-horizon drift detection, arc
 * `python -m sports_signal_bot.main endurance-hardening run-hardening-pack-05`
 * `python -m sports_signal_bot.main endurance-hardening preview-soak-report`
 * `python -m sports_signal_bot.main endurance-hardening preview-drift-report`
+
+### Post-100 Hardening Pack 06
+- Focuses on operator readiness, escalation ladders, disaster recovery rehearsals, and governance continuity.
+- Emphasizes operational honesty, ensuring continuity and runbooks are reliable safety features.
+- Commands: `run-hardening-pack-06`, `preview-operator-readiness-drill-report`, `preview-disaster-recovery-report`, etc.

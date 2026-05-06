@@ -1,0 +1,4 @@
+disaster_recovery_checkpoint_rules:
+  require_freshness: true
+stale_backup_rejection_rules:
+  reject_older_than_minutes: 60
