@@ -1,0 +1,4 @@
+team_handoff_and_ack_rules:
+  require_acknowledgement: true
+  require_explicit_owner: true
+  preserve_freshness_note: true

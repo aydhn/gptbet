@@ -1,0 +1,8 @@
+visibility_wargame_rules:
+  require_no_safe_maintenance: true
+  require_sovereignty_maintenance: true
+visibility_gap_severity_rules:
+  loss_no_safe_is_critical: true
+  loss_sovereignty_is_critical: true
+executive_summary_honesty_rules:
+  reject_suppressed_signals: true

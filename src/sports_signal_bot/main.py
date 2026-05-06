@@ -61,6 +61,10 @@ app.add_typer(endurance_hardening_app, name="endurance-hardening", help="Post-10
 from sports_signal_bot.cli_operational_hardening import app as operational_hardening_app
 app.add_typer(operational_hardening_app, name="operational-hardening", help="Post-100 Hardening Pack 06")
 
+
+from sports_signal_bot.cli_migration_hardening import app as migration_hardening_app
+app.add_typer(migration_hardening_app, name="migration-hardening", help="Post-100 Hardening Pack 07: Migration Hardening")
+
 if __name__ == "__main__":
     app()
 
