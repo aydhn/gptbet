@@ -58,8 +58,12 @@ app.add_typer(concurrency_hardening_app, name="concurrency", help="Concurrency H
 from sports_signal_bot.cli_endurance_hardening import app as endurance_hardening_app
 app.add_typer(endurance_hardening_app, name="endurance-hardening", help="Post-100 Hardening Pack 05: Endurance Hardening")
 
+from sports_signal_bot.cli_operational_hardening import app as operational_hardening_app
+app.add_typer(operational_hardening_app, name="operational-hardening", help="Post-100 Hardening Pack 06")
+
 if __name__ == "__main__":
     app()
+
 
 from sports_signal_bot.cli_hardening import app as hardening_app
 app.add_typer(hardening_app, name="hardening", help="Post-100 Hardening Pack 01 Commands")

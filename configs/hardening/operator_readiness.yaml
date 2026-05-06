@@ -1,0 +1,4 @@
+default_operational_readiness_strategy: "ConservativeOperationalHardeningStrategy"
+operator_drill_rules:
+  require_scenario: true
+  allow_skip_manual_steps: false

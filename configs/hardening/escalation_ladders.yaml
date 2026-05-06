@@ -1,0 +1,3 @@
+escalation_timeout_and_owner_rules:
+  max_timeout_minutes: 15
+  require_explicit_owner: true
