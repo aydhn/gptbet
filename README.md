@@ -275,3 +275,15 @@ The system now includes a Geo Resilience Architecture, specifically focusing on 
 - Asymmetry in active-active setups is expected, measured, and surfaces divergence.
 - Archive relocation is partitioned into auditable waves with proven rollback paths.
 - Operator coverage gaps are treated as structural risks, not organizational footnotes.
+
+## Post-100 Hardening Pack 10
+
+This pack introduces geo quorum hardening, focusing on regional quorum drills, active-passive rehearsals, global operator coverage synthesis, and rolling evacuation audit chains.
+
+Quorum honesty matters because a system cannot claim to be highly available if it relies on stale passive targets or unresolved residues during regional failovers.
+Global operator coverage is a safety feature to ensure continuous operation across timezones without seams or gaps in handoffs.
+
+To run the pack:
+```bash
+python -m sports_signal_bot.main geo-quorum-hardening run-hardening-pack-10
+```

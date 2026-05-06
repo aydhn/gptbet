@@ -1,0 +1,38 @@
+default_geo_quorum_strategy: "conservative"
+
+quorum_sufficiency_rules:
+  explicit_evidence_required: true
+  reject_stale_members: true
+  caveat_propagation_strictness: "high"
+
+active_passive_readiness_rules:
+  stale_passive_rejection_strict: true
+  require_measured_readiness: true
+  explicit_rollback_path_required: true
+
+coverage_synthesis_rules:
+  ownerless_critical_window_severity: "blocker"
+  escalation_unreachable_severity: "gap"
+  stale_calendar_data_severity: "caveat"
+
+evacuation_chain_rules:
+  explicit_wave_scope_required: true
+  broken_dependency_severity: "broken"
+  no_safe_continuity_preserved: true
+
+stale_passive_rejection_rules:
+  max_lag_seconds: 300
+
+visibility_gap_severity_rules:
+  no_safe_omission_severity: "blocker"
+
+residue_visibility_rules:
+  hidden_residue_severity: "blocker"
+
+executive_summary_honesty_rules:
+  strict_honesty_required: true
+
+ci_geo_quorum_release_blocking_rules:
+  block_on_insufficient_quorum: true
+  block_on_stale_passive_target: true
+  block_on_hidden_coverage_seam_gap: true
