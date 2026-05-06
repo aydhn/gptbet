@@ -1,0 +1,3 @@
+geo_resilience_budget_rules:
+  lag_budget_seconds: 300
+  asymmetry_budget_percentage: 1

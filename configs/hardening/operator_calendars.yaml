@@ -1,0 +1,5 @@
+operator_calendar_coverage_rules:
+  require_explicit_owner: true
+  max_coverage_gap_minutes: 0
+executive_summary_honesty_rules:
+  hide_responsibility_chain: false

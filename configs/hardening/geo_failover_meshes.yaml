@@ -1,0 +1,6 @@
+default_geo_resilience_strategy: "conservative"
+geo_mesh_checkpoint_rules:
+  require_node_freshness: true
+  max_cross_region_lag_seconds: 60
+stale_region_rejection_rules:
+  stale_threshold_seconds: 120
