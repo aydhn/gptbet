@@ -204,3 +204,16 @@ python -m sports_signal_bot.main chaos-hardening list-chaos-hardening-strategies
 ```
 
 Why failure honesty matters: Graceful degradation is a safety property. Hiding failure creates false confidence, leading to catastrophic downstream effects.
+
+## Post-100 Hardening Pack 05 (Endurance Hardening)
+
+This hardening pack focuses on soak endurance, long-horizon drift detection, archival integrity verification, and operator runbook hardening.
+
+* **Why Long-run Honesty Matters**: The system needs to prove that it remains deterministic-enough, bounded, fail-closed, and stale-risk-aware over extended continuous runtime, not just short test bursts.
+* **Why Archives and Runbooks are Safety Features**: Operator runbooks ensure all operational paths are explicitly modeled and verified, rather than relying on tribal knowledge. Lineage-preserving archives guarantee auditability and regression detection even after long horizons.
+* **Endurance vs Others**: Soak endurance focuses on sustained stress; long-horizon drift detects structural divergence; archival integrity ensures snapshots are safe; runbook verification ensures operator procedures are correct.
+
+**Commands**:
+* `python -m sports_signal_bot.main endurance-hardening run-hardening-pack-05`
+* `python -m sports_signal_bot.main endurance-hardening preview-soak-report`
+* `python -m sports_signal_bot.main endurance-hardening preview-drift-report`

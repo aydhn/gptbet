@@ -1,0 +1,5 @@
+drift_threshold_rules:
+  latency_drift_max_ms: 50
+  memory_drift_max_mb: 100
+stale_archive_block_rules:
+  block_stale: true

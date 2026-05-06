@@ -1,0 +1,3 @@
+endurance_budgets:
+  max_drift_pct: 5
+  max_residue_growth: 10

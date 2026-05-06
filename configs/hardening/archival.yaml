@@ -1,0 +1,5 @@
+archive_hash_and_retention_rules:
+  hash_mode: "sha256"
+  retention_window_days: 90
+archive_restore_rules:
+  smoke_check_policy: "strict"
