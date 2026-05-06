@@ -1,0 +1,3 @@
+recovery_chain_integrity_rules:
+  require_lineage: true
+  reject_broken_dependency: true

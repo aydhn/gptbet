@@ -222,3 +222,10 @@ This hardening pack focuses on soak endurance, long-horizon drift detection, arc
 - Focuses on operator readiness, escalation ladders, disaster recovery rehearsals, and governance continuity.
 - Emphasizes operational honesty, ensuring continuity and runbooks are reliable safety features.
 - Commands: `run-hardening-pack-06`, `preview-operator-readiness-drill-report`, `preview-disaster-recovery-report`, etc.
+
+
+## Post-100 Hardening Pack 07
+- **Purpose**: Establish and verify disaster migration lanes, multi-team coordination drills, archival recovery chains, and governance visibility war-games.
+- **Why Migration Honesty Matters**: To prevent treating partial restores as full recoveries and to enforce explicit rollback paths.
+- **Why Cross-Team Visibility is a Safety Feature**: Ensures context (caveats, sovereignty notes) is preserved across role handoffs during crises.
+- **Usage**: `python -m sports_signal_bot.main migration-hardening run-hardening-pack-07`

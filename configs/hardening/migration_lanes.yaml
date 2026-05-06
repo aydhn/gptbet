@@ -1,0 +1,8 @@
+default_migration_resilience_strategy: ConservativeMigrationHardeningStrategy
+migration_checkpoint_rules:
+  require_source_freshness: true
+  require_rollback_path: true
+stale_source_rejection_rules:
+  reject_on_stale: true
+ci_migration_release_blocking_rules:
+  block_on_gapped_lane: true
