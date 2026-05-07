@@ -1,0 +1,4 @@
+worldwide_audit_calendar_rules:
+  require_explicit_seam_gaps: true
+  preserve_timezone_handoff_notes: true
+  allow_real_ownership_gap_smoothing: false

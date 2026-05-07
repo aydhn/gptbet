@@ -1,0 +1,6 @@
+quorum_corridor_rules:
+  carry_forward_caveats: true
+  preserve_no_safe_continuity: true
+  preserve_sovereignty_continuity: true
+  hide_asymmetry: false
+  allow_lagged_edge_clean_corridor: false
