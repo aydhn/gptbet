@@ -77,5 +77,8 @@ from src.sports_signal_bot.cli_geo_quorum_hardening import app as geo_quorum_har
 
 app.add_typer(geo_quorum_hardening_app, name="geo-quorum-hardening", help="Post-100 Hardening Pack 10: Geo Quorum Hardening")
 
+from sports_signal_bot.cli_global_hardening import app as global_hardening_app
+app.add_typer(global_hardening_app, name="global-hardening", help="Post-100 Hardening Pack 11: Global Hardening")
+
 if __name__ == "__main__":
     app()

@@ -1,33 +1,8 @@
 {
-  "summary": "Phase 92 implementation summary: Narrative compiler federation, assurance exchange mesh, replay clearing council, and sovereign governance evidence atlas models have been fully implemented.",
-  "files_changed": [
-    "README.md",
-    "src/sports_signal_bot/evidence_atlas/contracts.py",
-    "src/sports_signal_bot/evidence_atlas/narrative_federations.py",
-    "src/sports_signal_bot/evidence_atlas/assurance_meshes.py",
-    "src/sports_signal_bot/evidence_atlas/clearing_councils.py",
-    "src/sports_signal_bot/evidence_atlas/evidence_atlases.py",
-    "src/sports_signal_bot/evidence_atlas/strategies/base.py",
-    "src/sports_signal_bot/evidence_atlas/strategies/conservative.py",
-    "src/sports_signal_bot/evidence_atlas/strategies/balanced_board_mesh_federation.py",
-    "src/sports_signal_bot/evidence_atlas/strategies/replay_clearing_council_first.py",
-    "src/sports_signal_bot/cli_evidence_atlas.py",
-    "src/sports_signal_bot/main.py",
-    "configs/evidence_atlas/default.yaml",
-    "tests/evidence_atlas/test_narrative_compiler_federations.py",
-    "tests/evidence_atlas/test_assurance_exchange_meshes.py",
-    "tests/evidence_atlas/test_replay_clearing_councils.py",
-    "tests/evidence_atlas/test_evidence_atlases.py",
-    "docs/narrative_compiler_federations_and_sovereign_governance_evidence_atlases_architecture.md",
-    "docs/operators/narrative_federations_meshes_clearing_councils_and_atlases_guide.md",
-    "docs/reviewers/freshness_evidence_and_no_safe_visibility_guide.md",
-    "docs/reference/evidence_atlas_taxonomy.md",
-    "docs/maintenance/evidence_atlas_runbook.md",
-    "evidence_atlas_summary.json",
-    "evidence_atlas_health_reports.json",
-    "narrative_compiler_federations.json",
-    "assurance_exchange_meshes.json",
-    "replay_clearing_councils.json",
-    "sovereign_governance_evidence_atlases.json"
+  "phase": "Post-100 Hardening Pack 11",
+  "status": "completed",
+  "artifacts": [
+    "global_continuity_matrix.json",
+    "global_hardening_health_report.json"
   ]
 }

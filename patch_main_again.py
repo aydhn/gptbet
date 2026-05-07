@@ -1,31 +1,13 @@
 import re
 
-with open('src/sports_signal_bot/main.py', 'r') as f:
+with open("src/sports_signal_bot/main.py", "r") as f:
     content = f.read()
 
-# Add import
-if 'from .cli_governance_fabric import app as governance_fabric_app' not in content:
-    content = content.replace(
-        'from .cli_trust_exchange import app as trust_exchange_app',
-        'from .cli_trust_exchange import app as trust_exchange_app\nfrom .cli_governance_fabric import app as governance_fabric_app'
-    )
-    if 'from .cli_conformance import app as conformance_app' in content and 'from .cli_governance_fabric import app as governance_fabric_app' not in content:
-        content = content.replace(
-            'from .cli_conformance import app as conformance_app',
-            'from .cli_conformance import app as conformance_app\nfrom .cli_governance_fabric import app as governance_fabric_app'
-        )
+import_str = "from sports_signal_bot.cli_global_hardening import app as global_hardening_app\n"
+add_str = "app.add_typer(global_hardening_app, name=\"global-hardening\", help=\"Post-100 Hardening Pack 11: Global Hardening\")\n"
 
-# Add sub-app
-if 'app.add_typer(governance_fabric_app, name="governance-fabric")' not in content:
-    content = content.replace(
-        'app.add_typer(trust_exchange_app, name="trust-exchange")',
-        'app.add_typer(trust_exchange_app, name="trust-exchange")\napp.add_typer(governance_fabric_app, name="governance-fabric")'
-    )
-    if 'app.add_typer(conformance_app, name="conformance")' in content and 'app.add_typer(governance_fabric_app, name="governance-fabric")' not in content:
-         content = content.replace(
-            'app.add_typer(conformance_app, name="conformance")',
-            'app.add_typer(conformance_app, name="conformance")\napp.add_typer(governance_fabric_app, name="governance-fabric")'
-        )
+if "global_hardening_app" not in content:
+    content += "\n" + import_str + add_str
 
-with open('src/sports_signal_bot/main.py', 'w') as f:
+with open("src/sports_signal_bot/main.py", "w") as f:
     f.write(content)

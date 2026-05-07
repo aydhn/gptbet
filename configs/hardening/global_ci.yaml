@@ -1,0 +1,2 @@
+ci_global_release_blocking_rules:
+  block_on_any_warning: true
