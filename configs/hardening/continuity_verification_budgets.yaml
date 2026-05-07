@@ -1,0 +1,5 @@
+continuity_verification_budgets:
+  observatory_federation_budget_ms: 5000
+  scheduler_proof_budget_ms: 3000
+  audit_pulse_council_budget_ms: 8000
+  continuity_evidence_exchange_budget_ms: 4000

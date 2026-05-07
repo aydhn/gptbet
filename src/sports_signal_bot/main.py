@@ -1,5 +1,6 @@
 from .cli_planetary_federation_hardening import app as planetary_federation_hardening_app
 import typer
+from .cli.cli_continuity_verification_hardening import app as continuity_verification_hardening_app
 from rich.console import Console
 
 # Import the new assurance_exchange CLI app
@@ -231,6 +232,8 @@ app.add_typer(planetary_federation_hardening_app, name="planetary-federation-har
 
 from src.sports_signal_bot.supermesh_hardening.app import app as supermesh_hardening_app
 app.add_typer(supermesh_hardening_app, name="supermesh-hardening", help="Post-100 Hardening Pack 16: Supermesh Hardening")
+
+app.add_typer(continuity_verification_hardening_app, name="continuity-verification-hardening", help="Post-100 Hardening Pack 17: Continuity Verification Hardening")
 
 if __name__ == "__main__":
     app()

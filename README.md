@@ -382,3 +382,25 @@ It ensures supermesh honesty, scheduler truthfulness, audit pulse delivery witho
 * `python -m sports_signal_bot.main supermesh-hardening preview-planetary-handoff-observatory-report`
 
 Why supermesh honesty matters: Hidden lag clusters, blind fabric drift, pulse misses, and handoff gaps compromise all planetary observability and proof models.
+
+## Post-100 Hardening Pack 17
+
+This project includes Hardening Pack 17, which reinforces the planetary continuity verification systems.
+
+### Purpose
+To ensure that Observatory Federations, Scheduler Proof Lanes, Audit Pulse Councils, and Continuity Evidence Exchanges operate with absolute honesty, preserving caveats, freshness, and visibility (including 'no-safe' and sovereignty notes) across all boundaries without expanding authority.
+
+### Differences
+-   **Observatory Federations:** Synthesize visibility safely without overriding local truth.
+-   **Scheduler Proof Lanes:** Carry verifiable scheduling evidence.
+-   **Audit Pulse Councils:** Evaluate evidence gaps without acting as final authorities.
+-   **Continuity Evidence Exchanges:** Match evidence requests strictly without expanding scope.
+
+### Usage
+Run the hardening pack using the CLI:
+```bash
+python -m sports_signal_bot.main continuity-verification-hardening run-hardening-pack-17
+```
+
+### Why it Matters
+Continuity verification honesty is critical. Proof lanes and evidence exchanges act as safety features to prevent stale, overridden, or assumed continuity from masking true planetary gaps.
