@@ -1,0 +1,9 @@
+default_planetary_transport_strategy: "ConservativePlanetaryTransportHardeningStrategy"
+coverage_bus_rules:
+  require_freshness_note: true
+  preserve_no_safe_notes: true
+  preserve_sovereignty_notes: true
+  hide_residue: false
+  allow_stale_packet: false
+ci_planetary_transport_release_blocking_rules:
+  block_on_overclaimed_bus: true

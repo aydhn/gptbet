@@ -1,0 +1,7 @@
+handoff_archive_rules:
+  require_owner_lineage: true
+  replayable: true
+  hide_residue: false
+  allow_stale_archive: false
+ci_planetary_transport_release_blocking_rules:
+  block_on_gapped_archive: true

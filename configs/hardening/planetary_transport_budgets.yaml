@@ -1,0 +1,5 @@
+planetary_transport_budget_rules:
+  timezone_seam_budgets_explicit: true
+  archive_replay_lag_budgets_explicit: true
+  corridor_asymmetry_budgets_explicit: true
+  audit_handoff_lag_budgets_explicit: true

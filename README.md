@@ -328,3 +328,15 @@ It enforces the following:
 * **Follow-The-Sun Audit Packs:** Ensures cross-continental shift changes are handoffs of truth, demanding full owner acknowledgement, residue documentation, and replayable trails.
 
 Use `python -m src.sports_signal_bot.main planetary-hardening run-hardening-pack-12` to run the passes.
+
+### Post-100 Hardening Pack 13: Planetary Transport Hardening
+
+Planetary Transport Hardening guarantees the global operational truthfulness of our systems. It ensures that coverage buses explicitly transport contexts and lag without suppressing delays, that handoff archives strictly maintain verifiable lineage over transitions without using stale records as authoritative truths, that federation corridors track caveats without overclaiming agreement, and that audit calendar simulations properly expose handover seams and reachability gaps without artificially smoothing ownership continuity.
+
+Key components:
+- **Planetary Coverage Buses**: `python -m sports_signal_bot.main planetary-transport-hardening run-hardening-pack-13`
+- **Intercontinental Handoff Archives**: `python -m sports_signal_bot.main planetary-transport-hardening preview-handoff-archive-report`
+- **Quorum Federation Corridors**: `python -m sports_signal_bot.main planetary-transport-hardening preview-quorum-corridor-report`
+- **Worldwide Audit Calendar Simulations**: `python -m sports_signal_bot.main planetary-transport-hardening preview-worldwide-audit-calendar-report`
+
+By using explicit seam visibility and continuity checking, we eliminate global gaps securely.

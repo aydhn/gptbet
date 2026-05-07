@@ -1,0 +1,7 @@
+ci_planetary_transport_release_blocking_rules:
+  strict_stale_support_rejection: true
+  strict_visibility_gap_severity: true
+  strict_residue_visibility: true
+  strict_executive_summary_honesty: true
+  planetary_transport_gating: true
+  rollback_verification_strictness: true

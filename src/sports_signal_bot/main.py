@@ -220,6 +220,9 @@ def list_planetary_hardening_strategies():
         typer.echo(f"- {s}")
 
 # Add it before __main__ block
+from src.sports_signal_bot.cli_planetary_transport_hardening import app as planetary_transport_hardening_app
+app.add_typer(planetary_transport_hardening_app, name="planetary-transport-hardening", help="Post-100 Hardening Pack 13: Planetary Transport Hardening")
+
 if __name__ == "__main__":
     app()
     app()
