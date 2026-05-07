@@ -1,3 +1,4 @@
+from src.sports_signal_bot.cli_continuity_arbitration_hardening import app as continuity_arbitration_hardening_app
 from .cli_planetary_federation_hardening import app as planetary_federation_hardening_app
 import typer
 from .cli.cli_continuity_verification_hardening import app as continuity_verification_hardening_app
@@ -234,6 +235,7 @@ from src.sports_signal_bot.supermesh_hardening.app import app as supermesh_harde
 app.add_typer(supermesh_hardening_app, name="supermesh-hardening", help="Post-100 Hardening Pack 16: Supermesh Hardening")
 
 app.add_typer(continuity_verification_hardening_app, name="continuity-verification-hardening", help="Post-100 Hardening Pack 17: Continuity Verification Hardening")
+app.add_typer(continuity_arbitration_hardening_app, name="continuity-arbitration-hardening", help="Post-100 Hardening Pack 18: Continuity Arbitration Hardening")
 
 if __name__ == "__main__":
     app()
