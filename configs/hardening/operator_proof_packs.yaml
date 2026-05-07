@@ -1,0 +1,7 @@
+operator_proof_pack_rules:
+  reject_stale_pack_sections: true
+  require_replayable_evidence: true
+  preserve_no_safe_visibility: true
+  preserve_sovereignty_visibility: true
+executive_summary_honesty_rules:
+  hide_raw_burden: false

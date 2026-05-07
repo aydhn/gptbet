@@ -1,0 +1,6 @@
+default_final_validation_strategy: conservative_final_validation
+validation_corridor_rules:
+  require_all_stages_lineage: true
+  reject_stale_evidence: true
+  preserve_no_safe_visibility: true
+  preserve_sovereignty_visibility: true
