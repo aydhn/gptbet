@@ -369,3 +369,16 @@ This hardening pack extends the Planetary Federation layer to guarantee operatio
 - `python -m sports_signal_bot.main planetary-federation-hardening preview-audit-cadence-report`
 - `python -m sports_signal_bot.main planetary-federation-hardening preview-planetary-federation-hardening-health`
 - `python -m sports_signal_bot.main planetary-federation-hardening list-planetary-federation-hardening-strategies`
+
+### Post-100 Hardening Pack 16: Supermesh Hardening
+This pack enforces federation bus supermeshes, scheduler cadence fabrics, global audit pulse lanes, and planetary handoff observatories constraints.
+It ensures supermesh honesty, scheduler truthfulness, audit pulse delivery without misses, and handoff observability across all boundaries without hiding gaps, caveats, or missing notes.
+
+**Commands:**
+* `python -m sports_signal_bot.main supermesh-hardening run-hardening-pack-16`
+* `python -m sports_signal_bot.main supermesh-hardening preview-federation-bus-supermesh-report`
+* `python -m sports_signal_bot.main supermesh-hardening preview-scheduler-cadence-fabric-report`
+* `python -m sports_signal_bot.main supermesh-hardening preview-global-audit-pulse-report`
+* `python -m sports_signal_bot.main supermesh-hardening preview-planetary-handoff-observatory-report`
+
+Why supermesh honesty matters: Hidden lag clusters, blind fabric drift, pulse misses, and handoff gaps compromise all planetary observability and proof models.

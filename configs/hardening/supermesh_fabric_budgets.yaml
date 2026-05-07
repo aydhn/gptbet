@@ -1,0 +1,7 @@
+supermesh_fabric_budget_rules:
+  timezone_seam_budgets: "explicit"
+  cadence_drift_budgets: "explicit"
+  pulse_miss_budgets: "explicit"
+  observatory_blind_spot_budgets: "explicit"
+  over_budget_no_safe_loss: "release_blocking"
+  over_budget_sovereignty_loss: "release_blocking"

@@ -1,0 +1,15 @@
+global_audit_pulse_lane_rules:
+  missed_pulse_visibility: "explicit"
+  stale_pulse_action: "reject_as_current"
+  delivery_without_ack: "block_clean_pass"
+  no_safe_transfer: "preserve"
+  sovereignty_transfer: "preserve"
+  residue_visibility: "explicit"
+  pulse_lane_is_authority: false
+
+visibility_gap_severity_rules:
+  missing_owner: "critical"
+  missing_ack: "caveat"
+  hidden_lag: "critical"
+  reachability_gaps: "high"
+  executive_summary_hides_burden: "critical"

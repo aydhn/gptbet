@@ -1,0 +1,16 @@
+default_supermesh_fabric_strategy: "ConservativeSupermeshHardeningStrategy"
+
+federation_bus_supermesh_rules:
+  stale_member_path_action: "reject"
+  caveat_carry_forward: "mandatory"
+  lag_cluster_visibility: "explicit"
+  no_safe_continuity_merge: "preserve"
+  sovereignty_continuity_merge: "preserve"
+  residue_visibility: "explicit"
+
+visibility_gap_severity_rules:
+  missing_owner: "critical"
+  lagged_edge_clean_path: "block"
+  hidden_fallback: "critical"
+  stale_edge_support: "critical"
+  no_safe_lost: "critical"

@@ -1,0 +1,15 @@
+scheduler_cadence_fabric_rules:
+  stale_cadence_packet_action: "reject_as_strong_basis"
+  cadence_drift_visibility: "explicit"
+  owner_reachability_metadata: "mandatory"
+  no_safe_continuity_merge: "preserve"
+  sovereignty_continuity_merge: "preserve"
+  residue_visibility: "explicit"
+  fabric_verification_is_authority: false
+
+visibility_gap_severity_rules:
+  missing_owner: "critical"
+  missing_ack: "caveat"
+  hidden_drift: "critical"
+  hidden_lag: "critical"
+  stale_packet_as_current: "critical"

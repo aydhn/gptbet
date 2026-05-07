@@ -1,0 +1,9 @@
+ci_supermesh_release_blocking_rules:
+  stale_supermesh_member_healthy_support: "block"
+  cadence_drift_hidden_by_fabric_summary: "block"
+  audit_pulse_misses_hidden_by_lane_summary: "block"
+  no_safe_omission_not_escalated: "block"
+  sovereignty_visibility_loss_not_critical: "block"
+  unresolved_residue_hidden: "block"
+  handoff_observability_ambiguity_harmless: "block"
+  health_overstated_despite_blockers: "block"
