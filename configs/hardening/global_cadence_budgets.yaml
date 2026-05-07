@@ -1,0 +1,5 @@
+global_cadence_budgets:
+  max_stale_members: 0
+  max_stale_segments: 0
+  max_drift_ms: 500
+  max_missing_acks: 0

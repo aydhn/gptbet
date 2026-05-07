@@ -1,0 +1,3 @@
+corridor_superchain_rules:
+  require_replay_support: true
+  require_lineage_preserved: true

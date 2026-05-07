@@ -1,0 +1,6 @@
+default_planetary_federation_strategy: "ConservativePlanetaryFederationHardeningStrategy"
+planetary_mesh_federation_rules:
+  require_continuity_records: true
+  reject_stale_members: true
+ci_planetary_federation_release_blocking_rules:
+  block_on_stale_links: true

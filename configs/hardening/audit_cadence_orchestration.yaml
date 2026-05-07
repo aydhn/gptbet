@@ -1,0 +1,2 @@
+audit_cadence_orchestration_rules:
+  require_handoff_acks: true

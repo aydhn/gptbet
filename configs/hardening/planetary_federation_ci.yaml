@@ -1,0 +1,2 @@
+extended_ci_rules:
+  enforce_planetary_hardening: true
