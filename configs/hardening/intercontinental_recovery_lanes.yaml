@@ -1,0 +1,28 @@
+intercontinental_recovery_rules:
+  require_explicit_source_freshness: true
+  require_explicit_target_readiness: true
+  make_continental_lag_visible: true
+  require_explicit_rollback_path: true
+  make_residue_visible: true
+  reject_stale_source_support: true
+  preserve_no_safe_and_sovereignty_continuity: true
+
+lane_families:
+  - americas_to_europe_recovery_lane
+  - europe_to_asia_recovery_lane
+  - asia_to_americas_recovery_lane
+  - archive_assisted_recovery_lane
+  - trace_context_recovery_lane
+  - assurance_surface_recovery_lane
+  - review_surface_recovery_lane
+  - composite_intercontinental_recovery_lane
+
+stage_families:
+  - source_verification_stage
+  - support_alignment_stage
+  - transfer_stage
+  - target_validation_stage
+  - continuity_validation_stage
+  - rollback_validation_stage
+  - residue_capture_stage
+  - lane_closure_stage

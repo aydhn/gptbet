@@ -1,0 +1,9 @@
+ci_planetary_release_blocking_rules:
+  stale_support_lane_accepted_as_healthy_intercontinental_recovery: true
+  planetary_coverage_seam_hidden_by_calendar_summary: true
+  quorum_federation_asymmetry_hidden_by_agreement_summary: true
+  no_safe_omission_under_follow_the_sun_handoff_not_escalated: true
+  sovereignty_visibility_loss_across_timezone_seams_not_marked_critical: true
+  unresolved_residue_hidden_by_lane_or_audit_summary: true
+  audit_handoff_ambiguity_treated_as_harmless: true
+  planetary_hardening_health_overstated_despite_release_blockers: true

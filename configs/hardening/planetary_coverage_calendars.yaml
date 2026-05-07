@@ -1,0 +1,29 @@
+default_planetary_resilience_strategy: balanced_planetary_readiness
+
+planetary_calendar_rules:
+  critical_zone_requires_explicit_owner: true
+  reject_stale_calendar_windows: true
+  seam_gaps_are_release_blocking: true
+  require_separate_reachability_ack: true
+  require_freshness_on_follow_the_sun: true
+  preserve_no_safe_owner_visibility: true
+  preserve_sovereignty_owner_visibility: true
+
+calendar_families:
+  - global_oncall_calendar
+  - continuity_owner_calendar
+  - archive_restore_calendar
+  - no_safe_visibility_calendar
+  - sovereignty_visibility_calendar
+  - executive_visibility_calendar
+  - composite_planetary_coverage_calendar
+
+window_families:
+  - regional_primary_window
+  - regional_passive_window
+  - follow_the_sun_window
+  - archive_restore_window
+  - continuity_owner_window
+  - executive_visibility_window
+  - no_safe_owner_window
+  - sovereignty_owner_window
