@@ -1,0 +1,3 @@
+scheduler_bus_rules:
+  require_acks: true
+  max_drift_ms: 1000

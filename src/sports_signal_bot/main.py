@@ -1,3 +1,4 @@
+from .cli_planetary_federation_hardening import app as planetary_federation_hardening_app
 import typer
 from rich.console import Console
 
@@ -225,6 +226,8 @@ app.add_typer(planetary_transport_hardening_app, name="planetary-transport-harde
 from src.sports_signal_bot.planetary_mesh_hardening.app import app as planetary_mesh_hardening_app
 app.add_typer(planetary_mesh_hardening_app, name="planetary-mesh-hardening", help="Post-100 Hardening Pack 14: Planetary Mesh Hardening")
 
+
+app.add_typer(planetary_federation_hardening_app, name="planetary-federation-hardening")
 
 if __name__ == "__main__":
     app()
