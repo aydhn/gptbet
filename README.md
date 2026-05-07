@@ -316,3 +316,15 @@ This hardening pack shifts the focus towards worldwide resilience constraints:
 - `python -m sports_signal_bot.main global-hardening preview-global-continuity-drill-report`
 - `python -m sports_signal_bot.main global-hardening preview-cross-region-governance-report`
 - `python -m sports_signal_bot.main global-hardening preview-global-hardening-health`
+
+## Post-100 Planetary Hardening Pack 12
+
+This release introduces the **Planetary Hardening Layer** designed to certify robust worldwide continuity under intercontinental recovery, follow-the-sun handoffs, and globally federated quorums.
+
+It enforces the following:
+* **Planetary Coverage Calendars:** Ensure 24/7 visibility loops have no hidden seams, lag, or ownerless gaps across timezones.
+* **Intercontinental Recovery Lanes:** Treat intercontinental disaster recovery as a verifiable path that proves source freshness, target readiness, and residue visibility.
+* **Global Quorum Federations:** Safely merge regional states while explicitly noting caveats and bounded agreements, never defaulting to an authoritative claim.
+* **Follow-The-Sun Audit Packs:** Ensures cross-continental shift changes are handoffs of truth, demanding full owner acknowledgement, residue documentation, and replayable trails.
+
+Use `python -m src.sports_signal_bot.main planetary-hardening run-hardening-pack-12` to run the passes.

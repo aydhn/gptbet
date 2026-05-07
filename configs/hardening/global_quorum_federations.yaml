@@ -1,0 +1,16 @@
+quorum_federation_rules:
+  enforce_non_authoritative_output: true
+  cap_agreement_quality_on_stale_member: true
+  preserve_caveat_and_lag_lineage: true
+  agreement_does_not_equal_strong_continuity: true
+  preserve_no_safe_and_sovereignty_continuity: true
+  make_residue_visible: true
+
+federation_families:
+  - bounded_global_quorum_federation
+  - degraded_global_quorum_federation
+  - archive_assisted_quorum_federation
+  - no_safe_visibility_quorum_federation
+  - sovereignty_visibility_quorum_federation
+  - review_surface_quorum_federation
+  - composite_global_quorum_federation

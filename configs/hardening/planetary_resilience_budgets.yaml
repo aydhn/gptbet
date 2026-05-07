@@ -1,0 +1,20 @@
+planetary_budget_rules:
+  make_timezone_seam_budgets_explicit: true
+  make_intercontinental_lag_budgets_explicit: true
+  make_quorum_federation_asymmetry_budgets_explicit: true
+  make_audit_handoff_lag_budgets_explicit: true
+
+stale_support_rejection_rules:
+  max_acceptable_stale_hours: 4
+
+visibility_gap_severity_rules:
+  seam_gap: critical
+  reachability_gap: critical
+  audit_owner_gap: critical
+
+residue_visibility_rules:
+  always_show: true
+
+executive_summary_honesty_rules:
+  prevent_hiding_seams: true
+  prevent_hiding_residue: true

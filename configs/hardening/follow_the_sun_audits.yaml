@@ -1,0 +1,16 @@
+follow_the_sun_audit_rules:
+  require_replayable_handoffs: true
+  treat_hidden_tribal_knowledge_as_gap: true
+  missing_ack_means_caveated: true
+  preserve_no_safe_and_sovereignty_notes_in_packs: true
+  reject_stale_audit_evidence_as_clean: true
+  enforce_non_authoritative_audit: true
+
+audit_families:
+  - follow_the_sun_handoff_audit
+  - global_no_safe_visibility_audit
+  - sovereignty_visibility_audit
+  - archive_restore_follow_the_sun_audit
+  - continuity_owner_follow_the_sun_audit
+  - executive_visibility_follow_the_sun_audit
+  - composite_follow_the_sun_audit

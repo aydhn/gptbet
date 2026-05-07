@@ -1,5 +1,5 @@
 from typer.testing import CliRunner
-from sports_signal_bot.main import app
+from src.sports_signal_bot.main import app
 import json
 
 runner = CliRunner()
