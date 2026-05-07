@@ -1,0 +1,37 @@
+default_continuity_arbitration_strategy: "BalancedArbitrationReadinessStrategy"
+
+continuity_arbitration_rail_rules:
+  stale_evidence_tolerance: "zero"
+  no_safe_visibility_preservation: "strict"
+  sovereignty_note_preservation: "strict"
+
+scheduler_recovery_fabric_rules:
+  ownerless_lane_tolerance: "zero"
+  retry_storm_visibility: "explicit"
+  stale_recovery_payload_tolerance: "zero"
+
+archive_proof_mesh_rules:
+  replay_support_required: true
+  lineage_preservation: "strict"
+
+worldwide_visibility_ledger_rules:
+  suppression_visibility: "explicit"
+  restoration_lineage_required: true
+
+stale_support_rejection_rules:
+  stale_proof_rejection: "strict"
+  stale_fabric_packet_rejection: "strict"
+
+visibility_gap_severity_rules:
+  no_safe_gap: "critical"
+  sovereignty_gap: "critical"
+
+residue_visibility_rules:
+  hidden_residue_tolerance: "zero"
+
+executive_summary_honesty_rules:
+  raw_burden_hiding: "zero"
+
+ci_continuity_arbitration_release_blocking_rules:
+  stale_evidence_blocks: true
+  visibility_suppression_blocks: true

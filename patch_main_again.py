@@ -1,13 +1,15 @@
-import re
-
 with open("src/sports_signal_bot/main.py", "r") as f:
-    content = f.read()
+    lines = f.readlines()
 
-import_str = "from sports_signal_bot.cli_global_hardening import app as global_hardening_app\n"
-add_str = "app.add_typer(global_hardening_app, name=\"global-hardening\", help=\"Post-100 Hardening Pack 11: Global Hardening\")\n"
+new_lines = []
+for line in lines:
+    if "from src.sports_signal_bot.cli_planetary_federation_hardening import app as planetary_federation_hardening_app" in line:
+        new_lines.append(line)
+        new_lines.append("from src.sports_signal_bot.cli_continuity_arbitration_hardening import app as continuity_arbitration_hardening_app\n")
+    else:
+        new_lines.append(line)
 
-if "global_hardening_app" not in content:
-    content += "\n" + import_str + add_str
-
+# Since we previously used string replace that failed to inject the import, we'll try again and clean up the file
+content = "".join(new_lines)
 with open("src/sports_signal_bot/main.py", "w") as f:
     f.write(content)
