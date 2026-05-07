@@ -1,0 +1,7 @@
+replay_closure_compiler_rules:
+  reject_unresolved_residue: true
+  reject_stale_replay_inputs: true
+  preserve_no_safe_visibility: true
+  preserve_sovereignty_visibility: true
+residue_visibility_rules:
+  hide_raw_residue: false

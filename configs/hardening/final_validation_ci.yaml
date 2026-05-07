@@ -1,0 +1,6 @@
+ci_final_validation_release_blocking_rules:
+  unresolved_high_severity_blocker: block
+  over_budget_no_safe_loss: block
+  over_budget_sovereignty_loss: block
+stale_support_rejection_rules:
+  reject_stale_validation_evidence: true

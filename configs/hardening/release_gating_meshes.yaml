@@ -1,0 +1,7 @@
+release_gating_mesh_rules:
+  reject_stale_blocker_state: true
+  preserve_no_safe_visibility: true
+  preserve_sovereignty_visibility: true
+visibility_gap_severity_rules:
+  no_safe_gap: critical
+  sovereignty_gap: critical

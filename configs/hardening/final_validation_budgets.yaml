@@ -1,0 +1,5 @@
+final_validation_budget_rules:
+  stale_proof_budgets: explicit
+  blocker_budgets: explicit
+  replay_closure_residue_budgets: explicit
+  operator_proof_gap_budgets: explicit
