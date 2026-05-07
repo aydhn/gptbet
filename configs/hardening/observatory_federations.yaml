@@ -1,0 +1,11 @@
+observatory_federation_rules:
+  default_continuity_verification_strategy: "ConservativeContinuityVerificationStrategy"
+  stale_support_rejection_rules:
+    allow_stale_support: false
+    reject_if_lag_ms_exceeds: 10000
+  visibility_gap_severity_rules:
+    no_safe_gap_severity: "critical"
+    sovereignty_gap_severity: "critical"
+  residue_visibility_rules:
+    hide_residues: false
+    escalate_unresolved_residues_after_ms: 3600000

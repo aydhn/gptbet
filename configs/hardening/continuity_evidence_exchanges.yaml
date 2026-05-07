@@ -1,0 +1,6 @@
+continuity_evidence_exchange_rules:
+  evidence_exchange_lineage_thresholds:
+    require_complete_lineage: true
+    reject_broken_lineage: true
+  scope_widening:
+    allowed: false

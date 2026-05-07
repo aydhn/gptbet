@@ -1,0 +1,7 @@
+ci_continuity_verification_release_blocking_rules:
+  block_on_unresolved_residue: true
+  block_on_stale_proof_acceptance: true
+  block_on_council_quorum_gap_hidden: true
+  block_on_no_safe_omission: true
+  block_on_sovereignty_visibility_loss: true
+  block_on_evidence_exchange_ambiguity: true

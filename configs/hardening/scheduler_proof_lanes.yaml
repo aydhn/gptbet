@@ -1,0 +1,7 @@
+scheduler_proof_lane_rules:
+  stale_proof_thresholds:
+    max_proof_age_ms: 5000
+    require_fresh_proof_for_critical_lanes: true
+  executive_summary_honesty_rules:
+    hide_eroded_proofs: false
+    report_rollback_hints: true

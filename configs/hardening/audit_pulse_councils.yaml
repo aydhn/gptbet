@@ -1,0 +1,7 @@
+audit_pulse_council_rules:
+  council_quorum_thresholds:
+    minimum_quorum_percentage: 66
+    require_consensus_for_critical_decisions: true
+  pulse_drift_thresholds:
+    max_drift_ms: 2000
+  caveat_carry_forward: true
