@@ -1,0 +1,3 @@
+archive_corridor_chain_rules:
+  require_lineage: true
+  require_replay_support: true

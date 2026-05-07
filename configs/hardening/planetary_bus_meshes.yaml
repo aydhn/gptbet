@@ -1,0 +1,4 @@
+default_planetary_mesh_strategy: ConservativePlanetaryMeshHardeningStrategy
+planetary_bus_mesh_rules:
+  lagged_edge_threshold_ms: 1000
+  require_stale_support_rejection: true

@@ -1,0 +1,5 @@
+ci_planetary_mesh_release_blocking_rules:
+  block_on_hidden_residue: true
+  block_on_no_safe_loss: true
+  block_on_sovereignty_loss: true
+  block_on_stale_support: true
