@@ -1,0 +1,3 @@
+terminal_acceptance_pack_rules:
+  evidence_completeness: "full"
+  replay_closure_leak: "zero"

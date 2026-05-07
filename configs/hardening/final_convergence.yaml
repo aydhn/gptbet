@@ -1,0 +1,25 @@
+default_final_convergence_strategy: "conservative"
+
+final_convergence_rules:
+  allow_stale_inputs: false
+  require_explicit_blockers: true
+  preserve_no_safe: true
+  preserve_sovereignty: true
+
+frozen_baseline_rules:
+  allow_hidden_drift: false
+  require_freshness: true
+
+readiness_review_surface_rules:
+  allow_hidden_residue: false
+  allow_hidden_gaps: false
+
+terminal_acceptance_pack_rules:
+  require_replayable_evidence: true
+  allow_hidden_blockers: false
+
+stale_support_rejection_rules:
+  strictness: "high"
+
+executive_summary_honesty_rules:
+  strictness: "high"

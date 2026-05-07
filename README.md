@@ -436,3 +436,9 @@ Final validation honesty ensures that the system's claims of readiness are bound
 
 Why Release Gating and Replay Closure are Safety Features:
 They prevent premature or unjustified confidence in releases by surfacing any lingering drift, gaps, or caveat boundaries that might compromise stability or operability.
+
+## Post-100 Hardening Pack 20: Final Convergence
+This pack introduces final convergence modeling including frozen baselines, production-readiness review surfaces, and terminal acceptance packs.
+To run the pass: `python -m sports_signal_bot.main final-convergence-hardening run-hardening-pack-20`
+Why final convergence honesty matters: It ensures that we don't hide drift, stale baselines, or unresolved blockers behind an executive summary.
+Why baselines, review surfaces, and acceptance packs are safety features: They create an explicit, replayable record of the exact state of the system when decisions are made, acting as a forcing function against silent capability erosion.

@@ -1,0 +1,5 @@
+budgets:
+  stale_baseline: 0
+  blocker_carry_over: 0
+  acceptance_ambiguity: 0
+  replay_closure_leak: 0
