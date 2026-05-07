@@ -1,0 +1,4 @@
+default_global_resilience_strategy: conservative
+quorum_mesh_rules:
+  strict_stale_rejection: true
+  lag_threshold_ms: 1000
