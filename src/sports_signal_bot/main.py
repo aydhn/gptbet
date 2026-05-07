@@ -229,6 +229,9 @@ app.add_typer(planetary_mesh_hardening_app, name="planetary-mesh-hardening", hel
 
 app.add_typer(planetary_federation_hardening_app, name="planetary-federation-hardening")
 
+from src.sports_signal_bot.supermesh_hardening.app import app as supermesh_hardening_app
+app.add_typer(supermesh_hardening_app, name="supermesh-hardening", help="Post-100 Hardening Pack 16: Supermesh Hardening")
+
 if __name__ == "__main__":
     app()
     app()

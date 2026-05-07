@@ -1,0 +1,15 @@
+planetary_handoff_observatory_rules:
+  handoff_observability_gaps: "explicit"
+  stale_archive_replay_action: "reject_as_current"
+  owner_transition_lineage: "preserve"
+  missing_ack_visibility: "explicit"
+  no_safe_replay: "preserve"
+  sovereignty_replay: "preserve"
+  observatory_verification_is_authority: false
+
+visibility_gap_severity_rules:
+  missing_owner_window: "critical"
+  replay_preservation_loss: "critical"
+  stale_observed_handoff: "critical"
+  hidden_mismatch: "critical"
+  hidden_continuity_note: "critical"
