@@ -340,3 +340,8 @@ Key components:
 - **Worldwide Audit Calendar Simulations**: `python -m sports_signal_bot.main planetary-transport-hardening preview-worldwide-audit-calendar-report`
 
 By using explicit seam visibility and continuity checking, we eliminate global gaps securely.
+
+## Post-100 Hardening Pack 14
+This pack focuses on planetary mesh hardening, verifying archive corridor chains, audit simulation federations, and global continuity scheduler audits.
+Commands:
+- `python -m sports_signal_bot.main planetary-mesh-hardening run-hardening-pack-14`

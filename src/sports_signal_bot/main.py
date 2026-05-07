@@ -222,6 +222,9 @@ def list_planetary_hardening_strategies():
 # Add it before __main__ block
 from src.sports_signal_bot.cli_planetary_transport_hardening import app as planetary_transport_hardening_app
 app.add_typer(planetary_transport_hardening_app, name="planetary-transport-hardening", help="Post-100 Hardening Pack 13: Planetary Transport Hardening")
+from src.sports_signal_bot.planetary_mesh_hardening.app import app as planetary_mesh_hardening_app
+app.add_typer(planetary_mesh_hardening_app, name="planetary-mesh-hardening", help="Post-100 Hardening Pack 14: Planetary Mesh Hardening")
+
 
 if __name__ == "__main__":
     app()

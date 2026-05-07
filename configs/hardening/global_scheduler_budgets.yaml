@@ -1,0 +1,4 @@
+archive_replay_lag_budgets:
+  max_lag_ms: 2000
+timezone_seam_budgets:
+  max_seams_per_window: 3
