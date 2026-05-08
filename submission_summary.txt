@@ -1,2 +1,0 @@
-Implemented Post-100 Hardening Pack 04 for Chaos Hardening.
-Created Pydantic contracts, CLI, configuration YAMLs, tests, and integrated the logic into the main app.
