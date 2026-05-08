@@ -442,3 +442,15 @@ This pack introduces final convergence modeling including frozen baselines, prod
 To run the pass: `python -m sports_signal_bot.main final-convergence-hardening run-hardening-pack-20`
 Why final convergence honesty matters: It ensures that we don't hide drift, stale baselines, or unresolved blockers behind an executive summary.
 Why baselines, review surfaces, and acceptance packs are safety features: They create an explicit, replayable record of the exact state of the system when decisions are made, acting as a forcing function against silent capability erosion.
+
+## Terminal Lifecycle Hardening (Pack 21)
+This project has reached its maintenance mode and stewardship handover phase. Post-100 Hardening Pack 21 focuses on terminal closure honesty, deprecation clarity, and long-horizon stewardship.
+We no longer expand capabilities; we maintain boundaries and preserve existing bounded correctness, specifically honoring no-safe visibility and sovereignty.
+
+To run terminal lifecycle hardening checks:
+`python -m sports_signal_bot.main terminal-lifecycle-hardening run-hardening-pack-21`
+
+Why this matters:
+- Closure honesty ensures blockers and residues aren't hidden.
+- Maintenance modes are safety features that prevent silent drift.
+- Stewardship provides clear ownership, avoiding documentation rot and ambiguity.

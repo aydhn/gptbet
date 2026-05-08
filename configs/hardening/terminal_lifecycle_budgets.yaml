@@ -1,0 +1,5 @@
+terminal_lifecycle_budgets:
+  max_unresolved_residues: 0
+  max_stewardship_gaps: 0
+  max_deprecation_ambiguities: 0
+  max_maintenance_concealments: 0

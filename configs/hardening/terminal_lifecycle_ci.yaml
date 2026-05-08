@@ -1,0 +1,15 @@
+default_terminal_lifecycle_strategy: "ConservativeTerminalLifecycleStrategy"
+
+ci_terminal_lifecycle_release_blocking_rules:
+  block_on_unresolved_residue: true
+  block_on_stewardship_gap: true
+  block_on_deprecation_ambiguity: true
+  block_on_stale_frozen_baseline: true
+  block_on_maintenance_concealment: true
+  block_on_sovereignty_visibility_loss: true
+  block_on_no_safe_visibility_loss: true
+
+visibility_gap_severity_rules:
+  no_safe_visibility_missing: "critical"
+  sovereignty_visibility_missing: "critical"
+  residue_visibility_missing: "high"
