@@ -1,7 +1,0 @@
-feat: Post-100 Hardening Pack 09 (Geo Resilience)
-
-Implement geo-distributed failover meshes, active-active rehearsal governance,
-archive relocation waves, and multi-region operator calendar audits to ensure
-resilience across multiple regions while preserving caveat, no-safe visibility,
-and sovereignty continuity. Added contracts, validation helpers, strategies,
-budgets, config files, comprehensive tests, and updated the CLI.
