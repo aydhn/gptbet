@@ -1,0 +1,4 @@
+ci_final_convergence_release_blocking_rules:
+  block_on_stale_baseline: true
+  block_on_hidden_residue: true
+  block_on_unresolved_blockers: true

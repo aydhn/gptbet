@@ -1,0 +1,3 @@
+frozen_baseline_rules:
+  drift_tolerance: "zero_hidden"
+  freshness_window_minutes: 60

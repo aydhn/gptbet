@@ -11,6 +11,11 @@ from src.sports_signal_bot.cli_hardening import app as hardening_app
 
 from src.sports_signal_bot.cli_trace_routing import app as trace_routing_app
 
+try:
+    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+except ImportError:
+    final_convergence_hardening_app = typer.Typer()
+
 app = typer.Typer(help="Sports Signal Bot CLI")
 console = Console()
 
@@ -238,11 +243,17 @@ app.add_typer(continuity_verification_hardening_app, name="continuity-verificati
 app.add_typer(continuity_arbitration_hardening_app, name="continuity-arbitration-hardening", help="Post-100 Hardening Pack 18: Continuity Arbitration Hardening")
 
 
+try:
+    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+except ImportError:
+    final_convergence_hardening_app = typer.Typer()
+
 app = typer.Typer(help="Sports Signal Bot CLI")
 
 # Add final validation hardening commands
 final_validation_app = typer.Typer(help="Final Validation Hardening Commands")
 app.add_typer(final_validation_app, name="final-validation-hardening")
+app.add_typer(final_convergence_hardening_app, name="final-convergence-hardening", help="Post-100 Hardening Pack 20: Final Convergence")
 
 @final_validation_app.command("run-hardening-pack-19")
 def run_hardening_pack_19():
@@ -308,11 +319,17 @@ def list_final_validation_strategies():
 
 
 
+try:
+    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+except ImportError:
+    final_convergence_hardening_app = typer.Typer()
+
 app = typer.Typer(help="Sports Signal Bot CLI")
 
 # Add final validation hardening commands
 final_validation_app = typer.Typer(help="Final Validation Hardening Commands")
 app.add_typer(final_validation_app, name="final-validation-hardening")
+app.add_typer(final_convergence_hardening_app, name="final-convergence-hardening", help="Post-100 Hardening Pack 20: Final Convergence")
 
 @final_validation_app.command("run-hardening-pack-19")
 def run_hardening_pack_19():
