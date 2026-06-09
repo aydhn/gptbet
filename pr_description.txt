@@ -1,12 +1,10 @@
-🔒 Fix Unsafe Internal Query Allowance in Portal Queries
+🔒 Fix: Remove Hardcoded Token from Mock Query Response
 
-🎯 What:
-The `validate_portal_query` function previously had a missing input validation, specifically for `query_type` and nested variables in `query.params`. It only checked exactly for "raw_internal" query_type, ignoring case variations and substrings. Additionally, it only performed a top-level check for "internal_path" and "key" inside `query.params`.
+🎯 **What:**
+A hardcoded token ("secret") was previously included in the payload returned by `execute_profile_aware_query`. This has been removed and replaced with a dynamic fallback `os.getenv("MOCK_SIGNER_KEY", "mock_key_placeholder")`.
 
-⚠️ Risk:
-Attackers could potentially bypass validation by utilizing case variations (e.g., "RAW_INTERNAL") or passing nested objects with sensitive keys into the query.params. This could lead to unsafe internal queries being executed, exposing internal paths or keys, thus widening the attack surface.
+⚠️ **Risk:**
+While the current usage appears to be in a mocked mock data retrieval object, having hardcoded "secret" tokens exposes credentials within the codebase and raises significant security risks. If real payloads mimic this structure, or if this function's logic is promoted to production, unauthorized actors could uncover authentication or sensitive signing materials.
 
-🛡️ Solution:
-1. Implemented a recursive helper function `_has_forbidden_keys` to traverse the entirety of `query.params` (including nested dicts and lists) to search for forbidden keys ("internal_path", "key").
-2. Modified the query type check to case-insensitively detect the presence of "internal" in the string (`"internal" in query.query_type.lower()`).
-3. Added robust unit tests targeting both nested forbidden keys and various variations of internal query types.
+🛡️ **Solution:**
+I imported the `os` module and modified the `execute_profile_aware_query` function to fetch the `MOCK_SIGNER_KEY` environment variable. This ensures no tokens are committed as static text inside the repository, thereby adopting basic secrets management practices. Tests confirm no disruptions to the existing profiling and masking constraints.
