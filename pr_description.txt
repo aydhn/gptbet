@@ -1,0 +1,12 @@
+🔒 Fix Unsafe Internal Query Allowance in Portal Queries
+
+🎯 What:
+The `validate_portal_query` function previously had a missing input validation, specifically for `query_type` and nested variables in `query.params`. It only checked exactly for "raw_internal" query_type, ignoring case variations and substrings. Additionally, it only performed a top-level check for "internal_path" and "key" inside `query.params`.
+
+⚠️ Risk:
+Attackers could potentially bypass validation by utilizing case variations (e.g., "RAW_INTERNAL") or passing nested objects with sensitive keys into the query.params. This could lead to unsafe internal queries being executed, exposing internal paths or keys, thus widening the attack surface.
+
+🛡️ Solution:
+1. Implemented a recursive helper function `_has_forbidden_keys` to traverse the entirety of `query.params` (including nested dicts and lists) to search for forbidden keys ("internal_path", "key").
+2. Modified the query type check to case-insensitively detect the presence of "internal" in the string (`"internal" in query.query_type.lower()`).
+3. Added robust unit tests targeting both nested forbidden keys and various variations of internal query types.
