@@ -1,5 +1,5 @@
 import typer
-from .planetary_federation_hardening.integration import run_hardening_pack_15
+from sports_signal_bot.planetary_federation_hardening.integration import run_hardening_pack_15
 import json
 import os
 

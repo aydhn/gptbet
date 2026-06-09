@@ -1,22 +1,22 @@
-from src.sports_signal_bot.cli_continuity_arbitration_hardening import app as continuity_arbitration_hardening_app
-from .cli_planetary_federation_hardening import app as planetary_federation_hardening_app
+from src.sports_signal_bot.cli.cli_continuity_arbitration_hardening import app as continuity_arbitration_hardening_app
+from src.sports_signal_bot.cli.cli_planetary_federation_hardening import app as planetary_federation_hardening_app
 import typer
 from .cli.cli_continuity_verification_hardening import app as continuity_verification_hardening_app
 from rich.console import Console
 
 # Import the new assurance_exchange CLI app
 from src.sports_signal_bot.assurance_exchange.cli import app as assurance_exchange_app
-from src.sports_signal_bot.cli_evidence_atlas import app as evidence_atlas_app
-from src.sports_signal_bot.cli_hardening import app as hardening_app
+from src.sports_signal_bot.cli.cli_evidence_atlas import app as evidence_atlas_app
+from src.sports_signal_bot.cli.cli_hardening import app as hardening_app
 
-from src.sports_signal_bot.cli_trace_routing import app as trace_routing_app
+from src.sports_signal_bot.cli.cli_trace_routing import app as trace_routing_app
 
 try:
-    from src.sports_signal_bot.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
+    from src.sports_signal_bot.cli.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
 except ImportError:
     terminal_lifecycle_app = typer.Typer()
 try:
-    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+    from src.sports_signal_bot.cli.cli_final_convergence_hardening import app as final_convergence_hardening_app
 except ImportError:
     final_convergence_hardening_app = typer.Typer()
 
@@ -33,16 +33,16 @@ app.add_typer(trace_routing_app, name="trace-routing", help="Trace Routing opera
 def smoke_run():
     console.print("Smoke run ok.")
 
-from src.sports_signal_bot.cli_proof_catalogs import app as proof_catalogs_app
+from src.sports_signal_bot.cli.cli_proof_catalogs import app as proof_catalogs_app
 app.add_typer(proof_catalogs_app, name="proof-catalogs", help="Phase 93: Proof Catalogs")
 
-from src.sports_signal_bot.cli_context_assembly import app as context_assembly_app
+from src.sports_signal_bot.cli.cli_context_assembly import app as context_assembly_app
 app.add_typer(context_assembly_app, name="context-assembly", help="Phase 95: Context Assembly")
 
-from src.sports_signal_bot.cli_coherence_scoring import app as coherence_scoring_app
+from src.sports_signal_bot.cli.cli_coherence_scoring import app as coherence_scoring_app
 app.add_typer(coherence_scoring_app, name="coherence-scoring", help="Phase 96: Coherence Scoring")
 
-from src.sports_signal_bot.cli_alignment_compilers import app as alignment_compilers_app
+from src.sports_signal_bot.cli.cli_alignment_compilers import app as alignment_compilers_app
 app.add_typer(alignment_compilers_app, name="alignment-compilers", help="Phase 97: Alignment Compilers")
 
 
@@ -54,44 +54,44 @@ from src.sports_signal_bot.deployment import cli as cli_deployment
 app.add_typer(cli_deployment.app, name="deploy")
 
 
-from src.sports_signal_bot.cli_assurance_synthesizers import app as assurance_synthesizers_app
+from src.sports_signal_bot.cli.cli_assurance_synthesizers import app as assurance_synthesizers_app
 app.add_typer(assurance_synthesizers_app, name="assurance-synthesizers", help="Sovereign Governance Assurance Synthesizers (Phase 99)")
 
 
-from src.sports_signal_bot.cli_end_state_review import app as end_state_review_app
-from src.sports_signal_bot.cli_performance_hardening import app as performance_hardening_app
+from src.sports_signal_bot.cli.cli_end_state_review import app as end_state_review_app
+from src.sports_signal_bot.cli.cli_performance_hardening import app as performance_hardening_app
 app.add_typer(performance_hardening_app, name="performance-hardening", help="Post-100 Hardening Pack 02 Commands")
 app.add_typer(end_state_review_app, name="end-state-review", help="Phase 100: End State Review")
 
 from src.sports_signal_bot.chaos_hardening.cli import app as chaos_hardening_app
 app.add_typer(chaos_hardening_app, name="chaos-hardening", help="Post-100 Hardening Pack 04: Chaos Hardening")
 
-from src.sports_signal_bot.cli_concurrency_hardening import app as concurrency_hardening_app
+from src.sports_signal_bot.cli.cli_concurrency_hardening import app as concurrency_hardening_app
 app.add_typer(concurrency_hardening_app, name="concurrency", help="Concurrency Hardening Pack 03")
 
-from src.sports_signal_bot.cli_endurance_hardening import app as endurance_hardening_app
+from src.sports_signal_bot.cli.cli_endurance_hardening import app as endurance_hardening_app
 app.add_typer(endurance_hardening_app, name="endurance-hardening", help="Post-100 Hardening Pack 05: Endurance Hardening")
 
-from src.sports_signal_bot.cli_operational_hardening import app as operational_hardening_app
+from src.sports_signal_bot.cli.cli_operational_hardening import app as operational_hardening_app
 app.add_typer(operational_hardening_app, name="operational-hardening", help="Post-100 Hardening Pack 06")
 
 
-from src.sports_signal_bot.cli_migration_hardening import app as migration_hardening_app
+from src.sports_signal_bot.cli.cli_migration_hardening import app as migration_hardening_app
 app.add_typer(migration_hardening_app, name="migration-hardening", help="Post-100 Hardening Pack 07: Migration Hardening")
 
-from src.sports_signal_bot.cli_hardening import app as hardening_app
+from src.sports_signal_bot.cli.cli_hardening import app as hardening_app
 app.add_typer(hardening_app, name="hardening", help="Post-100 Hardening Pack 01 Commands")
-from src.sports_signal_bot.regional_hardening_cli import app as regional_hardening_app
+from src.sports_signal_bot.cli.regional_hardening_cli import app as regional_hardening_app
 app.add_typer(regional_hardening_app, name="regional-hardening", help="Post-100 Hardening Pack 08: Regional Hardening")
-from src.sports_signal_bot.cli_geo_hardening import app as geo_hardening_app
+from src.sports_signal_bot.cli.cli_geo_hardening import app as geo_hardening_app
 app.add_typer(geo_hardening_app, name="geo-hardening", help="Phase 109: Geo Hardening")
 
 
-from src.sports_signal_bot.cli_geo_quorum_hardening import app as geo_quorum_hardening_app
+from src.sports_signal_bot.cli.cli_geo_quorum_hardening import app as geo_quorum_hardening_app
 
 app.add_typer(geo_quorum_hardening_app, name="geo-quorum-hardening", help="Post-100 Hardening Pack 10: Geo Quorum Hardening")
 
-from src.sports_signal_bot.cli_global_hardening import app as global_hardening_app
+from src.sports_signal_bot.cli.cli_global_hardening import app as global_hardening_app
 app.add_typer(global_hardening_app, name="global-hardening", help="Post-100 Hardening Pack 11: Global Hardening")
 
 # ==============================================================================
@@ -232,7 +232,7 @@ def list_planetary_hardening_strategies():
         typer.echo(f"- {s}")
 
 # Add it before __main__ block
-from src.sports_signal_bot.cli_planetary_transport_hardening import app as planetary_transport_hardening_app
+from src.sports_signal_bot.cli.cli_planetary_transport_hardening import app as planetary_transport_hardening_app
 app.add_typer(planetary_transport_hardening_app, name="planetary-transport-hardening", help="Post-100 Hardening Pack 13: Planetary Transport Hardening")
 from src.sports_signal_bot.planetary_mesh_hardening.app import app as planetary_mesh_hardening_app
 app.add_typer(planetary_mesh_hardening_app, name="planetary-mesh-hardening", help="Post-100 Hardening Pack 14: Planetary Mesh Hardening")
@@ -248,11 +248,11 @@ app.add_typer(continuity_arbitration_hardening_app, name="continuity-arbitration
 
 
 try:
-    from src.sports_signal_bot.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
+    from src.sports_signal_bot.cli.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
 except ImportError:
     terminal_lifecycle_app = typer.Typer()
 try:
-    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+    from src.sports_signal_bot.cli.cli_final_convergence_hardening import app as final_convergence_hardening_app
 except ImportError:
     final_convergence_hardening_app = typer.Typer()
 
@@ -329,11 +329,11 @@ def list_final_validation_strategies():
 
 
 try:
-    from src.sports_signal_bot.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
+    from src.sports_signal_bot.cli.cli_terminal_lifecycle_hardening import app as terminal_lifecycle_app
 except ImportError:
     terminal_lifecycle_app = typer.Typer()
 try:
-    from src.sports_signal_bot.cli_final_convergence_hardening import app as final_convergence_hardening_app
+    from src.sports_signal_bot.cli.cli_final_convergence_hardening import app as final_convergence_hardening_app
 except ImportError:
     final_convergence_hardening_app = typer.Typer()
 

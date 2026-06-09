@@ -1,12 +1,12 @@
 import typer
 from rich.console import Console
 import json
-from .geo_hardening.failover_meshes import build_geo_failover_mesh, summarize_geo_failover_mesh
-from .geo_hardening.active_active import build_active_active_rehearsal, summarize_active_active_rehearsal
-from .geo_hardening.relocation_waves import build_archive_relocation_wave, summarize_archive_relocation_wave
-from .geo_hardening.operator_calendars import build_operator_calendar_audit, summarize_operator_calendar_audit
-from .geo_hardening.integration import build_geo_operational_matrix, summarize_geo_operational_matrix
-from .geo_hardening.budgets import build_geo_resilience_budgets, measure_geo_budget_consumption, summarize_geo_resilience_budgets
+from sports_signal_bot.geo_hardening.failover_meshes import build_geo_failover_mesh, summarize_geo_failover_mesh
+from sports_signal_bot.geo_hardening.active_active import build_active_active_rehearsal, summarize_active_active_rehearsal
+from sports_signal_bot.geo_hardening.relocation_waves import build_archive_relocation_wave, summarize_archive_relocation_wave
+from sports_signal_bot.geo_hardening.operator_calendars import build_operator_calendar_audit, summarize_operator_calendar_audit
+from sports_signal_bot.geo_hardening.integration import build_geo_operational_matrix, summarize_geo_operational_matrix
+from sports_signal_bot.geo_hardening.budgets import build_geo_resilience_budgets, measure_geo_budget_consumption, summarize_geo_resilience_budgets
 
 app = typer.Typer(help="Geo Hardening / Post-100 operations")
 console = Console()
