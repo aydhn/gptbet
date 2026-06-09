@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict, List
 
 from .contracts import (PortalQueryRecord, PortalResultRecord,
@@ -62,7 +63,7 @@ def execute_profile_aware_query(query: PortalQueryRecord) -> PortalResultRecord:
                 "id": 1,
                 "data": "test",
                 "signer_metadata": {
-                    "key": "secret",
+                    "key": os.getenv("MOCK_SIGNER_KEY", "mock_key_placeholder"),
                     "signer_id": "s1",
                     "timestamp": "now",
                 },
