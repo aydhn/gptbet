@@ -20,91 +20,89 @@ from .contracts import (
     DuplicateExecutionRecord
 )
 
-def run_concurrency_hardening_pass(strategy_name: str = "ConservativeConcurrencyHardeningStrategy") -> Dict[str, Any]:
-    """Runs a full concurrency hardening pass simulating all checks."""
-
-    # 1. Guards
+def _process_guards() -> Any:
     guards = [
         build_concurrency_guard("shared_state_guard", "surface_1", {"type": "read_write"}, "owner_A", {"order": "strict"}, 5000, "abort"),
         build_concurrency_guard("async_join_guard", "surface_2", {"type": "merge"}, "owner_B", {"order": "relaxed"}, 35000, "drop") # will trigger warning
     ]
-    guards_manifest = summarize_concurrency_guards(guards)
+    return summarize_concurrency_guards(guards)
 
-    # 2. Parallelism
+def _process_parallelism() -> Any:
     plans = [
         build_parallel_execution_plan("bounded_preview_parallelism", 4, 4, 100, "wait_all", 16, "drop"),
         build_parallel_execution_plan("trace_query_parallelism", 10, 20, 1000, "first_n", 128, "throttle") # will trigger warning
     ]
-    parallelism_manifest = summarize_parallel_execution(plans)
+    return summarize_parallel_execution(plans)
 
-    # 3. Ordering
+def _process_ordering() -> Any:
     orderings = [
         build_async_ordering_graph("process_a", {"deterministic_merge": True, "expected_sequence": ["step1", "step2"]}),
         build_async_ordering_graph("process_b", {"expected_sequence": ["step1"]}) # missing deterministic_merge
     ]
-    ordering_manifest = summarize_async_ordering(orderings)
+    return summarize_async_ordering(orderings)
 
-    # 4. Race Probes
+def _process_race_probes() -> Any:
     race_runs = [
         build_race_probe_run("simultaneous_read_write_probe", 42, "interleave"),
         build_race_probe_run("async_join_reorder_probe", 1337, "reverse")
     ]
     # simulate a race detection
     detect_race_signals(race_runs[1], "state_A", "state_B")
-    race_manifest = summarize_race_probes(race_runs)
+    return summarize_race_probes(race_runs)
 
-    # 5. Shared State
+def _process_shared_state() -> Any:
     states = [
         register_shared_state_surface("owner_C", "cache_ledger")
     ]
     conflicts = [StateConflictRecord(conflict_id=f"conf_{uuid.uuid4().hex[:8]}", description="concurrent write detected")]
-    state_manifest = summarize_shared_state_conflicts(states, conflicts)
+    return summarize_shared_state_conflicts(states, conflicts)
 
-    # 6. Idempotency
+def _process_idempotency() -> Any:
     idem_records = [
         build_idempotency_contract("side_effect_A", "key_123")
     ]
     duplicates = [DuplicateExecutionRecord(duplicate_id=f"dup_{uuid.uuid4().hex[:8]}", description="Duplicate write attempt caught")]
-    idem_manifest = summarize_idempotency_health(idem_records, duplicates)
+    return summarize_idempotency_health(idem_records, duplicates)
 
-    # 7. Stale Reads
+def _process_stale_reads() -> Any:
     stale_records = [
         StaleReadRecord(stale_read_id=f"sr_{uuid.uuid4().hex[:8]}", target_ref="query_1", drift_window_ref="dw_1", status="ok", warnings=[])
     ]
-    stale_manifest = summarize_stale_read_risks(stale_records)
+    return summarize_stale_read_risks(stale_records)
 
-    # 8. Queues
+def _process_queues() -> Any:
     queue_disciplines = [
         build_queue_discipline("main_event_queue")
     ]
-    queue_manifest = summarize_queue_health(queue_disciplines)
+    return summarize_queue_health(queue_disciplines)
 
-    # 9. Timeouts / Cancellations
+def _process_timeouts() -> Any:
     timeout_runs = [
         run_timeout_probe("worker_1", True)
     ]
     leaks = detect_cancellation_leaks([CancellationRunRecord(run_id="cr1", target_ref="w2", status="cancellation_simulated", warnings=[])])
-    timeout_manifest = summarize_timeout_and_cancellation(timeout_runs, leaks)
+    return summarize_timeout_and_cancellation(timeout_runs, leaks)
 
-    # 10. Regressions
+def _process_regressions() -> Any:
     baseline = ConcurrencyBaselineRecord(baseline_id="base1", metrics={"races": 0, "drift_ms": 10})
     current = ConcurrencyComparisonRecord(comparison_id="curr1", metrics={"races": 1, "drift_ms": 15})
     regressions = detect_concurrency_regressions(baseline, current)
-    regression_manifest = summarize_concurrency_regressions(regressions)
+    return summarize_concurrency_regressions(regressions)
 
+def run_concurrency_hardening_pass(strategy_name: str = "ConservativeConcurrencyHardeningStrategy") -> Dict[str, Any]:
+    """Runs a full concurrency hardening pass simulating all checks."""
 
-    # Overall Health
     manifests = {
-        "guards": guards_manifest,
-        "parallelism": parallelism_manifest,
-        "ordering": ordering_manifest,
-        "race_probes": race_manifest,
-        "shared_state": state_manifest,
-        "idempotency": idem_manifest,
-        "stale_reads": stale_manifest,
-        "queues": queue_manifest,
-        "timeouts": timeout_manifest,
-        "regressions": regression_manifest
+        "guards": _process_guards(),
+        "parallelism": _process_parallelism(),
+        "ordering": _process_ordering(),
+        "race_probes": _process_race_probes(),
+        "shared_state": _process_shared_state(),
+        "idempotency": _process_idempotency(),
+        "stale_reads": _process_stale_reads(),
+        "queues": _process_queues(),
+        "timeouts": _process_timeouts(),
+        "regressions": _process_regressions()
     }
 
     health_report = build_overall_health_report(manifests)
