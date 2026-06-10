@@ -1,12 +1,12 @@
 import typer
 from rich.console import Console
 
-from .trace_routing.controllers import TraceRoutingController
-from .trace_routing.proof_federations import build_proof_catalog_federation
-from .trace_routing.contracts import ProofFederationFamily
-from .trace_routing.strategies.conservative import ConservativeTraceRouterStrategy
-from .trace_routing.strategies.balanced_proof_signal_federation import BalancedProofSignalFederationStrategy
-from .trace_routing.strategies.integrity_council_first import IntegrityCouncilFirstStrategy
+from sports_signal_bot.trace_routing.controllers import TraceRoutingController
+from sports_signal_bot.trace_routing.proof_federations import build_proof_catalog_federation
+from sports_signal_bot.trace_routing.contracts import ProofFederationFamily
+from sports_signal_bot.trace_routing.strategies.conservative import ConservativeTraceRouterStrategy
+from sports_signal_bot.trace_routing.strategies.balanced_proof_signal_federation import BalancedProofSignalFederationStrategy
+from sports_signal_bot.trace_routing.strategies.integrity_council_first import IntegrityCouncilFirstStrategy
 
 app = typer.Typer(help="Sovereign Governance Trace Routing CLI")
 console = Console()

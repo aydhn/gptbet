@@ -1,6 +1,6 @@
 import typer
 from rich.console import Console
-from .context_assembly import (
+from sports_signal_bot.context_assembly import (
     build_trace_freshness_pipeline,
     build_observatory_exchange_board_pipeline,
     build_context_assembly_pipeline,

@@ -1,18 +1,18 @@
 import typer
 from rich.console import Console
-from .global_hardening.contracts import (
+from sports_signal_bot.global_hardening.contracts import (
     RegionalQuorumMeshRecord, QuorumMeshNodeRecord,
     PlanetaryCoverageSynthesisRecord, CoverageSeamRecord, CoverageGapRecord,
     GlobalContinuityDrillRecord, ContinuityPhaseRecord, ContinuityResidueRecord, ContinuityGapRecord,
     CrossRegionRecoveryGovernanceRecord, GovernanceGapRecord,
     GlobalResilienceBudgetsRecord, BudgetConsumptionRecord, GlobalQuorumBudgetRecord
 )
-from .global_hardening.quorum_meshes import build_regional_quorum_mesh, add_quorum_mesh_node
-from .global_hardening.planetary_coverage import build_planetary_coverage_synthesis, detect_planetary_coverage_seams, verify_planetary_coverage_handoff
-from .global_hardening.continuity_drills import build_global_continuity_drill, advance_global_continuity_phase, record_global_continuity_residue, detect_global_continuity_gaps
-from .global_hardening.recovery_governance import build_cross_region_recovery_governance, detect_cross_region_governance_gaps
-from .global_hardening.budgets import build_global_resilience_budgets, add_quorum_budget, measure_global_budget_consumption
-from .global_hardening.integration import build_global_continuity_matrix, summarize_global_continuity_matrix, export_artifacts
+from sports_signal_bot.global_hardening.quorum_meshes import build_regional_quorum_mesh, add_quorum_mesh_node
+from sports_signal_bot.global_hardening.planetary_coverage import build_planetary_coverage_synthesis, detect_planetary_coverage_seams, verify_planetary_coverage_handoff
+from sports_signal_bot.global_hardening.continuity_drills import build_global_continuity_drill, advance_global_continuity_phase, record_global_continuity_residue, detect_global_continuity_gaps
+from sports_signal_bot.global_hardening.recovery_governance import build_cross_region_recovery_governance, detect_cross_region_governance_gaps
+from sports_signal_bot.global_hardening.budgets import build_global_resilience_budgets, add_quorum_budget, measure_global_budget_consumption
+from sports_signal_bot.global_hardening.integration import build_global_continuity_matrix, summarize_global_continuity_matrix, export_artifacts
 import json
 
 app = typer.Typer()

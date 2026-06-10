@@ -2,23 +2,23 @@ import typer
 from rich.console import Console
 from typing import Optional
 
-from .coherence_scoring.contracts import (
+from sports_signal_bot.coherence_scoring.contracts import (
     CoherenceInputRecord
 )
-from .coherence_scoring.context_federations import (
+from sports_signal_bot.coherence_scoring.context_federations import (
     build_context_assembler_federation, summarize_context_federation_health
 )
-from .coherence_scoring.freshness_chambers import (
+from sports_signal_bot.coherence_scoring.freshness_chambers import (
     build_freshness_dispute_chamber, summarize_freshness_dispute_chamber
 )
-from .coherence_scoring.evidence_brokers import (
+from sports_signal_bot.coherence_scoring.evidence_brokers import (
     build_trace_evidence_broker, summarize_trace_evidence_broker
 )
-from .coherence_scoring.coherence_scorers import (
+from sports_signal_bot.coherence_scoring.coherence_scorers import (
     build_governance_coherence_scorer, summarize_coherence_scorer,
     apply_coherence_penalties, compute_coherence_band, explain_coherence_score
 )
-from .coherence_scoring.strategies import (
+from sports_signal_bot.coherence_scoring.strategies import (
     ConservativeCoherenceScoringStrategy,
     BalancedContextBrokerStrategy,
     FreshnessDisputeFirstStrategy
