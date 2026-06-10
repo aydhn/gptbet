@@ -1,7 +1,12 @@
-import pytest
-from datetime import datetime, timedelta
-from sports_signal_bot.ecosystem_sync.checkpoints import create_sync_checkpoint, detect_stale_subscriptions, classify_sync_health
+from datetime import datetime, timedelta, timezone
+
+from sports_signal_bot.ecosystem_sync.checkpoints import (
+    classify_sync_health,
+    create_sync_checkpoint,
+    detect_stale_subscriptions,
+)
 from sports_signal_bot.ecosystem_sync.lag import compute_sync_lag
+
 
 def test_compute_sync_lag():
     chk = create_sync_checkpoint("source_1", "local_1", "hash1", "hash2")
@@ -16,10 +21,11 @@ def test_compute_sync_lag():
     lag2 = compute_sync_lag(chk, very_future_time)
     assert lag2.is_stale is True
 
+
 def test_detect_stale_subscriptions():
     chk = create_sync_checkpoint("source_1", "local_1", "hash1", "hash2")
     # artificially age the checkpoint
-    chk.local.timestamp = datetime.utcnow() - timedelta(seconds=200)
+    chk.local.timestamp = datetime.now(timezone.utc) - timedelta(seconds=200)
 
     stale_records = detect_stale_subscriptions([chk], threshold_seconds=100)
     assert len(stale_records) == 1
