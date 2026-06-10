@@ -39,9 +39,7 @@ def run_arbitration(group: ReconciliationGroupRecord, strategy_name: str = "bala
     lineage_map = {}
 
     # Collect all fields
-    all_fields = set()
-    for obs in group.observations:
-        all_fields.update(obs.payload.keys())
+    all_fields = set().union(*(obs.payload for obs in group.observations))
 
     for field in all_fields:
         candidates = {obs.provider_name: obs.payload.get(field) for obs in group.observations if field in obs.payload}
