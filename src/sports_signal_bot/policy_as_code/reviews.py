@@ -28,8 +28,9 @@ class PolicyReviewPipeline:
         )
         self.reviews[review.review_id] = review
 
-        req = self.requests.get(request_id)
-        if req:
-            req.status = "reviewed"
+        try:
+            self.requests[request_id].status = "reviewed"
+        except KeyError:
+            pass
 
         return review
