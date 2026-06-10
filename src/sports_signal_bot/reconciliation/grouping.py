@@ -14,24 +14,22 @@ def build_reconciliation_groups(
         key = obs.entity_key
         groups_map[key].append(obs)
 
-    result = []
-    for key, obs_list in groups_map.items():
-        providers = list(set(o.provider_name for o in obs_list))
-        record = ReconciliationGroupRecord(
+    return [
+        ReconciliationGroupRecord(
             group_id=f"group_{key}",
             data_family=obs_list[0].data_family,
             sport=obs_list[0].sport,
             entity_key=key,
             source_count=len(obs_list),
-            providers_involved=providers,
+            providers_involved=list({o.provider_name for o in obs_list}),
             reconciliation_status="pending",
             conflict_count=0,
             confidence_score=0.0,
             selected_consensus_strategy="none",
             observations=obs_list,
         )
-        result.append(record)
-    return result
+        for key, obs_list in groups_map.items()
+    ]
 
 
 def resolve_grouping_identity(group: ReconciliationGroupRecord) -> bool:
