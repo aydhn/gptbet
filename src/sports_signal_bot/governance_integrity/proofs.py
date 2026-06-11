@@ -2,40 +2,32 @@ from typing import Dict, Any, List, Optional
 import uuid
 from datetime import datetime
 
-from .contracts import DecisionProofRecord, SignerStatus, VerificationStatus
+from .contracts import DecisionProofRecord, DecisionProofParameters, SignerStatus, VerificationStatus
 from .canonicalization import compute_decision_hash
 
-def build_decision_proof(
-    decision_family: str,
-    decision_ref: str,
-    applied_policy_snapshot_ref: str,
-    inputs: Dict[str, Any],
-    outputs: Dict[str, Any],
-    evidence_refs: List[str] = None,
-    prior_proof_ref: Optional[str] = None
-) -> DecisionProofRecord:
+def build_decision_proof(params: DecisionProofParameters) -> DecisionProofRecord:
     """Builds an immutable decision proof record."""
-    input_hash = compute_decision_hash(inputs)
-    output_hash = compute_decision_hash(outputs)
+    input_hash = compute_decision_hash(params.inputs)
+    output_hash = compute_decision_hash(params.outputs)
 
     proof_payload = {
-        "decision_ref": decision_ref,
+        "decision_ref": params.decision_ref,
         "input_hash": input_hash,
         "output_hash": output_hash,
-        "applied_policy_snapshot_ref": applied_policy_snapshot_ref
+        "applied_policy_snapshot_ref": params.applied_policy_snapshot_ref
     }
     proof_hash = compute_decision_hash(proof_payload)
 
     return DecisionProofRecord(
         decision_proof_id=f"proof_{uuid.uuid4().hex[:8]}",
-        decision_family=decision_family,
-        decision_ref=decision_ref,
-        applied_policy_snapshot_ref=applied_policy_snapshot_ref,
-        evidence_refs=evidence_refs or [],
+        decision_family=params.decision_family,
+        decision_ref=params.decision_ref,
+        applied_policy_snapshot_ref=params.applied_policy_snapshot_ref,
+        evidence_refs=params.evidence_refs,
         input_hash=input_hash,
         output_hash=output_hash,
         proof_hash=proof_hash,
-        prior_proof_ref=prior_proof_ref,
+        prior_proof_ref=params.prior_proof_ref,
         signer_status=SignerStatus.ACTIVE,
         verification_status=VerificationStatus.VALID,
         created_at=datetime.utcnow()

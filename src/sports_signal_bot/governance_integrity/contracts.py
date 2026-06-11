@@ -82,7 +82,18 @@ class SignedBundleRecord(BaseModel):
     status: BundleStatus
     warnings: List[str] = Field(default_factory=list)
 
+
+class DecisionProofParameters(BaseModel):
+    decision_family: str
+    decision_ref: str
+    applied_policy_snapshot_ref: str
+    inputs: Dict[str, Any]
+    outputs: Dict[str, Any]
+    evidence_refs: List[str] = Field(default_factory=list)
+    prior_proof_ref: Optional[str] = None
+
 class DecisionProofRecord(BaseModel):
+
     decision_proof_id: str
     decision_family: str
     decision_ref: str
