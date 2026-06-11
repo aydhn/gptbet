@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Dict, Optional, Literal, Any
 from datetime import datetime
+
 
 class RemediationCopilotRecord(BaseModel):
     copilot_id: str
@@ -11,6 +12,7 @@ class RemediationCopilotRecord(BaseModel):
     automation_preparation_policy_ref: str
     active_status: str
     warnings: List[str] = []
+
 
 class CopilotSessionRecord(BaseModel):
     session_id: str
@@ -24,12 +26,14 @@ class CopilotSessionRecord(BaseModel):
     readiness_ref: Optional[str] = None
     warnings: List[str] = []
 
+
 class CopilotRecommendationRecord(BaseModel):
     session_id: str
     incident_ref: str
     recommended_playbooks: List[str]
     rationale: str
     warnings: List[str] = []
+
 
 class CopilotReviewPacketRecord(BaseModel):
     packet_id: str
@@ -48,6 +52,19 @@ class CopilotReviewPacketRecord(BaseModel):
     approval_requirements: List[str]
     caveats: List[str] = []
 
+
+class CopilotApprovalRequestParams(BaseModel):
+    packet_ref: str
+    approval_family: str
+    scope: str
+    max_duration_seconds: int
+    allowed_step_families: List[str]
+    forbidden_conditions: List[str]
+    rollback_requirement: str
+    observability_requirement: str
+    review_owner: str
+
+
 class CopilotApprovalRequestRecord(BaseModel):
     request_id: str
     packet_ref: str
@@ -60,12 +77,22 @@ class CopilotApprovalRequestRecord(BaseModel):
     observability_requirement: str
     review_owner: str
 
+
 class CopilotApprovalDecisionRecord(BaseModel):
     request_ref: str
-    decision: Literal["approved_for_rehearsal", "approved_with_scope_restrictions", "approved_with_caveats", "review_required", "blocked_by_risk", "denied", "expired"]
+    decision: Literal[
+        "approved_for_rehearsal",
+        "approved_with_scope_restrictions",
+        "approved_with_caveats",
+        "review_required",
+        "blocked_by_risk",
+        "denied",
+        "expired",
+    ]
     approved_by: str
     notes: str
     applied_restrictions: List[str] = []
+
 
 class RehearsalLedgerRecord(BaseModel):
     ledger_id: str
@@ -76,10 +103,19 @@ class RehearsalLedgerRecord(BaseModel):
     integrity_refs: Optional[List[str]] = None
     warnings: List[str] = []
 
+
 class ExecutionReadinessRecord(BaseModel):
     readiness_id: str
     session_ref: str
-    status: Literal["not_ready", "review_only_ready", "rehearsal_ready", "staged_execution_preparation_ready", "blocked", "stale_ready", "superseded_ready"]
+    status: Literal[
+        "not_ready",
+        "review_only_ready",
+        "rehearsal_ready",
+        "staged_execution_preparation_ready",
+        "blocked",
+        "stale_ready",
+        "superseded_ready",
+    ]
     approval_completeness: bool
     scope_boundedness: bool
     rehearsal_success: bool
@@ -91,6 +127,7 @@ class ExecutionReadinessRecord(BaseModel):
     no_unresolved_critical_blockers: bool
     freshness_of_incident_context: bool
     blockers: List[str] = []
+
 
 class PlaybookExecutionPreparationRecord(BaseModel):
     preparation_id: str
@@ -104,6 +141,7 @@ class PlaybookExecutionPreparationRecord(BaseModel):
     observability_requirements: List[str]
     current_status: str
     warnings: List[str] = []
+
 
 class PortablePlaybookRecord(BaseModel):
     playbook_id: str
@@ -119,12 +157,20 @@ class PortablePlaybookRecord(BaseModel):
     nonportable_step_markers: List[str]
     confidence_notes: str
 
+
 class PlaybookAdaptationRecord(BaseModel):
     adaptation_id: str
     portable_playbook_ref: str
-    outcome: Literal["adapted_clean", "adapted_with_restrictions", "adapted_review_only", "adaptation_blocked", "quarantined_for_manual_mapping"]
+    outcome: Literal[
+        "adapted_clean",
+        "adapted_with_restrictions",
+        "adapted_review_only",
+        "adaptation_blocked",
+        "quarantined_for_manual_mapping",
+    ]
     applied_local_restrictions: List[str]
     warnings: List[str] = []
+
 
 class AutomationEnvelopeRecord(BaseModel):
     envelope_id: str
@@ -139,15 +185,32 @@ class AutomationEnvelopeRecord(BaseModel):
     stop_conditions: List[str]
     expiration: datetime
 
+
 class SelfHealingPreparationRecord(BaseModel):
     preparation_id: str
     session_ref: str
-    eligibility_status: Literal["not_candidate", "candidate_with_review", "bounded_candidate", "blocked_for_automation", "stale_candidate"]
+    eligibility_status: Literal[
+        "not_candidate",
+        "candidate_with_review",
+        "bounded_candidate",
+        "blocked_for_automation",
+        "stale_candidate",
+    ]
     envelope_ref: Optional[str] = None
     warnings: List[str] = []
 
+
 class RehearsalEntryRecord(BaseModel):
     entry_id: str
-    entry_family: Literal["rehearsal_started", "rehearsal_step_passed", "rehearsal_step_failed", "rehearsal_stopped_by_guard", "rehearsal_assertion_failed", "rehearsal_rollback_check_passed", "rehearsal_completed", "readiness_updated"]
+    entry_family: Literal[
+        "rehearsal_started",
+        "rehearsal_step_passed",
+        "rehearsal_step_failed",
+        "rehearsal_stopped_by_guard",
+        "rehearsal_assertion_failed",
+        "rehearsal_rollback_check_passed",
+        "rehearsal_completed",
+        "readiness_updated",
+    ]
     timestamp: datetime
     details: str
