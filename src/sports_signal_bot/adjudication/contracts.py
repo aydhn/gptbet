@@ -1,7 +1,9 @@
-from enum import Enum
-from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
 from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class AdjudicationSeverity(str, Enum):
     low = "low"
@@ -9,11 +11,13 @@ class AdjudicationSeverity(str, Enum):
     high = "high"
     critical = "critical"
 
+
 class AdjudicationQueuePriority(str, Enum):
     low = "low"
     normal = "normal"
     high = "high"
     urgent = "urgent"
+
 
 class AdjudicationCaseFamily(str, Enum):
     data_conflict_case = "data_conflict_case"
@@ -26,6 +30,7 @@ class AdjudicationCaseFamily(str, Enum):
     release_judgment_case = "release_judgment_case"
     repeated_pattern_case = "repeated_pattern_case"
     knowledge_suggestion_case = "knowledge_suggestion_case"
+
 
 class ResolutionType(str, Enum):
     # Data / Entity
@@ -57,7 +62,9 @@ class ResolutionType(str, Enum):
     # Provider / Trust
     penalize_provider_for_family = "penalize_provider_for_family"
     clear_provider_penalty = "clear_provider_penalty"
-    require_manual_review_for_provider_pattern = "require_manual_review_for_provider_pattern"
+    require_manual_review_for_provider_pattern = (
+        "require_manual_review_for_provider_pattern"
+    )
     confirm_recurring_conflict_pattern = "confirm_recurring_conflict_pattern"
 
 
@@ -72,6 +79,7 @@ class AdjudicationCaseStatus(str, Enum):
     superseded = "superseded"
     archived = "archived"
 
+
 class FeedbackStatus(str, Enum):
     captured = "captured"
     pending_validation = "pending_validation"
@@ -81,6 +89,7 @@ class FeedbackStatus(str, Enum):
     deprecated = "deprecated"
     superseded = "superseded"
 
+
 class KnowledgeEntryStatus(str, Enum):
     active = "active"
     provisional = "provisional"
@@ -88,11 +97,13 @@ class KnowledgeEntryStatus(str, Enum):
     deprecated = "deprecated"
     archived = "archived"
 
+
 class AutoApplyLevel(str, Enum):
     none = "none"
     advisory_only = "advisory_only"
     scoped_auto_apply = "scoped_auto_apply"
     approval_required = "approval_required"
+
 
 class KnowledgeScopeType(str, Enum):
     single_entity = "single_entity"
@@ -103,6 +114,7 @@ class KnowledgeScopeType(str, Enum):
     season_window = "season_window"
     global_advisory_only = "global_advisory_only"
 
+
 class MemoryType(str, Enum):
     alias_resolution_memory = "alias_resolution_memory"
     provider_conflict_memory = "provider_conflict_memory"
@@ -110,6 +122,19 @@ class MemoryType(str, Enum):
     result_resolution_memory = "result_resolution_memory"
     release_judgment_memory = "release_judgment_memory"
     review_pattern_memory = "review_pattern_memory"
+
+
+class AdjudicationCaseCreationRequest(BaseModel):
+    case_type: AdjudicationCaseFamily
+    target_entity_type: str
+    target_entity_id: str
+    source_component: str
+    severity: AdjudicationSeverity
+    evidence_bundle_ref: str
+    dispute_refs: Optional[List[str]] = None
+    sport: Optional[str] = None
+    market_type: Optional[str] = None
+
 
 class AdjudicationCaseRecord(BaseModel):
     case_id: str
@@ -126,6 +151,7 @@ class AdjudicationCaseRecord(BaseModel):
     queue_priority: AdjudicationQueuePriority = AdjudicationQueuePriority.normal
     created_at: datetime = Field(default_factory=datetime.utcnow)
     warnings: List[str] = Field(default_factory=list)
+
 
 class AdjudicationDecisionRecord(BaseModel):
     decision_id: str
@@ -144,6 +170,7 @@ class AdjudicationDecisionRecord(BaseModel):
     secondary_reviewer_id: Optional[str] = None
     secondary_review_status: Optional[str] = None
 
+
 class ResolutionRecord(BaseModel):
     resolution_id: str
     case_id: str
@@ -159,14 +186,17 @@ class ResolutionRecord(BaseModel):
     related_entities: List[str] = Field(default_factory=list)
     caveats: List[str] = Field(default_factory=list)
 
+
 class ResolutionReasonRecord(BaseModel):
     reason_code: str
     description: str
+
 
 class KnowledgeScopeRecord(BaseModel):
     scope_type: KnowledgeScopeType
     target_value: str
     constraints: Dict[str, Any] = Field(default_factory=dict)
+
 
 class PrecedentRecord(BaseModel):
     precedent_id: str
@@ -184,10 +214,12 @@ class PrecedentRecord(BaseModel):
     usage_count: int = 0
     review_status: str
 
+
 class MemoryLinkRecord(BaseModel):
     source_case_id: str
     target_memory_id: str
     link_type: str
+
 
 class FeedbackSignalRecord(BaseModel):
     signal_id: str
@@ -196,6 +228,7 @@ class FeedbackSignalRecord(BaseModel):
     payload: Dict[str, Any]
     status: FeedbackStatus = FeedbackStatus.captured
     confidence: float
+
 
 class KnowledgeEntryRecord(BaseModel):
     entry_id: str
@@ -207,9 +240,11 @@ class KnowledgeEntryRecord(BaseModel):
     derived_from_feedback_ids: List[str] = Field(default_factory=list)
     expiry: Optional[datetime] = None
 
+
 class AdjudicationQueueRecord(BaseModel):
     queue_id: str
     cases: List[AdjudicationCaseRecord] = Field(default_factory=list)
+
 
 class AdjudicationSummaryRecord(BaseModel):
     open_cases: int
@@ -224,6 +259,7 @@ class AdjudicationSummaryRecord(BaseModel):
     urgent_backlog_count: int
     secondary_review_required_count: int
 
+
 class AdjudicationManifest(BaseModel):
     manifest_id: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
@@ -231,12 +267,14 @@ class AdjudicationManifest(BaseModel):
     summary: AdjudicationSummaryRecord
     case_ids: List[str]
 
+
 class ResolutionAuditRecord(BaseModel):
     audit_id: str
     resolution_id: str
     operator_id: str
     action: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
 
 class FeedbackApplicationRecord(BaseModel):
     application_id: str
@@ -248,11 +286,13 @@ class FeedbackApplicationRecord(BaseModel):
     risk_level: str
     consumer_components: List[str] = Field(default_factory=list)
 
+
 class RuleSuggestionRecord(BaseModel):
     suggestion_id: str
     case_id: str
     proposed_rule: str
     rationale: str
+
 
 class HumanCorrectionRecord(BaseModel):
     correction_id: str
@@ -267,6 +307,7 @@ class HumanCorrectionRecord(BaseModel):
     reversibility: bool
     propagate_to_memory: bool
 
+
 class FeedbackApplicationPolicy(BaseModel):
     auto_apply_allowed: bool
     requires_secondary_review: bool
@@ -275,11 +316,13 @@ class FeedbackApplicationPolicy(BaseModel):
     risk_level: str
     consumer_components: List[str] = Field(default_factory=list)
 
+
 class PolicyFeedbackRecord(BaseModel):
     feedback_id: str
     case_id: str
     policy_ref: str
     feedback_note: str
+
 
 class ThresholdFeedbackRecord(BaseModel):
     feedback_id: str
@@ -287,6 +330,7 @@ class ThresholdFeedbackRecord(BaseModel):
     threshold_ref: str
     suggested_value: float
     rationale: str
+
 
 class RuleSuggestionBundleRecord(BaseModel):
     bundle_id: str
