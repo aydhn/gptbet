@@ -1,6 +1,9 @@
 import pytest
-from sports_signal_bot.adjudication.contracts import AdjudicationDecisionRecord, ResolutionType
+
+from sports_signal_bot.adjudication.contracts import (
+    AdjudicationDecisionRecord, ResolutionType)
 from sports_signal_bot.adjudication.validators import AdjudicationGuardrails
+
 
 def test_resolution_has_evidence():
     decision_valid = AdjudicationDecisionRecord(
@@ -13,7 +16,7 @@ def test_resolution_has_evidence():
         confidence_in_resolution=1.0,
         rationale_code="evidence_found",
         operator_note="Confirmed via source",
-        applied_scope="single_entity"
+        applied_scope="single_entity",
     )
     assert AdjudicationGuardrails.check_resolution_has_evidence(decision_valid)
 
@@ -27,6 +30,6 @@ def test_resolution_has_evidence():
         confidence_in_resolution=1.0,
         rationale_code="",
         operator_note="",
-        applied_scope="single_entity"
+        applied_scope="single_entity",
     )
     assert not AdjudicationGuardrails.check_resolution_has_evidence(decision_invalid)

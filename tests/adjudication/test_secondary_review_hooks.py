@@ -1,6 +1,9 @@
 import pytest
-from sports_signal_bot.adjudication.contracts import AdjudicationDecisionRecord, ResolutionType
+
+from sports_signal_bot.adjudication.contracts import (
+    AdjudicationDecisionRecord, ResolutionType)
 from sports_signal_bot.adjudication.validators import AdjudicationGuardrails
+
 
 def test_secondary_review_bypass():
     decision = AdjudicationDecisionRecord(
@@ -15,7 +18,7 @@ def test_secondary_review_bypass():
         operator_note="note",
         applied_scope="global",
         requires_secondary_review=True,
-        secondary_review_status="pending"
+        secondary_review_status="pending",
     )
     assert not AdjudicationGuardrails.validate_secondary_review_bypass(decision)
 

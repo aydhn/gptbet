@@ -1,5 +1,7 @@
 import pytest
+
 from sports_signal_bot.adjudication.resolutions import HumanCorrectionBuilder
+
 
 def test_correction_validation():
     correction = HumanCorrectionBuilder.build_human_correction(
@@ -11,7 +13,7 @@ def test_correction_validation():
         scope="single_entity",
         confidence=0.9,
         propagate_to_memory=True,
-        evidence_refs=["evidence_1"]
+        evidence_refs=["evidence_1"],
     )
 
     assert HumanCorrectionBuilder.validate_correction_payload(correction)
