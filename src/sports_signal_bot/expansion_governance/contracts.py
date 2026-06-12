@@ -87,6 +87,17 @@ class BudgetBurnRecord(BaseModel):
     reason: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
+
+class GlobalPressureMetrics(BaseModel):
+    active_cohort_count: int
+    simultaneously_growing_cohort_count: int
+    family_conflict_burden: float
+    verification_warning_density: float
+    review_backlog_pressure: float
+    dispute_burden: float
+    rollback_recentness_penalty: float
+    budget_saturation: float
+
 class ExpansionPressureRecord(BaseModel):
     pressure_id: str
     pressure_score: float

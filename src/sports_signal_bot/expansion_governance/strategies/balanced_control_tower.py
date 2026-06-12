@@ -2,7 +2,7 @@ from typing import Dict, Any, List
 import uuid
 from .base import BaseExpansionGovernanceStrategy
 from ..contracts import (
-    ExpansionControlStateRecord, ExpansionBudgetRecord, ExpansionPressureRecord,
+    ExpansionControlStateRecord, ExpansionBudgetRecord, ExpansionPressureRecord, GlobalPressureMetrics,
     CrossCohortConflictRecord, BreakerEvaluationRecord, ExpansionGovernanceManifest
 )
 from ..pressure import compute_global_pressure
@@ -31,14 +31,16 @@ class BalancedControlTowerStrategy(BaseExpansionGovernanceStrategy):
             ))
 
         pressure = compute_global_pressure(
-            active_cohort_count=len(state.active_cohort_ids),
-            simultaneously_growing_cohort_count=metrics.get('growing_cohorts', 0),
-            family_conflict_burden=metrics.get('conflict_burden', 0.0),
-            verification_warning_density=metrics.get('warning_density', 0.0),
-            review_backlog_pressure=metrics.get('review_backlog', 0.0),
-            dispute_burden=metrics.get('dispute_burden', 0.0),
-            rollback_recentness_penalty=metrics.get('rollback_penalty', 0.0),
-            budget_saturation=metrics.get('budget_usage', 0.0)
+            metrics=GlobalPressureMetrics(
+                active_cohort_count=len(state.active_cohort_ids),
+                simultaneously_growing_cohort_count=metrics.get('growing_cohorts', 0),
+                family_conflict_burden=metrics.get('conflict_burden', 0.0),
+                verification_warning_density=metrics.get('warning_density', 0.0),
+                review_backlog_pressure=metrics.get('review_backlog', 0.0),
+                dispute_burden=metrics.get('dispute_burden', 0.0),
+                rollback_recentness_penalty=metrics.get('rollback_penalty', 0.0),
+                budget_saturation=metrics.get('budget_usage', 0.0)
+            )
         )
 
         conflicts = detect_cross_cohort_conflicts(metrics.get('cohort_details', []))
