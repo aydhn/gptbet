@@ -1,0 +1,4 @@
+🎯 **What:** Refactored the `HumanCorrectionBuilder.build_human_correction` method in `src/sports_signal_bot/adjudication/resolutions.py` to accept a single data transfer object `HumanCorrectionInput` instead of 10 individual arguments.
+💡 **Why:** Having 10 separate arguments made the function signature hard to read, difficult to maintain, and prone to usage errors. Grouping them into a single Pydantic BaseModel improves code clarity, encapsulates related data, and allows for easier future modifications without breaking callers.
+✅ **Verification:** Verified the change by running the suite of formatting tools (`black`, `isort`, `flake8`) and executing `pytest tests/adjudication/` to ensure no functionality is broken.
+✨ **Result:** A cleaner, more maintainable codebase with significantly reduced parameter complexity for `build_human_correction`.

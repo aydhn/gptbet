@@ -294,6 +294,19 @@ class RuleSuggestionRecord(BaseModel):
     rationale: str
 
 
+class HumanCorrectionInput(BaseModel):
+    case_id: str
+    corrected_field: str
+    old_value: Any
+    new_value: Any
+    resolution_basis: str
+    scope: str
+    confidence: float
+    reversibility: bool = True
+    propagate_to_memory: bool = False
+    evidence_refs: Optional[List[str]] = None
+
+
 class HumanCorrectionRecord(BaseModel):
     correction_id: str
     case_id: str
