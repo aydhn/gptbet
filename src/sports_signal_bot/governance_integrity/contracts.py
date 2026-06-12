@@ -3,12 +3,14 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 from enum import Enum
 
+
 class TrustLevel(str, Enum):
     DEV = "dev"
     REVIEW = "review"
     ACTIVE = "active"
     EMERGENCY = "emergency"
     REVOKED = "revoked"
+
 
 class SignerStatus(str, Enum):
     ACTIVE = "active"
@@ -17,6 +19,7 @@ class SignerStatus(str, Enum):
     SUSPENDED = "suspended"
     REVOKED = "revoked"
     EXPIRED = "expired"
+
 
 class BundleStatus(str, Enum):
     DRAFT_UNSIGNED = "draft_unsigned"
@@ -28,6 +31,7 @@ class BundleStatus(str, Enum):
     REVOKED = "revoked"
     QUARANTINED = "quarantined"
 
+
 class VerificationStatus(str, Enum):
     VALID = "valid"
     INVALID_SIGNATURE = "invalid_signature"
@@ -37,11 +41,13 @@ class VerificationStatus(str, Enum):
     MISSING_PROOF = "missing_proof"
     QUARANTINED = "quarantined"
 
+
 class IntegrityMode(str, Enum):
     STRICT_ACTIVE = "strict_active_mode"
     REVIEW = "review_mode"
     DEV = "dev_mode"
     IMPORT_QUARANTINE = "import_quarantine_mode"
+
 
 class SignerRecord(BaseModel):
     signer_id: str
@@ -54,12 +60,14 @@ class SignerRecord(BaseModel):
     review_required: bool
     warnings: List[str] = Field(default_factory=list)
 
+
 class SignatureRecord(BaseModel):
     signature_id: str
     signer_id: str
     signature_blob: str
     algorithm: str
     timestamp: datetime
+
 
 class BundleManifestRecord(BaseModel):
     manifest_version: str = "1.0"
@@ -68,6 +76,7 @@ class BundleManifestRecord(BaseModel):
     payload_hash: str
     created_at: datetime
     dependencies: List[str] = Field(default_factory=list)
+
 
 class SignedBundleRecord(BaseModel):
     signed_bundle_id: str
@@ -92,6 +101,7 @@ class DecisionProofParameters(BaseModel):
     evidence_refs: List[str] = Field(default_factory=list)
     prior_proof_ref: Optional[str] = None
 
+
 class DecisionProofRecord(BaseModel):
 
     decision_proof_id: str
@@ -108,6 +118,7 @@ class DecisionProofRecord(BaseModel):
     created_at: datetime
     warnings: List[str] = Field(default_factory=list)
 
+
 class LedgerEntryRecord(BaseModel):
     entry_id: str
     timestamp: datetime
@@ -122,6 +133,7 @@ class LedgerEntryRecord(BaseModel):
     chain_hash: str
     redacted_payload: Dict[str, Any] = Field(default_factory=dict)
 
+
 class LedgerChainRecord(BaseModel):
     chain_id: str
     tail_entry_hash: str
@@ -129,10 +141,12 @@ class LedgerChainRecord(BaseModel):
     is_intact: bool
     last_verified_at: datetime
 
+
 class ProofLinkRecord(BaseModel):
     source_ref: str
     target_ref: str
     link_type: str
+
 
 class BundlePackagingRecord(BaseModel):
     package_id: str
@@ -144,6 +158,7 @@ class BundlePackagingRecord(BaseModel):
     overlay_refs: List[str] = Field(default_factory=list)
     compatibility_notes: str = ""
 
+
 class DistributionPackageRecord(BaseModel):
     distribution_id: str
     packaging_record: BundlePackagingRecord
@@ -151,12 +166,14 @@ class DistributionPackageRecord(BaseModel):
     import_instructions: str
     verification_summary: Dict[str, Any]
 
+
 class ImportedBundleStateRecord(BaseModel):
     import_id: str
     package_id: str
     imported_at: datetime
     initial_status: BundleStatus
     quarantine_reason: Optional[str] = None
+
 
 class IntegrityFailureRecord(BaseModel):
     failure_id: str
@@ -166,11 +183,13 @@ class IntegrityFailureRecord(BaseModel):
     affected_refs: List[str]
     context: Dict[str, Any]
 
+
 class VerificationWarningRecord(BaseModel):
     warning_id: str
     timestamp: datetime
     message: str
     related_refs: List[str]
+
 
 class GovernanceIntegrityManifest(BaseModel):
     manifest_id: str
@@ -182,11 +201,13 @@ class GovernanceIntegrityManifest(BaseModel):
     ledger_chain_intact: bool
     unsigned_dev_usage_count: int
 
+
 class ImmutableReferenceRecord(BaseModel):
     ref_id: str
     ref_type: str
     target_hash: str
     created_at: datetime
+
 
 class TrustPolicyRecord(BaseModel):
     policy_id: str
@@ -194,3 +215,12 @@ class TrustPolicyRecord(BaseModel):
     minimum_trust_by_environment: Dict[str, TrustLevel]
     require_multi_review: bool
     allow_unsigned_dev: bool
+
+
+class AppendLedgerEntryParams(BaseModel):
+    event_family: str
+    actor_metadata: Dict[str, Any]
+    bundle_refs: List[str] = Field(default_factory=list)
+    decision_refs: List[str] = Field(default_factory=list)
+    proof_refs: List[str] = Field(default_factory=list)
+    redacted_payload: Dict[str, Any] = Field(default_factory=dict)
