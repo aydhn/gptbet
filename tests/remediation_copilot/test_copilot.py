@@ -11,6 +11,7 @@ from sports_signal_bot.remediation_copilot import (
     build_automation_envelope,
     evaluate_self_healing_eligibility,
     PortablePlaybookParams,
+    CopilotReviewPacketParams,
 )
 
 
@@ -26,20 +27,21 @@ def test_session_lifecycle():
 
 
 def test_review_packet():
-    packet = build_copilot_review_packet(
-        "sess_1",
-        "Summary",
-        ["pat_1"],
-        0.9,
-        "Rationale",
-        ["step_1"],
-        ["guard_1"],
-        "proposal",
-        "rollback",
-        ["sig_1"],
-        ["stop_1"],
-        ["appreq_1"],
+    params = CopilotReviewPacketParams(
+        session_id="sess_1",
+        incident_summary="Summary",
+        matched_patterns=["pat_1"],
+        confidence_score=0.9,
+        selected_playbook_rationale="Rationale",
+        scoped_steps=["step_1"],
+        required_guards=["guard_1"],
+        rehearsal_proposal="proposal",
+        rollback_notes="rollback",
+        expected_signals=["sig_1"],
+        stop_conditions=["stop_1"],
+        approval_requirements=["appreq_1"],
     )
+    packet = build_copilot_review_packet(params)
     assert packet.confidence_score == 0.9
     assert packet.session_id == "sess_1"
 

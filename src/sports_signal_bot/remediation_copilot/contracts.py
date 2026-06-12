@@ -35,6 +35,21 @@ class CopilotRecommendationRecord(BaseModel):
     warnings: List[str] = []
 
 
+
+class CopilotReviewPacketParams(BaseModel):
+    session_id: str
+    incident_summary: str
+    matched_patterns: List[str]
+    confidence_score: float
+    selected_playbook_rationale: str
+    scoped_steps: List[str]
+    required_guards: List[str]
+    rehearsal_proposal: str
+    rollback_notes: str
+    expected_signals: List[str]
+    stop_conditions: List[str]
+    approval_requirements: List[str]
+
 class CopilotReviewPacketRecord(BaseModel):
     packet_id: str
     session_id: str

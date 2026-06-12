@@ -1,35 +1,24 @@
 import uuid
 from typing import List
-from .contracts import CopilotReviewPacketRecord
+from .contracts import CopilotReviewPacketRecord, CopilotReviewPacketParams
 
 def build_copilot_review_packet(
-    session_id: str,
-    incident_summary: str,
-    matched_patterns: List[str],
-    confidence_score: float,
-    selected_playbook_rationale: str,
-    scoped_steps: List[str],
-    required_guards: List[str],
-    rehearsal_proposal: str,
-    rollback_notes: str,
-    expected_signals: List[str],
-    stop_conditions: List[str],
-    approval_requirements: List[str]
+    params: CopilotReviewPacketParams
 ) -> CopilotReviewPacketRecord:
     return CopilotReviewPacketRecord(
         packet_id=f"rev_{uuid.uuid4().hex[:8]}",
-        session_id=session_id,
-        incident_summary=incident_summary,
-        matched_patterns=matched_patterns,
-        confidence_score=confidence_score,
-        selected_playbook_rationale=selected_playbook_rationale,
-        scoped_steps=scoped_steps,
+        session_id=params.session_id,
+        incident_summary=params.incident_summary,
+        matched_patterns=params.matched_patterns,
+        confidence_score=params.confidence_score,
+        selected_playbook_rationale=params.selected_playbook_rationale,
+        scoped_steps=params.scoped_steps,
         rejected_step_alternatives=[],
-        required_guards=required_guards,
-        rehearsal_proposal=rehearsal_proposal,
-        rollback_notes=rollback_notes,
-        expected_signals=expected_signals,
-        stop_conditions=stop_conditions,
-        approval_requirements=approval_requirements,
+        required_guards=params.required_guards,
+        rehearsal_proposal=params.rehearsal_proposal,
+        rollback_notes=params.rollback_notes,
+        expected_signals=params.expected_signals,
+        stop_conditions=params.stop_conditions,
+        approval_requirements=params.approval_requirements,
         caveats=[]
     )
