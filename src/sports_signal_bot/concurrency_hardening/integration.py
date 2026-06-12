@@ -5,6 +5,7 @@ from .contracts import (
     CancellationRunRecord,
     ConcurrencyGuardConfig,
     DuplicateExecutionRecord,
+    ParallelExecutionPlanConfig,
     QueueDisciplineRecord,
     QueueSampleRecord,
     StaleReadRecord,
@@ -89,10 +90,26 @@ def _process_guards() -> Any:
 def _process_parallelism() -> Any:
     plans = [
         build_parallel_execution_plan(
-            "bounded_preview_parallelism", 4, 4, 100, "wait_all", 16, "drop"
+            ParallelExecutionPlanConfig(
+                plan_family="bounded_preview_parallelism",
+                lane_count=4,
+                worker_pool_size=4,
+                queue_budget_items=100,
+                join_strategy="wait_all",
+                max_parallelism=16,
+                backpressure_policy="drop",
+            )
         ),
         build_parallel_execution_plan(
-            "trace_query_parallelism", 10, 20, 1000, "first_n", 128, "throttle"
+            ParallelExecutionPlanConfig(
+                plan_family="trace_query_parallelism",
+                lane_count=10,
+                worker_pool_size=20,
+                queue_budget_items=1000,
+                join_strategy="first_n",
+                max_parallelism=128,
+                backpressure_policy="throttle",
+            )
         ),  # will trigger warning
     ]
     return summarize_parallel_execution(plans)

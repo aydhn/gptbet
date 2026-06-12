@@ -91,6 +91,16 @@ class ParallelismWarningRecord(BaseModel):
     context: Dict[str, Any] = Field(default_factory=dict)
 
 
+class ParallelExecutionPlanConfig(BaseModel):
+    plan_family: str
+    lane_count: int
+    worker_pool_size: int
+    queue_budget_items: int
+    join_strategy: str
+    max_parallelism: int
+    backpressure_policy: str
+
+
 class ParallelExecutionPlanRecord(BaseModel):
     parallel_plan_id: str
     plan_family: str
