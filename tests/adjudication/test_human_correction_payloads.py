@@ -1,10 +1,9 @@
-import pytest
-
+from sports_signal_bot.adjudication.contracts import HumanCorrectionInput
 from sports_signal_bot.adjudication.resolutions import HumanCorrectionBuilder
 
 
 def test_correction_validation():
-    correction = HumanCorrectionBuilder.build_human_correction(
+    input_req = HumanCorrectionInput(
         case_id="c1",
         corrected_field="start_time",
         old_value="2023-01-01T10:00:00Z",
@@ -15,6 +14,7 @@ def test_correction_validation():
         propagate_to_memory=True,
         evidence_refs=["evidence_1"],
     )
+    correction = HumanCorrectionBuilder.build_human_correction(input_req)
 
     assert HumanCorrectionBuilder.validate_correction_payload(correction)
     assert HumanCorrectionBuilder.classify_correction_risk(correction) == "low"
