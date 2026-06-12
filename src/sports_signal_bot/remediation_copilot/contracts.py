@@ -143,6 +143,20 @@ class PlaybookExecutionPreparationRecord(BaseModel):
     warnings: List[str] = []
 
 
+class PortablePlaybookParams(BaseModel):
+    family: str
+    step_taxonomy: List[str]
+    scope_constraints: List[str]
+    required_guards: List[str]
+    required_approvals: List[str]
+    rehearsal_requirements: List[str]
+    rollback_notes: str
+    observability_expectations: List[str]
+    known_safe_subset_notes: str
+    nonportable_step_markers: List[str]
+    confidence_notes: str
+
+
 class PortablePlaybookRecord(BaseModel):
     playbook_id: str
     family: str

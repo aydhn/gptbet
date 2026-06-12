@@ -10,6 +10,7 @@ from sports_signal_bot.remediation_copilot import (
     adapt_portable_playbook_to_local_policy,
     build_automation_envelope,
     evaluate_self_healing_eligibility,
+    PortablePlaybookParams,
 )
 
 
@@ -88,19 +89,20 @@ def test_execution_readiness():
 
 
 def test_federation_and_adaptation():
-    bundle = build_portable_playbook_bundle(
-        "sync",
-        ["step_1"],
-        ["scope_1"],
-        [],
-        [],
-        [],
-        "rollback",
-        [],
-        "safe subset",
-        [],
-        "confidence",
+    params = PortablePlaybookParams(
+        family="sync",
+        step_taxonomy=["step_1"],
+        scope_constraints=["scope_1"],
+        required_guards=[],
+        required_approvals=[],
+        rehearsal_requirements=[],
+        rollback_notes="rollback",
+        observability_expectations=[],
+        known_safe_subset_notes="safe subset",
+        nonportable_step_markers=[],
+        confidence_notes="confidence",
     )
+    bundle = build_portable_playbook_bundle(params)
 
     adapt_clean = adapt_portable_playbook_to_local_policy(bundle, [])
     assert adapt_clean.outcome == "adapted_clean"
