@@ -1,30 +1,23 @@
 from typing import List, Dict, Any
 import uuid
 from datetime import datetime
-from .contracts import ExpansionPressureRecord, PressureBand
+from .contracts import ExpansionPressureRecord, PressureBand, GlobalPressureMetrics
 
 def compute_global_pressure(
-    active_cohort_count: int,
-    simultaneously_growing_cohort_count: int,
-    family_conflict_burden: float,
-    verification_warning_density: float,
-    review_backlog_pressure: float,
-    dispute_burden: float,
-    rollback_recentness_penalty: float,
-    budget_saturation: float
+    metrics: GlobalPressureMetrics
 ) -> ExpansionPressureRecord:
     """Computes a global pressure score based on various burden metrics."""
 
     # Weighting scheme for drivers
     drivers = {
-        "active_cohorts": min(active_cohort_count * 0.05, 0.20),
-        "growing_cohorts": min(simultaneously_growing_cohort_count * 0.10, 0.30),
-        "family_conflict": family_conflict_burden * 0.15,
-        "verification_density": verification_warning_density * 0.20,
-        "review_backlog": review_backlog_pressure * 0.10,
-        "dispute_burden": dispute_burden * 0.15,
-        "rollback_penalty": rollback_recentness_penalty * 0.25,
-        "budget_saturation": budget_saturation * 0.20
+        "active_cohorts": min(metrics.active_cohort_count * 0.05, 0.20),
+        "growing_cohorts": min(metrics.simultaneously_growing_cohort_count * 0.10, 0.30),
+        "family_conflict": metrics.family_conflict_burden * 0.15,
+        "verification_density": metrics.verification_warning_density * 0.20,
+        "review_backlog": metrics.review_backlog_pressure * 0.10,
+        "dispute_burden": metrics.dispute_burden * 0.15,
+        "rollback_penalty": metrics.rollback_recentness_penalty * 0.25,
+        "budget_saturation": metrics.budget_saturation * 0.20
     }
 
     total_score = sum(drivers.values())
