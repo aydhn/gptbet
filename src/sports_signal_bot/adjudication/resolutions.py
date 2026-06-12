@@ -1,70 +1,64 @@
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from .contracts import (HumanCorrectionInput, HumanCorrectionRecord,
-                        ResolutionRecord, ResolutionType)
+                        ResolutionInput, ResolutionRecord)
 
 
 class ResolutionApplier:
     @staticmethod
     def create_resolution(
-        case_id: str,
-        resolution_type: ResolutionType,
-        feedback_eligibility: bool,
-        memory_write_allowed: bool,
-        effective_scope: str,
-        corrected_value: Optional[Any] = None,
-        chosen_source: Optional[str] = None,
-        selected_precedent: Optional[str] = None,
-        caveats: Optional[List[str]] = None,
+        input_data: ResolutionInput,
     ) -> ResolutionRecord:
 
         # Categorize families for simplistic reporting
         family = "unknown"
         if (
-            "accept" in resolution_type.value
-            or "override" in resolution_type.value
-            or "alias" in resolution_type.value
-            or "identity" in resolution_type.value
-            or "consensus" in resolution_type.value
-            or "split" in resolution_type.value
+            "accept" in input_data.resolution_type.value
+            or "override" in input_data.resolution_type.value
+            or "alias" in input_data.resolution_type.value
+            or "identity" in input_data.resolution_type.value
+            or "consensus" in input_data.resolution_type.value
+            or "split" in input_data.resolution_type.value
         ):
             family = "data_entity"
         elif (
-            "policy" in resolution_type.value
-            or "block" in resolution_type.value
-            or "no_bet" in resolution_type.value
-            or "borderline" in resolution_type.value
+            "policy" in input_data.resolution_type.value
+            or "block" in input_data.resolution_type.value
+            or "no_bet" in input_data.resolution_type.value
+            or "borderline" in input_data.resolution_type.value
         ):
             family = "decision_policy"
         elif (
-            "precedent" in resolution_type.value
-            or "rule" in resolution_type.value
-            or "memory" in resolution_type.value
+            "precedent" in input_data.resolution_type.value
+            or "rule" in input_data.resolution_type.value
+            or "memory" in input_data.resolution_type.value
         ):
             family = "knowledge_memory"
-        elif "provider" in resolution_type.value:
+        elif "provider" in input_data.resolution_type.value:
             family = "provider_trust"
 
         return ResolutionRecord(
             resolution_id=str(uuid.uuid4()),
-            case_id=case_id,
+            case_id=input_data.case_id,
             resolution_family=family,
             resolution_status="applied",
-            corrected_value=corrected_value,
-            chosen_source=chosen_source,
-            selected_precedent=selected_precedent,
-            feedback_eligibility=feedback_eligibility,
-            memory_write_allowed=memory_write_allowed,
-            effective_scope=effective_scope,
+            corrected_value=input_data.corrected_value,
+            chosen_source=input_data.chosen_source,
+            selected_precedent=input_data.selected_precedent,
+            feedback_eligibility=input_data.feedback_eligibility,
+            memory_write_allowed=input_data.memory_write_allowed,
+            effective_scope=input_data.effective_scope,
             related_entities=[],
-            caveats=caveats or [],
+            caveats=input_data.caveats or [],
         )
 
 
 class HumanCorrectionBuilder:
     @staticmethod
-    def build_human_correction(request: HumanCorrectionInput) -> HumanCorrectionRecord:
+    def build_human_correction(
+        request: HumanCorrectionInput,
+    ) -> HumanCorrectionRecord:
         return HumanCorrectionRecord(
             correction_id=str(uuid.uuid4()),
             case_id=request.case_id,

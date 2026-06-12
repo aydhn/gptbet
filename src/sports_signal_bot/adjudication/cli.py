@@ -1,21 +1,24 @@
-import typer
 import json
 from datetime import datetime
 
+import typer
+
+from .cases import AdjudicationCaseBuilder
 from .contracts import (
     AdjudicationCaseFamily,
-    AdjudicationSeverity,
     AdjudicationCaseStatus,
-    ResolutionType
+    AdjudicationSeverity,
+    ResolutionInput,
+    ResolutionType,
 )
-from .cases import AdjudicationCaseBuilder
-from .queue import AdjudicationRegistry, AdjudicationQueueBuilder
+from .queue import AdjudicationQueueBuilder, AdjudicationRegistry
 from .resolutions import ResolutionApplier
 
 app = typer.Typer(help="Adjudication and Knowledge Memory commands")
 
 registry = AdjudicationRegistry()
 queue_builder = AdjudicationQueueBuilder(registry)
+
 
 @app.command("run-adjudication")
 def run_adjudication(case_id: str):
@@ -27,6 +30,7 @@ def run_adjudication(case_id: str):
     typer.echo(f"Running adjudication for case: {case.case_id}")
     typer.echo(f"Type: {case.case_type.value}, Severity: {case.severity.value}")
 
+
 @app.command("list-adjudication-cases")
 def list_adjudication_cases():
     """List all adjudication cases."""
@@ -35,7 +39,10 @@ def list_adjudication_cases():
         typer.echo("No cases found.")
         return
     for c in cases:
-        typer.echo(f"- {c.case_id} ({c.case_type.value}) - Status: {c.current_status.value}")
+        typer.echo(
+            f"- {c.case_id} ({c.case_type.value}) - Status: {c.current_status.value}"
+        )
+
 
 @app.command("preview-adjudication-queue")
 def preview_adjudication_queue():
@@ -46,20 +53,26 @@ def preview_adjudication_queue():
     for c in queue.cases:
         typer.echo(f"  [{c.queue_priority.value}] {c.case_id} ({c.case_type.value})")
 
+
 @app.command("resolve-adjudication-case")
 def resolve_adjudication_case(case_id: str, operator_id: str):
     """Resolve an adjudication case."""
     # Dummy resolution for CLI
     typer.echo(f"Operator {operator_id} resolving case {case_id}...")
     resolution = ResolutionApplier.create_resolution(
-        case_id=case_id,
-        resolution_type=ResolutionType.accept_source_a_over_b,
-        feedback_eligibility=True,
-        memory_write_allowed=True,
-        effective_scope="single_entity"
+        ResolutionInput(
+            case_id=case_id,
+            resolution_type=ResolutionType.accept_source_a_over_b,
+            feedback_eligibility=True,
+            memory_write_allowed=True,
+            effective_scope="single_entity",
+        )
     )
     typer.echo(f"Resolution applied. Artifact ID: {resolution.resolution_id}")
-    typer.echo(f"Feedback Status: {'Eligible' if resolution.feedback_eligibility else 'Ineligible'}")
+    typer.echo(
+        f"Feedback Status: {'Eligible' if resolution.feedback_eligibility else 'Ineligible'}"
+    )
+
 
 @app.command("preview-precedents")
 def preview_precedents(case_id: str):
@@ -67,10 +80,12 @@ def preview_precedents(case_id: str):
     typer.echo(f"Looking up precedents for case {case_id}...")
     typer.echo("No active precedents found (skeleton mode).")
 
+
 @app.command("preview-knowledge-memory")
 def preview_knowledge_memory():
     """Preview current knowledge memory entries."""
     typer.echo("Knowledge Memory is currently empty.")
+
 
 @app.command("list-adjudication-strategies")
 def list_adjudication_strategies():
@@ -80,7 +95,7 @@ def list_adjudication_strategies():
         "BalancedKnowledgeCaptureStrategy",
         "ReviewHeavyStrategy",
         "AliasFocusedResolutionStrategy",
-        "ProviderReliabilityStrategy"
+        "ProviderReliabilityStrategy",
     ]
     for s in strats:
         typer.echo(f"- {s}")

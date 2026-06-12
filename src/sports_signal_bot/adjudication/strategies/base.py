@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 from ..contracts import (
     AdjudicationCaseRecord,
     AdjudicationDecisionRecord,
+    FeedbackSignalRecord,
     ResolutionRecord,
-    FeedbackSignalRecord
 )
+
 
 class BaseAdjudicationStrategy(ABC):
     @abstractmethod
@@ -15,11 +16,15 @@ class BaseAdjudicationStrategy(ABC):
         pass
 
     @abstractmethod
-    def process_resolution(self, decision: AdjudicationDecisionRecord) -> ResolutionRecord:
+    def process_resolution(
+        self, decision: AdjudicationDecisionRecord
+    ) -> ResolutionRecord:
         """Process a human decision into a structured resolution."""
         pass
 
     @abstractmethod
-    def determine_feedback_eligibility(self, resolution: ResolutionRecord) -> Optional[FeedbackSignalRecord]:
+    def determine_feedback_eligibility(
+        self, resolution: ResolutionRecord
+    ) -> Optional[FeedbackSignalRecord]:
         """Decide if this resolution should generate a feedback signal."""
         pass

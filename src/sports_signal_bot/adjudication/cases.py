@@ -1,9 +1,13 @@
 import uuid
 from datetime import datetime
 
-from .contracts import (AdjudicationCaseCreationRequest,
-                        AdjudicationCaseRecord, AdjudicationCaseStatus,
-                        AdjudicationQueuePriority, AdjudicationSeverity)
+from .contracts import (
+    AdjudicationCaseCreationRequest,
+    AdjudicationCaseRecord,
+    AdjudicationCaseStatus,
+    AdjudicationQueuePriority,
+    AdjudicationSeverity,
+)
 
 
 class AdjudicationCaseBuilder:
