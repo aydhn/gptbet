@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import List
+from typing import List, Tuple
 
 from .contracts import (
     ConcurrencyGuardConfig,
@@ -11,19 +11,11 @@ from .contracts import (
 )
 
 
-def build_concurrency_guard(config: ConcurrencyGuardConfig) -> ConcurrencyGuardRecord:
-    """Builds a ConcurrencyGuardRecord."""
-    guard_id = f"cg_{uuid.uuid4().hex[:8]}"
-
-    scope_id = f"scp_{uuid.uuid4().hex[:8]}"
-    ownership_id = f"own_{uuid.uuid4().hex[:8]}"
-    ordering_id = f"ord_{uuid.uuid4().hex[:8]}"
-    timeout_id = f"to_{uuid.uuid4().hex[:8]}"
-    cancellation_id = f"cx_{uuid.uuid4().hex[:8]}"
-
+def _evaluate_guard_family(
+    config: ConcurrencyGuardConfig,
+) -> Tuple[str, List[ConcurrencyGuardWarningRecord]]:
     warnings = []
     status = "guard_safe"
-
     if config.guard_family not in [
         "shared_state_guard",
         "async_join_guard",
@@ -42,7 +34,14 @@ def build_concurrency_guard(config: ConcurrencyGuardConfig) -> ConcurrencyGuardR
                 severity="medium",
             )
         )
+    return status, warnings
 
+
+def _evaluate_timeout(
+    config: ConcurrencyGuardConfig,
+) -> Tuple[str, List[ConcurrencyGuardWarningRecord]]:
+    warnings = []
+    status = "guard_safe"
     if config.timeout_ms > 30000:  # Example rule
         status = "guard_caveated"
         warnings.append(
@@ -52,6 +51,41 @@ def build_concurrency_guard(config: ConcurrencyGuardConfig) -> ConcurrencyGuardR
                 severity="low",
             )
         )
+    return status, warnings
+
+
+def _evaluate_guard_rules(
+    config: ConcurrencyGuardConfig,
+) -> Tuple[str, List[ConcurrencyGuardWarningRecord]]:
+    status = "guard_safe"
+    warnings = []
+
+    family_status, family_warnings = _evaluate_guard_family(config)
+    if family_status != "guard_safe":
+        status = family_status
+    warnings.extend(family_warnings)
+
+    timeout_status, timeout_warnings = _evaluate_timeout(config)
+    if timeout_status != "guard_safe":
+        status = timeout_status
+    warnings.extend(timeout_warnings)
+
+    return status, warnings
+
+
+def build_concurrency_guard(
+    config: ConcurrencyGuardConfig,
+) -> ConcurrencyGuardRecord:
+    """Builds a ConcurrencyGuardRecord."""
+    guard_id = f"cg_{uuid.uuid4().hex[:8]}"
+
+    scope_id = f"scp_{uuid.uuid4().hex[:8]}"
+    ownership_id = f"own_{uuid.uuid4().hex[:8]}"
+    ordering_id = f"ord_{uuid.uuid4().hex[:8]}"
+    timeout_id = f"to_{uuid.uuid4().hex[:8]}"
+    cancellation_id = f"cx_{uuid.uuid4().hex[:8]}"
+
+    status, warnings = _evaluate_guard_rules(config)
 
     return ConcurrencyGuardRecord(
         concurrency_guard_id=guard_id,
@@ -100,7 +134,10 @@ def summarize_concurrency_guards(
     health = ConcurrencyGuardHealthRecord(
         health_id=f"hlt_{uuid.uuid4().hex[:8]}",
         is_healthy=len(unhealthy_guards) == 0,
-        status_summary=f"Found {len(unhealthy_guards)} unhealthy guards out of {len(guards)} total.",
+        status_summary=(
+            f"Found {len(unhealthy_guards)} unhealthy guards "
+            f"out of {len(guards)} total."
+        ),
         failing_guards=unhealthy_guards,
     )
 
