@@ -1,18 +1,22 @@
 import uuid
-from typing import Optional, Dict, Any
-from .base import BaseAdjudicationStrategy
+from typing import Any, Dict, Optional
+
 from ..contracts import (
     AdjudicationCaseRecord,
     AdjudicationDecisionRecord,
+    FeedbackSignalRecord,
     ResolutionRecord,
-    FeedbackSignalRecord
 )
+from .base import BaseAdjudicationStrategy
+
 
 class ProviderReliabilityStrategy(BaseAdjudicationStrategy):
     def evaluate_case(self, case: AdjudicationCaseRecord) -> Dict[str, Any]:
         return {"recommendation": "provider_feedback_possible"}
 
-    def process_resolution(self, decision: AdjudicationDecisionRecord) -> ResolutionRecord:
+    def process_resolution(
+        self, decision: AdjudicationDecisionRecord
+    ) -> ResolutionRecord:
         return ResolutionRecord(
             resolution_id=str(uuid.uuid4()),
             case_id=decision.case_id,
@@ -20,8 +24,10 @@ class ProviderReliabilityStrategy(BaseAdjudicationStrategy):
             resolution_status="applied",
             feedback_eligibility=True,
             memory_write_allowed=False,
-            effective_scope="provider_family_scoped"
+            effective_scope="provider_family_scoped",
         )
 
-    def determine_feedback_eligibility(self, resolution: ResolutionRecord) -> Optional[FeedbackSignalRecord]:
+    def determine_feedback_eligibility(
+        self, resolution: ResolutionRecord
+    ) -> Optional[FeedbackSignalRecord]:
         return None

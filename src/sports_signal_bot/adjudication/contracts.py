@@ -171,6 +171,18 @@ class AdjudicationDecisionRecord(BaseModel):
     secondary_review_status: Optional[str] = None
 
 
+class ResolutionInput(BaseModel):
+    case_id: str
+    resolution_type: ResolutionType
+    feedback_eligibility: bool
+    memory_write_allowed: bool
+    effective_scope: str
+    corrected_value: Optional[Any] = None
+    chosen_source: Optional[str] = None
+    selected_precedent: Optional[str] = None
+    caveats: Optional[List[str]] = None
+
+
 class ResolutionRecord(BaseModel):
     resolution_id: str
     case_id: str

@@ -1,13 +1,14 @@
 import uuid
-from typing import Dict, List, Optional
 from datetime import datetime
+from typing import Dict, List, Optional
 
 from .contracts import (
     KnowledgeEntryRecord,
-    MemoryType,
     KnowledgeEntryStatus,
-    KnowledgeScopeRecord
+    KnowledgeScopeRecord,
+    MemoryType,
 )
+
 
 class KnowledgeMemoryStore:
     def __init__(self):
@@ -19,7 +20,9 @@ class KnowledgeMemoryStore:
     def get_entry(self, entry_id: str) -> Optional[KnowledgeEntryRecord]:
         return self.entries.get(entry_id)
 
-    def find_entries(self, memory_type: Optional[MemoryType] = None, active_only: bool = True) -> List[KnowledgeEntryRecord]:
+    def find_entries(
+        self, memory_type: Optional[MemoryType] = None, active_only: bool = True
+    ) -> List[KnowledgeEntryRecord]:
         results = []
         for e in self.entries.values():
             if active_only and e.status != KnowledgeEntryStatus.active:

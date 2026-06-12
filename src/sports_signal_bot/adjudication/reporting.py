@@ -1,16 +1,20 @@
 import uuid
-from typing import Dict, List
 from datetime import datetime
+from typing import Dict, List
+
 from .contracts import (
-    AdjudicationSummaryRecord,
     AdjudicationCaseRecord,
     AdjudicationCaseStatus,
-    ResolutionRecord
+    AdjudicationSummaryRecord,
+    ResolutionRecord,
 )
+
 
 class AdjudicationReporter:
     @staticmethod
-    def summarize_adjudication_state(cases: List[AdjudicationCaseRecord], resolutions: List[ResolutionRecord]) -> AdjudicationSummaryRecord:
+    def summarize_adjudication_state(
+        cases: List[AdjudicationCaseRecord], resolutions: List[ResolutionRecord]
+    ) -> AdjudicationSummaryRecord:
         open_cases = 0
         resolved_cases = 0
         unresolved_cases = 0
@@ -19,11 +23,17 @@ class AdjudicationReporter:
         urgent_backlog = 0
 
         for c in cases:
-            if c.current_status in [AdjudicationCaseStatus.queued, AdjudicationCaseStatus.in_review]:
+            if c.current_status in [
+                AdjudicationCaseStatus.queued,
+                AdjudicationCaseStatus.in_review,
+            ]:
                 open_cases += 1
                 if c.queue_priority.value == "urgent":
                     urgent_backlog += 1
-            elif c.current_status in [AdjudicationCaseStatus.resolved, AdjudicationCaseStatus.resolved_with_caveat]:
+            elif c.current_status in [
+                AdjudicationCaseStatus.resolved,
+                AdjudicationCaseStatus.resolved_with_caveat,
+            ]:
                 resolved_cases += 1
             elif c.current_status == AdjudicationCaseStatus.unresolved:
                 unresolved_cases += 1
@@ -39,10 +49,12 @@ class AdjudicationReporter:
             unresolved_cases=unresolved_cases,
             cases_by_type=cases_by_type,
             cases_by_severity=cases_by_severity,
-            memory_entries_created=0, # Placeholder
+            memory_entries_created=0,  # Placeholder
             precedent_match_rate=0.0,
             feedback_accepted_count=0,
             feedback_rejected_count=0,
             urgent_backlog_count=urgent_backlog,
-            secondary_review_required_count=sum(1 for r in resolutions if "caveat" in r.caveats) # Rough proxy
+            secondary_review_required_count=sum(
+                1 for r in resolutions if "caveat" in r.caveats
+            ),  # Rough proxy
         )

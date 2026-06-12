@@ -1,12 +1,13 @@
 import uuid
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 from .contracts import (
     AdjudicationCaseRecord,
-    AdjudicationQueueRecord,
+    AdjudicationCaseStatus,
     AdjudicationQueuePriority,
-    AdjudicationCaseStatus
+    AdjudicationQueueRecord,
 )
+
 
 class AdjudicationRegistry:
     def __init__(self):
@@ -30,7 +31,11 @@ class AdjudicationQueueBuilder:
     def __init__(self, registry: AdjudicationRegistry):
         self.registry = registry
 
-    def build_queue(self, priority: Optional[AdjudicationQueuePriority] = None, status: AdjudicationCaseStatus = AdjudicationCaseStatus.queued) -> AdjudicationQueueRecord:
+    def build_queue(
+        self,
+        priority: Optional[AdjudicationQueuePriority] = None,
+        status: AdjudicationCaseStatus = AdjudicationCaseStatus.queued,
+    ) -> AdjudicationQueueRecord:
         cases = []
         for case in self.registry.list_cases():
             if case.current_status == status:
@@ -42,15 +47,12 @@ class AdjudicationQueueBuilder:
             AdjudicationQueuePriority.urgent: 0,
             AdjudicationQueuePriority.high: 1,
             AdjudicationQueuePriority.normal: 2,
-            AdjudicationQueuePriority.low: 3
+            AdjudicationQueuePriority.low: 3,
         }
 
         cases.sort(key=lambda x: (priority_map[x.queue_priority], x.created_at))
 
-        return AdjudicationQueueRecord(
-            queue_id=str(uuid.uuid4()),
-            cases=cases
-        )
+        return AdjudicationQueueRecord(queue_id=str(uuid.uuid4()), cases=cases)
 
     def route_case_to_queue(self, case: AdjudicationCaseRecord) -> None:
         # In a real system, this might publish to Kafka/RabbitMQ.
@@ -65,11 +67,18 @@ class AdjudicationQueueBuilder:
                 pressure[case.queue_priority.value] += 1
         return pressure
 
-    def detect_duplicate_case_submission(self, new_case: AdjudicationCaseRecord) -> bool:
+    def detect_duplicate_case_submission(
+        self, new_case: AdjudicationCaseRecord
+    ) -> bool:
         for case in self.registry.list_cases():
-            if case.current_status not in [AdjudicationCaseStatus.resolved, AdjudicationCaseStatus.archived]:
-                if (case.case_type == new_case.case_type and
-                    case.target_entity_type == new_case.target_entity_type and
-                    case.target_entity_id == new_case.target_entity_id):
+            if case.current_status not in [
+                AdjudicationCaseStatus.resolved,
+                AdjudicationCaseStatus.archived,
+            ]:
+                if (
+                    case.case_type == new_case.case_type
+                    and case.target_entity_type == new_case.target_entity_type
+                    and case.target_entity_id == new_case.target_entity_id
+                ):
                     return True
         return False
