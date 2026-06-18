@@ -145,10 +145,16 @@ class PolicyDecisionBuilder:
         rule_families = list({r.rule_family for r in rules})
         ordered_families = self.precedence_resolver.resolve_precedence(rule_families)
 
+        from collections import defaultdict
+
+        rules_by_family = defaultdict(list)
+        for rule in rules:
+            rules_by_family[rule.rule_family].append(rule)
+
         # Sort rules by precedence (lower index = higher precedence)
         sorted_rules = []
         for family in ordered_families:
-            sorted_rules.extend([r for r in rules if r.rule_family == family])
+            sorted_rules.extend(rules_by_family[family])
 
         for rule in sorted_rules:
             for action in rule.actions:
