@@ -1,4 +1,4 @@
-from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs
+from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs, create_relocation_wave_checkpoint
 
 def test_checkpoints():
     assert True
@@ -42,3 +42,11 @@ def test_diff_relocation_wave_outputs_empty():
     target = {"a": 1}
     result = diff_relocation_wave_outputs(source, target)
     assert result == {}
+
+def test_create_relocation_wave_checkpoint():
+    result = create_relocation_wave_checkpoint("wave-1", "start")
+    assert result == {"wave_id": "wave-1", "checkpoint_type": "start", "status": "verified"}
+
+def test_create_relocation_wave_checkpoint_empty_strings():
+    result = create_relocation_wave_checkpoint("", "")
+    assert result == {"wave_id": "", "checkpoint_type": "", "status": "verified"}
