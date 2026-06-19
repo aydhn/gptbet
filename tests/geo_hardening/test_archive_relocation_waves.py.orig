@@ -1,8 +1,8 @@
+
 from sports_signal_bot.geo_hardening.relocation_waves import (
     build_archive_relocation_wave,
     verify_relocation_wave_hashes,
     verify_relocation_wave_lineage,
-    verify_relocation_wave_replay_support,
 )
 from sports_signal_bot.geo_hardening.wave_checkpoints import (
     detect_relocation_wave_gaps,
@@ -34,11 +34,3 @@ def test_verify_relocation_wave_lineage():
     assert result is True
     assert "lineage-1" in wave.lineage_refs
     assert len(wave.lineage_refs) == 1
-
-
-def test_verify_relocation_wave_replay_support():
-    wave = build_archive_relocation_wave("wave-1", "archive_seed_wave")
-    result = verify_relocation_wave_replay_support(wave, "replay-1")
-    assert result is True
-    assert "replay-1" in wave.replay_refs
-    assert len(wave.replay_refs) == 1
