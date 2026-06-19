@@ -19,6 +19,12 @@ def test_compute_rehearsal_symmetry():
     assert compute_rehearsal_symmetry([]) == {"symmetry_ratio": 1.0, "is_asymmetric": False}
     assert compute_rehearsal_symmetry([1.0, 1.05]) == {"symmetry_ratio": 1.025, "is_asymmetric": False}
     assert compute_rehearsal_symmetry([1.0, 1.5]) == {"symmetry_ratio": 1.25, "is_asymmetric": True}
+    assert compute_rehearsal_symmetry([1.0]) == {"symmetry_ratio": 1.0, "is_asymmetric": False}
+    assert compute_rehearsal_symmetry([2.0, 2.0, 2.0]) == {"symmetry_ratio": 2.0, "is_asymmetric": False}
+    assert compute_rehearsal_symmetry([-1.0, -1.05]) == {"symmetry_ratio": -1.025, "is_asymmetric": False}
+    assert compute_rehearsal_symmetry([0.0, 0.0]) == {"symmetry_ratio": 0.0, "is_asymmetric": False}
+    assert compute_rehearsal_symmetry([1.0, 1.05, 1.2]) == {"symmetry_ratio": 1.0833333333333333, "is_asymmetric": True}
+
 
 def test_detect_dual_writer_risk():
     assert detect_dual_writer_risk([
