@@ -1,4 +1,4 @@
-from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs, create_relocation_wave_checkpoint, detect_relocation_wave_gaps
+from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs, create_relocation_wave_checkpoint, detect_relocation_wave_gaps, summarize_relocation_wave_stage
 
 def test_detect_relocation_wave_gaps_empty():
     assert detect_relocation_wave_gaps([]) == []
@@ -79,3 +79,24 @@ def test_create_relocation_wave_checkpoint():
 def test_create_relocation_wave_checkpoint_empty_strings():
     result = create_relocation_wave_checkpoint("", "")
     assert result == {"wave_id": "", "checkpoint_type": "", "status": "verified"}
+
+
+def test_summarize_relocation_wave_stage_with_all_keys():
+    stage = {"id": "stage-1", "status": "completed"}
+    result = summarize_relocation_wave_stage(stage)
+    assert result == {"stage_id": "stage-1", "status": "completed"}
+
+def test_summarize_relocation_wave_stage_missing_status():
+    stage = {"id": "stage-2"}
+    result = summarize_relocation_wave_stage(stage)
+    assert result == {"stage_id": "stage-2", "status": "unknown"}
+
+def test_summarize_relocation_wave_stage_missing_id():
+    stage = {"status": "in_progress"}
+    result = summarize_relocation_wave_stage(stage)
+    assert result == {"stage_id": None, "status": "in_progress"}
+
+def test_summarize_relocation_wave_stage_empty():
+    stage = {}
+    result = summarize_relocation_wave_stage(stage)
+    assert result == {"stage_id": None, "status": "unknown"}
