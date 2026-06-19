@@ -1,4 +1,33 @@
-from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs, create_relocation_wave_checkpoint
+from sports_signal_bot.geo_hardening.wave_checkpoints import diff_relocation_wave_outputs, create_relocation_wave_checkpoint, detect_relocation_wave_gaps
+
+def test_detect_relocation_wave_gaps_empty():
+    assert detect_relocation_wave_gaps([]) == []
+
+def test_detect_relocation_wave_gaps_no_gaps():
+    segments = [{"id": 0}, {"id": 1}, {"id": 2}]
+    assert detect_relocation_wave_gaps(segments) == []
+
+def test_detect_relocation_wave_gaps_with_gaps():
+    segments = [{"id": 0}, {"id": 2}, {"id": 3}, {"id": 5}]
+    # Iteration 1: s={"id": 0}, expected_id=0 -> matches. expected_id becomes 1.
+    # Iteration 2: s={"id": 2}, expected_id=1 -> mismatch. gaps=[1]. expected_id becomes 2.
+    # Iteration 3: s={"id": 3}, expected_id=2 -> mismatch. gaps=[1, 2]. expected_id becomes 3.
+    # Iteration 4: s={"id": 5}, expected_id=3 -> mismatch. gaps=[1, 2, 3]. expected_id becomes 4.
+    assert detect_relocation_wave_gaps(segments) == [1, 2, 3]
+
+def test_detect_relocation_wave_gaps_missing_id_key():
+    segments = [{"id": 0}, {"not_id": 1}, {"id": 2}]
+    # Iteration 1: s={"id": 0}, expected_id=0 -> matches. expected_id becomes 1.
+    # Iteration 2: s={"not_id": 1}, expected_id=1. get("id", -1) is -1. mismatch. gaps=[1]. expected_id becomes 2.
+    # Iteration 3: s={"id": 2}, expected_id=2 -> matches. expected_id becomes 3.
+    assert detect_relocation_wave_gaps(segments) == [1]
+
+def test_detect_relocation_wave_gaps_out_of_order():
+    segments = [{"id": 0}, {"id": 2}, {"id": 1}]
+    # Iteration 1: s={"id": 0}, expected_id=0 -> matches. expected_id becomes 1.
+    # Iteration 2: s={"id": 2}, expected_id=1 -> mismatch. gaps=[1]. expected_id becomes 2.
+    # Iteration 3: s={"id": 1}, expected_id=2 -> mismatch. gaps=[1, 2]. expected_id becomes 3.
+    assert detect_relocation_wave_gaps(segments) == [1, 2]
 
 def test_checkpoints():
     assert True
