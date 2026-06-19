@@ -1,0 +1,18 @@
+--- src/sports_signal_bot/geo_hardening/relocation_waves.py
++++ src/sports_signal_bot/geo_hardening/relocation_waves.py
+@@ -1,4 +1,4 @@
+-from typing import List, Dict, Any
++from typing import Dict, Any
+ from .contracts import ArchiveRelocationWaveRecord
+
+
+@@ -23,7 +23,9 @@
+     return True
+
+
+-def verify_relocation_wave_lineage(wave: ArchiveRelocationWaveRecord, lineage_id: str):
++def verify_relocation_wave_lineage(
++    wave: ArchiveRelocationWaveRecord, lineage_id: str
++):
+     wave.lineage_refs.append(lineage_id)
+     return True
