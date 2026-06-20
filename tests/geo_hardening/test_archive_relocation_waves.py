@@ -1,14 +1,9 @@
 from sports_signal_bot.geo_hardening.relocation_waves import (
-    build_archive_relocation_wave,
-    verify_relocation_wave_hashes,
-    verify_relocation_wave_lineage,
-    verify_relocation_wave_replay_support,
-    summarize_archive_relocation_wave,
-)
+    build_archive_relocation_wave, summarize_archive_relocation_wave,
+    verify_relocation_wave_hashes, verify_relocation_wave_lineage,
+    verify_relocation_wave_replay_support)
 from sports_signal_bot.geo_hardening.wave_checkpoints import (
-    detect_relocation_wave_gaps,
-    diff_relocation_wave_outputs,
-)
+    detect_relocation_wave_gaps, diff_relocation_wave_outputs)
 
 
 def test_archive_relocation_wave_lineage_set():
@@ -58,4 +53,36 @@ def test_summarize_archive_relocation_wave():
     verify_relocation_wave_hashes(wave, "hash-1")
     verify_relocation_wave_lineage(wave, "lineage-1")
     summary = summarize_archive_relocation_wave(wave)
-    assert summary == {"wave_id": "wave-1", "status": "wave_verified", "hashes": 1, "lineage": 1}
+    assert summary == {
+        "wave_id": "wave-1",
+        "status": "wave_verified",
+        "hashes": 1,
+        "lineage": 1,
+    }
+
+
+def test_summarize_archive_relocation_wave_empty():
+    wave = build_archive_relocation_wave("wave-2", "archive_empty_wave")
+    summary = summarize_archive_relocation_wave(wave)
+    assert summary == {
+        "wave_id": "wave-2",
+        "status": "wave_verified",
+        "hashes": 0,
+        "lineage": 0,
+    }
+
+
+def test_summarize_archive_relocation_wave_multiple():
+    wave = build_archive_relocation_wave("wave-3", "archive_multi_wave")
+    verify_relocation_wave_hashes(wave, "hash-1")
+    verify_relocation_wave_hashes(wave, "hash-2")
+    verify_relocation_wave_lineage(wave, "lineage-1")
+    verify_relocation_wave_lineage(wave, "lineage-2")
+    verify_relocation_wave_lineage(wave, "lineage-3")
+    summary = summarize_archive_relocation_wave(wave)
+    assert summary == {
+        "wave_id": "wave-3",
+        "status": "wave_verified",
+        "hashes": 2,
+        "lineage": 3,
+    }
