@@ -37,5 +37,22 @@ def test_detect_dual_writer_risk():
         {"is_write": True, "region": "us-west"}
     ]) is True
 
+    assert detect_dual_writer_risk([]) is False
+
+    assert detect_dual_writer_risk([
+        {"is_write": False, "region": "us-east"},
+        {"is_write": False, "region": "us-west"}
+    ]) is False
+
+    assert detect_dual_writer_risk([
+        {"is_write": True, "region": "us-east"},
+        {"is_write": True, "region": "us-east"}
+    ]) is False
+
+    assert detect_dual_writer_risk([
+        {"region": "us-east"},
+        {"is_write": True}
+    ]) is False
+
 def test_summarize_rehearsal_divergence():
     assert summarize_rehearsal_divergence([0.6, 0.2, 0.1]) == {"total_divergences": 3, "critical": 1}
