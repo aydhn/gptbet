@@ -226,6 +226,15 @@ class CutoverWarningRecord(BaseModel):
     message: str
 
 
+class MultiWaveCutoverRehearsalParams(BaseModel):
+    family: MultiWaveCutoverRehearsalFamily
+    waves: List[CutoverWaveRecord]
+    windows: List[CutoverWindowRecord]
+    checkpoints: List[CutoverCheckpointRecord]
+    rollbacks: List[CutoverRollbackRecord]
+    residues: List[CutoverResidueRecord]
+
+
 class MultiWaveCutoverRehearsalRecord(BaseModel):
     cutover_rehearsal_id: str
     rehearsal_family: MultiWaveCutoverRehearsalFamily
