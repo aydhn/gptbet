@@ -1,8 +1,13 @@
 from typing import Any, Dict, List, Tuple
 
 from sports_signal_bot.consistency_ledgers.contracts import (
-    ClearingBookRecord, ClearingListingInputRecord, ClearingListingRecord,
-    ClearingRequestRecord, ClearingStatus)
+    ClearingBookRecord,
+    ClearingListingInputRecord,
+    ClearingListingRecord,
+    ClearingRequestInputRecord,
+    ClearingRequestRecord,
+    ClearingStatus,
+)
 from sports_signal_bot.consistency_ledgers.utils import generate_id
 
 
@@ -39,21 +44,16 @@ def create_clearing_listing(
 
 
 def create_clearing_request(
-    target_context_ref: str,
-    trace_family: str,
-    required_evidence: List[str],
-    required_scope: str,
-    required_audience: str,
-    priority: str,
+    input_record: ClearingRequestInputRecord,
 ) -> ClearingRequestRecord:
     return ClearingRequestRecord(
         request_id=generate_id("clear_req"),
-        target_context_ref=target_context_ref,
-        requested_trace_family=trace_family,
-        required_evidence_refs=required_evidence,
-        required_scope_class=required_scope,
-        required_audience_profile=required_audience,
-        request_priority=priority,
+        target_context_ref=input_record.target_context_ref,
+        requested_trace_family=input_record.trace_family,
+        required_evidence_refs=input_record.required_evidence,
+        required_scope_class=input_record.required_scope,
+        required_audience_profile=input_record.required_audience,
+        request_priority=input_record.priority,
         request_status="pending",
         warnings=[],
     )
@@ -64,7 +64,8 @@ def ingest_clearing_listing_and_request(
     listing: ClearingListingRecord,
     request: ClearingRequestRecord,
 ) -> Tuple[ClearingBookRecord, bool]:
-    """Ingests into the book if compatibility baseline matches (scope doesn't widen)."""
+    """Ingests into the book if compatibility baseline matches.
+    Scope must not widen."""
 
     if listing.evidence_completeness == 0:
         listing.warnings.append("Listing has zero evidence completeness.")
@@ -87,12 +88,14 @@ def validate_clearing_compatibility(
 
     if request.requested_trace_family not in listing.supported_trace_families:
         warnings.append(
-            f"Trace family mismatch: {request.requested_trace_family} not in {listing.supported_trace_families}"
+            f"Trace family mismatch: {request.requested_trace_family} "
+            f"not in {listing.supported_trace_families}"
         )
 
     if request.required_audience_profile not in listing.supported_audience_profiles:
         warnings.append(
-            f"Audience profile mismatch: {request.required_audience_profile} not in {listing.supported_audience_profiles}"
+            f"Audience profile mismatch: {request.required_audience_profile} "
+            f"not in {listing.supported_audience_profiles}"
         )
 
     if listing.currentness_state != "current":
@@ -100,13 +103,16 @@ def validate_clearing_compatibility(
 
     is_compatible = len(warnings) == 0 or (
         len(warnings) == 1 and listing.currentness_state != "current"
-    )  # Still compatible but degraded
+    )
+    # Still compatible but degraded
 
     return is_compatible, warnings
 
 
 def explain_clearing_mismatch(
-    listing: ClearingListingRecord, request: ClearingRequestRecord, warnings: List[str]
+    listing: ClearingListingRecord,
+    request: ClearingRequestRecord,
+    warnings: List[str],
 ) -> Dict[str, Any]:
     return {
         "listing_id": listing.listing_id,
