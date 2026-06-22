@@ -1,4 +1,5 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from .contracts import ArchiveRelocationWaveRecord
 
 
@@ -20,16 +21,12 @@ def build_archive_relocation_wave(
     )
 
 
-def verify_relocation_wave_hashes(
-    wave: ArchiveRelocationWaveRecord, hash_id: str
-):
+def verify_relocation_wave_hashes(wave: ArchiveRelocationWaveRecord, hash_id: str):
     wave.hash_refs.append(hash_id)
     return True
 
 
-def verify_relocation_wave_lineage(
-    wave: ArchiveRelocationWaveRecord, lineage_id: str
-):
+def verify_relocation_wave_lineage(wave: ArchiveRelocationWaveRecord, lineage_id: str):
     wave.lineage_refs.append(lineage_id)
     return True
 

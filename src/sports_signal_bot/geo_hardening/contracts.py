@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
 from datetime import datetime
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 # GEO-DISTRIBUTED FAILOVER MESH CONTRACTS
 class GeoFailoverMeshRecord(BaseModel):
@@ -14,6 +16,7 @@ class GeoFailoverMeshRecord(BaseModel):
     residue_refs: List[str]
     mesh_status: str
     warnings: List[str] = Field(default_factory=list)
+
 
 class GeoMeshNodeRecord(BaseModel):
     node_id: str
@@ -115,6 +118,7 @@ class ActiveActiveRehearsalRecord(BaseModel):
     rehearsal_status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class RehearsalRegionPairRecord(BaseModel):
     pair_id: str
     region_a: str
@@ -209,6 +213,7 @@ class ArchiveRelocationWaveRecord(BaseModel):
     wave_status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class RelocationWaveStageRecord(BaseModel):
     stage_id: str
 
@@ -288,6 +293,7 @@ class OperatorCalendarAuditRecord(BaseModel):
     residue_refs: List[str]
     audit_status: str
     warnings: List[str] = Field(default_factory=list)
+
 
 class CalendarRegionRecord(BaseModel):
     region_id: str

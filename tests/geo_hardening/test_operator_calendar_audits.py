@@ -1,6 +1,11 @@
 import pytest
-from sports_signal_bot.geo_hardening.operator_calendars import build_operator_calendar_audit, verify_calendar_coverage
-from sports_signal_bot.geo_hardening.calendar_handoffs import verify_calendar_handoff, validate_escalation_reachability, detect_ownerless_windows
+
+from sports_signal_bot.geo_hardening.calendar_handoffs import (
+    detect_ownerless_windows, validate_escalation_reachability,
+    verify_calendar_handoff)
+from sports_signal_bot.geo_hardening.operator_calendars import (
+    build_operator_calendar_audit, verify_calendar_coverage)
+
 
 def test_multi_region_operator_calendar_gap_set():
     # Multi-region operator calendar gap set
@@ -9,7 +14,7 @@ def test_multi_region_operator_calendar_gap_set():
     shift_3 = {"id": "3", "start_time": 200, "end_time": 300, "owner": None}
 
     assert verify_calendar_handoff(shift_1, shift_2) is True
-    assert verify_calendar_handoff(shift_2, shift_3) is False # no owner
+    assert verify_calendar_handoff(shift_2, shift_3) is False  # no owner
 
     calendar = {"owners": ["alice", "bob"]}
     assert validate_escalation_reachability(calendar, ["alice", "bob"]) is True

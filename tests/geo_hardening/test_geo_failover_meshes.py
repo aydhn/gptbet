@@ -1,6 +1,11 @@
 import pytest
-from sports_signal_bot.geo_hardening.failover_meshes import build_geo_failover_mesh, add_geo_mesh_node, add_geo_mesh_edge, summarize_geo_failover_mesh
-from sports_signal_bot.geo_hardening.geo_nodes import verify_geo_node_freshness, compute_geo_edge_lag, detect_geo_mesh_gaps
+
+from sports_signal_bot.geo_hardening.failover_meshes import (
+    add_geo_mesh_edge, add_geo_mesh_node, build_geo_failover_mesh,
+    summarize_geo_failover_mesh)
+from sports_signal_bot.geo_hardening.geo_nodes import (
+    compute_geo_edge_lag, detect_geo_mesh_gaps, verify_geo_node_freshness)
+
 
 def test_geo_failover_mesh_honesty_set():
     # Geo failover mesh honesty set
@@ -10,7 +15,7 @@ def test_geo_failover_mesh_honesty_set():
     current_time = 1000
 
     assert verify_geo_node_freshness(node_a, current_time) is True
-    assert verify_geo_node_freshness(node_b, current_time) is False # stale region
+    assert verify_geo_node_freshness(node_b, current_time) is False  # stale region
 
     mesh = add_geo_mesh_node(mesh, node_a["id"])
     mesh = add_geo_mesh_node(mesh, node_b["id"])

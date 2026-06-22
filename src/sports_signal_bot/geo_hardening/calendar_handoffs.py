@@ -1,4 +1,5 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 def verify_calendar_handoff(shift_from: dict, shift_to: dict) -> bool:
     if shift_from.get("end_time") != shift_to.get("start_time"):
@@ -6,6 +7,7 @@ def verify_calendar_handoff(shift_from: dict, shift_to: dict) -> bool:
     if not shift_to.get("owner"):
         return False
     return True
+
 
 def validate_escalation_reachability(calendar: dict, escalation_path: list) -> bool:
     if not escalation_path:
@@ -15,6 +17,7 @@ def validate_escalation_reachability(calendar: dict, escalation_path: list) -> b
             return False
     return True
 
+
 def detect_ownerless_windows(schedule: list) -> list:
     windows = []
     for shift in schedule:
@@ -22,10 +25,11 @@ def detect_ownerless_windows(schedule: list) -> list:
             windows.append(shift.get("id"))
     return windows
 
+
 def summarize_calendar_coverage(schedule: list) -> Dict[str, Any]:
     ownerless = detect_ownerless_windows(schedule)
     return {
         "total_shifts": len(schedule),
         "ownerless_shifts": len(ownerless),
-        "status": "gapped" if ownerless else "verified"
+        "status": "gapped" if ownerless else "verified",
     }
