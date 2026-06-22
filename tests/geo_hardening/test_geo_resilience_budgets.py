@@ -76,3 +76,42 @@ def test_summarize_geo_resilience_budgets_missing_keys():
         "budget_status": "unknown",
         "breach_count": 0
     }
+
+def test_summarize_geo_resilience_budgets_empty_dict():
+    consumption_result = {}
+    summary = summarize_geo_resilience_budgets(consumption_result)
+    assert summary == {
+        "budget_status": "unknown",
+        "breach_count": 0
+    }
+
+def test_summarize_geo_resilience_budgets_none_breaches():
+    consumption_result = {
+        "status": "healthy",
+        "breaches": None
+    }
+    summary = summarize_geo_resilience_budgets(consumption_result)
+    assert summary == {
+        "budget_status": "healthy",
+        "breach_count": 0
+    }
+
+def test_summarize_geo_resilience_budgets_missing_breaches():
+    consumption_result = {
+        "status": "healthy"
+    }
+    summary = summarize_geo_resilience_budgets(consumption_result)
+    assert summary == {
+        "budget_status": "healthy",
+        "breach_count": 0
+    }
+
+def test_summarize_geo_resilience_budgets_missing_status():
+    consumption_result = {
+        "breaches": ["lag_budget_breached"]
+    }
+    summary = summarize_geo_resilience_budgets(consumption_result)
+    assert summary == {
+        "budget_status": "unknown",
+        "breach_count": 1
+    }
