@@ -24,6 +24,14 @@ def test_broken_wave_rollback_readiness_set():
     assert "data_b" in diff
 
 
+def test_verify_relocation_wave_hashes():
+    wave = build_archive_relocation_wave("wave-1", "archive_seed_wave")
+    result = verify_relocation_wave_hashes(wave, "hash-1")
+    assert result is True
+    assert "hash-1" in wave.hash_refs
+    assert len(wave.hash_refs) == 1
+
+
 def test_verify_relocation_wave_lineage():
     wave = build_archive_relocation_wave("wave-1", "archive_seed_wave")
     result = verify_relocation_wave_lineage(wave, "lineage-1")
