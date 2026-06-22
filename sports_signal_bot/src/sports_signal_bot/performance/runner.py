@@ -1,4 +1,6 @@
 import os
+import asyncio
+
 import json
 from datetime import datetime, timezone
 from .profiling import TimingRegistry, PerformanceTimer
@@ -8,6 +10,7 @@ from .invalidation import InvalidationManager
 from .cleanup import CacheCleaner
 from .incremental import IncrementalEngine
 from .contracts import PerformanceManifest, RuntimeEfficiencyRecord
+
 
 class PerformanceRunner:
     def __init__(self, mode: str = "safe_default"):
@@ -21,18 +24,23 @@ class PerformanceRunner:
     def run_pass(self, sport: str = "all", market: str = "all"):
         run_id = f"perf_{int(datetime.now().timestamp())}"
         with PerformanceTimer("total_run", self.registry):
-            with PerformanceTimer("data_loading", self.registry):
-                # We do some sleep for now to simulate real logic execution
-                import time
-                time.sleep(0.1)
 
-            with PerformanceTimer("feature_building", self.registry):
-                time.sleep(0.1)
+            async def _simulate_step(name):
+                with PerformanceTimer(name, self.registry):
+                    # We do some sleep for now to simulate real logic execution
+                    await asyncio.sleep(0.1)
 
-            with PerformanceTimer("inference", self.registry):
-                time.sleep(0.1)
+            async def _run_all():
+                await asyncio.gather(
+                    _simulate_step("data_loading"),
+                    _simulate_step("feature_building"),
+                    _simulate_step("inference"),
+                )
 
-        bottlenecks = BottleneckReporter(self.registry).build_bottleneck_report()
+            asyncio.run(_run_all())
+
+        reporter = BottleneckReporter(self.registry)
+        bottlenecks = reporter.build_bottleneck_report()
 
         manifest = PerformanceManifest(
             run_id=run_id,
@@ -42,19 +50,26 @@ class PerformanceRunner:
                 run_id=run_id,
                 total_duration_ms=sum(b.duration_ms for b in bottlenecks),
                 cache_hit_rate=0.85,
-                incremental_vs_full_ratio=0.9
+                incremental_vs_full_ratio=0.9,
             ),
-            bottlenecks=bottlenecks
+            bottlenecks=bottlenecks,
         )
 
         os.makedirs("results/performance", exist_ok=True)
 
-        with open(f"results/performance/performance_manifest_{run_id}.json", "w") as f:
+        m_file = f"performance_manifest_{run_id}.json"
+        manifest_path = f"results/performance/{m_file}"
+        with open(manifest_path, "w") as f:
             f.write(manifest.model_dump_json(indent=2))
 
         # Save artifacts
-        with open(f"results/performance/step_timings_{run_id}.json", "w") as f:
-            json.dump([r.model_dump(mode='json') for r in self.registry.get_all()], f, indent=2)
+        timings_path = f"results/performance/step_timings_{run_id}.json"
+        with open(timings_path, "w") as f:
+            json.dump(
+                [r.model_dump(mode="json") for r in self.registry.get_all()],
+                f,
+                indent=2,
+            )
 
         return manifest
 
@@ -74,5 +89,7 @@ class PerformanceRunner:
 
     def preview_incremental_plan(self, sport: str, market: str):
         decision = self.incremental.decide_full_vs_incremental(50, 100)
-        plan = self.incremental.build_incremental_recompute_plan(decision, [f"{sport}_{market}"])
+        plan = self.incremental.build_incremental_recompute_plan(
+            decision, [f"{sport}_{market}"]
+        )
         return plan
