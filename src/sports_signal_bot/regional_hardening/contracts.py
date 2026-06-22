@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -175,6 +176,16 @@ class FailoverResidueRecord(BaseModel):
 class RegionalFailoverWarningRecord(BaseModel):
     warning_id: str
     message: str
+
+
+class RegionalFailoverDrillInputRecord(BaseModel):
+    drill_family: RegionalFailoverDrillFamily
+    source: FailoverSourceRecord
+    target: FailoverTargetRecord
+    checkpoints: List[FailoverCheckpointRecord]
+    lags: List[FailoverLagRecord]
+    rollbacks: List[FailoverRollbackRecord]
+    residues: List[FailoverResidueRecord]
 
 
 class RegionalFailoverDrillRecord(BaseModel):

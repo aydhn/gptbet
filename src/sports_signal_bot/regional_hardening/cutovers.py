@@ -1,14 +1,15 @@
 import uuid
+
 from .contracts import (
-    MultiWaveCutoverRehearsalRecord,
     CutoverRehearsalStatus,
     CutoverWarningRecord,
     MultiWaveCutoverRehearsalParams,
+    MultiWaveCutoverRehearsalRecord,
 )
 
 
 def build_multi_wave_cutover_rehearsal(
-    params: MultiWaveCutoverRehearsalParams
+    params: MultiWaveCutoverRehearsalParams,
 ) -> MultiWaveCutoverRehearsalRecord:
     status = CutoverRehearsalStatus.cutover_rehearsed_honestly
     warnings = []
@@ -47,7 +48,7 @@ def build_multi_wave_cutover_rehearsal(
         rollback_refs=params.rollbacks,
         residue_refs=params.residues,
         rehearsal_status=status,
-        warnings=warnings
+        warnings=warnings,
     )
 
 

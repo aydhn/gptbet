@@ -1,9 +1,10 @@
 import uuid
+
 from .contracts import (
+    LiveFireVisibilityExerciseParams,
     LiveFireVisibilityExerciseRecord,
     LiveFireVisibilityExerciseStatus,
     LiveFireWarningRecord,
-    LiveFireVisibilityExerciseParams,
 )
 
 

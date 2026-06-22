@@ -1,14 +1,14 @@
+from sports_signal_bot.regional_hardening.contracts import (
+    CutoverRehearsalStatus,
+    CutoverResidueRecord,
+    CutoverRollbackRecord,
+    CutoverWaveFamily,
+    CutoverWaveRecord,
+    MultiWaveCutoverRehearsalFamily,
+    MultiWaveCutoverRehearsalParams,
+)
 from sports_signal_bot.regional_hardening.cutovers import (
     build_multi_wave_cutover_rehearsal,
-)
-from sports_signal_bot.regional_hardening.contracts import (
-    MultiWaveCutoverRehearsalParams,
-    MultiWaveCutoverRehearsalFamily,
-    CutoverWaveRecord,
-    CutoverRollbackRecord,
-    CutoverResidueRecord,
-    CutoverWaveFamily,
-    CutoverRehearsalStatus,
 )
 
 
@@ -32,6 +32,5 @@ def test_build_multi_wave_cutover():
     rehearsal = build_multi_wave_cutover_rehearsal(params)
 
     assert (
-        rehearsal.rehearsal_status
-        == CutoverRehearsalStatus.cutover_rehearsed_honestly
+        rehearsal.rehearsal_status == CutoverRehearsalStatus.cutover_rehearsed_honestly
     )

@@ -1,11 +1,18 @@
-from sports_signal_bot.regional_hardening.archive_migrations import build_archive_migration_validation
-from sports_signal_bot.regional_hardening.contracts import (
-    ArchiveMigrationValidationFamily, ArchiveMigrationSourceRecord,
-    ArchiveMigrationTargetRecord, ArchiveMigrationSegmentRecord,
-    ArchiveMigrationHashRecord, ArchiveMigrationLineageRecord,
-    ArchiveMigrationReplayRecord, ArchiveMigrationGapRecord,
-    ArchiveMigrationValidationStatus
+from sports_signal_bot.regional_hardening.archive_migrations import (
+    build_archive_migration_validation,
 )
+from sports_signal_bot.regional_hardening.contracts import (
+    ArchiveMigrationGapRecord,
+    ArchiveMigrationHashRecord,
+    ArchiveMigrationLineageRecord,
+    ArchiveMigrationReplayRecord,
+    ArchiveMigrationSegmentRecord,
+    ArchiveMigrationSourceRecord,
+    ArchiveMigrationTargetRecord,
+    ArchiveMigrationValidationFamily,
+    ArchiveMigrationValidationStatus,
+)
+
 
 def test_archive_migration_validation():
     source = ArchiveMigrationSourceRecord(source_id="s1", is_stale=False)
@@ -15,7 +22,16 @@ def test_archive_migration_validation():
 
     validation = build_archive_migration_validation(
         ArchiveMigrationValidationFamily.archive_relocation_validation,
-        source, target, [], hashes, lineages, [], []
+        source,
+        target,
+        [],
+        hashes,
+        lineages,
+        [],
+        [],
     )
 
-    assert validation.validation_status == ArchiveMigrationValidationStatus.migration_validated
+    assert (
+        validation.validation_status
+        == ArchiveMigrationValidationStatus.migration_validated
+    )
