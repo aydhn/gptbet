@@ -1,12 +1,15 @@
-from pydantic import BaseModel, Field
-from typing import List, Dict, Optional, Any
 from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
 
 class SeverityLevel(str, Enum):
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
     CRITICAL = "critical"
+
 
 class SpecFamily(str, Enum):
     POLICY_SPEC = "policy_spec"
@@ -19,6 +22,7 @@ class SpecFamily(str, Enum):
     FEDERATED_GOVERNANCE_SPEC = "federated_governance_spec"
     ADOPTION_ACTIVATION_SPEC = "adoption_activation_spec"
     EXCHANGE_NOTARIZATION_SPEC = "exchange_notarization_spec"
+
 
 class AssertionType(str, Enum):
     STRUCTURE_ASSERTION = "structure_assertion"
@@ -35,6 +39,7 @@ class AssertionType(str, Enum):
     DRIFT_ASSERTION = "drift_assertion"
     GATING_ASSERTION = "gating_assertion"
 
+
 class RunMode(str, Enum):
     PRE_MERGE = "pre_merge"
     PRE_PROMOTION = "pre_promotion"
@@ -45,6 +50,7 @@ class RunMode(str, Enum):
     EXTERNAL_PUBLICATION_CHECK = "external_publication_check"
     EMERGENCY_OVERRIDE_CHECK = "emergency_override_check"
 
+
 class GateOutcome(str, Enum):
     PASS = "pass"
     PASS_WITH_WARNINGS = "pass_with_warnings"
@@ -53,12 +59,14 @@ class GateOutcome(str, Enum):
     BLOCKED_CRITICAL = "blocked_critical"
     EXEMPTED_WITH_RECORD = "exempted_with_record"
 
+
 class DriftOutcome(str, Enum):
     NO_DRIFT = "no_drift"
     TOLERATED_DRIFT = "tolerated_drift"
     WARNING_DRIFT = "warning_drift"
     BLOCKING_DRIFT = "blocking_drift"
     CRITICAL_DRIFT = "critical_drift"
+
 
 class SpecAssertionRecord(BaseModel):
     assertion_id: str
@@ -70,6 +78,7 @@ class SpecAssertionRecord(BaseModel):
     failure_severity: SeverityLevel
     remediation_hint_family: str
     warnings: List[str] = Field(default_factory=list)
+
 
 class GovernanceSpecRecord(BaseModel):
     spec_id: str
@@ -83,6 +92,7 @@ class GovernanceSpecRecord(BaseModel):
     owner_family: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConformanceSuiteRecord(BaseModel):
     suite_id: str
     suite_family: str
@@ -94,11 +104,13 @@ class ConformanceSuiteRecord(BaseModel):
     created_at: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConformanceCaseRecord(BaseModel):
     case_id: str
     suite_id: str
     spec_id: str
     assertion_id: str
+
 
 class ConformanceResultRecord(BaseModel):
     case_id: str
@@ -106,11 +118,13 @@ class ConformanceResultRecord(BaseModel):
     details: str
     severity: Optional[SeverityLevel] = None
 
+
 class ComplianceGateRecord(BaseModel):
     gate_id: str
     gate_family: str
     outcome: GateOutcome
     reason: str
+
 
 class LintFindingRecord(BaseModel):
     finding_id: str
@@ -119,14 +133,17 @@ class LintFindingRecord(BaseModel):
     description: str
     target: str
 
+
 class PolicyLintRecord(BaseModel):
     lint_id: str
     findings: List[LintFindingRecord]
     passed: bool
 
+
 class DriftDimensionRecord(BaseModel):
     dimension_id: str
     name: str
+
 
 class DriftEvidenceRecord(BaseModel):
     baseline_ref: str
@@ -138,22 +155,27 @@ class DriftEvidenceRecord(BaseModel):
     remediation_hint: str
     proof_refs: List[str] = Field(default_factory=list)
 
+
 class DriftAttestationRecord(BaseModel):
     attestation_id: str
     dimension_id: str
     outcome: DriftOutcome
     evidence: DriftEvidenceRecord
 
+
 class ExceptionScopeRecord(BaseModel):
     scope_id: str
     description: str
 
+
 class ExceptionExpiryRecord(BaseModel):
     expiry_time: str
+
 
 class ExceptionApprovalRecord(BaseModel):
     approver_ref: str
     approval_time: str
+
 
 class ComplianceExceptionRecord(BaseModel):
     exception_id: str
@@ -165,10 +187,12 @@ class ComplianceExceptionRecord(BaseModel):
     approval: ExceptionApprovalRecord
     affected_assertions: List[str]
 
+
 class VerificationStageRecord(BaseModel):
     stage_name: str
     status: str
     details: str
+
 
 class VerificationPipelineRunRecord(BaseModel):
     run_id: str
@@ -176,16 +200,19 @@ class VerificationPipelineRunRecord(BaseModel):
     stages: List[VerificationStageRecord]
     final_outcome: GateOutcome
 
+
 class ComplianceDecisionRecord(BaseModel):
     decision_id: str
     run_id: str
     outcome: GateOutcome
     rationale: str
 
+
 class ComplianceManifest(BaseModel):
     manifest_id: str
     run_id: str
     decision: ComplianceDecisionRecord
+
 
 class ComplianceSummaryRecord(BaseModel):
     summary_id: str
@@ -197,20 +224,32 @@ class ComplianceSummaryRecord(BaseModel):
     drift_counts_by_severity: Dict[str, int]
     gate_outcomes: Dict[str, int]
 
+
 class RemediationHintRecord(BaseModel):
     hint_id: str
     description: str
     target_action: str
 
+
 class VerificationExceptionRecord(BaseModel):
     exception_id: str
     details: str
+
 
 class ComplianceWarningRecord(BaseModel):
     warning_id: str
     message: str
 
+
 class ContinuousVerificationAuditRecord(BaseModel):
     audit_id: str
     run_id: str
     timestamp: str
+
+
+class GateEvaluationInput(BaseModel):
+    gate_id: str
+    gate_family: str
+    conformance_results: List[ConformanceResultRecord]
+    lint_record: Optional[PolicyLintRecord] = None
+    drift_records: List[DriftAttestationRecord] = Field(default_factory=list)
