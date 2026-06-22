@@ -1,42 +1,38 @@
-from typing import List, Dict, Optional
+from typing import Dict
+
 from sports_signal_bot.corridor_governance.contracts import (
+    SovereignInteroperabilityScorecardInputRecord,
     SovereignInteroperabilityScorecardRecord,
-    ScorecardDimensionRecord
 )
 
+
 def build_interoperability_scorecard(
-    scorecard_id: str,
-    scored_scope: str,
-    scored_corridor_refs: List[str],
-    scored_treaty_refs: List[str],
-    region_pair_ref: str,
-    dimension_scores: Dict[str, float],
-    overall_score: float,
-    overall_band: str,
-    caveat_summary: List[str],
-    blocking_gaps: List[str],
-    warnings: List[str]
+    input_record: SovereignInteroperabilityScorecardInputRecord,
 ) -> SovereignInteroperabilityScorecardRecord:
     return SovereignInteroperabilityScorecardRecord(
-        scorecard_id=scorecard_id,
-        scored_scope=scored_scope,
-        scored_corridor_refs=scored_corridor_refs,
-        scored_treaty_refs=scored_treaty_refs,
-        region_pair_ref=region_pair_ref,
-        dimension_scores=dimension_scores,
-        overall_score=overall_score,
-        overall_band=overall_band,
-        caveat_summary=caveat_summary,
-        blocking_gaps=blocking_gaps,
-        warnings=warnings
+        scorecard_id=input_record.scorecard_id,
+        scored_scope=input_record.scored_scope,
+        scored_corridor_refs=input_record.scored_corridor_refs,
+        scored_treaty_refs=input_record.scored_treaty_refs,
+        region_pair_ref=input_record.region_pair_ref,
+        dimension_scores=input_record.dimension_scores,
+        overall_score=input_record.overall_score,
+        overall_band=input_record.overall_band,
+        caveat_summary=input_record.caveat_summary,
+        blocking_gaps=input_record.blocking_gaps,
+        warnings=input_record.warnings,
     )
 
-def compute_scorecard_dimensions(raw_data: Dict[str, float], weights: Dict[str, float]) -> Dict[str, float]:
+
+def compute_scorecard_dimensions(
+    raw_data: Dict[str, float], weights: Dict[str, float]
+) -> Dict[str, float]:
     computed = {}
     for dim, val in raw_data.items():
         weight = weights.get(dim, 1.0)
         computed[dim] = val * weight
     return computed
+
 
 def map_score_to_band(score: float) -> str:
     if score >= 90:
