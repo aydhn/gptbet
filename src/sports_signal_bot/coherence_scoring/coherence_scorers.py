@@ -4,7 +4,7 @@ from .contracts import (
     SovereignGovernanceCoherenceScorerRecord,
     CoherenceInputRecord,
     CoherencePassRecord,
-    CoherenceOutputRecord
+    CoherenceOutputRecord,
 )
 
 # SCORER FAMILY TAXONOMY
@@ -62,36 +62,61 @@ AUDIENCE_OVERCOMPRESSION_PENALTY = "audience_overcompression_penalty"
 RESTORATION_OVERCLAIM_PENALTY = "restoration_overclaim_penalty"
 
 
-def build_governance_coherence_scorer(family: str) -> SovereignGovernanceCoherenceScorerRecord:
+def build_governance_coherence_scorer(
+    family: str,
+) -> SovereignGovernanceCoherenceScorerRecord:
     return SovereignGovernanceCoherenceScorerRecord(
         coherence_scorer_id=str(uuid.uuid4()),
         scorer_family=family,
-        current_state="initialized"
+        current_state="initialized",
     )
 
-def register_coherence_input(scorer: SovereignGovernanceCoherenceScorerRecord, input_record: CoherenceInputRecord) -> None:
+
+def register_coherence_input(
+    scorer: SovereignGovernanceCoherenceScorerRecord, input_record: CoherenceInputRecord
+) -> None:
     scorer.input_refs.append(input_record.coherence_input_id)
 
-def execute_coherence_score_passes(scorer: SovereignGovernanceCoherenceScorerRecord) -> List[CoherencePassRecord]:
+
+def execute_coherence_score_passes(
+    scorer: SovereignGovernanceCoherenceScorerRecord,
+) -> List[CoherencePassRecord]:
     passes = [
-        CoherencePassRecord(record_id=str(uuid.uuid4()), pass_type=SOVEREIGNTY_PRESERVATION_PASS, status="passed"),
-        CoherencePassRecord(record_id=str(uuid.uuid4()), pass_type=NO_SAFE_VISIBILITY_PASS, status="passed")
+        CoherencePassRecord(
+            record_id=str(uuid.uuid4()),
+            pass_type=SOVEREIGNTY_PRESERVATION_PASS,
+            status="passed",
+        ),
+        CoherencePassRecord(
+            record_id=str(uuid.uuid4()),
+            pass_type=NO_SAFE_VISIBILITY_PASS,
+            status="passed",
+        ),
     ]
-    scorer.pass_refs.extend([p.record_id for p in passes])
+    scorer.pass_refs.extend(p.record_id for p in passes)
     return passes
 
-def summarize_coherence_scorer(scorer: SovereignGovernanceCoherenceScorerRecord) -> Dict[str, Any]:
+
+def summarize_coherence_scorer(
+    scorer: SovereignGovernanceCoherenceScorerRecord,
+) -> Dict[str, Any]:
     return {
         "id": scorer.coherence_scorer_id,
         "family": scorer.scorer_family,
         "inputs": len(scorer.input_refs),
-        "state": scorer.current_state
+        "state": scorer.current_state,
     }
 
-def compute_coherence_dimensions(scorer: SovereignGovernanceCoherenceScorerRecord) -> None:
+
+def compute_coherence_dimensions(
+    scorer: SovereignGovernanceCoherenceScorerRecord,
+) -> None:
     pass
 
-def apply_coherence_penalties(scorer: SovereignGovernanceCoherenceScorerRecord, inputs: List[CoherenceInputRecord]) -> List[str]:
+
+def apply_coherence_penalties(
+    scorer: SovereignGovernanceCoherenceScorerRecord, inputs: List[CoherenceInputRecord]
+) -> List[str]:
     penalties = []
     for inp in inputs:
         if inp.currentness_state == "stale":
@@ -100,7 +125,10 @@ def apply_coherence_penalties(scorer: SovereignGovernanceCoherenceScorerRecord, 
             penalties.append(SOVEREIGNTY_SUPPRESSION_PENALTY)
     return penalties
 
-def compute_coherence_band(scorer: SovereignGovernanceCoherenceScorerRecord, inputs: List[CoherenceInputRecord]) -> CoherenceOutputRecord:
+
+def compute_coherence_band(
+    scorer: SovereignGovernanceCoherenceScorerRecord, inputs: List[CoherenceInputRecord]
+) -> CoherenceOutputRecord:
     band = STRONG_BOUNDED_COHERENCE
     preserved_caveats = []
     no_safe_visibility = True
@@ -119,11 +147,13 @@ def compute_coherence_band(scorer: SovereignGovernanceCoherenceScorerRecord, inp
         output_id=str(uuid.uuid4()),
         band=band,
         preserved_caveats=preserved_caveats,
-        no_safe_visibility_preserved=no_safe_visibility
+        no_safe_visibility_preserved=no_safe_visibility,
     )
+
 
 def explain_coherence_score(output: CoherenceOutputRecord) -> str:
     return f"Coherence Band: {output.band}, Caveats Preserved: {len(output.preserved_caveats)}, No-Safe Visibility: {output.no_safe_visibility_preserved}"
+
 
 def classify_coherence_penalties(penalties: List[str]) -> Dict[str, int]:
     result = {}
@@ -131,8 +161,12 @@ def classify_coherence_penalties(penalties: List[str]) -> Dict[str, int]:
         result[p] = result.get(p, 0) + 1
     return result
 
+
 def attach_penalty_explanations(penalties: List[str]) -> Dict[str, str]:
     return {p: f"Penalty applied: {p}" for p in penalties}
 
-def summarize_coherence_penalty_pressure(scorer: SovereignGovernanceCoherenceScorerRecord) -> Dict[str, Any]:
+
+def summarize_coherence_penalty_pressure(
+    scorer: SovereignGovernanceCoherenceScorerRecord,
+) -> Dict[str, Any]:
     return {"penalty_count": len(scorer.penalty_refs)}
