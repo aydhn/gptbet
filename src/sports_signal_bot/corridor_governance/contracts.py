@@ -44,6 +44,21 @@ class CorridorCatalogWarningRecord(BaseModel):
     warning_type: str
     message: str
 
+class ContinuityAttestationInputRecord(BaseModel):
+    attestation_id: str
+    continuity_session_ref: str
+    corridor_ref: str
+    treaty_ref: str
+    source_region_ref: str
+    target_region_ref: str
+    attestation_family: str
+    attested_dimensions: List[str]
+    attestation_status: str
+    validity_window: Dict[str, str]
+    caveat_refs: List[str]
+    evidence_refs: List[str]
+    warnings: List[str]
+
 class ContinuityAttestationRecord(BaseModel):
     continuity_attestation_id: str
     continuity_session_ref: str
