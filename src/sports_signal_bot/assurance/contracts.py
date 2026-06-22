@@ -81,6 +81,14 @@ class ClaimValidityWindowRecord(BaseModel):
     valid_from: datetime = Field(default_factory=datetime.utcnow)
     valid_until: Optional[datetime] = None
 
+class ClaimInputRecord(BaseModel):
+    claim_id: str
+    family: ClaimFamily
+    target_ref: str
+    statement: str
+    strength: SupportStrength
+    dependencies: Optional[List[str]] = None
+
 class AssuranceClaimRecord(BaseModel):
     claim_id: str
     claim_family: ClaimFamily
