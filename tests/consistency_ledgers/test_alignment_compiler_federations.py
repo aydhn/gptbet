@@ -1,23 +1,25 @@
 import pytest
+
+from sports_signal_bot.consistency_ledgers.alignment_federations import (
+    aggregate_federated_alignment_outputs,
+    build_alignment_compiler_federation,
+    compute_alignment_federation_agreement,
+    compute_federated_alignment_currentness,
+    preserve_no_safe_visibility_in_alignment_federation,
+    preserve_penalties_and_ceilings_in_alignment_federation,
+)
 from sports_signal_bot.consistency_ledgers.contracts import (
+    AlignmentAgreementBand,
     AlignmentFederationFamily,
     FederatedAlignmentNodeRecord,
-    FederationLinkStatus,
     FederatedAlignmentOutputStatus,
-    AlignmentAgreementBand
-)
-from sports_signal_bot.consistency_ledgers.alignment_federations import (
-    build_alignment_compiler_federation,
-    compute_federated_alignment_currentness,
-    compute_alignment_federation_agreement,
-    preserve_penalties_and_ceilings_in_alignment_federation,
-    aggregate_federated_alignment_outputs,
-    preserve_no_safe_visibility_in_alignment_federation
+    FederationLinkStatus,
 )
 from sports_signal_bot.consistency_ledgers.federation_links import (
     add_alignment_federation_link,
-    validate_alignment_federation_link
+    validate_alignment_federation_link,
 )
+
 
 def test_stale_member_caveats_federation():
     fed = build_alignment_compiler_federation(
@@ -25,12 +27,32 @@ def test_stale_member_caveats_federation():
         member_refs=["node_1", "node_2"],
         currentness_policy="strict",
         ceiling_policy="preserve",
-        agreement_policy="strict"
+        agreement_policy="strict",
     )
 
     nodes = {
-        "node_1": FederatedAlignmentNodeRecord(node_id="node_1", alignment_compiler_ref="comp_1", compiler_family="fam", supported_scope_refs=[], currentness_state="current", penalty_state="none", sovereignty_state="none", node_status="active", warnings=[]),
-        "node_2": FederatedAlignmentNodeRecord(node_id="node_2", alignment_compiler_ref="comp_2", compiler_family="fam", supported_scope_refs=[], currentness_state="stale", penalty_state="none", sovereignty_state="none", node_status="active", warnings=[])
+        "node_1": FederatedAlignmentNodeRecord(
+            node_id="node_1",
+            alignment_compiler_ref="comp_1",
+            compiler_family="fam",
+            supported_scope_refs=[],
+            currentness_state="current",
+            penalty_state="none",
+            sovereignty_state="none",
+            node_status="active",
+            warnings=[],
+        ),
+        "node_2": FederatedAlignmentNodeRecord(
+            node_id="node_2",
+            alignment_compiler_ref="comp_2",
+            compiler_family="fam",
+            supported_scope_refs=[],
+            currentness_state="stale",
+            penalty_state="none",
+            sovereignty_state="none",
+            node_status="active",
+            warnings=[],
+        ),
     }
 
     link1 = add_alignment_federation_link(fed, "node_1", "node_2")
@@ -46,10 +68,18 @@ def test_stale_member_caveats_federation():
     agreement = compute_alignment_federation_agreement(fed, nodes, currentness)
     assert agreement.agreement_band == AlignmentAgreementBand.WEAK_AGREEMENT
 
-    penalties, ceilings = preserve_penalties_and_ceilings_in_alignment_federation(fed, nodes)
+    penalties, ceilings = preserve_penalties_and_ceilings_in_alignment_federation(
+        fed, nodes
+    )
 
-    decision = aggregate_federated_alignment_outputs(fed, currentness, agreement, penalties, ceilings)
-    assert decision.decision_output == FederatedAlignmentOutputStatus.FEDERATED_ALIGNMENT_STALE
+    decision = aggregate_federated_alignment_outputs(
+        fed, currentness, agreement, penalties, ceilings
+    )
+    assert (
+        decision.decision_output
+        == FederatedAlignmentOutputStatus.FEDERATED_ALIGNMENT_STALE
+    )
+
 
 def test_no_safe_visibility_preserved():
     fed = build_alignment_compiler_federation(
@@ -57,11 +87,21 @@ def test_no_safe_visibility_preserved():
         member_refs=["node_1"],
         currentness_policy="strict",
         ceiling_policy="preserve",
-        agreement_policy="strict"
+        agreement_policy="strict",
     )
 
     nodes = {
-        "node_1": FederatedAlignmentNodeRecord(node_id="node_1", alignment_compiler_ref="comp_1", compiler_family="fam", supported_scope_refs=[], currentness_state="current", penalty_state="none", sovereignty_state="no_safe_recovery_hint", node_status="active", warnings=[])
+        "node_1": FederatedAlignmentNodeRecord(
+            node_id="node_1",
+            alignment_compiler_ref="comp_1",
+            compiler_family="fam",
+            supported_scope_refs=[],
+            currentness_state="current",
+            penalty_state="none",
+            sovereignty_state="no_safe_recovery_hint",
+            node_status="active",
+            warnings=[],
+        )
     }
 
     no_safe = preserve_no_safe_visibility_in_alignment_federation(fed, nodes)

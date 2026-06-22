@@ -1,13 +1,15 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 from sports_signal_bot.consistency_ledgers.contracts import (
-    SovereignGovernanceConsistencyLedgerRecord,
     ConsistencyLedgerFamily,
-    HealthStatus
+    HealthStatus,
+    SovereignGovernanceConsistencyLedgerRecord,
 )
 from sports_signal_bot.consistency_ledgers.utils import generate_id
 
+
 def build_governance_consistency_ledger(
-    family: ConsistencyLedgerFamily
+    family: ConsistencyLedgerFamily,
 ) -> SovereignGovernanceConsistencyLedgerRecord:
     return SovereignGovernanceConsistencyLedgerRecord(
         consistency_ledger_id=generate_id("cons_ledg"),
@@ -18,5 +20,5 @@ def build_governance_consistency_ledger(
         ceiling_refs=[],
         no_safe_refs=[],
         health_status=HealthStatus.HEALTHY,
-        warnings=[]
+        warnings=[],
     )

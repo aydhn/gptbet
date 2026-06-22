@@ -1,11 +1,13 @@
 import json
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from sports_signal_bot.consistency_ledgers.contracts import (
     AlignmentCompilerFederationManifestRecord,
     DisputeTribunalMeshManifestRecord,
     EvidenceExchangeClearerManifestRecord,
-    GovernanceConsistencyLedgerManifestRecord
+    GovernanceConsistencyLedgerManifestRecord,
 )
+
 
 class ConsistencyLedgersManifest:
     def __init__(self):

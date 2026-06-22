@@ -1,18 +1,22 @@
-from typing import List, Dict, Any, Tuple
+from typing import Any, Dict, List, Tuple
+
+from sports_signal_bot.consistency_ledgers.clearing_books import (
+    validate_clearing_compatibility,
+)
 from sports_signal_bot.consistency_ledgers.contracts import (
     ClearingBookRecord,
     ClearingListingRecord,
-    ClearingRequestRecord,
     ClearingMatchRecord,
-    ClearingOutcome
+    ClearingOutcome,
+    ClearingRequestRecord,
 )
-from sports_signal_bot.consistency_ledgers.clearing_books import validate_clearing_compatibility
 from sports_signal_bot.consistency_ledgers.utils import generate_id
+
 
 def enumerate_clearing_matches(
     book: ClearingBookRecord,
     listings: Dict[str, ClearingListingRecord],
-    requests: Dict[str, ClearingRequestRecord]
+    requests: Dict[str, ClearingRequestRecord],
 ) -> List[Dict[str, Any]]:
     matches = []
 
@@ -27,14 +31,15 @@ def enumerate_clearing_matches(
             listing = listings[list_id]
 
             is_compat, warnings = validate_clearing_compatibility(listing, req)
-            if is_compat or req.request_priority == "critical": # Allow degraded matches for critical
-                matches.append({
-                    "request": req,
-                    "listing": listing,
-                    "warnings": warnings
-                })
+            if (
+                is_compat or req.request_priority == "critical"
+            ):  # Allow degraded matches for critical
+                matches.append(
+                    {"request": req, "listing": listing, "warnings": warnings}
+                )
 
     return matches
+
 
 def score_clearing_matches(matches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     for match in matches:
@@ -62,24 +67,29 @@ def score_clearing_matches(matches: List[Dict[str, Any]]) -> List[Dict[str, Any]
 
     return sorted(matches, key=lambda x: x["score"], reverse=True)
 
+
 def apply_clearing_constraints(
-    scored_matches: List[Dict[str, Any]],
-    pressure_state: str
+    scored_matches: List[Dict[str, Any]], pressure_state: str
 ) -> List[Dict[str, Any]]:
     for m in scored_matches:
         if pressure_state in ["high", "critical"] and m["score"] < 80:
-            m["warnings"].append(f"Match degraded due to clearing pressure: {pressure_state}")
+            m["warnings"].append(
+                f"Match degraded due to clearing pressure: {pressure_state}"
+            )
             m["score"] -= 20
     return scored_matches
 
-def select_clearing_outcome(scored_matches: List[Dict[str, Any]]) -> ClearingMatchRecord:
+
+def select_clearing_outcome(
+    scored_matches: List[Dict[str, Any]],
+) -> ClearingMatchRecord:
     if not scored_matches:
         return ClearingMatchRecord(
             match_id=generate_id("clear_match"),
             listing_ref="",
             request_ref="",
             outcome=ClearingOutcome.CLEARING_BLOCKED,
-            warnings=["No viable matches found."]
+            warnings=["No viable matches found."],
         )
 
     best_match = scored_matches[0]
@@ -101,12 +111,13 @@ def select_clearing_outcome(scored_matches: List[Dict[str, Any]]) -> ClearingMat
         listing_ref=best_match["listing"].listing_id,
         request_ref=best_match["request"].request_id,
         outcome=outcome,
-        warnings=best_match["warnings"]
+        warnings=best_match["warnings"],
     )
+
 
 def summarize_clearing_outcome(match: ClearingMatchRecord) -> Dict[str, Any]:
     return {
         "match_id": match.match_id,
         "outcome": match.outcome.value,
-        "warnings": match.warnings
+        "warnings": match.warnings,
     }
