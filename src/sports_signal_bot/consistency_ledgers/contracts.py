@@ -1,19 +1,26 @@
 from enum import Enum
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List
+
 from pydantic import BaseModel, Field
 
 # ---------------------------------------------------------------------------
 # TAXONOMIES
 # ---------------------------------------------------------------------------
 
+
 class AlignmentFederationFamily(str, Enum):
     CONTEXT_ALIGNMENT_FEDERATION = "context_alignment_federation"
     TRACE_AND_PROOF_ALIGNMENT_FEDERATION = "trace_and_proof_alignment_federation"
     FRESHNESS_ALIGNMENT_FEDERATION = "freshness_alignment_federation"
     EXCHANGE_INTEGRITY_ALIGNMENT_FEDERATION = "exchange_integrity_alignment_federation"
-    SOVEREIGNTY_PRESERVATION_ALIGNMENT_FEDERATION = "sovereignty_preservation_alignment_federation"
+    SOVEREIGNTY_PRESERVATION_ALIGNMENT_FEDERATION = (
+        "sovereignty_preservation_alignment_federation"
+    )
     NO_SAFE_VISIBILITY_ALIGNMENT_FEDERATION = "no_safe_visibility_alignment_federation"
-    COMPOSITE_GOVERNANCE_ALIGNMENT_FEDERATION = "composite_governance_alignment_federation"
+    COMPOSITE_GOVERNANCE_ALIGNMENT_FEDERATION = (
+        "composite_governance_alignment_federation"
+    )
+
 
 class FederationLinkStatus(str, Enum):
     LINK_CURRENT = "link_current"
@@ -24,6 +31,7 @@ class FederationLinkStatus(str, Enum):
     LINK_EXPIRED = "link_expired"
     LINK_SUPERSEDED = "link_superseded"
 
+
 class FederatedAlignmentOutputStatus(str, Enum):
     FEDERATED_ALIGNMENT_CURRENT_WITH_CAPS = "federated_alignment_current_with_caps"
     FEDERATED_ALIGNMENT_CAVEATED = "federated_alignment_caveated"
@@ -32,12 +40,14 @@ class FederatedAlignmentOutputStatus(str, Enum):
     FEDERATED_ALIGNMENT_BLOCKED = "federated_alignment_blocked"
     FEDERATED_ALIGNMENT_STALE = "federated_alignment_stale"
 
+
 class AlignmentAgreementBand(str, Enum):
     NO_AGREEMENT = "no_agreement"
     WEAK_AGREEMENT = "weak_agreement"
     BOUNDED_AGREEMENT = "bounded_agreement"
     STRONG_AGREEMENT_WITH_CAVEATS = "strong_agreement_with_caveats"
     STABLE_AGREEMENT = "stable_agreement"
+
 
 class TribunalMeshFamily(str, Enum):
     BOUNDED_CONTEXT_DISPUTE_MESH = "bounded_context_dispute_mesh"
@@ -47,6 +57,7 @@ class TribunalMeshFamily(str, Enum):
     NO_SAFE_VISIBILITY_MESH = "no_safe_visibility_mesh"
     DEGRADED_DISPUTE_MESH = "degraded_dispute_mesh"
     COMPOSITE_TRIBUNAL_MESH = "composite_tribunal_mesh"
+
 
 class TribunalNodeFamily(str, Enum):
     TRIBUNAL_INGRESS_NODE = "tribunal_ingress_node"
@@ -58,6 +69,7 @@ class TribunalNodeFamily(str, Enum):
     DEGRADED_FALLBACK_NODE = "degraded_fallback_node"
     MESH_HEALTH_OBSERVER_NODE = "mesh_health_observer_node"
 
+
 class TribunalMeshEdgeStatus(str, Enum):
     EDGE_CURRENT = "edge_current"
     EDGE_CAVEATED = "edge_caveated"
@@ -68,6 +80,7 @@ class TribunalMeshEdgeStatus(str, Enum):
     EDGE_EXPIRED = "edge_expired"
     EDGE_SUPERSEDED = "edge_superseded"
 
+
 class TribunalMeshRouteOutcome(str, Enum):
     BOUNDED_TRIBUNAL_ROUTE = "bounded_tribunal_route"
     REVIEW_ONLY_TRIBUNAL_ROUTE = "review_only_tribunal_route"
@@ -77,6 +90,7 @@ class TribunalMeshRouteOutcome(str, Enum):
     BLOCKED_TRIBUNAL_ROUTE = "blocked_tribunal_route"
     NO_SAFE_TRIBUNAL_ROUTE = "no_safe_tribunal_route"
 
+
 class MeshPressureState(str, Enum):
     LOW = "low"
     MODERATE = "moderate"
@@ -84,6 +98,7 @@ class MeshPressureState(str, Enum):
     CRITICAL = "critical"
     SUPPRESS_NONCRITICAL_TRIBUNAL_PATHS = "suppress_noncritical_tribunal_paths"
     REVIEW_ONLY_BIAS = "review_only_bias"
+
 
 class EvidenceClearerFamily(str, Enum):
     BOUNDED_EVIDENCE_CLEARER = "bounded_evidence_clearer"
@@ -94,6 +109,7 @@ class EvidenceClearerFamily(str, Enum):
     SOVEREIGNTY_WARNING_EVIDENCE_CLEARER = "sovereignty_warning_evidence_clearer"
     COMPOSITE_EVIDENCE_CLEARER = "composite_evidence_clearer"
 
+
 class ClearingStatus(str, Enum):
     CLEARING_READY = "clearing_ready"
     CLEARING_CAVEATED = "clearing_caveated"
@@ -102,6 +118,7 @@ class ClearingStatus(str, Enum):
     CLEARING_DEGRADED = "clearing_degraded"
     CLEARING_BLOCKED = "clearing_blocked"
     CLEARING_SUPERSEDED = "clearing_superseded"
+
 
 class ClearingOutcome(str, Enum):
     CLEARED_BOUNDED_EVIDENCE_ROUTE = "cleared_bounded_evidence_route"
@@ -112,6 +129,7 @@ class ClearingOutcome(str, Enum):
     CLEARING_BLOCKED = "clearing_blocked"
     NO_SAFE_CLEARING_ROUTE = "no_safe_clearing_route"
 
+
 class ConsistencyLedgerFamily(str, Enum):
     GOVERNANCE_CONSISTENCY_LEDGER = "governance_consistency_ledger"
     FRESHNESS_CONSISTENCY_LEDGER = "freshness_consistency_ledger"
@@ -121,15 +139,19 @@ class ConsistencyLedgerFamily(str, Enum):
     NO_SAFE_VISIBILITY_CONSISTENCY_LEDGER = "no_safe_visibility_consistency_ledger"
     COMPOSITE_CONSISTENCY_LEDGER = "composite_consistency_ledger"
 
+
 class LedgerEntryFamily(str, Enum):
     CONTEXT_CONSISTENCY_ENTRY = "context_consistency_entry"
     PROOF_FRESHNESS_CONSISTENCY_ENTRY = "proof_freshness_consistency_entry"
     TRACE_INTEGRITY_CONSISTENCY_ENTRY = "trace_integrity_consistency_entry"
     EXCHANGE_INTEGRITY_CONSISTENCY_ENTRY = "exchange_integrity_consistency_entry"
-    SOVEREIGNTY_VISIBILITY_CONSISTENCY_ENTRY = "sovereignty_visibility_consistency_entry"
+    SOVEREIGNTY_VISIBILITY_CONSISTENCY_ENTRY = (
+        "sovereignty_visibility_consistency_entry"
+    )
     NO_SAFE_VISIBILITY_CONSISTENCY_ENTRY = "no_safe_visibility_consistency_entry"
     BURDEN_VISIBILITY_CONSISTENCY_ENTRY = "burden_visibility_consistency_entry"
     CONTRADICTION_ENTRY = "contradiction_entry"
+
 
 class ConsistencyState(str, Enum):
     CONSISTENT_WITH_CAPS = "consistent_with_caps"
@@ -139,6 +161,7 @@ class ConsistencyState(str, Enum):
     CONTRADICTED = "contradicted"
     STALE_CONSISTENCY = "stale_consistency"
     BLOCKED_CONSISTENCY = "blocked_consistency"
+
 
 class ContradictionFamily(str, Enum):
     FRESHNESS_CONTRADICTION = "freshness_contradiction"
@@ -150,6 +173,7 @@ class ContradictionFamily(str, Enum):
     AUDIENCE_SCOPE_CONTRADICTION = "audience_scope_contradiction"
     BURDEN_OBSCURATION_CONTRADICTION = "burden_obscuration_contradiction"
 
+
 class ConsistencyShiftFamily(str, Enum):
     IMPROVED_CONSISTENCY = "improved_consistency"
     STABLE_CONSISTENCY = "stable_consistency"
@@ -160,6 +184,7 @@ class ConsistencyShiftFamily(str, Enum):
     CEILING_LOWERED = "ceiling_lowered"
     NO_SAFE_VISIBILITY_RESTORED = "no_safe_visibility_restored"
 
+
 class HealthStatus(str, Enum):
     HEALTHY = "healthy"
     DEGRADED = "degraded"
@@ -169,6 +194,7 @@ class HealthStatus(str, Enum):
 # ---------------------------------------------------------------------------
 # DATA STRUCTURES
 # ---------------------------------------------------------------------------
+
 
 class AlignmentCompilerFederationRecord(BaseModel):
     alignment_federation_id: str
@@ -181,6 +207,7 @@ class AlignmentCompilerFederationRecord(BaseModel):
     health_status: HealthStatus = HealthStatus.HEALTHY
     warnings: List[str] = Field(default_factory=list)
 
+
 class FederatedAlignmentNodeRecord(BaseModel):
     node_id: str
     alignment_compiler_ref: str
@@ -192,12 +219,14 @@ class FederatedAlignmentNodeRecord(BaseModel):
     node_status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentFederationLinkRecord(BaseModel):
     link_id: str
     source_node_ref: str
     target_node_ref: str
     link_status: FederationLinkStatus
     warnings: List[str] = Field(default_factory=list)
+
 
 class AlignmentFederationCurrentnessRecord(BaseModel):
     record_id: str
@@ -206,11 +235,13 @@ class AlignmentFederationCurrentnessRecord(BaseModel):
     stale_node_refs: List[str]
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentFederationPenaltyRecord(BaseModel):
     record_id: str
     federation_id: str
     penalties: List[str]
     warnings: List[str] = Field(default_factory=list)
+
 
 class AlignmentFederationCeilingRecord(BaseModel):
     record_id: str
@@ -218,11 +249,13 @@ class AlignmentFederationCeilingRecord(BaseModel):
     ceilings: List[str]
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentFederationAgreementRecord(BaseModel):
     record_id: str
     federation_id: str
     agreement_band: AlignmentAgreementBand
     warnings: List[str] = Field(default_factory=list)
+
 
 class AlignmentFederationDecisionRecord(BaseModel):
     record_id: str
@@ -230,21 +263,25 @@ class AlignmentFederationDecisionRecord(BaseModel):
     decision_output: FederatedAlignmentOutputStatus
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentFederationHealthRecord(BaseModel):
     record_id: str
     federation_id: str
     health_status: HealthStatus
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentCompilerFederationManifestRecord(BaseModel):
     manifest_id: str
     federation_records: List[AlignmentCompilerFederationRecord]
     warnings: List[str] = Field(default_factory=list)
 
+
 class AlignmentCompilerFederationWarningRecord(BaseModel):
     warning_id: str
     federation_id: str
     message: str
+
 
 class DisputeTribunalMeshRecord(BaseModel):
     tribunal_mesh_id: str
@@ -258,6 +295,7 @@ class DisputeTribunalMeshRecord(BaseModel):
     health_status: HealthStatus = HealthStatus.HEALTHY
     warnings: List[str] = Field(default_factory=list)
 
+
 class TribunalMeshNodeRecord(BaseModel):
     node_id: str
     node_family: TribunalNodeFamily
@@ -267,6 +305,7 @@ class TribunalMeshNodeRecord(BaseModel):
     backlog_state: str
     node_status: str
     warnings: List[str] = Field(default_factory=list)
+
 
 class TribunalMeshEdgeRecord(BaseModel):
     edge_id: str
@@ -279,6 +318,7 @@ class TribunalMeshEdgeRecord(BaseModel):
     edge_status: TribunalMeshEdgeStatus
     warnings: List[str] = Field(default_factory=list)
 
+
 class TribunalMeshPathRecord(BaseModel):
     path_id: str
     mesh_id: str
@@ -286,21 +326,25 @@ class TribunalMeshPathRecord(BaseModel):
     outcome: TribunalMeshRouteOutcome
     warnings: List[str] = Field(default_factory=list)
 
+
 class TribunalMeshCaseRecord(BaseModel):
     case_id: str
     mesh_id: str
     status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class TribunalMeshConstraintRecord(BaseModel):
     constraint_id: str
     mesh_id: str
     rules: Dict[str, Any]
 
+
 class TribunalMeshDecisionRecord(BaseModel):
     decision_id: str
     case_id: str
     outcome: str
+
 
 class TribunalMeshPressureRecord(BaseModel):
     record_id: str
@@ -309,20 +353,24 @@ class TribunalMeshPressureRecord(BaseModel):
     metrics: Dict[str, float]
     warnings: List[str] = Field(default_factory=list)
 
+
 class TribunalMeshHealthRecord(BaseModel):
     record_id: str
     mesh_id: str
     health_status: HealthStatus
     warnings: List[str] = Field(default_factory=list)
 
+
 class DisputeTribunalMeshManifestRecord(BaseModel):
     manifest_id: str
     mesh_records: List[DisputeTribunalMeshRecord]
+
 
 class DisputeTribunalMeshWarningRecord(BaseModel):
     warning_id: str
     mesh_id: str
     message: str
+
 
 class EvidenceExchangeClearerRecord(BaseModel):
     evidence_clearer_id: str
@@ -336,6 +384,7 @@ class EvidenceExchangeClearerRecord(BaseModel):
     health_status: HealthStatus = HealthStatus.HEALTHY
     warnings: List[str] = Field(default_factory=list)
 
+
 class ClearingBookRecord(BaseModel):
     clearing_book_id: str
     exchange_family: str
@@ -346,6 +395,17 @@ class ClearingBookRecord(BaseModel):
     pressure_state: str
     clearing_status: ClearingStatus
     warnings: List[str] = Field(default_factory=list)
+
+
+class ClearingListingInputRecord(BaseModel):
+    family: str
+    source_ref: str
+    source_family: str
+    trace_families: List[str]
+    audience_profiles: List[str]
+    completeness: float
+    caveats: List[str]
+
 
 class ClearingListingRecord(BaseModel):
     listing_id: str
@@ -360,6 +420,7 @@ class ClearingListingRecord(BaseModel):
     listing_status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ClearingRequestRecord(BaseModel):
     request_id: str
     target_context_ref: str
@@ -371,6 +432,7 @@ class ClearingRequestRecord(BaseModel):
     request_status: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ClearingMatchRecord(BaseModel):
     match_id: str
     listing_ref: str
@@ -378,19 +440,23 @@ class ClearingMatchRecord(BaseModel):
     outcome: ClearingOutcome
     warnings: List[str] = Field(default_factory=list)
 
+
 class ClearingConstraintRecord(BaseModel):
     constraint_id: str
     rules: Dict[str, Any]
+
 
 class ClearingDecisionRecord(BaseModel):
     decision_id: str
     match_ref: str
     final_status: str
 
+
 class ClearingCeilingRecord(BaseModel):
     ceiling_id: str
     match_ref: str
     ceilings: List[str]
+
 
 class ClearingFairnessRecord(BaseModel):
     record_id: str
@@ -398,25 +464,30 @@ class ClearingFairnessRecord(BaseModel):
     fairness_score: float
     metrics: Dict[str, float]
 
+
 class ClearingPressureRecord(BaseModel):
     record_id: str
     clearer_id: str
     pressure_score: float
     metrics: Dict[str, float]
 
+
 class ClearingHealthRecord(BaseModel):
     record_id: str
     clearer_id: str
     health_status: HealthStatus
 
+
 class EvidenceExchangeClearerManifestRecord(BaseModel):
     manifest_id: str
     clearer_records: List[EvidenceExchangeClearerRecord]
+
 
 class EvidenceExchangeClearerWarningRecord(BaseModel):
     warning_id: str
     clearer_id: str
     message: str
+
 
 class SovereignGovernanceConsistencyLedgerRecord(BaseModel):
     consistency_ledger_id: str
@@ -429,6 +500,7 @@ class SovereignGovernanceConsistencyLedgerRecord(BaseModel):
     health_status: HealthStatus = HealthStatus.HEALTHY
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConsistencyLedgerEntryRecord(BaseModel):
     consistency_entry_id: str
     entry_family: LedgerEntryFamily
@@ -440,10 +512,12 @@ class ConsistencyLedgerEntryRecord(BaseModel):
     caveat_state: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConsistencyOriginRecord(BaseModel):
     origin_id: str
     entry_ref: str
     origin_details: Dict[str, Any]
+
 
 class ConsistencyShiftRecord(BaseModel):
     shift_id: str
@@ -454,6 +528,7 @@ class ConsistencyShiftRecord(BaseModel):
     reason: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConsistencyContradictionRecord(BaseModel):
     contradiction_id: str
     ledger_id: str
@@ -462,15 +537,18 @@ class ConsistencyContradictionRecord(BaseModel):
     severity: str
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConsistencyReplayRecord(BaseModel):
     replay_id: str
     ledger_id: str
     status: str
 
+
 class ConsistencyCeilingRecord(BaseModel):
     ceiling_id: str
     ledger_id: str
     ceilings: List[str]
+
 
 class ConsistencyNoSafeRecord(BaseModel):
     record_id: str
@@ -478,15 +556,18 @@ class ConsistencyNoSafeRecord(BaseModel):
     no_safe_visibility_retained: bool
     warnings: List[str] = Field(default_factory=list)
 
+
 class ConsistencyHealthRecord(BaseModel):
     record_id: str
     ledger_id: str
     health_status: HealthStatus
     warnings: List[str] = Field(default_factory=list)
 
+
 class GovernanceConsistencyLedgerManifestRecord(BaseModel):
     manifest_id: str
     ledger_records: List[SovereignGovernanceConsistencyLedgerRecord]
+
 
 class GovernanceConsistencyLedgerWarningRecord(BaseModel):
     warning_id: str
