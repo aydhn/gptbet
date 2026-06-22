@@ -2,38 +2,27 @@ from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 from sports_signal_bot.corridor_governance.contracts import (
     ContinuityAttestationRecord,
+    ContinuityAttestationInputRecord,
     AttestationValidityRecord
 )
 
 def build_continuity_attestation(
-    attestation_id: str,
-    continuity_session_ref: str,
-    corridor_ref: str,
-    treaty_ref: str,
-    source_region_ref: str,
-    target_region_ref: str,
-    attestation_family: str,
-    attested_dimensions: List[str],
-    attestation_status: str,
-    validity_window: Dict[str, str],
-    caveat_refs: List[str],
-    evidence_refs: List[str],
-    warnings: List[str]
+    input_record: ContinuityAttestationInputRecord
 ) -> ContinuityAttestationRecord:
     return ContinuityAttestationRecord(
-        continuity_attestation_id=attestation_id,
-        continuity_session_ref=continuity_session_ref,
-        corridor_ref=corridor_ref,
-        treaty_ref=treaty_ref,
-        source_region_ref=source_region_ref,
-        target_region_ref=target_region_ref,
-        attestation_family=attestation_family,
-        attested_dimensions=attested_dimensions,
-        attestation_status=attestation_status,
-        validity_window=validity_window,
-        caveat_refs=caveat_refs,
-        evidence_refs=evidence_refs,
-        warnings=warnings
+        continuity_attestation_id=input_record.attestation_id,
+        continuity_session_ref=input_record.continuity_session_ref,
+        corridor_ref=input_record.corridor_ref,
+        treaty_ref=input_record.treaty_ref,
+        source_region_ref=input_record.source_region_ref,
+        target_region_ref=input_record.target_region_ref,
+        attestation_family=input_record.attestation_family,
+        attested_dimensions=input_record.attested_dimensions,
+        attestation_status=input_record.attestation_status,
+        validity_window=input_record.validity_window,
+        caveat_refs=input_record.caveat_refs,
+        evidence_refs=input_record.evidence_refs,
+        warnings=input_record.warnings
     )
 
 def validate_attestation_against_continuity(attestation: ContinuityAttestationRecord) -> bool:
