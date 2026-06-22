@@ -1,16 +1,18 @@
-import uuid
 import datetime
-from typing import Dict, Any, List, Optional
+import uuid
+from typing import Any, Dict, List, Optional
 
 from .contracts import (
-    AsyncOrderingRecord, OrderingDependencyRecord, OrderingBarrierRecord,
-    OrderingViolationRecord, OrderingRecoveryRecord, OrderingParityRecord,
-    OrderingHealthRecord, OrderingManifestRecord, OrderingWarningRecord
+    AsyncOrderingRecord,
+    OrderingHealthRecord,
+    OrderingManifestRecord,
+    OrderingViolationRecord,
+    OrderingWarningRecord,
 )
 
+
 def build_async_ordering_graph(
-    target_ref: str,
-    rules: Dict[str, Any]
+    target_ref: str, rules: Dict[str, Any]
 ) -> AsyncOrderingRecord:
     """Builds an AsyncOrderingRecord representing an ordering graph."""
     ordering_id = f"ord_{uuid.uuid4().hex[:8]}"
@@ -24,7 +26,7 @@ def build_async_ordering_graph(
             OrderingWarningRecord(
                 warning_id=f"warn_{uuid.uuid4().hex[:8]}",
                 message="Missing deterministic merge policy in rules.",
-                severity="medium"
+                severity="medium",
             )
         )
 
@@ -33,54 +35,60 @@ def build_async_ordering_graph(
         target_ref=target_ref,
         rules=rules,
         status=status,
-        warnings=warnings
+        warnings=warnings,
     )
 
-def validate_async_ordering(ordering: AsyncOrderingRecord, execution_trace: List[str]) -> bool:
+
+def validate_async_ordering(
+    ordering: AsyncOrderingRecord, execution_trace: List[str]
+) -> bool:
     """Validates an execution trace against ordering rules."""
-    # Simplified simulation: check if trace meets some expected sequence in rules
+    # Simplified sim: check if trace meets some expected sequence in rules
     expected_sequence = ordering.rules.get("expected_sequence", [])
     if not expected_sequence:
-        return True # Nothing to check
+        return True  # Nothing to check
 
     # Check if expected items appear in order (allows gaps)
-    trace_idx = 0
-    for expected in expected_sequence:
-        found = False
-        while trace_idx < len(execution_trace):
-            if execution_trace[trace_idx] == expected:
-                found = True
-                trace_idx += 1
-                break
-            trace_idx += 1
-        if not found:
-            return False
+    trace_iter = iter(execution_trace)
+    return all(expected in trace_iter for expected in expected_sequence)
 
-    return True
 
-def detect_ordering_violation(ordering: AsyncOrderingRecord, execution_trace: List[str]) -> Optional[OrderingViolationRecord]:
+def detect_ordering_violation(
+    ordering: AsyncOrderingRecord, execution_trace: List[str]
+) -> Optional[OrderingViolationRecord]:
     """Detects ordering violations."""
     if validate_async_ordering(ordering, execution_trace):
         return None
 
     return OrderingViolationRecord(
         violation_id=f"viol_{uuid.uuid4().hex[:8]}",
-        description=f"Trace {execution_trace} violated ordering rules for {ordering.target_ref}"
+        description=(
+            f"Trace {execution_trace} violated "
+            f"ordering rules for {ordering.target_ref}"
+        ),
     )
 
-def summarize_async_ordering(orderings: List[AsyncOrderingRecord]) -> OrderingManifestRecord:
+
+def summarize_async_ordering(
+    orderings: List[AsyncOrderingRecord],
+) -> OrderingManifestRecord:
     """Summarizes async orderings into a manifest."""
-    unhealthy = [o.ordering_id for o in orderings if o.status not in ["ordering_safe"]]
+    unhealthy = [
+        o.ordering_id for o in orderings if o.status not in ["ordering_safe"]
+    ]  # noqa: E501
 
     health = OrderingHealthRecord(
         health_id=f"hlt_{uuid.uuid4().hex[:8]}",
         is_healthy=len(unhealthy) == 0,
-        status_summary=f"Found {len(unhealthy)} orderings with issues out of {len(orderings)} total."
+        status_summary=(
+            f"Found {len(unhealthy)} orderings with issues "
+            f"out of {len(orderings)} total."
+        ),
     )
 
     return OrderingManifestRecord(
         manifest_id=f"man_{uuid.uuid4().hex[:8]}",
         generated_at=datetime.datetime.now(datetime.timezone.utc),
         orderings=orderings,
-        health=health
+        health=health,
     )
