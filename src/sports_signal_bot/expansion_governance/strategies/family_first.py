@@ -3,7 +3,7 @@ import uuid
 from .base import BaseExpansionGovernanceStrategy
 from ..contracts import (
     ExpansionControlStateRecord, ExpansionBudgetRecord, ExpansionPressureRecord, GlobalPressureMetrics,
-    CrossCohortConflictRecord, BreakerEvaluationRecord, ExpansionGovernanceManifest
+    CrossCohortConflictRecord, BreakerEvaluationRecord, ExpansionGovernanceManifest, ManifestInputRecord
 )
 from ..pressure import compute_global_pressure
 from ..breakers import evaluate_circuit_breakers
@@ -55,4 +55,11 @@ class FamilyFirstProtectionStrategy(BaseExpansionGovernanceStrategy):
 
         breakers = evaluate_circuit_breakers(state, metrics)
 
-        return self._build_manifest(state, budgets, pressure, conflicts, breakers)
+        input_record = ManifestInputRecord(
+            state=state,
+            budgets=budgets,
+            pressure=pressure,
+            conflicts=conflicts,
+            breakers=breakers
+        )
+        return self._build_manifest(input_record)

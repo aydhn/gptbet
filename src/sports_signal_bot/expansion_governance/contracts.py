@@ -293,3 +293,10 @@ class StabilizationWindowRecord(BaseModel):
     window_id: str
     target_id: str
     ends_at: datetime
+
+class ManifestInputRecord(BaseModel):
+    state: ExpansionControlStateRecord
+    budgets: List[ExpansionBudgetRecord]
+    pressure: ExpansionPressureRecord
+    conflicts: List[CrossCohortConflictRecord]
+    breakers: BreakerEvaluationRecord
