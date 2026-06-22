@@ -573,3 +573,12 @@ class GovernanceConsistencyLedgerWarningRecord(BaseModel):
     warning_id: str
     ledger_id: str
     message: str
+
+
+class ExplainFederatedAlignmentOutputInputRecord(BaseModel):
+    decision: AlignmentFederationDecisionRecord
+    currentness: AlignmentFederationCurrentnessRecord
+    agreement: AlignmentFederationAgreementRecord
+    penalties: AlignmentFederationPenaltyRecord
+    ceilings: AlignmentFederationCeilingRecord
+    no_safe_preserved: bool
