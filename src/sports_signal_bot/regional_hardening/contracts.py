@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -285,7 +286,19 @@ class ArchiveMigrationWarningRecord(BaseModel):
     message: str
 
 
+class ArchiveMigrationValidationInputRecord(BaseModel):
+    family: ArchiveMigrationValidationFamily
+    source: ArchiveMigrationSourceRecord
+    target: ArchiveMigrationTargetRecord
+    segments: List[ArchiveMigrationSegmentRecord]
+    hashes: List[ArchiveMigrationHashRecord]
+    lineages: List[ArchiveMigrationLineageRecord]
+    replays: List[ArchiveMigrationReplayRecord]
+    gaps: List[ArchiveMigrationGapRecord]
+
+
 class ArchiveMigrationValidationRecord(BaseModel):
+
     archive_migration_validation_id: str
     validation_family: ArchiveMigrationValidationFamily
     source_archive_ref: ArchiveMigrationSourceRecord

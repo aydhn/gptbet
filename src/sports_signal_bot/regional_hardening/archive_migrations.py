@@ -1,56 +1,68 @@
-from typing import List, Optional
 import uuid
-from .contracts import (
-    ArchiveMigrationValidationRecord, ArchiveMigrationSourceRecord,
-    ArchiveMigrationTargetRecord, ArchiveMigrationSegmentRecord,
-    ArchiveMigrationHashRecord, ArchiveMigrationLineageRecord,
-    ArchiveMigrationReplayRecord, ArchiveMigrationGapRecord,
-    ArchiveMigrationValidationStatus, ArchiveMigrationValidationFamily,
-    ArchiveMigrationWarningRecord
-)
+
+from .contracts import (ArchiveMigrationValidationInputRecord,
+                        ArchiveMigrationValidationRecord,
+                        ArchiveMigrationValidationStatus,
+                        ArchiveMigrationWarningRecord)
+
 
 def build_archive_migration_validation(
-    family: ArchiveMigrationValidationFamily,
-    source: ArchiveMigrationSourceRecord,
-    target: ArchiveMigrationTargetRecord,
-    segments: List[ArchiveMigrationSegmentRecord],
-    hashes: List[ArchiveMigrationHashRecord],
-    lineages: List[ArchiveMigrationLineageRecord],
-    replays: List[ArchiveMigrationReplayRecord],
-    gaps: List[ArchiveMigrationGapRecord]
+    params: ArchiveMigrationValidationInputRecord,
 ) -> ArchiveMigrationValidationRecord:
     status = ArchiveMigrationValidationStatus.migration_validated
     warnings = []
 
-    if source.is_stale:
+    if params.source.is_stale:
         status = ArchiveMigrationValidationStatus.migration_blocked
-        warnings.append(ArchiveMigrationWarningRecord(warning_id=str(uuid.uuid4()), message="Stale source archive"))
+        warnings.append(
+            ArchiveMigrationWarningRecord(
+                warning_id=str(uuid.uuid4()), message="Stale source archive"
+            )
+        )
 
-    if any(s.is_missing for s in segments):
+    if any(s.is_missing for s in params.segments):
         status = ArchiveMigrationValidationStatus.migration_gapped
-        warnings.append(ArchiveMigrationWarningRecord(warning_id=str(uuid.uuid4()), message="Missing segments"))
+        warnings.append(
+            ArchiveMigrationWarningRecord(
+                warning_id=str(uuid.uuid4()), message="Missing segments"
+            )
+        )
 
-    if any(not h.is_continuous for h in hashes):
+    if any(not h.is_continuous for h in params.hashes):
         status = ArchiveMigrationValidationStatus.migration_corrupted
-        warnings.append(ArchiveMigrationWarningRecord(warning_id=str(uuid.uuid4()), message="Hash continuity broken"))
+        warnings.append(
+            ArchiveMigrationWarningRecord(
+                warning_id=str(uuid.uuid4()), message="Hash continuity broken"
+            )
+        )
 
-    if any(not l.is_preserved for l in lineages):
+    if any(not lin.is_preserved for lin in params.lineages):
         status = ArchiveMigrationValidationStatus.migration_corrupted
-        warnings.append(ArchiveMigrationWarningRecord(warning_id=str(uuid.uuid4()), message="Lineage not preserved"))
+        warnings.append(
+            ArchiveMigrationWarningRecord(
+                warning_id=str(uuid.uuid4()), message="Lineage not preserved"
+            )
+        )
 
     return ArchiveMigrationValidationRecord(
         archive_migration_validation_id=str(uuid.uuid4()),
-        validation_family=family,
-        source_archive_ref=source,
-        target_archive_ref=target,
-        segment_refs=segments,
-        hash_refs=hashes,
-        lineage_refs=lineages,
-        replay_refs=replays,
-        gap_refs=gaps,
+        validation_family=params.family,
+        source_archive_ref=params.source,
+        target_archive_ref=params.target,
+        segment_refs=params.segments,
+        hash_refs=params.hashes,
+        lineage_refs=params.lineages,
+        replay_refs=params.replays,
+        gap_refs=params.gaps,
         validation_status=status,
-        warnings=warnings
+        warnings=warnings,
     )
 
-def summarize_archive_migration_validation(validation: ArchiveMigrationValidationRecord) -> str:
-    return f"Archive Migration {validation.archive_migration_validation_id} Status: {validation.validation_status}"
+
+def summarize_archive_migration_validation(
+    validation: ArchiveMigrationValidationRecord,
+) -> str:
+    return (
+        f"Archive Migration {validation.archive_migration_validation_id} "
+        f"Status: {validation.validation_status}"
+    )
