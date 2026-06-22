@@ -8,7 +8,10 @@ from .audit_pulse_lanes import build_global_audit_pulse_lane, summarize_global_a
 from .handoff_observatories import build_planetary_handoff_observatory, summarize_planetary_handoff_observatory
 from .summaries import build_supermesh_fabric_matrix, summarize_supermesh_fabric_matrix, add_matrix_row
 from .budgets import build_supermesh_fabric_budgets, summarize_supermesh_fabric_budgets
-from .manifests import generate_supermesh_hardening_manifest
+from .manifests import (
+    generate_supermesh_hardening_manifest,
+    SupermeshManifestInputs
+)
 from .strategies.base import SupermeshHardeningStrategy
 
 class SupermeshHardeningIntegrator:
@@ -56,9 +59,15 @@ class SupermeshHardeningIntegrator:
         mat_summary = summarize_supermesh_fabric_matrix(self.matrix)
         bud_summary = summarize_supermesh_fabric_budgets(self.budget_manifest)
 
-        self.summary = generate_supermesh_hardening_manifest(
-            sm_summary, fab_summary, pulse_summary, obs_summary, mat_summary, bud_summary
+        inputs = SupermeshManifestInputs(
+            supermesh_summary=sm_summary,
+            fabric_summary=fab_summary,
+            pulse_summary=pulse_summary,
+            observatory_summary=obs_summary,
+            matrix_summary=mat_summary,
+            budget_summary=bud_summary
         )
+        self.summary = generate_supermesh_hardening_manifest(inputs)
         return self.summary
 
     def export_artifacts(self, output_dir: str):
