@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -161,6 +161,14 @@ class DriftAttestationRecord(BaseModel):
     dimension_id: str
     outcome: DriftOutcome
     evidence: DriftEvidenceRecord
+
+
+class ExceptionRequestInputRecord(BaseModel):
+    request_ref: str
+    scope_desc: str
+    expiry: str
+    rationale: str
+    owner: str
 
 
 class ExceptionScopeRecord(BaseModel):
