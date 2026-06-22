@@ -1,39 +1,37 @@
 import uuid
-from datetime import datetime, timedelta
-from typing import List, Optional
-from .contracts import AutomationEnvelopeRecord, SelfHealingPreparationRecord
+from datetime import datetime, timedelta, timezone
+from typing import Optional
+from .contracts import (
+    AutomationEnvelopeRecord,
+    SelfHealingPreparationRecord,
+    AutomationEnvelopeParams,
+)
+
 
 def build_automation_envelope(
-    allowed_step_families: List[str],
-    maximum_scope: str,
-    required_guards: List[str],
-    required_approvals_retained: List[str],
-    required_rehearsal_evidence: List[str],
-    required_rollback_guarantees: List[str],
-    forbidden_incident_families: List[str],
-    observability_minimums: List[str],
-    stop_conditions: List[str]
+    params: AutomationEnvelopeParams,
 ) -> AutomationEnvelopeRecord:
     return AutomationEnvelopeRecord(
         envelope_id=f"env_{uuid.uuid4().hex[:8]}",
-        allowed_step_families=allowed_step_families,
-        maximum_scope=maximum_scope,
-        required_guards=required_guards,
-        required_approvals_retained=required_approvals_retained,
-        required_rehearsal_evidence=required_rehearsal_evidence,
-        required_rollback_guarantees=required_rollback_guarantees,
-        forbidden_incident_families=forbidden_incident_families,
-        observability_minimums=observability_minimums,
-        stop_conditions=stop_conditions,
-        expiration=datetime.utcnow() + timedelta(days=30)
+        allowed_step_families=params.allowed_step_families,
+        maximum_scope=params.maximum_scope,
+        required_guards=params.required_guards,
+        required_approvals_retained=params.required_approvals_retained,
+        required_rehearsal_evidence=params.required_rehearsal_evidence,
+        required_rollback_guarantees=params.required_rollback_guarantees,
+        forbidden_incident_families=params.forbidden_incident_families,
+        observability_minimums=params.observability_minimums,
+        stop_conditions=params.stop_conditions,
+        expiration=datetime.now(timezone.utc) + timedelta(days=30),
     )
+
 
 def evaluate_self_healing_eligibility(
     session_ref: str,
     rollback_sufficient: bool,
     observability_sufficient: bool,
     rehearsal_success: bool,
-    envelope_ref: Optional[str] = None
+    envelope_ref: Optional[str] = None,
 ) -> SelfHealingPreparationRecord:
 
     if not rollback_sufficient or not observability_sufficient:
@@ -51,5 +49,5 @@ def evaluate_self_healing_eligibility(
         session_ref=session_ref,
         eligibility_status=status,
         envelope_ref=envelope_ref,
-        warnings=warnings
+        warnings=warnings,
     )

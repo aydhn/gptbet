@@ -10,7 +10,7 @@ from .automation_prep import (
     evaluate_self_healing_eligibility,
 )
 
-from .contracts import CopilotApprovalRequestParams, PortablePlaybookParams, CopilotReviewPacketParams
+from .contracts import CopilotApprovalRequestParams, PortablePlaybookParams, CopilotReviewPacketParams, AutomationEnvelopeParams
 
 __all__ = [
     "RemediationCopilotSessionManager",
@@ -26,4 +26,5 @@ __all__ = [
     "CopilotApprovalRequestParams",
     "PortablePlaybookParams",
     "CopilotReviewPacketParams",
+    "AutomationEnvelopeParams",
 ]
