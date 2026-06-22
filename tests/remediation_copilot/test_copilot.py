@@ -12,6 +12,7 @@ from sports_signal_bot.remediation_copilot import (
     evaluate_self_healing_eligibility,
     PortablePlaybookParams,
     CopilotReviewPacketParams,
+    AutomationEnvelopeParams,
 )
 
 
@@ -116,9 +117,18 @@ def test_federation_and_adaptation():
 
 
 def test_automation_prep():
-    env = build_automation_envelope(
-        ["step_1"], "isolated", [], [], [], [], [], [], []
+    params = AutomationEnvelopeParams(
+        allowed_step_families=["step_1"],
+        maximum_scope="isolated",
+        required_guards=[],
+        required_approvals_retained=[],
+        required_rehearsal_evidence=[],
+        required_rollback_guarantees=[],
+        forbidden_incident_families=[],
+        observability_minimums=[],
+        stop_conditions=[],
     )
+    env = build_automation_envelope(params)
     assert env.allowed_step_families == ["step_1"]
 
     eligibility = evaluate_self_healing_eligibility("sess_1", True, True, True)

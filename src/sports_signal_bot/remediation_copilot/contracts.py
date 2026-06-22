@@ -35,7 +35,6 @@ class CopilotRecommendationRecord(BaseModel):
     warnings: List[str] = []
 
 
-
 class CopilotReviewPacketParams(BaseModel):
     session_id: str
     incident_summary: str
@@ -49,6 +48,7 @@ class CopilotReviewPacketParams(BaseModel):
     expected_signals: List[str]
     stop_conditions: List[str]
     approval_requirements: List[str]
+
 
 class CopilotReviewPacketRecord(BaseModel):
     packet_id: str
@@ -199,6 +199,18 @@ class PlaybookAdaptationRecord(BaseModel):
     ]
     applied_local_restrictions: List[str]
     warnings: List[str] = []
+
+
+class AutomationEnvelopeParams(BaseModel):
+    allowed_step_families: List[str]
+    maximum_scope: str
+    required_guards: List[str]
+    required_approvals_retained: List[str]
+    required_rehearsal_evidence: List[str]
+    required_rollback_guarantees: List[str]
+    forbidden_incident_families: List[str]
+    observability_minimums: List[str]
+    stop_conditions: List[str]
 
 
 class AutomationEnvelopeRecord(BaseModel):
