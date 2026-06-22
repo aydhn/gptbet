@@ -28,7 +28,10 @@ def build_research_manifest(
             families.add("ensemble")
         if p.stacker_refresh_status != "not_applicable":
             families.add("stacker")
-        warnings.extend([f"Period {p.period_id}: {w}" for w in p.warnings])
+
+        if p.warnings:
+            prefix = f"Period {p.period_id}: "
+            warnings.extend(prefix + w for w in p.warnings)
 
     return ResearchRunManifest(
         run_id=run_id,
