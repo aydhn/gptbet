@@ -1,5 +1,5 @@
 from sports_signal_bot.federated_governance.control_tower import FederatedControlTowerBuilder
-from sports_signal_bot.federated_governance.contracts import ControlPlaneRecord, PlanePrecedence, PlaneHealthBand, MeshTopologyRecord
+from sports_signal_bot.federated_governance.contracts import FederatedSummaryInput, ControlPlaneRecord, PlanePrecedence, PlaneHealthBand, MeshTopologyRecord
 
 def test_build_control_tower_summary():
     p1 = ControlPlaneRecord(plane_id="p1", plane_name="Global", plane_family="global", precedence=PlanePrecedence.GLOBAL_GOVERNANCE, health=PlaneHealthBand.HEALTHY)
@@ -8,7 +8,15 @@ def test_build_control_tower_summary():
     topology = MeshTopologyRecord(topology_id="t1", nodes=["p1", "p2"], edges=[])
 
     builder = FederatedControlTowerBuilder()
-    summary = builder.build_summary([p1, p2], [], [], topology, [], [])
+    input_data = FederatedSummaryInput(
+        planes=[p1, p2],
+        budgets=[],
+        escalations=[],
+        topology=topology,
+        suspensions=[],
+        overrides=[]
+    )
+    summary = builder.build_summary(input_data)
 
     assert summary["governance_topology"]["total_planes"] == 2
     assert summary["governance_topology"]["healthy_planes"] == 1
