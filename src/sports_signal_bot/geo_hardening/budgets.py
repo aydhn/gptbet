@@ -18,5 +18,5 @@ def measure_geo_budget_consumption(budget: Dict[str, Any], consumption: Dict[str
 def summarize_geo_resilience_budgets(consumption_result: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "budget_status": consumption_result.get("status", "unknown"),
-        "breach_count": len(consumption_result.get("breaches", []))
+        "breach_count": len(consumption_result.get("breaches") or [])
     }
