@@ -12,6 +12,7 @@ from sports_signal_bot.consistency_ledgers.clearing_routes import (
 from sports_signal_bot.consistency_ledgers.contracts import (
     ClearingListingInputRecord,
     ClearingOutcome,
+    ClearingRequestInputRecord,
 )
 
 
@@ -29,7 +30,7 @@ def test_partial_evidence_caveated_route():
     )
     listing = create_clearing_listing(input_record)
 
-    request = create_clearing_request(
+    request_input = ClearingRequestInputRecord(
         target_context_ref="ctx_1",
         trace_family="trace_1",
         required_evidence=["proof_1"],
@@ -37,10 +38,9 @@ def test_partial_evidence_caveated_route():
         required_audience="aud_1",
         priority="standard",
     )
+    request = create_clearing_request(request_input)
 
-    book, ingested = ingest_clearing_listing_and_request(
-        book, listing, request
-    )
+    book, ingested = ingest_clearing_listing_and_request(book, listing, request)
     assert ingested
 
     listings = {listing.listing_id: listing}
@@ -50,4 +50,5 @@ def test_partial_evidence_caveated_route():
     scored = score_clearing_matches(matches)
 
     outcome = select_clearing_outcome(scored)
-    assert outcome.outcome == ClearingOutcome.CLEARED_CAVEATED_EVIDENCE_ROUTE
+    expected_outcome = ClearingOutcome.CLEARED_CAVEATED_EVIDENCE_ROUTE
+    assert outcome.outcome == expected_outcome

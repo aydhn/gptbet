@@ -421,6 +421,15 @@ class ClearingListingRecord(BaseModel):
     warnings: List[str] = Field(default_factory=list)
 
 
+class ClearingRequestInputRecord(BaseModel):
+    target_context_ref: str
+    trace_family: str
+    required_evidence: List[str]
+    required_scope: str
+    required_audience: str
+    priority: str
+
+
 class ClearingRequestRecord(BaseModel):
     request_id: str
     target_context_ref: str
