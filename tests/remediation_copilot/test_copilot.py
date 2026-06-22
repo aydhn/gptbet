@@ -13,6 +13,7 @@ from sports_signal_bot.remediation_copilot import (
     PortablePlaybookParams,
     CopilotReviewPacketParams,
     AutomationEnvelopeParams,
+    ExecutionReadinessInputRecord
 )
 
 
@@ -78,15 +79,37 @@ def test_rehearsal():
 
 
 def test_execution_readiness():
-    ready = compute_execution_readiness(
-        "sess_1", True, True, True, True, True, True, True, True, True, True
+    ready_params = ExecutionReadinessInputRecord(
+        session_ref="sess_1",
+        approval_completeness=True,
+        scope_boundedness=True,
+        rehearsal_success=True,
+        guard_pass_status=True,
+        rollback_completeness=True,
+        observability_completeness=True,
+        confidence_sufficiency=True,
+        federated_playbook_adaptation_safety=True,
+        no_unresolved_critical_blockers=True,
+        freshness_of_incident_context=True
     )
+    ready = compute_execution_readiness(ready_params)
     assert ready.status == "staged_execution_preparation_ready"
     assert len(ready.blockers) == 0
 
-    blocked = compute_execution_readiness(
-        "sess_1", False, True, False, True, True, True, True, True, True, True
+    blocked_params = ExecutionReadinessInputRecord(
+        session_ref="sess_1",
+        approval_completeness=False,
+        scope_boundedness=True,
+        rehearsal_success=False,
+        guard_pass_status=True,
+        rollback_completeness=True,
+        observability_completeness=True,
+        confidence_sufficiency=True,
+        federated_playbook_adaptation_safety=True,
+        no_unresolved_critical_blockers=True,
+        freshness_of_incident_context=True
     )
+    blocked = compute_execution_readiness(blocked_params)
     assert blocked.status == "blocked"
     assert "approval_incomplete" in blocked.blockers
 

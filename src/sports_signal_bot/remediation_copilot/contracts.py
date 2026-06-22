@@ -119,6 +119,20 @@ class RehearsalLedgerRecord(BaseModel):
     warnings: List[str] = []
 
 
+class ExecutionReadinessInputRecord(BaseModel):
+    session_ref: str
+    approval_completeness: bool
+    scope_boundedness: bool
+    rehearsal_success: bool
+    guard_pass_status: bool
+    rollback_completeness: bool
+    observability_completeness: bool
+    confidence_sufficiency: bool
+    federated_playbook_adaptation_safety: bool
+    no_unresolved_critical_blockers: bool
+    freshness_of_incident_context: bool
+
+
 class ExecutionReadinessRecord(BaseModel):
     readiness_id: str
     session_ref: str
