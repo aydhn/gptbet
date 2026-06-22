@@ -3,7 +3,8 @@ from typing import Dict, Any, List
 from ..contracts import (
     ExpansionControlStateRecord, ExpansionBudgetRecord, ExpansionPressureRecord,
     CrossCohortConflictRecord, BreakerEvaluationRecord, ExpansionCouncilRecord,
-    ControlTowerSummaryRecord, ExpansionGovernanceManifest
+    ControlTowerSummaryRecord, ExpansionGovernanceManifest,
+    ManifestInputRecord
 )
 from ..council import build_expansion_council_packet, aggregate_expansion_council_decision
 from ..control_tower import ExpansionControlTowerBuilder
@@ -19,23 +20,29 @@ class BaseExpansionGovernanceStrategy(ABC):
 
     def _build_manifest(
         self,
-        state: ExpansionControlStateRecord,
-        budgets: List[ExpansionBudgetRecord],
-        pressure: ExpansionPressureRecord,
-        conflicts: List[CrossCohortConflictRecord],
-        breakers: BreakerEvaluationRecord
+        input_record: ManifestInputRecord
     ) -> ExpansionGovernanceManifest:
 
-        packet = build_expansion_council_packet(state, budgets, pressure, conflicts, breakers)
+        packet = build_expansion_council_packet(
+            input_record.state,
+            input_record.budgets,
+            input_record.pressure,
+            input_record.conflicts,
+            input_record.breakers
+        )
         decision = aggregate_expansion_council_decision(packet)
 
         summary = ExpansionControlTowerBuilder.build_summary(
-            state, budgets, pressure, breakers, decision
+            input_record.state,
+            input_record.budgets,
+            input_record.pressure,
+            input_record.breakers,
+            decision
         )
 
         return ExpansionGovernanceManifest(
             manifest_id=f"man_{uuid.uuid4().hex[:8]}",
-            control_state=state,
+            control_state=input_record.state,
             council_decision=decision,
             control_tower_summary=summary
         )
