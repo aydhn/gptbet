@@ -1,16 +1,11 @@
-import json
-from datetime import datetime
 from functools import lru_cache
-from pathlib import Path
 
 import typer
 import yaml
 
 from .contracts import EcosystemSyncRunRecord
 from .manifests import emit_sync_artifacts
-from .strategies.balanced_sync import BalancedEcosystemSyncStrategy
 from .strategies.conservative import ConservativeSyncRoutingStrategy
-from .strategies.freshness_aware_overlay import FreshnessAwareOverlayStrategy
 from .utils import save_artifact
 
 app = typer.Typer(help="Phase 66 Ecosystem Sync & Routing")
@@ -20,10 +15,7 @@ app = typer.Typer(help="Phase 66 Ecosystem Sync & Routing")
 def load_config() -> dict:
     try:
         with open("configs/ecosystem_sync/default.yaml", "r") as f:
-            if hasattr(yaml, "CSafeLoader"):
-                return yaml.load(f, Loader=yaml.CSafeLoader)
-            else:
-                return yaml.safe_load(f)
+            return yaml.safe_load(f)
     except Exception:
         return {}
 
