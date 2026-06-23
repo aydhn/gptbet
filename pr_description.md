@@ -1,3 +1,10 @@
-💡 **What:** Replaced the `.get()` lookup and truthiness check on `self.requests` in `src/sports_signal_bot/policy_as_code/reviews.py` with a `try...except KeyError` block.
-🎯 **Why:** To avoid the method call overhead of `.dict.get()` and check, offering a measurable micro-optimization for the hot path where the request ID exists.
-📊 **Measured Improvement:** In a standalone benchmark simulating the expected "hit" condition, the `try...except` approach proved to be ~17-20% faster than the previous `.get()` implementation.
+🔒 Use safe_load instead of load for yaml
+
+🎯 **What:**
+Replaced `yaml.load` (with fallback to `yaml.safe_load`) with `yaml.safe_load` exclusively in `src/sports_signal_bot/ecosystem_sync/cli.py`.
+
+⚠️ **Risk:**
+Using `yaml.load`, even when conditionally trying to apply `CSafeLoader`, is inherently risky. If `CSafeLoader` is missing, or the logic surrounding the check breaks, `yaml.load` can be invoked with standard loaders, permitting execution of arbitrary Python functions/objects contained within a malicious YAML file. This can lead to Remote Code Execution (RCE) and full compromise of the environment if an attacker manages to supply malicious configuration files.
+
+🛡️ **Solution:**
+The function `load_config` was updated to explicitly and exclusively call `yaml.safe_load(f)`. This guarantees that only a safe subset of standard YAML tags can be resolved, completely preventing the instantiation of arbitrary Python objects, while still parsing legitimate configurations flawlessly.
