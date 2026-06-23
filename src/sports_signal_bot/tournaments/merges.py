@@ -1,12 +1,16 @@
-from typing import List, Dict, Tuple
+from typing import Any, Dict, List
+
 from .contracts import TournamentCandidateRecord
+
 
 def detect_near_duplicate_candidates(
     candidate_a: TournamentCandidateRecord,
-    candidate_b: TournamentCandidateRecord
+    candidate_b: TournamentCandidateRecord,
 ) -> bool:
     """Detects if two candidates are near-duplicates that could be merged."""
-    if candidate_a.target_component_family != candidate_b.target_component_family:
+    fam_a = candidate_a.target_component_family
+    fam_b = candidate_b.target_component_family
+    if fam_a != fam_b:
         return False
 
     # Check if scopes are identical or very similar
@@ -22,31 +26,65 @@ def detect_near_duplicate_candidates(
     # Would also check patch payload similarity here in a real implementation
     return True
 
+
+def _make_hashable(obj: Any) -> Any:
+    """Helper to convert dictionaries and lists into hashable tuples."""
+    if isinstance(obj, dict):
+        return tuple(sorted((k, _make_hashable(v)) for k, v in obj.items()))
+    elif isinstance(obj, (list, tuple)):
+        return tuple(_make_hashable(v) for v in obj)
+    elif isinstance(obj, set):
+        return frozenset(_make_hashable(v) for v in obj)
+    return obj
+
+
 def propose_candidate_merge(
-    candidates: List[TournamentCandidateRecord]
+    candidates: List[TournamentCandidateRecord],
 ) -> Dict[str, str]:
     """Finds candidates that can be merged and proposes target IDs.
     Returns dict mapping candidate_id to merge_target_id.
     """
     merges = {}
-    processed = set()
+    seen_signatures = {}
+    unhashable_candidates = []
 
-    for i, cand_a in enumerate(candidates):
-        if cand_a.candidate_id in processed:
-            continue
+    for cand in candidates:
+        try:
+            signature = (
+                cand.target_component_family,
+                _make_hashable(cand.scope)
+            )
+            if signature in seen_signatures:
+                target_cand = seen_signatures[signature]
+                if detect_near_duplicate_candidates(target_cand, cand):
+                    merges[cand.candidate_id] = target_cand.candidate_id
+                else:
+                    unhashable_candidates.append(cand)
+            else:
+                seen_signatures[signature] = cand
+        except TypeError:
+            unhashable_candidates.append(cand)
 
-        for j, cand_b in enumerate(candidates[i+1:], i+1):
-            if cand_b.candidate_id in processed:
+    # Fallback to O(N^2) for unhashable candidates
+    if unhashable_candidates:
+        processed = set(merges.keys())
+        for i, cand_a in enumerate(unhashable_candidates):
+            if cand_a.candidate_id in processed:
                 continue
 
-            if detect_near_duplicate_candidates(cand_a, cand_b):
-                # Propose merging B into A
-                merges[cand_b.candidate_id] = cand_a.candidate_id
-                processed.add(cand_b.candidate_id)
+            for j, cand_b in enumerate(unhashable_candidates[i + 1:], i + 1):
+                if cand_b.candidate_id in processed:
+                    continue
 
-        processed.add(cand_a.candidate_id)
+                if detect_near_duplicate_candidates(cand_a, cand_b):
+                    # Propose merging B into A
+                    merges[cand_b.candidate_id] = cand_a.candidate_id
+                    processed.add(cand_b.candidate_id)
+
+            processed.add(cand_a.candidate_id)
 
     return merges
+
 
 def summarize_overlap_clusters(merges: Dict[str, str]) -> str:
     """Summarizes merge clusters."""
@@ -61,12 +99,16 @@ def summarize_overlap_clusters(merges: Dict[str, str]) -> str:
 
     summary = []
     for target, sources in clusters.items():
-        summary.append(f"Target {target} can merge {len(sources)} candidates: {', '.join(sources)}")
+        summary.append(
+            f"Target {target} can merge {len(sources)} "
+            f"candidates: {', '.join(sources)}"
+        )
 
     return "; ".join(summary)
 
+
 def block_spam_candidate_flood(
-    candidates: List[TournamentCandidateRecord]
+    candidates: List[TournamentCandidateRecord],
 ) -> List[TournamentCandidateRecord]:
     """Blocks an overwhelming number of identical candidates."""
     merges = propose_candidate_merge(candidates)
