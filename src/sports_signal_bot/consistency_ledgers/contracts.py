@@ -307,6 +307,14 @@ class TribunalMeshNodeRecord(BaseModel):
     warnings: List[str] = Field(default_factory=list)
 
 
+class TribunalMeshEdgeInputRecord(BaseModel):
+    source_node_ref: str
+    target_node_ref: str
+    supported_cases: List[str]
+    supported_scopes: List[str]
+    caveat_policy: str
+
+
 class TribunalMeshEdgeRecord(BaseModel):
     edge_id: str
     source_node_ref: str
