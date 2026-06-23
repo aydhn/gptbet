@@ -1,16 +1,6 @@
-import json
-from datetime import datetime
-
 import typer
 
-from .cases import AdjudicationCaseBuilder
-from .contracts import (
-    AdjudicationCaseFamily,
-    AdjudicationCaseStatus,
-    AdjudicationSeverity,
-    ResolutionInput,
-    ResolutionType,
-)
+from .contracts import ResolutionInput, ResolutionType
 from .queue import AdjudicationQueueBuilder, AdjudicationRegistry
 from .resolutions import ResolutionApplier
 
@@ -40,7 +30,8 @@ def list_adjudication_cases():
         return
     for c in cases:
         typer.echo(
-            f"- {c.case_id} ({c.case_type.value}) - Status: {c.current_status.value}"
+            f"- {c.case_id} ({c.case_type.value}) - "
+            f"Status: {c.current_status.value}"
         )
 
 
@@ -70,7 +61,8 @@ def resolve_adjudication_case(case_id: str, operator_id: str):
     )
     typer.echo(f"Resolution applied. Artifact ID: {resolution.resolution_id}")
     typer.echo(
-        f"Feedback Status: {'Eligible' if resolution.feedback_eligibility else 'Ineligible'}"
+        f"Feedback Status: "
+        f"{'Eligible' if resolution.feedback_eligibility else 'Ineligible'}"
     )
 
 
